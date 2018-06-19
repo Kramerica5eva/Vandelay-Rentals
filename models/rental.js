@@ -3,16 +3,31 @@ const Schema = mongoose.Schema;
 
 const rentalSchema = new Schema({
   name: { type: String, required: true },
-  category: { type: String, required: true },
+  category: {
+    type: String,
+    enum: ['Paddleboard', 'Kayak'],
+    default: 'Kayak',
+    required: true
+  },
   maker: String,
   sku: String,
   dailyRate: Schema.Types.Decimal128,
-  reservations: [],
+  reservations: [{
+    from: Date,
+    to: Date
+  }],
+  pastRentals: [{
+    customerId: Number,
+    date: {
+      from: Date,
+      to: Date
+    }
+  }],
   timesRented: Number,
   dateAcquired: Date,
   condition: {
     type: String,
-    enum: ['New', 'Working', 'Repair', 'Retired'],
+    enum: ['New', 'Good', 'Working', 'Disrepair', 'Retired'],
     default: 'Good'
   },
   images: [{ filepath: String }]

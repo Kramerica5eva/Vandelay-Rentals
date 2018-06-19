@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 const courseSchema = new Schema({
   name: { type: String, required: true },
   price: Schema.Types.Decimal128,
-  synopsis: String,
+  abstract: String,
+  detail: String,
+  topics: [{ type: String }],
   level: {
     type: String,
     enum: ['Advanced', 'Intermediate', 'Beginner'],
@@ -13,7 +15,8 @@ const courseSchema = new Schema({
   date: Date,
   slots: Number,
   participants: [{
-    name: String, paid: Boolean
+    name: String,
+    paid: Boolean
   }]
 });
 
