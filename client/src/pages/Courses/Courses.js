@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Container } from "../../components/Grid";
 import Jumbotron from "../../components/Jumbotron";
 
-class Classes extends Component {
+class Courses extends Component {
   state = {
     articles: [],
     target: "",
@@ -44,4 +44,4 @@ class Classes extends Component {
   }
 }
 
-export default Classes;
+export default Courses;

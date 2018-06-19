@@ -33,6 +33,7 @@ class Signup extends Component {
           <Link className="btn btn-primary btn-lg" to="/" role="button">Home</Link>
           <Link className="btn btn-primary btn-lg" to="/rentals" role="button">Rentals</Link>
           <Link className="btn btn-primary btn-lg" to="/sales" role="button">Sales</Link>
+          <Link className="btn btn-primary btn-lg" to="/courses" role="button">Courses</Link>
           <Link className="btn btn-primary btn-lg" to="/signup" role="button">Signup</Link>
           <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
         </p>

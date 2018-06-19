@@ -32,7 +32,7 @@ class Home extends Component {
           <p className="lead">
             <Link className="btn btn-primary btn-lg" to="/rentals" role="button">Rentals</Link>
             <Link className="btn btn-primary btn-lg" to="/sales" role="button">Sales</Link>
-            <Link className="btn btn-primary btn-lg" to="/classes" role="button">Classes</Link>
+            <Link className="btn btn-primary btn-lg" to="/courses" role="button">Courses</Link>
             <Link className="btn btn-primary btn-lg" to="/signup" role="button">Signup</Link>
             <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
           </p>

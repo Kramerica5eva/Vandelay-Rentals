@@ -1,0 +1,22 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const saleSchema = new Schema({
+  name: { type: String, required: true },
+  category: { type: String, required: true },
+  maker: String,
+  sku: String,
+  cost: Schema.Types.Decimal128,
+  price: Schema.Types.Decimal128,
+  dateAcquired: Date,
+  condition: {
+    type: String,
+    enum: ['New', 'Excellent', 'Good', 'Fair', 'Poor'],
+    default: 'New'
+  },
+  images: [{ filepath: String }]
+});
+
+const Sale = mongoose.model("Sale", saleSchema);
+
+module.exports = Sale;
