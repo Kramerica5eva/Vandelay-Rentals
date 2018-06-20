@@ -2,13 +2,27 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import { Container } from "../../components/Grid";
 import Jumbotron from "../../components/Jumbotron";
+import API from "../../utils/API";
 
 class Courses extends Component {
   state = {
-    articles: [],
-    target: "",
-    noResults: false
+    courses: []
   };
+
+  componentDidMount() {
+    this.getAllCourses();
+  }
+
+  getAllCourses = () => {
+    API.getAllCourses()
+      .then(res => {
+        this.setState({
+          courses: res.data
+        });
+        console.log(this.state.courses);
+      })
+      .catch(err => console.log(err));
+  }
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -37,7 +51,25 @@ class Courses extends Component {
           </p>
         </Jumbotron>
         <Container>
-          <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, totam veritatis. Vitae ducimus recusandae nobis aperiam dolores necessitatibus, iusto in nesciunt maiores facere ratione ab ipsum. Vel minus quo illo!</h2>
+          <h2>Courses Available:</h2>
+          <ul>
+            {this.state.courses.map(course => (
+              <li>
+                <h3>{course.name}</h3>
+                <h4>"{course.abstract}"</h4>
+                <h5>Level: {course.level}</h5>
+                <p>${parseFloat(course.price.$numberDecimal).toFixed(2)} per person</p>
+                <p>"{course.detail}"</p>
+                <h4>Topics covered:</h4>
+                <ul>
+                  {course.topics.map(topic => (
+                    <li>{topic}</li>
+                  ))}
+                </ul>
+                <p>spaces left: {course.slots - course.participants.length}</p>
+              </li>
+            ))}
+          </ul>
         </Container>
       </div>
     );

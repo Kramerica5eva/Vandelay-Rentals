@@ -31,7 +31,7 @@ const courseSeed = [
   },
   {
     name: 'Whitewater Kayaking',
-    price: 299.00,
+    price: 299.99,
     abstract: 'Learn how tie your shoes before driving to your kayaking launch.',
     detail: 'Never get caught with your shoes untied, espcially if you have a kayak with you. Disaster will ensue. Come spend the weekend with us with both your shoes tied and a big smile on your face.',
     topics: [

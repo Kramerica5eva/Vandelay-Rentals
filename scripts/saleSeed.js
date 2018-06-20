@@ -70,7 +70,9 @@ const saleSeed = [
     sku: 'p-2016-55m-028',
     dateAcquired: '2016-04-22',
     saleType: 'Used',
-    condition: 'Fair'
+    condition: 'Fair',
+    status: 'Sold',
+    finalPrice: 150.00
   },
   {
     name: 'Bay ST Folding Kayak',
