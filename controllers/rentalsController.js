@@ -1,11 +1,17 @@
 const db = require("../models");
 
-// Defining methods for the booksController
+// Defining methods for the rentalsController
 module.exports = {
   findAll: function(req, res) {
     db.Rental
       .find({})
       .sort({ date: -1 })
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findByCategory: function(req, res) {
+    db.Rental
+      .find({ category: req.params.category })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

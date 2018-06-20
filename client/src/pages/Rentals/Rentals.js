@@ -2,13 +2,28 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import { Container } from "../../components/Grid";
 import Jumbotron from "../../components/Jumbotron";
+import API from "../../utils/API";
 
 class Rentals extends Component {
   state = {
-    articles: [],
-    target: "",
-    noResults: false
+    rentals: []
   };
+
+  componentDidMount() {
+    this.getAllRentals();
+  }
+
+  getAllRentals = () => {
+    API.getAllRentals()
+      .then(res => {
+        this.setState({
+          rentals: res.data
+        });
+        console.log(this.state.rentals);
+      })
+      .catch(err => console.log(err));
+
+  }
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -37,7 +52,17 @@ class Rentals extends Component {
           </p>
         </Jumbotron>
         <Container>
-          <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, totam veritatis. Vitae ducimus recusandae nobis aperiam dolores necessitatibus, iusto in nesciunt maiores facere ratione ab ipsum. Vel minus quo illo!</h2>
+          <h2>Rentals Available:</h2>
+          <ul>
+            {this.state.rentals.map(rental => (
+              <li>
+                <h3>{rental.name}</h3>
+                <h4>{rental.category}</h4>
+                <h5>Maker: {rental.maker}</h5>
+                <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>
+              </li>
+            ))}
+          </ul>
         </Container>
       </div>
     );

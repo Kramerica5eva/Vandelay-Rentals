@@ -24,7 +24,16 @@ const saleSchema = new Schema({
     enum: ['New', 'Excellent', 'Good', 'Fair', 'Poor'],
     default: 'New'
   },
-  images: [{ filepath: String }]
+  images: [{ filepath: String }],
+  status: {
+    type: String,
+    enum: ['Available', 'Sold'],
+    default: 'Available'
+  },
+  finalSale: {
+    type: Schema.Types.Decimal128,
+    default: null
+  }
 });
 
 const Sale = mongoose.model("Sale", saleSchema);
