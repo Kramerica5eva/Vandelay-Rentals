@@ -54,7 +54,7 @@ class Courses extends Component {
           <h2>Courses Available:</h2>
           <ul>
             {this.state.courses.map(course => (
-              <li>
+              <li key={course._id}>
                 <h3>{course.name}</h3>
                 <h4>"{course.abstract}"</h4>
                 <h5>Level: {course.level}</h5>
@@ -62,8 +62,8 @@ class Courses extends Component {
                 <p>"{course.detail}"</p>
                 <h4>Topics covered:</h4>
                 <ul>
-                  {course.topics.map(topic => (
-                    <li>{topic}</li>
+                  {course.topics.map((topic, index) => (
+                    <li key={`${index}-${course._id}`}>{topic}</li>
                   ))}
                 </ul>
                 <p>spaces left: {course.slots - course.participants.length}</p>
