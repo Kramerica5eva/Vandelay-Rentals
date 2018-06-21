@@ -4,7 +4,7 @@ import { Container } from "../../components/Grid";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
 
-class Rentals extends Component {
+class Test extends Component {
   state = {
     rentals: []
   };
@@ -37,12 +37,15 @@ class Rentals extends Component {
     //  blah blah blah
   };
 
+
+
   render() {
     return (
       <div>
         <Jumbotron>
-          <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
-          <h2>Rent some stuff</h2>
+          <h1>Vandelay Test Page, Nomsayn?</h1>
+          <h2>A Page for Testing Components</h2>
+          <h2>(showing Rental results for dev purposes)</h2>
           <p className="lead">
             <Link className="btn btn-primary btn-lg" to="/" role="button">Home</Link>
             <Link className="btn btn-primary btn-lg" to="/sales" role="button">Sales</Link>
@@ -52,14 +55,33 @@ class Rentals extends Component {
           </p>
         </Jumbotron>
         <Container>
+          <button
+            onClick={() => this.props.setModal({
+              header: "Kramer's Modal",
+              body:
+                <img src="https://pbs.twimg.com/profile_images/966923121482645507/qtpVrqVn_400x400.jpg" alt="Kramer" />,
+              footer: "Kramer's Modal Footer"
+            })}
+          >
+            Kramer!
+          </button>
           <h2>Rentals Available:</h2>
           <ul>
             {this.state.rentals.map(rental => (
               <li key={rental._id}>
                 <h3>{rental.name}</h3>
-                <h4>{rental.category}</h4>
-                <h5>Maker: {rental.maker}</h5>
-                <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>
+                <button onClick={() => this.props.setModal({
+                  header: rental.name,
+                  body:
+                    <div>
+                      <h4>{rental.category}</h4>
+                      <h5>Maker: {rental.maker}</h5>
+                      <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>
+                    </div>,
+                  footer: rental.name
+                })}>
+                  see details
+                </button>
               </li>
             ))}
           </ul>
@@ -69,4 +91,4 @@ class Rentals extends Component {
   }
 }
 
-export default Rentals;
+export default Test;

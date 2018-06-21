@@ -54,7 +54,7 @@ class Sales extends Component {
           <h2>Purchase Items:</h2>
           <ul>
             {this.state.saleItems.filter(saleItem => saleItem.status === 'Available').map(item => (
-              <li>
+              <li key={item._id}>
                 <h3>{item.name}</h3>
                 <h4>{item.category}</h4>
                 <h5>Maker: {item.maker}</h5>
