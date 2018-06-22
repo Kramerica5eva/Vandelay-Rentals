@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
-import { Container } from "../../components/Grid";
-import Jumbotron from "../../components/Jumbotron";
+import Header from "../../components/Header";
 import API from "../../utils/API";
 
 class Test extends Component {
   state = {
-    rentals: [],
-    redirect: false,
-    userData: null
+    rentals: []
   };
 
   componentDidMount() {
@@ -43,23 +40,45 @@ class Test extends Component {
   render() {
     return (
       <div>
-        <Jumbotron>
+        <Header>
           <h1>Vandelay Test Page, Nomsayn?</h1>
           <h2>A Page for Testing Components</h2>
           <h2>(showing Rental results for dev purposes)</h2>
-          <p className="lead">
-            <Link className="btn btn-primary btn-lg" to="/" role="button">Home</Link>
-            <Link className="btn btn-primary btn-lg" to="/sales" role="button">Sales</Link>
-            <Link className="btn btn-primary btn-lg" to="/courses" role="button">Courses</Link>
-            <Link className="btn btn-primary btn-lg" to="/signup" role="button">Signup</Link>
-            <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
-          </p>
-        </Jumbotron>
-        <Container>
-          <p>{this.props.user}</p>
-          {this.props.user ? (
-            <Link to="#" onClick={this.props.logout}>logout</Link>
-          ) : ""}
+          <div className="lead">
+            <Link className="btn-link" to="/" role="button">Home</Link>
+            <Link className="btn-link" to="/sales" role="button">Sales</Link>
+            <Link className="btn-link" to="/courses" role="button">Courses</Link>
+            {this.props.loggedIn ?
+            (
+              <Link className="btn-link" to="#" role="button" onClick={this.props.logout}>logout</Link>
+            ) : (
+                <div style={{ "display": "inline-block" }}>
+                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
+                  <Link className="btn-link" to="/login" role="button">Login</Link>
+                </div>
+              )}
+            {this.props.admin ? (
+              <Link className="btn-link" to="/admin" role="button">Admin</Link>
+            ) : ""}
+          </div>
+        </Header>
+        {this.props.admin ? (
+          <div>
+            <h2>Hello, Admin {this.props.firstName}</h2>
+            <h4>If this is showing, you have admin privileges</h4>
+            <p>This page of admin functions could be set up a number of ways</p>
+            <p>This could be an array of buttons that triggers forms to display</p>
+            <p>Forms could already be displayed</p>
+            <p>Or we could use the React-Table npm package</p>
+          </div>
+        ) : (
+          <div>
+            <h2>{this.props.firstName ? `Hello, ${this.props.firstName}` : "Hello"}</h2>
+            <h4>If this text is showing, you do not have admin privileges</h4>
+          </div>
+        )} 
+        <div>
+          <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
           <button
             onClick={() => this.props.setModal({
               header: "Kramer's Modal",
@@ -90,7 +109,7 @@ class Test extends Component {
               </li>
             ))}
           </ul>
-        </Container>
+        </div>
       </div>
     );
   }

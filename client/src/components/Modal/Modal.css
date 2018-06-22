@@ -1,5 +1,6 @@
 /* The Modal (background) */
 .my-modal {
+  display: flex; /* this keeps the modal centered when the content (below) is set to margin: auto */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;
@@ -47,10 +48,11 @@
 .my-modal-content {
   position: relative;
   background-color: #fefefe;
-  margin: 50% auto;
+  margin: auto;
   padding: 0;
   border: 1px solid #888;
-  width: 60%;
+  max-width: 60%;
+  min-width: 300px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   animation-name: fadein;
   animation-duration: 0.4s

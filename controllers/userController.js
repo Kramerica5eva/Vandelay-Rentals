@@ -2,17 +2,21 @@ const db = require('../models');
 
 module.exports = {
   getUser: function (req, res) {
-    console.log('===== user!!======')
-    console.log(req.user)
-    if (req.user) {
-      res.json({ user: req.user })
-    } else {
-      res.json({ user: null })
-    }
+    db.User.findOne({ username: req.user.username })
+      .then(response => {
+        res.json(response);
+      });
+    // console.log('===== user!!======')
+    // console.log(req.user)
+    // if (req.user) {
+    //   res.json({ user: req.user })
+    // } else {
+    //   res.json({ user: null })
+    // }
   },
 
   signup: function (req, res) {
-    const { username } = req.body
+    const { username } = req.body;
     // ADD VALIDATION
     db.User.findOne({ username: username }, (err, user) => {
       if (err) {
@@ -33,11 +37,20 @@ module.exports = {
   },
 
   login: function (req, res) {
-    console.log('logged in', req.user);
-    var userInfo = {
-      username: req.user.username
-    };
-    res.send(userInfo);
+    const { username } = req.body;
+
+    db.User.findOne({ username: username }, (err, user) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.send(user);
+      }
+    });
+    // console.log('logged in', req.user);
+    // var userInfo = {
+    //   username: req.user.username
+    // };
+    // res.send(userInfo);
   },
 
   logout: function (req, res) {

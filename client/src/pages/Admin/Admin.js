@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
 
-class Rentals extends Component {
+class Admin extends Component {
   state = {
     rentals: []
   };
@@ -36,36 +36,41 @@ class Rentals extends Component {
     //  blah blah blah
   };
 
+
   render() {
+    if (!this.props.admin) {
+      return (
+        <div>
+          <Header>
+            <h1>Vandelay Admin Page, Nomsayn?</h1>
+            <h2>You are not an authorized user</h2>
+            <h2>(Are you lost?)</h2>
+            <p className="lead">
+              <Link className="btn-link" to="/" role="button">Home</Link>
+            </p>
+          </Header>
+        </div>
+      )
+    }
     return (
       <div>
         <Header>
-          <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
-          <h2>Rent some stuff</h2>
-          <p className="lead">
+          <h1>Vandelay Test Page, Nomsayn?</h1>
+          <h2>Admin Page</h2>
+          <h3>This page will only load if "this.props.admin" is true</h3>
+          <div className="nav-container">
             <Link className="btn-link" to="/" role="button">Home</Link>
             <Link className="btn-link" to="/sales" role="button">Sales</Link>
             <Link className="btn-link" to="/courses" role="button">Courses</Link>
-            <Link className="btn-link" to="/signup" role="button">Signup</Link>
-            <Link className="btn-link" to="/login" role="button">Login</Link>
-          </p>
+          </div>
         </Header>
         <div>
-          <h2>Rentals Available:</h2>
-          <ul>
-            {this.state.rentals.map(rental => (
-              <li key={rental._id}>
-                <h3>{rental.name}</h3>
-                <h4>{rental.category}</h4>
-                <h5>Maker: {rental.maker}</h5>
-                <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>
-              </li>
-            ))}
-          </ul>
+          <p>Admin functions can go here</p>
+          <p>forms for creating new inventory, modifying existing inventory, etc.</p>
         </div>
-      </div>
+      </div >
     );
   }
 }
 
-export default Rentals;
+export default Admin;

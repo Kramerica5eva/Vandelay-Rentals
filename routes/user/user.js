@@ -11,13 +11,11 @@ const userController = require('../../controllers/userController');
 
   router.post('/logout', userController.logout);
 
-  function isLoggedIn(req, res, next) {
-    console.log('Ain\'t that some shit!');
-    if (req.isAuthenticated())
-      return next();
-    res.redirect('/cgi');
-  }
-
-
+  // function isLoggedIn(req, res, next) {
+  //   console.log('Ain\'t that some shit!');
+  //   if (req.isAuthenticated())
+  //     return next();
+  //   res.redirect('/cgi');
+  // }
 
 module.exports = router;

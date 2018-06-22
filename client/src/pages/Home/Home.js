@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Jumbotron from "../../components/Jumbotron";
-import { Container } from "../../components/Grid";
+import Header from "../../components/Header";
 
 class Home extends Component {
   state = {
@@ -27,7 +26,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <Jumbotron>
+        <Header>
           <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
           <p className="lead">
             <Link className="btn btn-primary btn-lg" to="/rentals" role="button">Rentals</Link>
@@ -37,10 +36,10 @@ class Home extends Component {
             <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
             <Link className="btn btn-primary btn-lg" to="/test" role="button">Test</Link>
           </p>
-        </Jumbotron>
-        <Container>
+        </Header>
+        <div>
           <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, totam veritatis. Vitae ducimus recusandae nobis aperiam dolores necessitatibus, iusto in nesciunt maiores facere ratione ab ipsum. Vel minus quo illo!</h2>
-        </Container>
+        </div>
       </div>
     );
   }

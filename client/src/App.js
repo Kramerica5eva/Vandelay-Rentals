@@ -7,6 +7,7 @@ import Sales from "./pages/Sales";
 import Courses from "./pages/Courses";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Admin from "./pages/Admin";
 import NoMatch from "./pages/NoMatch";
 import Modal from "./components/Modal";
 import API from "./utils/API";
@@ -18,7 +19,9 @@ class App extends Component {
     body: "",
     footer: "",
     loggedIn: false,
-    username: null
+    username: null,
+    firstName: null,
+    admin: false
   }
 
   toggleModal = () => {
@@ -46,15 +49,20 @@ class App extends Component {
 
   getUser = () => {
     API.getUser().then(res => {
-      if (res.data.user) {
+      console.log(res);
+      if (res.data._id) {
         this.setState({
           loggedIn: true,
-          username: res.data.user.username
+          username: res.data.username,
+          admin: res.data.admin,
+          firstName: res.data.firstName
         });
       } else {
         this.setState({
           loggedIn: false,
-          username: null
+          username: null,
+          admin: false,
+          firstName: null
         });
       }
     });
@@ -66,7 +74,9 @@ class App extends Component {
     API.logout().then(() => {
       this.updateUser({
         loggedIn: false,
-        username: null
+        username: null,
+        admin: false,
+        firstName: null
       });
     }).catch(err => console.log(err))
   }
@@ -106,7 +116,21 @@ class App extends Component {
                   setModal={this.setModal}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
-                  user={this.state.username}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
+              )}
+            />
+            <Route exact path="/admin"
+              render={routeProps => (
+                <Admin {...routeProps}
+                  toggleModal={this.toggleModal}
+                  setModal={this.setModal}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
                   logout={this.logout}
                 />
               )}
