@@ -2,13 +2,17 @@ const db = require('../models');
 
 module.exports = {
   getUser: function (req, res) {
-    console.log('===== user!!======')
-    console.log(req.user)
-    if (req.user) {
-      res.json({ user: req.user })
-    } else {
-      res.json({ user: null })
-    }
+    db.User.findOne({ username: req.user.username })
+      .then(response => {
+        res.json(response);
+      });
+    // console.log('===== user!!======')
+    // console.log(req.user)
+    // if (req.user) {
+    //   res.json({ user: req.user })
+    // } else {
+    //   res.json({ user: null })
+    // }
   },
 
   signup: function (req, res) {

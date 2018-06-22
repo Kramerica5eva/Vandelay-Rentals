@@ -4,7 +4,7 @@ import { Container } from "../../components/Grid";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
 
-class Test extends Component {
+class Admin extends Component {
   state = {
     rentals: []
   };
@@ -39,32 +39,38 @@ class Test extends Component {
 
 
   render() {
+    if (!this.props.admin) {
+      return (
+        <div>
+          <Jumbotron>
+            <h1>Vandelay Admin Page, Nomsayn?</h1>
+            <h2>You are not an authorized user</h2>
+            <h2>(Are you lost?)</h2>
+            <p className="lead">
+              <Link className="btn btn-primary btn-lg" to="/" role="button">Home</Link>
+            </p>
+          </Jumbotron>
+          <Container>
+          </Container>
+        </div>
+      )
+    }
     return (
       <div>
         <Jumbotron>
           <h1>Vandelay Test Page, Nomsayn?</h1>
-          <h2>A Page for Testing Components</h2>
-          <h2>(showing Rental results for dev purposes)</h2>
+          <h2>Admin Page</h2>
           <div className="lead">
             <Link className="btn btn-primary btn-lg" to="/" role="button">Home</Link>
             <Link className="btn btn-primary btn-lg" to="/sales" role="button">Sales</Link>
             <Link className="btn btn-primary btn-lg" to="/courses" role="button">Courses</Link>
-            {this.props.loggedIn ?
-            (
-              <Link className="btn btn-primary btn-lg" to="#" role="button" onClick={this.props.logout}>logout</Link>
-            ) : (
-                <div style={{ "display": "inline-block" }}>
-                  <Link className="btn btn-primary btn-lg" to="/signup" role="button">Signup</Link>
-                  <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
-                </div>
-              )}
-            {this.props.admin ? (
-              <Link className="btn btn-primary btn-lg" to="/admin" role="button">Admin</Link>
-            ) : ""}
           </div>
         </Jumbotron>
         <Container>
-          <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
+          <p>{this.props.user}</p>
+          {this.props.user ? (
+            <Link to="#" onClick={this.props.logout}>logout</Link>
+          ) : ""}
           <button
             onClick={() => this.props.setModal({
               header: "Kramer's Modal",
@@ -101,4 +107,4 @@ class Test extends Component {
   }
 }
 
-export default Test;
+export default Admin;
