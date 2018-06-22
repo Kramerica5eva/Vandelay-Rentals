@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Jumbotron from "../../components/Jumbotron";
-import { Container } from "../../components/Grid";
+import Header from "../../components/Header";
 import { Input, FormBtn } from "../../components/Form";
 import API from "../../utils/API";
 
@@ -43,12 +42,12 @@ class Signup extends Component {
         zipcode: this.state.zipcode,
         phone: this.state.phone
       })
-      .then(response => {
-        if (!response.data.errmsg) {
+      .then(res => {
+        if (!res.data.errmsg) {
           // update App.js state
           this.props.updateUser({
             loggedIn: true,
-            username: response.data.username
+            username: res.data.username
           });
           // go back to the page the user was on before signup
           this.props.history.goBack();
@@ -66,19 +65,19 @@ class Signup extends Component {
   render() {
     return (
       <div>
-        <Jumbotron>
+        <Header>
           <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
           <h2>Create an account</h2>
           <p className="lead">
-            <Link className="btn btn-primary btn-lg" to="/" role="button">Home</Link>
-            <Link className="btn btn-primary btn-lg" to="/rentals" role="button">Rentals</Link>
-            <Link className="btn btn-primary btn-lg" to="/sales" role="button">Sales</Link>
-            <Link className="btn btn-primary btn-lg" to="/courses" role="button">Courses</Link>
-            <Link className="btn btn-primary btn-lg" to="/signup" role="button">Signup</Link>
-            <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
+            <Link className="btn-link" to="/" role="button">Home</Link>
+            <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
+            <Link className="btn-link" to="/sales" role="button">Sales</Link>
+            <Link className="btn-link" to="/courses" role="button">Courses</Link>
+            <Link className="btn-link" to="/signup" role="button">Signup</Link>
+            <Link className="btn-link" to="/login" role="button">Login</Link>
           </p>
-        </Jumbotron>
-        <Container>
+        </Header>
+        <div>
           <form>
             <Input
               value={this.state.username}
@@ -178,7 +177,7 @@ class Signup extends Component {
               Submit
               </FormBtn>
           </form>
-        </Container>
+        </div>
       </div>
     );
   }

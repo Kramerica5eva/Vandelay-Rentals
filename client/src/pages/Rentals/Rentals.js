@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
-import { Container } from "../../components/Grid";
-import Jumbotron from "../../components/Jumbotron";
+import Header from "../../components/Header";
 import API from "../../utils/API";
 
 class Rentals extends Component {
@@ -40,18 +39,18 @@ class Rentals extends Component {
   render() {
     return (
       <div>
-        <Jumbotron>
+        <Header>
           <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
           <h2>Rent some stuff</h2>
           <p className="lead">
-            <Link className="btn btn-primary btn-lg" to="/" role="button">Home</Link>
-            <Link className="btn btn-primary btn-lg" to="/sales" role="button">Sales</Link>
-            <Link className="btn btn-primary btn-lg" to="/courses" role="button">Courses</Link>
-            <Link className="btn btn-primary btn-lg" to="/signup" role="button">Signup</Link>
-            <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
+            <Link className="btn-link" to="/" role="button">Home</Link>
+            <Link className="btn-link" to="/sales" role="button">Sales</Link>
+            <Link className="btn-link" to="/courses" role="button">Courses</Link>
+            <Link className="btn-link" to="/signup" role="button">Signup</Link>
+            <Link className="btn-link" to="/login" role="button">Login</Link>
           </p>
-        </Jumbotron>
-        <Container>
+        </Header>
+        <div>
           <h2>Rentals Available:</h2>
           <ul>
             {this.state.rentals.map(rental => (
@@ -63,7 +62,7 @@ class Rentals extends Component {
               </li>
             ))}
           </ul>
-        </Container>
+        </div>
       </div>
     );
   }

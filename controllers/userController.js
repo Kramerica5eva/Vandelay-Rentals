@@ -16,7 +16,7 @@ module.exports = {
   },
 
   signup: function (req, res) {
-    const { username } = req.body
+    const { username } = req.body;
     // ADD VALIDATION
     db.User.findOne({ username: username }, (err, user) => {
       if (err) {
@@ -37,11 +37,20 @@ module.exports = {
   },
 
   login: function (req, res) {
-    console.log('logged in', req.user);
-    var userInfo = {
-      username: req.user.username
-    };
-    res.send(userInfo);
+    const { username } = req.body;
+
+    db.User.findOne({ username: username }, (err, user) => {
+      if (err) {
+        res.json(err);
+      } else {
+        res.send(user);
+      }
+    });
+    // console.log('logged in', req.user);
+    // var userInfo = {
+    //   username: req.user.username
+    // };
+    // res.send(userInfo);
   },
 
   logout: function (req, res) {

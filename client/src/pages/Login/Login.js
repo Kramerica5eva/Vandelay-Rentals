@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Jumbotron from "../../components/Jumbotron";
-import { Container } from "../../components/Grid";
+import Header from "../../components/Header";
 import { Input, FormBtn } from "../../components/Form";
 import API from "../../utils/API";
 
@@ -22,15 +21,18 @@ class Login extends Component {
     event.preventDefault()
 
     API.login({
-        username: this.state.username,
-        password: this.state.password
-      })
-      .then(response => {
-        if (response.status === 200) {
+      username: this.state.username,
+      password: this.state.password
+    })
+      .then(res => {
+        console.log(res);
+        if (res.status === 200) {
           // update App.js state
           this.props.updateUser({
             loggedIn: true,
-            username: response.data.username
+            username: res.data.username,
+            firstName: res.data.firstName,
+            admin: res.data.admin
           });
           // go back to the page the user was on before login
           this.props.history.goBack();
@@ -41,29 +43,29 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <Jumbotron>
+        <Header>
           <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
           <h2>Sign in</h2>
           <p className="lead">
-            <Link className="btn btn-primary btn-lg" to="/" role="button">Home</Link>
-            <Link className="btn btn-primary btn-lg" to="/rentals" role="button">Rentals</Link>
-            <Link className="btn btn-primary btn-lg" to="/sales" role="button">Sales</Link>
-            <Link className="btn btn-primary btn-lg" to="/courses" role="button">Courses</Link>
-            <Link className="btn btn-primary btn-lg" to="/signup" role="button">Signup</Link>
-            <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
+            <Link className="btn-link" to="/" role="button">Home</Link>
+            <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
+            <Link className="btn-link" to="/sales" role="button">Sales</Link>
+            <Link className="btn-link" to="/courses" role="button">Courses</Link>
+            <Link className="btn-link" to="/signup" role="button">Signup</Link>
+            <Link className="btn-link" to="/login" role="button">Login</Link>
           </p>
-        </Jumbotron>
-        <Container>
+        </Header>
+        <div>
           <form>
             <Input
-              value={this.state.topic}
+              value={this.state.username}
               onChange={this.handleInputChange}
               name="username"
               type="text"
               label="Username"
             />
             <Input
-              value={this.state.begin_date}
+              value={this.state.password}
               onChange={this.handleInputChange}
               name="password"
               type="password"
@@ -76,7 +78,7 @@ class Login extends Component {
               Submit
               </FormBtn>
           </form>
-        </Container>
+        </div>
       </div>
     );
   }
