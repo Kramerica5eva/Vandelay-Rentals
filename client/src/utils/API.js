@@ -3,10 +3,6 @@ import axios from "axios";
 export default {
 
   // USER ROUTES
-  // User login
-  login: function (loginData) {
-    return axios.post('/user/login', loginData);
-  },
   // Get user info
   getUser: function () {
     return axios.get('/user');
@@ -15,9 +11,18 @@ export default {
   signup: function (signupData) {
     return axios.post('/user', signupData);
   },
+  // User login
+  login: function (loginData) {
+    return axios.post('/user/login', loginData);
+  },
   // User logout
   logout: function () {
     return axios.post('/user/logout');
+  },
+  // Authentication Route
+  // Checks to see if a user is logged in before seeing protected routes
+  authenticate: function () {
+    return axios.get('/user/auth');
   },
   
   // COURSE ROUTES

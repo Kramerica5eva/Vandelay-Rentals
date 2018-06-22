@@ -5,7 +5,8 @@ import API from "../../utils/API";
 
 class Test extends Component {
   state = {
-    rentals: []
+    rentals: [],
+    redirect: null
   };
 
   componentDidMount() {
@@ -21,7 +22,6 @@ class Test extends Component {
         console.log(this.state.rentals);
       })
       .catch(err => console.log(err));
-
   }
 
   handleInputChange = event => {

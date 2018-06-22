@@ -3,19 +3,18 @@ const passport = require('../../passport');
 const userController = require('../../controllers/userController');
 
 
-  router.route('/')
-    .get(userController.getUser)
-    .post(userController.signup);
+router.route('/')
+  .get(userController.getUser)
+  .post(userController.signup);
 
-  router.post('/login', passport.authenticate('local'), userController.login);
+router.post('/login', passport.authenticate('local'), userController.login);
 
-  router.post('/logout', userController.logout);
+router.post('/logout', userController.logout);
 
-  // function isLoggedIn(req, res, next) {
-  //   console.log('Ain\'t that some shit!');
-  //   if (req.isAuthenticated())
-  //     return next();
-  //   res.redirect('/cgi');
-  // }
+router.get('/auth', function (req, res) {
+  if (req.isAuthenticated())
+    return res.send({ authenticated: true });
+  res.send({ authenticated: false });
+});
 
 module.exports = router;

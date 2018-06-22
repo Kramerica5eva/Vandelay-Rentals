@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
 
@@ -36,6 +36,11 @@ class Courses extends Component {
   };
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={{
+        pathname: "/login"
+      }} />
+    }
     return (
       <div>
         <Header>
