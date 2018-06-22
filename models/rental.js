@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const rentalSchema = new Schema({
@@ -33,7 +33,7 @@ const rentalSchema = new Schema({
   images: [{ filepath: String }]
 });
 
-const Rental = mongoose.model("Rental", rentalSchema);
+const Rental = mongoose.model('Rental', rentalSchema);
 
 module.exports = Rental;
 

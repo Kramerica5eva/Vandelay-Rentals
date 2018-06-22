@@ -1,15 +1,15 @@
-const router = require("express").Router();
-const coursesController = require("../../controllers/coursesController");
+const router = require('express').Router();
+const coursesController = require('../../controllers/coursesController');
 
-// Matches with "/api/courses"
-router.route("/")
+// Matches with '/api/courses'
+router.route('/')
   .get(coursesController.findAll)
   .post(coursesController.create);
 // post route here is an admin route
 
-// Matches with "/api/courses/:id"
+// Matches with '/api/courses/:id'
 router
-  .route("/:id")
+  .route('/:id')
   .get(coursesController.findById)
   .put(coursesController.update)
   .delete(coursesController.remove);

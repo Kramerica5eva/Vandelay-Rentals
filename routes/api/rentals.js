@@ -1,18 +1,18 @@
-const router = require("express").Router();
-const rentalsController = require("../../controllers/rentalsController");
+const router = require('express').Router();
+const rentalsController = require('../../controllers/rentalsController');
 
-// Matches with "/api/rentals"
-router.route("/")
+// Matches with '/api/rentals'
+router.route('/')
   .get(rentalsController.findAll)
   .post(rentalsController.create);
   // post route here would only be available to admin
 
 router
-  .route("/:category")
+  .route('/:category')
   .get(rentalsController.findByCategory);
 
 router
-  .route("/:category/:id")
+  .route('/:category/:id')
   .get(rentalsController.findById)
   .put(rentalsController.update)
   .delete(rentalsController.remove);
@@ -20,7 +20,7 @@ router
 
 //  This 'get' route will need a findAll ('find') query that finds items that don't have any of the chosen days in the reservations field.
 router
-  .route("/date/:from/:to")
+  .route('/date/:from/:to')
   // .get(rentalsController.findbyDates)
   .put(rentalsController.update);
 

@@ -6,7 +6,9 @@ import API from "../../utils/API";
 
 class Test extends Component {
   state = {
-    rentals: []
+    rentals: [],
+    redirect: false,
+    userData: null
   };
 
   componentDidMount() {
@@ -38,7 +40,6 @@ class Test extends Component {
   };
 
 
-
   render() {
     return (
       <div>
@@ -55,6 +56,10 @@ class Test extends Component {
           </p>
         </Jumbotron>
         <Container>
+          <p>{this.props.user}</p>
+          {this.props.user ? (
+            <Link to="#" onClick={this.props.logout}>logout</Link>
+          ) : ""}
           <button
             onClick={() => this.props.setModal({
               header: "Kramer's Modal",
