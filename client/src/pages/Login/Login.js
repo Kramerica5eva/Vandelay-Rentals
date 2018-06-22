@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Jumbotron from "../../components/Jumbotron";
 import { Container } from "../../components/Grid";
 import { Input, FormBtn } from "../../components/Form";
-import axios from 'axios';
+import API from "../../utils/API";
 
 class Login extends Component {
   state = {
@@ -20,16 +20,12 @@ class Login extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault()
-    console.log('handleSubmit')
 
-    axios
-      .post('/user/login', {
+    API.login({
         username: this.state.username,
         password: this.state.password
       })
       .then(response => {
-        console.log('login response: ')
-        console.log(response)
         if (response.status === 200) {
           // update App.js state
           this.props.updateUser({
@@ -39,11 +35,7 @@ class Login extends Component {
           // go back to the page the user was on before login
           this.props.history.goBack();
         }
-      }).catch(error => {
-        console.log('login error: ')
-        console.log(error);
-
-      })
+      }).catch(err => console.log(err));
   };
 
   render() {

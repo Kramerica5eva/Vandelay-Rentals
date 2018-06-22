@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Jumbotron from "../../components/Jumbotron";
 import { Container } from "../../components/Grid";
 import { Input, FormBtn } from "../../components/Form";
-import axios from 'axios';
+import API from "../../utils/API";
 
 class Signup extends Component {
   state = {
@@ -28,27 +28,23 @@ class Signup extends Component {
   };
 
   handleFormSubmit = event => {
-    console.log('sign-up handleSubmit, username: ');
-    console.log(this.state.username);
     event.preventDefault();
 
     //request to server to add a new username/password
-    axios.post('/user/', {
-      username: this.state.username,
-      password: this.state.password,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      email: this.state.email,
-      street: this.state.street,
-      city: this.state.city,
-      state: this.state.state,
-      zipcode: this.state.zipcode,
-      phone: this.state.phone
-    })
+    API.signup({
+        username: this.state.username,
+        password: this.state.password,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        email: this.state.email,
+        street: this.state.street,
+        city: this.state.city,
+        state: this.state.state,
+        zipcode: this.state.zipcode,
+        phone: this.state.phone
+      })
       .then(response => {
-        console.log(response);
         if (!response.data.errmsg) {
-          console.log('successful signup');
           // update App.js state
           this.props.updateUser({
             loggedIn: true,

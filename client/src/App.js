@@ -9,7 +9,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import NoMatch from "./pages/NoMatch";
 import Modal from "./components/Modal";
-import axios from 'axios';
+import API from "./utils/API";
 
 class App extends Component {
   state = {
@@ -45,18 +45,13 @@ class App extends Component {
   }
 
   getUser = () => {
-    axios.get('/user/').then(response => {
-      console.log('Get user response: ');
-      console.log(response.data.user);
-      if (response.data.user) {
-        console.log('Get User: There is a user saved in the server session: ');
-
+    API.getUser().then(res => {
+      if (res.data.user) {
         this.setState({
           loggedIn: true,
-          username: response.data.user.username
+          username: res.data.user.username
         });
       } else {
-        console.log('Get user: no user');
         this.setState({
           loggedIn: false,
           username: null
@@ -68,18 +63,13 @@ class App extends Component {
   logout = event => {
     event.preventDefault()
     console.log('logging out')
-    axios.post('/user/logout').then(response => {
-      console.log(response.data)
-      if (response.status === 200) {
+    API.logout().then(() => {
       this.updateUser({
         loggedIn: false,
         username: null
-      })
-      }
-    }).catch(error => {
-      console.log(error)
-    })
-    }
+      });
+    }).catch(err => console.log(err))
+  }
 
   render() {
     return (

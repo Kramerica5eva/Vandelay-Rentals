@@ -1,11 +1,29 @@
 import axios from "axios";
 
 export default {
+
+  // USER ROUTES
+  // User login
+  login: function (loginData) {
+    return axios.post('/user/login', loginData);
+  },
+  // Get user info
+  getUser: function () {
+    return axios.get('/user');
+  },
+  // New user signup
+  signup: function (signupData) {
+    return axios.post('/user', signupData);
+  },
+  // User logout
+  logout: function () {
+    return axios.post('/user/logout');
+  },
   
   // COURSE ROUTES
   // Gets all courses
   getAllCourses: function() {
-    return axios.get("/api/courses/");
+    return axios.get('/api/courses/');
   },
   // Create new course
   addNewCourse: function(courseData) {
@@ -36,7 +54,7 @@ export default {
   //  RENTAL ROUTES
   // Gets All Rentals - this one may not be necessary, depending on how we set this up
   getAllRentals: function() {
-    return axios.get("/api/rentals/");
+    return axios.get('/api/rentals/');
   },
   // Add new rental item - admin function
   addNewRental: function(rentalData) {
@@ -75,7 +93,7 @@ export default {
   //  SALE ROUTES
   // Gets all sale items
   getAllSaleItems: function() {
-    return axios.get("/api/sales/");
+    return axios.get('/api/sales/');
   },
   // Add sale item to DB - admin function
   addSaleItem: function(saleItemData) {
