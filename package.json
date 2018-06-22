@@ -17,14 +17,19 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^3.5.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.17.5"
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
+    "connect-mongo": "^2.0.1",
     "express": "^4.15.4",
+    "express-session": "^1.15.6",
     "if-env": "^1.0.4",
     "mongoose": "^5.0.17",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "react-onclickoutside": "^6.7.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1"
