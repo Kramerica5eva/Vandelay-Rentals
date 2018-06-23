@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import Rentals from "./pages/Rentals";
 import Test from "./pages/Test";
@@ -8,9 +8,47 @@ import Courses from "./pages/Courses";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
+import AddPropsToRoute from "./components/AddPropsToRoute";
 import NoMatch from "./pages/NoMatch";
 import Modal from "./components/Modal";
 import API from "./utils/API";
+
+let isAuthenticated = false;
+let isAdmin = false;
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      isAuthenticated ? (
+        <Component {...props} />
+      ) : (
+          <Redirect to={{
+            pathname: "/login",
+            state: { from: props.location }
+          }}
+          />
+        )
+    }
+  />
+)
+
+const AdminRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      isAdmin ? (
+        <Component {...props} />
+      ) : (
+          <Redirect to={{
+            pathname: "/",
+            state: { from: props.location }
+          }}
+          />
+        )
+    }
+  />
+)
 
 class App extends Component {
   state = {
@@ -44,25 +82,33 @@ class App extends Component {
   }
 
   updateUser = userObject => {
-    this.setState(userObject);
+    isAuthenticated = userObject.auth;
+    isAdmin = userObject.admin;
+    this.setState(userObject.state);
   }
 
   getUser = () => {
     API.getUser().then(res => {
       console.log(res);
       if (res.data._id) {
+        isAuthenticated = true;
+        if (res.data.admin) {
+          isAdmin = true;
+        }
         this.setState({
           loggedIn: true,
           username: res.data.username,
-          admin: res.data.admin,
-          firstName: res.data.firstName
+          firstName: res.data.firstName,
+          admin: res.data.admin
         });
       } else {
+        isAuthenticated = false;
+        isAdmin = false;
         this.setState({
           loggedIn: false,
           username: null,
-          admin: false,
-          firstName: null
+          firstName: null,
+          admin: false
         });
       }
     });
@@ -73,10 +119,14 @@ class App extends Component {
     console.log('logging out')
     API.logout().then(() => {
       this.updateUser({
-        loggedIn: false,
-        username: null,
+        auth: false,
         admin: false,
-        firstName: null
+        state: {
+          loggedIn: false,
+          username: null,
+          admin: false,
+          firstName: null
+        }
       });
     }).catch(err => console.log(err))
   }
@@ -93,47 +143,96 @@ class App extends Component {
             footer={this.state.footer}
           />
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/rentals" component={Rentals} />
-            <Route exact path="/sales" component={Sales} />
-            <Route exact path="/courses" component={Courses} />
+            <Route exact path="/"
+              render={routeProps => (
+                <Home {...routeProps}
+                  toggleModal={this.toggleModal}
+                  setModal={this.setModal}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
+              )}
+            />
+            <Route exact path="/rentals"
+              render={routeProps => (
+                <Rentals {...routeProps}
+                  toggleModal={this.toggleModal}
+                  setModal={this.setModal}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
+              )} />
+            <Route exact path="/sales"
+              render={routeProps => (
+                <Sales {...routeProps}
+                  toggleModal={this.toggleModal}
+                  setModal={this.setModal}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
+              )}
+            />
+            <Route exact path="/courses"
+              render={routeProps => (
+                <Courses {...routeProps}
+                  toggleModal={this.toggleModal}
+                  setModal={this.setModal}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
+              )}
+            />
             <Route exact path="/signup"
               render={routeProps =>
                 <Signup {...routeProps}
                   updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
                 />}
             />
             <Route exact path="/login"
               render={routeProps =>
                 <Login {...routeProps}
                   updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
                 />}
             />
-            <Route exact path="/test"
-              render={routeProps => (
-                <Test {...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  logout={this.logout}
-                />
-              )}
+            <PrivateRoute path="/test" component={AddPropsToRoute(Test, {
+              toggleModal: this.toggleModal,
+              setModal: this.setModal,
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
             />
-            <Route exact path="/admin"
-              render={routeProps => (
-                <Admin {...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  logout={this.logout}
-                />
-              )}
+            <AdminRoute path="/admin" component={AddPropsToRoute(Admin, {
+              toggleModal: this.toggleModal,
+              setModal: this.setModal,
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
             />
             <Route component={NoMatch} />
           </Switch>

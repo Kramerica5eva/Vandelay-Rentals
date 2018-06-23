@@ -46,13 +46,22 @@ class Courses extends Component {
         <Header>
           <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
           <h2>Git yo learn on</h2>
-          <p className="lead">
+          <div className="nav-container">
             <Link className="btn-link" to="/" role="button">Home</Link>
             <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
             <Link className="btn-link" to="/sales" role="button">Sales</Link>
-            <Link className="btn-link" to="/signup" role="button">Signup</Link>
-            <Link className="btn-link" to="/login" role="button">Login</Link>
-          </p>
+            <Link className="btn-link" to="/courses" role="button">Courses</Link>
+            {this.props.loggedIn ? (
+              <button className="btn-link" role="button" onClick={this.props.logout}>logout</button>
+            ) : (
+                <React.Fragment>
+                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
+                  <Link className="btn-link" to="/login" role="button">Login</Link>
+                </React.Fragment>
+              )}
+            <Link className="btn-link" to="/test" role="button">Test</Link>
+            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
+          </div>
         </Header>
         <div>
           <h2>Courses Available:</h2>

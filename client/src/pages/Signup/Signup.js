@@ -31,23 +31,27 @@ class Signup extends Component {
 
     //request to server to add a new username/password
     API.signup({
-        username: this.state.username,
-        password: this.state.password,
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        email: this.state.email,
-        street: this.state.street,
-        city: this.state.city,
-        state: this.state.state,
-        zipcode: this.state.zipcode,
-        phone: this.state.phone
-      })
+      username: this.state.username,
+      password: this.state.password,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email,
+      street: this.state.street,
+      city: this.state.city,
+      state: this.state.state,
+      zipcode: this.state.zipcode,
+      phone: this.state.phone
+    })
       .then(res => {
         if (!res.data.errmsg) {
           // update App.js state
           this.props.updateUser({
-            loggedIn: true,
-            username: res.data.username
+            auth: true,
+            state: {
+              loggedIn: true,
+              username: res.data.username,
+              firstName: res.data.firstName
+            }
           });
           // go back to the page the user was on before signup
           this.props.history.goBack();
@@ -68,14 +72,22 @@ class Signup extends Component {
         <Header>
           <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
           <h2>Create an account</h2>
-          <p className="lead">
+          <div className="nav-container">
             <Link className="btn-link" to="/" role="button">Home</Link>
             <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
             <Link className="btn-link" to="/sales" role="button">Sales</Link>
             <Link className="btn-link" to="/courses" role="button">Courses</Link>
-            <Link className="btn-link" to="/signup" role="button">Signup</Link>
-            <Link className="btn-link" to="/login" role="button">Login</Link>
-          </p>
+            {this.props.loggedIn ? (
+              <button className="btn-link" role="button" onClick={this.props.logout}>logout</button>
+            ) : (
+                <React.Fragment>
+                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
+                  <Link className="btn-link" to="/login" role="button">Login</Link>
+                </React.Fragment>
+              )}
+            <Link className="btn-link" to="/test" role="button">Test</Link>
+            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
+          </div>
         </Header>
         <div>
           <form>
