@@ -20,6 +20,18 @@ const userSeed = [
     zipcode: 84010,
     phone: 8018666301,
     admin: true
+  },
+  {
+    username: "Nicknard",
+    firstName: "Joe",
+    lastName: "Dirt",
+    email: "Dood@gmail.com",
+    street: "123 Home St",
+    city: "Bountiful",
+    state: "UT",
+    zipcode: 84010,
+    phone: 1234567890,
+    admin: false
   }
 ]
 

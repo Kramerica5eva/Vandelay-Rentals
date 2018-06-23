@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Header from "../../components/Header";
 import { Input, FormBtn } from "../../components/Form";
 import API from "../../utils/API";
@@ -16,7 +16,8 @@ class Signup extends Component {
     city: "",
     state: "",
     zipcode: "",
-    phone: ""
+    phone: "",
+    redirect: false
   };
 
   handleInputChange = event => {
@@ -53,8 +54,8 @@ class Signup extends Component {
               firstName: res.data.firstName
             }
           });
-          // go back to the page the user was on before signup
-          this.props.history.goBack();
+          // go back to the page the user was on before login
+          this.setState({ redirect: true });
         } else {
           console.log('username already taken');
         }
@@ -67,6 +68,17 @@ class Signup extends Component {
 
 
   render() {
+    console.log(this.props.location.state);
+    const { from } = this.props.location.state || { from: null };
+    const { redirect } = this.state;
+
+    if (redirect) {
+      if (from) {
+        return <Redirect to={from} />
+      } else {
+        this.props.history.goBack();
+      }
+    }
     return (
       <div>
         <Header>
@@ -86,7 +98,7 @@ class Signup extends Component {
                 </React.Fragment>
               )}
             <Link className="btn-link" to="/test" role="button">Test</Link>
-            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
+            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
           </div>
         </Header>
         <div>
