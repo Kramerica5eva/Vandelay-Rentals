@@ -5,8 +5,7 @@ import API from "../../utils/API";
 
 class Test extends Component {
   state = {
-    rentals: [],
-    redirect: null
+    rentals: []
   };
 
   componentDidMount() {
@@ -36,7 +35,6 @@ class Test extends Component {
     //  blah blah blah
   };
 
-
   render() {
     return (
       <div>
@@ -44,39 +42,23 @@ class Test extends Component {
           <h1>Vandelay Test Page, Nomsayn?</h1>
           <h2>A Page for Testing Components</h2>
           <h2>(showing Rental results for dev purposes)</h2>
-          <div className="lead">
+          <div className="nav-container">
             <Link className="btn-link" to="/" role="button">Home</Link>
+            <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
             <Link className="btn-link" to="/sales" role="button">Sales</Link>
             <Link className="btn-link" to="/courses" role="button">Courses</Link>
-            {this.props.loggedIn ?
-            (
-              <Link className="btn-link" to="#" role="button" onClick={this.props.logout}>logout</Link>
+            {this.props.loggedIn ? (
+              <button className="btn-link" role="button" onClick={this.props.logout}>logout</button>
             ) : (
-                <div style={{ "display": "inline-block" }}>
+                <React.Fragment>
                   <Link className="btn-link" to="/signup" role="button">Signup</Link>
                   <Link className="btn-link" to="/login" role="button">Login</Link>
-                </div>
+                </React.Fragment>
               )}
-            {this.props.admin ? (
-              <Link className="btn-link" to="/admin" role="button">Admin</Link>
-            ) : ""}
+            <Link className="btn-link" to="/test" role="button">Test</Link>
+            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
           </div>
         </Header>
-        {this.props.admin ? (
-          <div>
-            <h2>Hello, Admin {this.props.firstName}</h2>
-            <h4>If this is showing, you have admin privileges</h4>
-            <p>This page of admin functions could be set up a number of ways</p>
-            <p>This could be an array of buttons that triggers forms to display</p>
-            <p>Forms could already be displayed</p>
-            <p>Or we could use the React-Table npm package</p>
-          </div>
-        ) : (
-          <div>
-            <h2>{this.props.firstName ? `Hello, ${this.props.firstName}` : "Hello"}</h2>
-            <h4>If this text is showing, you do not have admin privileges</h4>
-          </div>
-        )} 
         <div>
           <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
           <button
@@ -88,7 +70,7 @@ class Test extends Component {
             })}
           >
             Kramer!
-          </button>
+              </button>
           <h2>Rentals Available:</h2>
           <ul>
             {this.state.rentals.map(rental => (
@@ -105,7 +87,7 @@ class Test extends Component {
                   footer: rental.name
                 })}>
                   see details
-                </button>
+                    </button>
               </li>
             ))}
           </ul>

@@ -28,14 +28,22 @@ class Home extends Component {
       <div>
         <Header>
           <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
-          <p className="lead">
-            <Link className="btn btn-primary btn-lg" to="/rentals" role="button">Rentals</Link>
-            <Link className="btn btn-primary btn-lg" to="/sales" role="button">Sales</Link>
-            <Link className="btn btn-primary btn-lg" to="/courses" role="button">Courses</Link>
-            <Link className="btn btn-primary btn-lg" to="/signup" role="button">Signup</Link>
-            <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
-            <Link className="btn btn-primary btn-lg" to="/test" role="button">Test</Link>
-          </p>
+          <div className="nav-container">
+            <Link className="btn-link" to="/" role="button">Home</Link>
+            <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
+            <Link className="btn-link" to="/sales" role="button">Sales</Link>
+            <Link className="btn-link" to="/courses" role="button">Courses</Link>
+            {this.props.loggedIn ? (
+              <button className="btn-link" role="button" onClick={this.props.logout}>logout</button>
+            ) : (
+                <React.Fragment>
+                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
+                  <Link className="btn-link" to="/login" role="button">Login</Link>
+                </React.Fragment>
+              )}
+            <Link className="btn-link" to="/test" role="button">Test</Link>
+            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
+          </div>
         </Header>
         <div>
           <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, totam veritatis. Vitae ducimus recusandae nobis aperiam dolores necessitatibus, iusto in nesciunt maiores facere ratione ab ipsum. Vel minus quo illo!</h2>

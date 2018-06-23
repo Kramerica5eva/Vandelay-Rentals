@@ -13,8 +13,8 @@ router.post('/logout', userController.logout);
 
 router.get('/auth', function (req, res) {
   if (req.isAuthenticated())
-    return res.send({ authenticated: true });
-  res.send({ authenticated: false });
+    return res.send(true);
+  res.send(false);
 });
 
 module.exports = router;
