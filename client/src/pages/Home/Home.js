@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 
+
 class Home extends Component {
   state = {
     topic: "",
@@ -42,6 +43,7 @@ class Home extends Component {
                 </React.Fragment>
               )}
             <Link className="btn-link" to="/test" role="button">Test</Link>
+            <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
           </div>
         </Header>

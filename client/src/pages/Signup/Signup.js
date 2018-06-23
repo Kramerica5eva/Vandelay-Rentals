@@ -86,6 +86,7 @@ class Signup extends Component {
                 </React.Fragment>
               )}
             <Link className="btn-link" to="/test" role="button">Test</Link>
+            <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
           </div>
         </Header>
