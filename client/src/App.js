@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-d
 import Home from "./pages/Home";
 import Rentals from "./pages/Rentals";
 import Test from "./pages/Test";
+import TestNick from "./pages/TestNick";
 import Sales from "./pages/Sales";
 import Courses from "./pages/Courses";
 import Signup from "./pages/Signup";
@@ -12,6 +13,7 @@ import AddPropsToRoute from "./components/AddPropsToRoute";
 import NoMatch from "./pages/NoMatch";
 import Modal from "./components/Modal";
 import API from "./utils/API";
+import "./App.css";
 
 let isAuthenticated = false;
 let isAdmin = false;
@@ -215,6 +217,16 @@ class App extends Component {
                 />}
             />
             <PrivateRoute path="/test" component={AddPropsToRoute(Test, {
+              toggleModal: this.toggleModal,
+              setModal: this.setModal,
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
+            />
+            <PrivateRoute path="/testnick" component={AddPropsToRoute(TestNick, {
               toggleModal: this.toggleModal,
               setModal: this.setModal,
               updateUser: this.updateUser,

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
+import ParallaxHero from "./../../components/ParallaxHero";
+import "./../../App.css";
 
 class Test extends Component {
   state = {
@@ -37,9 +39,10 @@ class Test extends Component {
 
   render() {
     return (
-      <div>
+      <div className="main-container">
+
         <Header>
-          <h1>Vandelay Test Page, Nomsayn?</h1>
+          <h1>NICKS TEST PAGE</h1>
           <h2>A Page for Testing Components</h2>
           <h2>(showing Rental results for dev purposes)</h2>
           <div className="nav-container">
@@ -56,10 +59,13 @@ class Test extends Component {
                 </React.Fragment>
               )}
             <Link className="btn-link" to="/test" role="button">Test</Link>
-            <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
           </div>
         </Header>
+        <ParallaxHero
+          image={{backgroundImage:'url(https://images.pexels.com/photos/416676/pexels-photo-416676.jpeg?cs=srgb&dl=sea-person-beach-416676.jpg&fm=jpg)'}}
+          title="SUP RENTAaAAAaaAAAaaals"
+          />
         <div>
           <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
           <button

@@ -1,0 +1,15 @@
+
+/*  USED FOR THE PARALLAXHEADER COMPONENT */
+ .main-container {
+  perspective: 1px;
+  transform-style: preserve-3d;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+*:not(ParallaxHero) {
+    background-color: white;
+}
+
+/*  USED FOR THE PARALLAXHEADER COMPONENT */
