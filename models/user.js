@@ -6,20 +6,44 @@ mongoose.promise = Promise;
 const tempPw = bcrypt.hashSync("BootsNPants", bcrypt.genSaltSync(10), null);
 
 const userSchema = new Schema({
-  username: { type: String, required: true },
-  password: { type: String, required: true, default: tempPw },
-  firstName: String,
-  lastName: String,
-  email: String,
+	username: { type: String, required: true },
+	password: { type: String, required: true, default: tempPw },
+	firstName: String,
+	lastName: String,
+	email: String,
 	street: String,
 	city: String,
 	state: String,
 	zipcode: Number,
-  phone: Number,
-  waivers: [{
-    filepath: String,
-    signed: Boolean
+	phone: Number,
+	waivers: [{
+		filepath: String,
+		signed: Boolean
 	}],
+	reservations: [{
+		itemId: String,
+		date: {
+			from: Date,
+			to: Date
+		}
+	}],
+	pastRentals: [{
+		itemId: String,
+		date: {
+			from: Date,
+			to: Date
+		}
+	}],
+	purchases: [{
+		itemId: String,
+		date: Date,
+		price: Schema.Types.Decimal128
+	}],
+	standing: {
+    type: String,
+    enum: ['Good', 'Uncertain', 'Banned'],
+    default: 'Good'
+  },
 	admin: { type: Boolean, default: false }
 });
 
@@ -40,7 +64,7 @@ userSchema.pre('save', function (next) {
 		next();
 	} else {
 		console.log('models/user.js hashPassword in pre save');
-		
+
 		this.password = this.hashPassword(this.password);
 		next();
 	}

@@ -48,7 +48,7 @@ class Rentals extends Component {
             <Link className="btn-link" to="/sales" role="button">Sales</Link>
             <Link className="btn-link" to="/courses" role="button">Courses</Link>
             {this.props.loggedIn ? (
-              <button className="btn-link" role="button" onClick={this.props.logout}>logout</button>
+              <button className="btn-link" onClick={this.props.logout}>logout</button>
             ) : (
                 <React.Fragment>
                   <Link className="btn-link" to="/signup" role="button">Signup</Link>

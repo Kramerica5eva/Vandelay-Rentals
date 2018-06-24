@@ -5,7 +5,7 @@ module.exports = {
     console.log('===== user!!======')
     console.log(req.user)
     if (req.user) {
-      db.User.findOne({ username: req.user.username })
+      db.User.findOne({ _id: req.user._id })
         .then(response => {
           res.json(response);
         });
@@ -56,7 +56,6 @@ module.exports = {
     console.log("Hi! Here's your user: ");
     console.log(req.user);
     if (req.user) {
-      console.log("Yep, there's a user.");
       req.session.destroy();
       res.send({ msg: 'logging out' })
     } else {

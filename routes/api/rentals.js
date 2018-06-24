@@ -3,36 +3,38 @@ const rentalsController = require('../../controllers/rentalsController');
 
 // Matches with '/api/rentals'
 router.route('/')
-  .get(rentalsController.findAll)
-  .post(isLoggedIn, rentalsController.create);
-  // post route here would only be available to admin
+  .get(rentalsController.findAll);
 
+// Matches with '/api/:category'
 router
   .route('/:category')
   .get(rentalsController.findByCategory);
 
+// Matches with '/api/:category/:id'
+// gets info on a single item
+// There is no reservation route based only on item - because (duh) you need dates to make a reservation
 router
   .route('/:category/:id')
-  .get(rentalsController.findById)
-  .put(rentalsController.update)
-  .delete(isLoggedIn, rentalsController.remove);
-  // delete route here would only be available to admin
+  .get(rentalsController.findById);
 
-//  This 'get' route will need a findAll ('find') query that finds items that don't have any of the chosen days in the reservations field.
+// Matches with '/api/date/:from/:to'
+// get finds items available by date
+// put makes a reservation
 router
   .route('/date/:from/:to')
-  // .get(rentalsController.findbyDates)
-  .put(rentalsController.update);
+  .get(rentalsController.findbyDates)
+  .put(isLoggedIn, rentalsController.makeReservation);
 
+// Matches with '/api/remove/:from/:to'
+// removes a reservation
 router
   .route('/remove/:from/:to')
-  .put(rentalsController.update);
+  .put(isLoggedIn, rentalsController.breakReservation);
 
-  function isLoggedIn(req, res, next) {
-    console.log('Ain\'t that some shit!');
-    if (req.isAuthenticated())
-      return next();
-    res.redirect('/');
-  }
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated())
+    return next();
+  res.json({ isAuthenticated: false });
+}
 
 module.exports = router;

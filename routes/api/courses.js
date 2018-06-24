@@ -4,30 +4,22 @@ const coursesController = require('../../controllers/coursesController');
 
 // Matches with '/api/courses'
 router.route('/')
-  .get(coursesController.findAll)
-  .post(isLoggedIn, coursesController.create);
-// post route here is an admin route
+  .get(coursesController.findAll);
 
 // Matches with '/api/courses/:id'
 router
   .route('/:id')
   .get(coursesController.findById)
-  .put(coursesController.update)
-  .delete(isLoggedIn, coursesController.remove);
-// delete route here is an admin route
-
-router
-  .route('/pay/:id')
-  .put(coursesController.update);
+  .put(isLoggedIn, coursesController.update);
 
 router
   .route('/remove/:id')
-  .put(coursesController.update);
+  .put(isLoggedIn, coursesController.update);
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated())
     return next();
-  res.send({ redirect: true });
+  res.json({ isAuthenticated: false });
 }
 
 module.exports = router;

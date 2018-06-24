@@ -13,8 +13,11 @@ const rentalSchema = new Schema({
   sku: String,
   dailyRate: Schema.Types.Decimal128,
   reservations: [{
-    from: Date,
-    to: Date
+    customerId: Number,
+    date: {
+      from: Date,
+      to: Date
+    }
   }],
   pastRentals: [{
     customerId: Number,
