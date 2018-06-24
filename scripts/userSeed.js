@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const db = require("../models");
 mongoose.Promise = global.Promise;
+const bcrypt = require('bcryptjs');
+
+const pw = bcrypt.hashSync("1234", bcrypt.genSaltSync(10), null);
 
 // This file empties the User collection and inserts the users below
 
@@ -11,6 +14,7 @@ mongoose.connect(
 const userSeed = [
   {
     username: "Strangebrewer",
+    password: pw,
     firstName: "Keith",
     lastName: "Allmon",
     email: "BKAShambala@gmail.com",

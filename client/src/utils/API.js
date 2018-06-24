@@ -87,7 +87,7 @@ export default {
   // ADMIN ROUTES
   // ADMIN USER ROUTES
   // Gets all users
-  getAllUsers: function () {
+  adminGetAllUsers: function () {
     return axios.get('/admin/users');
   },
   addNewUser: function (userData) {

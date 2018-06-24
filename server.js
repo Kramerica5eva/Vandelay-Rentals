@@ -19,6 +19,7 @@ if (process.env.NODE_ENV === 'production') {
 // Sessions
 app.use(
 	session({
+		cookie: { path: '/', httpOnly: true, maxAge: null },
 		secret: 'bicycles and tricycles', //pick a random string to make the hash that is generated secure
 		store: new MongoStore({ mongooseConnection: dbConnection }),
 		resave: false, //required

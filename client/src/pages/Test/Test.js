@@ -2,14 +2,34 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
+import Modal from "../../components/Modal";
 
 class Test extends Component {
   state = {
+    isOpen: false,
+    header: "",
+    body: "",
+    footer: "",
     rentals: []
   };
 
   componentDidMount() {
     this.getAllRentals();
+  }
+
+  toggleModal = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
+
+  setModal = (modalInput) => {
+    this.setState({
+      isOpen: !this.state.isOpen,
+      header: modalInput.header,
+      body: modalInput.body,
+      footer: modalInput.footer
+    });
   }
 
   getAllRentals = () => {
@@ -37,7 +57,14 @@ class Test extends Component {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
+        <Modal
+          show={this.state.isOpen}
+          toggleModal={this.toggleModal}
+          header={this.state.header}
+          body={this.state.body}
+          footer={this.state.footer}
+        />
         <Header>
           <h1>Vandelay Test Page, Nomsayn?</h1>
           <h2>A Page for Testing Components</h2>
@@ -57,13 +84,13 @@ class Test extends Component {
               )}
             <Link className="btn-link" to="/test" role="button">Test</Link>
             <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
-            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
+            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
           </div>
         </Header>
         <div>
           <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
           <button
-            onClick={() => this.props.setModal({
+            onClick={() => this.setModal({
               header: "Kramer's Modal",
               body:
                 <img src="https://pbs.twimg.com/profile_images/966923121482645507/qtpVrqVn_400x400.jpg" alt="Kramer" />,
@@ -77,7 +104,7 @@ class Test extends Component {
             {this.state.rentals.map(rental => (
               <li key={rental._id}>
                 <h3>{rental.name}</h3>
-                <button onClick={() => this.props.setModal({
+                <button onClick={() => this.setModal({
                   header: rental.name,
                   body:
                     <div>
@@ -93,7 +120,7 @@ class Test extends Component {
             ))}
           </ul>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
