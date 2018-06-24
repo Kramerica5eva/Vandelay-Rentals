@@ -64,7 +64,7 @@ class Test extends Component {
         </Header>
         <ParallaxHero
           image={{backgroundImage:'url(https://images.pexels.com/photos/416676/pexels-photo-416676.jpeg?cs=srgb&dl=sea-person-beach-416676.jpg&fm=jpg)'}}
-          title="SUP RENTAaAAAaaAAAaaals"
+          title="SUP RENTALS"
           />
         <div>
           <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
@@ -97,6 +97,8 @@ class Test extends Component {
                     </button>
               </li>
             ))}
+
+            <p>Eat a bag o' dicks, foo!</p>
           </ul>
         </div>
       </div>

@@ -5,9 +5,14 @@ const salesController = require('../../controllers/salesController');
 router.route('/')
   .get(salesController.findAll);
 
-// Matches with '/api/sales/:id'
+  // Matches with '/api/sales/:category'
+  router
+    .route('/:category')
+    .get(salesController.findByCategory);
+
+// Matches with '/api/sales/:category/:id'
 router
-  .route('/:id')
+  .route('/:category/:id')
   .get(salesController.findById);
 
 module.exports = router;

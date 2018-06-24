@@ -80,7 +80,7 @@ class Courses extends Component {
                     <li key={`${index}-${course._id}`}>{topic}</li>
                   ))}
                 </ul>
-                <p>spaces left: {course.slots - course.participants.length}</p>
+                <p>spaces left: {course.slots}</p>
               </li>
             ))}
           </ul>

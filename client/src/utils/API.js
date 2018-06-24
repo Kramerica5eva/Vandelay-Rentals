@@ -75,8 +75,12 @@ export default {
     return axios.get('/api/sales/');
   },
   // Gets a single sale item
-  getSaleItemById: function (id) {
-    return axios.get(`/api/sales/${id}`);
+  getSaleItemsByCategory: function (category) {
+    return axios.get(`/api/sales/${category}`);
+  },
+  // Gets a single sale item
+  getSaleItemById: function (category, id) {
+    return axios.get(`/api/sales/${category}/${id}`);
   },
 
 
