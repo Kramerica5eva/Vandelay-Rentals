@@ -69,6 +69,11 @@ table {
 body {
     background-color: var(--page-color-whitecap);
     font-family: var(--font-Montserrat);
+    text-shadow: 1px 1px 3px rgba(150, 150, 150, 1);
+    font-size: 14px;
+    /* display: flex; */
+    /* justify-content: center; */
+
 }
 
 body h1, h2, h3, h4, h5, h6 {
@@ -107,7 +112,7 @@ li {
 /*  USED FOR THE PARALLAXHEADER COMPONENT */
 
 .main-container {
-
+    /* box-sizing: content-box; */
     perspective: 1px;
     transform-style: preserve-3d;
     height: 100vh;
@@ -115,6 +120,10 @@ li {
     overflow-y: scroll;
 }
 
+.main-container > .body-container {
+    padding: 1% 5%;
+    min-height: 55vh;
+}
 
 
 /*  USED FOR THE PARALLAXHEADER COMPONENT */

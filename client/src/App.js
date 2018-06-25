@@ -122,7 +122,15 @@ class App extends Component {
           <Route exact path="/"
             render={routeProps => (
               <React.Fragment>
-                <NavBar/>
+                <NavBar{...routeProps}
+                  toggleModal={this.toggleModal}
+                  setModal={this.setModal}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
                 <Home {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
@@ -139,7 +147,15 @@ class App extends Component {
           <Route exact path="/rentals"
             render={routeProps => (
               <React.Fragment>
-                <NavBar/>
+                <NavBar{...routeProps}
+                  toggleModal={this.toggleModal}
+                  setModal={this.setModal}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
                 <Rentals {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
@@ -155,7 +171,15 @@ class App extends Component {
           <Route exact path="/sales"
             render={routeProps => (
               <React.Fragment>
-                <NavBar/>
+              <NavBar{...routeProps}
+                  toggleModal={this.toggleModal}
+                  setModal={this.setModal}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
                 <Sales {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
@@ -172,7 +196,15 @@ class App extends Component {
           <Route exact path="/courses"
             render={routeProps => (
               <React.Fragment>
-                <NavBar/>
+              <NavBar{...routeProps}
+                  toggleModal={this.toggleModal}
+                  setModal={this.setModal}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
                 <Courses {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
@@ -189,7 +221,15 @@ class App extends Component {
           <Route exact path="/signup"
             render={routeProps => (
               <React.Fragment>
-                <NavBar/>
+              <NavBar{...routeProps}
+                  toggleModal={this.toggleModal}
+                  setModal={this.setModal}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
                 <Signup {...routeProps}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
@@ -203,7 +243,15 @@ class App extends Component {
           <Route exact path="/login"
             render={routeProps => (
               <React.Fragment>
-                <NavBar/>
+              <NavBar{...routeProps}
+                  toggleModal={this.toggleModal}
+                  setModal={this.setModal}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
                 <Login {...routeProps}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}

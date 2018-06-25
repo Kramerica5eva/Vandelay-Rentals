@@ -2,3 +2,111 @@
 .body-container {
     background-color: white;
 }
+
+.desc-heading {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin: 2em auto;
+    padding: 3% 0;
+    border-bottom: 2px solid black;
+    font-style: italic;
+}
+
+.main-catch {
+    display: flex;
+    width: 80%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2em auto;
+
+}
+
+.icons {
+    font-size: 16em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.main-catch .black-box, .image-box {
+    border-radius: 2px;
+    width: 50%;
+}
+
+.black-box {
+
+    background-color: black;
+    color: white;
+    height: 250px;
+    font-size: 3em;
+    padding: 3% 5%;
+    text-align: center;
+
+}
+.black-box h4{
+
+   margin-bottom: 5px;
+   border-bottom: 2px solid white;
+
+}
+.black-box p{
+
+    font-size: 0.5em;
+    padding: 5%;
+    line-height: 35px;
+    letter-spacing: 1px;
+    text-align: justify;
+
+}
+
+.image-box{
+
+    background-color: white;
+    color: black;
+    height: 250px;
+}
+
+.row-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.row-middle {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.row-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.about-us {
+    font-size: 2rem;
+    padding: 3% 5%;
+    text-align: center;
+}
+.about-us h3{
+    font-size: 3rem;
+    margin-bottom: 5px;
+    border-bottom: 2px solid black;
+}
+.about-us p{
+    font-size: 1.75rem;
+    padding: 1%;
+    line-height: 35px;
+    letter-spacing: 1px;
+    text-align: justify;
+}

@@ -9,11 +9,15 @@
     font-family: 'Raleway', sans-serif;
     font-size: 1.4rem;
     justify-content: space-between;
-    margin: 0 0 5px 0;
+    align-content: center;
     /* position: relative; */
     width:100%;
     text-decoration: none;
     /* z-index: 999; */
+    padding: 0 2%;
+    -webkit-box-shadow: 0px -3px 10px 1px rgba(0,0,0,0.71);
+    -moz-box-shadow: 0px -3px 10px 1px rgba(0,0,0,0.71);
+    box-shadow: 0px -3px 10px 1px rgba(0,0,0,0.71);
 }
 
 
@@ -22,4 +26,9 @@
     justify-content: center;
     margin: 0 15px;
 
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
 }
