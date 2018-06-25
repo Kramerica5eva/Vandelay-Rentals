@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
+import ParallaxHero from "../../components/ParallaxHero";
 import API from "../../utils/API";
+import "./Sales.css";
 
 class Sales extends Component {
   state = {
@@ -37,10 +39,13 @@ class Sales extends Component {
 
   render() {
     return (
-      <div>
+      <div className="main-container">
+      <ParallaxHero
+          image={{backgroundImage:'url(https://images.unsplash.com/photo-1499936324534-c3e0da6694eb?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c3766361d47840f16392e54c4ea7cbb2&auto=format&fit=crop&w=800&q=80)'}}
+          title="PURCHASE"
+          />
         <Header>
-          <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
-          <h2>Buy some stuff</h2>
+
           <div className="nav-container">
             <Link className="btn-link" to="/" role="button">Home</Link>
             <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
@@ -59,7 +64,7 @@ class Sales extends Component {
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
           </div>
         </Header>
-        <div>
+        <div className='body-container'>
           <h2>Purchase Items:</h2>
           <ul>
             {this.state.saleItems.filter(saleItem => saleItem.status === 'Available').map(item => (

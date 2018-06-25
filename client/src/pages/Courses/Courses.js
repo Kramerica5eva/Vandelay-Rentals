@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Link, Redirect } from 'react-router-dom';
 import Header from "../../components/Header";
+import ParallaxHero from "./../../components/ParallaxHero"
 import API from "../../utils/API";
+import "./Courses.css";
 
 class Courses extends Component {
   state = {
@@ -42,10 +44,13 @@ class Courses extends Component {
       }} />
     }
     return (
-      <div>
+      <div className="main-container">
+      <ParallaxHero
+          image={{backgroundImage:'url(https://images.unsplash.com/photo-1503477742902-923d33a4d8cc?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=62d2153b92eba59d1d60d72357929833&auto=format&fit=crop&w=1267&q=80)'}}
+          title="LEARN"
+          />
+
         <Header>
-          <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
-          <h2>Git yo learn on</h2>
           <div className="nav-container">
             <Link className="btn-link" to="/" role="button">Home</Link>
             <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
@@ -64,7 +69,8 @@ class Courses extends Component {
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
           </div>
         </Header>
-        <div>
+
+        <div className='body-container'>
           <h2>Courses Available:</h2>
           <ul>
             {this.state.courses.map(course => (

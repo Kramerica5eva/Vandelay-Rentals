@@ -17,8 +17,9 @@
 
 }
 
-.parallax-container h1 {
+#parallax-container h1 {
   color: white;
   position: relative;
-  left: 100px;
+  bottom: 50px;
+
 }

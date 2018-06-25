@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
+import ParallaxHero from "../../components/ParallaxHero";
 import API from "../../utils/API";
+import "./Rentals.css";
 
 class Rentals extends Component {
   state = {
@@ -38,10 +40,13 @@ class Rentals extends Component {
 
   render() {
     return (
-      <div>
+      <div className="main-container">
+      <ParallaxHero
+          image={{backgroundImage:'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)'}}
+          title="RENT"
+          />
         <Header>
-          <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
-          <h2>Rent some stuff</h2>
+
           <div className="nav-container">
             <Link className="btn-link" to="/" role="button">Home</Link>
             <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
@@ -60,7 +65,7 @@ class Rentals extends Component {
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
           </div>
         </Header>
-        <div>
+        <div className='body-container'>
           <h2>Rentals Available:</h2>
           <ul>
             {this.state.rentals.map(rental => (
