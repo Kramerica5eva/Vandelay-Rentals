@@ -7,6 +7,9 @@ const dbConnection = require('./connection/connection');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('./passport');
 const PORT = process.env.PORT || 8080;
+const db = require ('./models');
+
+const multer = require('multer');
 
 // Define middleware here
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,6 +33,21 @@ app.use(
 // Passport
 app.use(passport.initialize());
 app.use(passport.session()); // calls the deserializeUser
+
+app.post('/upload', function (req, res, next) {
+	console.log("Here's the upload req file:");
+	console.log(req.body);
+	db.Image.create(req.body).then(dbFile => {
+		console.log(dbFile);
+		res.json(dbFile)})
+	.catch(err => res.status(422).json(err));
+});
+
+app.get('/image', function (req, res) {
+	db.Image.find({}).then(image => {
+		res.json(image);
+	})
+})
 
 // Add routes, both API and view
 app.use(routes);
