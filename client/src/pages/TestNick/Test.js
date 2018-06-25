@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
 import ParallaxHero from "./../../components/ParallaxHero";
+import {Input,Label,FormBtn} from "./../../components/Form";
 import "./../../App.css";
 
 class Test extends Component {
@@ -45,6 +46,8 @@ class Test extends Component {
           <h1>NICKS TEST PAGE</h1>
           <h2>A Page for Testing Components</h2>
           <h2>(showing Rental results for dev purposes)</h2>
+
+          {/* Navigation */}
           <div className="nav-container">
             <Link className="btn-link" to="/" role="button">Home</Link>
             <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
@@ -62,10 +65,19 @@ class Test extends Component {
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
           </div>
         </Header>
+
+        {/* Main Page Focus */}
         <ParallaxHero
           image={{backgroundImage:'url(https://images.pexels.com/photos/416676/pexels-photo-416676.jpeg?cs=srgb&dl=sea-person-beach-416676.jpg&fm=jpg)'}}
           title="SUP RENTALS"
           />
+        {/* Component Testing Section */}
+
+          <Input/>
+          <FormBtn>THis is aTESt</FormBtn>
+          <Label/>
+
+        {/* Component Testing Section End  */}
         <div>
           <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
           <button
@@ -77,7 +89,7 @@ class Test extends Component {
             })}
           >
             Kramer!
-              </button>
+          </button>
           <h2>Rentals Available:</h2>
           <ul>
             {this.state.rentals.map(rental => (

@@ -1,0 +1,25 @@
+.footer {
+    align-items: center;
+    background: rgba(129, 129, 129, 0.644);
+    /* bottom: 0px; */
+    color: white;
+    display: flex;
+    height: 50px;
+    font-weight: bold;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.4rem;
+    justify-content: space-between;
+    margin: 0 0 5px 0;
+    /* position: relative; */
+    width:100%;
+    text-decoration: none;
+    /* z-index: 999; */
+}
+
+
+.footer p {
+    display: flex;
+    justify-content: center;
+    margin: 0 15px;
+
+}
