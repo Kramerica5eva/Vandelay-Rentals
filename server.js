@@ -7,7 +7,6 @@ const dbConnection = require('./connection/connection');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('./passport');
 const PORT = process.env.PORT || 8080;
-const db = require ('./models');
 
 
 const path = require('path');
@@ -27,23 +26,28 @@ app.use(methodOverride('_method'));
 
 let gfs;
 
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/vandelay_rental';
+
+// dbConnection works in place of conn:
+// const conn = mongoose.createConnection(mongoURI);
+
 dbConnection.once('open', () => {
 	gfs = Grid(dbConnection.db, mongoose.mongo);
-	gfs.collection('images');
+	gfs.collection('uploads');
 });
 
 const storage = new GridFsStorage({
-	url: dbConnection,
+	url: mongoURI,
 	file: (req, file) => {
 		return new Promise((resolve, reject) => {
 			crypto.randomBytes(16, (err, buf) => {
 				if (err) {
 					return reject(err);
 				}
-				const filename = fub.toString('hex') + path.extname(file.originalname);
+				const filename = buf.toString('hex') + path.extname(file.originalname);
 				const fileInfo = {
 					filename: filename,
-					bucketName: 'images'
+					bucketName: 'uploads'
 				};
 				resolve(fileInfo);
 			});
@@ -55,7 +59,7 @@ const upload = multer({ storage });
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
+	app.use(express.static('client/build'));
 }
 
 // Sessions
@@ -73,23 +77,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session()); // calls the deserializeUser
 
-// app.post('/upload', upload.single('file-upload'), function (req, res, next) {
-// 	console.log("Here's the upload req file:");
-// 	console.log(req.file);
-// 	db.Image.create(req.body).then(dbFile => {
-// 		console.log(dbFile);
-// 		res.json(dbFile)})
-// 	.catch(err => res.status(422).json(err));
-// });
-
-app.get('/image', function (req, res) {
-	db.Image.find({}).then(image => {
-		res.json(image);
-	});
-});
-
 //	the upload.single('name') should match whatever name you gave the input field in the html
-app.post('/upload', upload.single('file-upload'), (req, res) => {
+app.post('/upload', upload.single('file'), (req, res) => {
+	console.log("Here's the file data:");
+	console.log(req.file);
 	res.json({ file: req.file });
 });
 
@@ -97,6 +88,6 @@ app.post('/upload', upload.single('file-upload'), (req, res) => {
 app.use(routes);
 
 // Start the API server
-app.listen(PORT, function() {
-  console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
+app.listen(PORT, function () {
+	console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
 });
