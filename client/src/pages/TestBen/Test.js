@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
 import ParallaxHero from "./../../components/ParallaxHero";
-import {Input,Label,FormBtn} from "./../../components/Form";
+import { Input, Label, FormBtn } from "./../../components/Form";
 import "./../../App.css";
 
 class Test extends Component {
@@ -43,9 +43,9 @@ class Test extends Component {
       <div className="main-container">
 
         <Header>
-          <h1>NICKS TEST PAGE</h1>
+          <h1>BEN'S TEST PAGE</h1>
           <h2>A Page for Testing Components</h2>
-          <h2>(showing Rental results for dev purposes)</h2>
+          <h2>(CALENDAR STUFF)</h2>
 
           {/* Navigation */}
           <div className="nav-container">
@@ -64,57 +64,9 @@ class Test extends Component {
             <Link className="btn-link" to="/test" role="button">Test</Link>
             <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
             <Link className="btn-link" to="/testben" role="button">TestBen</Link>
-            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
+            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
           </div>
         </Header>
-
-        {/* Main Page Focus */}
-        <ParallaxHero
-          image={{backgroundImage:'url(https://images.pexels.com/photos/416676/pexels-photo-416676.jpeg?cs=srgb&dl=sea-person-beach-416676.jpg&fm=jpg)'}}
-          title="SUP RENTALS"
-          />
-        {/* Component Testing Section */}
-
-          <Input/>
-          <FormBtn>THis is aTESt</FormBtn>
-          <Label/>
-
-        {/* Component Testing Section End  */}
-        <div>
-          <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
-          <button
-            onClick={() => this.props.setModal({
-              header: "Kramer's Modal",
-              body:
-                <img src="https://pbs.twimg.com/profile_images/966923121482645507/qtpVrqVn_400x400.jpg" alt="Kramer" />,
-              footer: "Kramer's Modal Footer"
-            })}
-          >
-            Kramer!
-          </button>
-          <h2>Rentals Available:</h2>
-          <ul>
-            {this.state.rentals.map(rental => (
-              <li key={rental._id}>
-                <h3>{rental.name}</h3>
-                <button onClick={() => this.props.setModal({
-                  header: rental.name,
-                  body:
-                    <div>
-                      <h4>{rental.category}</h4>
-                      <h5>Maker: {rental.maker}</h5>
-                      <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>
-                    </div>,
-                  footer: rental.name
-                })}>
-                  see details
-                    </button>
-              </li>
-            ))}
-
-            <p>Eat a bag o' dicks, foo!</p>
-          </ul>
-        </div>
       </div>
     );
   }

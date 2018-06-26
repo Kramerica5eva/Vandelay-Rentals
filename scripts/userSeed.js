@@ -26,6 +26,19 @@ const userSeed = [
     admin: true
   },
   {
+    username: "ben",
+    password: pw,
+    firstName: "Ben",
+    lastName: "Caler",
+    email: "b.wayne@me.com",
+    street: "The Place to Be",
+    city: "Lehi",
+    state: "UT",
+    zipcode: 84043,
+    phone: 8013693718,
+    admin: true
+  },
+  {
     username: "Nicknard",
     firstName: "Joe",
     lastName: "Dirt",

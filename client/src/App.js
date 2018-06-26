@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Rentals from "./pages/Rentals";
 import Test from "./pages/Test";
 import TestNick from "./pages/TestNick";
+import TestBen from "./pages/TestBen";
 import Sales from "./pages/Sales";
 import Courses from "./pages/Courses";
 import Signup from "./pages/Signup";
@@ -226,6 +227,16 @@ class App extends Component {
           })}
           />
           <PrivateRoute path="/testnick" component={AddPropsToRoute(TestNick, {
+            toggleModal: this.toggleModal,
+            setModal: this.setModal,
+            updateUser: this.updateUser,
+            loggedIn: this.state.loggedIn,
+            firstName: this.state.firstName,
+            admin: this.state.admin,
+            logout: this.logout
+          })}
+          />
+          <PrivateRoute path="/testben" component={AddPropsToRoute(TestBen, {
             toggleModal: this.toggleModal,
             setModal: this.setModal,
             updateUser: this.updateUser,
