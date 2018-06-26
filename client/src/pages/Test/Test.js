@@ -72,13 +72,17 @@ class Test extends Component {
 
   // testing photo uploads...
   fileSelectedHandler = event => {
+    // let data = new FormData();
+    // data.append('')
+    const newFile = event.target.files[0];
     this.setState({
-      selectedFile: event.target.files[0]
+      selectedFile: newFile
     });
   }
   // testing photo uploads...
   handleUpload = event => {
     event.preventDefault();
+    console.log(this.state.selectedFile);
     const newImage = this.state.selectedFile;
     API.uploadImage(newImage).then(res => console.log(res));
   }
@@ -141,7 +145,7 @@ class Test extends Component {
 
               {/* {testing photo uploads...} */}
           <h2>File Uploads</h2>
-          <form encType="multipart/form-data">
+          <form encType="multipart/form-data" action="/upload" method="POST">
             <Input
               type="file"
               name="file-upload"
@@ -149,7 +153,7 @@ class Test extends Component {
               onChange={this.fileSelectedHandler}
             />
             <FormBtn
-            onClick={this.handleUpload}
+            // onClick={this.handleUpload}
             >
               Submit
               </FormBtn>
