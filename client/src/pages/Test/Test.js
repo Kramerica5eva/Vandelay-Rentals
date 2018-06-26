@@ -25,11 +25,11 @@ class Test extends Component {
   componentDidMount() {
     this.getAllRentals();
     axios.get("/image")
-    .then(image => {
-      this.setState({
-        image: image
-      });
-    })
+      .then(image => {
+        this.setState({
+          image: image
+        });
+      })
   }
 
   toggleModal = () => {
@@ -72,8 +72,6 @@ class Test extends Component {
 
   // testing photo uploads...
   fileSelectedHandler = event => {
-    // let data = new FormData();
-    // data.append('')
     const newFile = event.target.files[0];
     this.setState({
       selectedFile: newFile
@@ -90,101 +88,111 @@ class Test extends Component {
 
   render() {
     return (
-      <div className="main-container">
-        <NavBar />
-        <ParallaxHero
-          image={{ backgroundImage: 'url(https://images.unsplash.com/uploads/1412701079442fffb7c1a/6b7a62a4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=63428fdde80191f1d2299d803dfe61c3&auto=format&fit=crop&w=1350&q=80)' }}
-          title="Vandelay Rentals"
+      <React.Fragment>
+        <NavBar
+          toggleModal={this.props.toggleModal}
+          setModal={this.props.setModal}
+          updateUser={this.props.updateUser}
+          loggedIn={this.props.loggedIn}
+          firstName={this.props.firstName}
+          admin={this.props.admin}
+          logout={this.props.logout}
         />
-        <Modal
-          show={this.state.isOpen}
-          toggleModal={this.toggleModal}
-          header={this.state.header}
-          body={this.state.body}
-          footer={this.state.footer}
-        />
-        <div className='body-container'>
-          <h1>Vandelay Test Page, Nomsayn?</h1>
-          <h2>A Page for Testing Components</h2>
-          <h2>(showing Rental results for dev purposes)</h2>
-          <div className="nav-container">
-            <Link className="btn-link" to="/" role="button">Home</Link>
-            <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
-            <Link className="btn-link" to="/sales" role="button">Sales</Link>
-            <Link className="btn-link" to="/courses" role="button">Courses</Link>
-            {this.props.loggedIn ? (
-              <button className="btn-link" onClick={this.props.logout}>logout</button>
-            ) : (
-                <React.Fragment>
-                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
-                  <Link className="btn-link" to="/login" role="button">Login</Link>
-                </React.Fragment>
-              )}
-            <Link className="btn-link" to="/test" role="button">Test</Link>
-            <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
-            <Link className="btn-link" to="/testben" role="button">TestBen</Link>
-            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
+        <div className="main-container">
+          <ParallaxHero
+            image={{ backgroundImage: 'url(https://images.unsplash.com/uploads/1412701079442fffb7c1a/6b7a62a4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=63428fdde80191f1d2299d803dfe61c3&auto=format&fit=crop&w=1350&q=80)' }}
+            title="Vandelay Rentals"
+          />
+          <Modal
+            show={this.state.isOpen}
+            toggleModal={this.toggleModal}
+            header={this.state.header}
+            body={this.state.body}
+            footer={this.state.footer}
+          />
+          <div className='body-container'>
+            <h1>Vandelay Test Page, Nomsayn?</h1>
+            <h2>A Page for Testing Components</h2>
+            <h2>(showing Rental results for dev purposes)</h2>
+            <div className="nav-container">
+              <Link className="btn-link" to="/" role="button">Home</Link>
+              <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
+              <Link className="btn-link" to="/sales" role="button">Sales</Link>
+              <Link className="btn-link" to="/courses" role="button">Courses</Link>
+              {this.props.loggedIn ? (
+                <button className="btn-link" onClick={this.props.logout}>logout</button>
+              ) : (
+                  <React.Fragment>
+                    <Link className="btn-link" to="/signup" role="button">Signup</Link>
+                    <Link className="btn-link" to="/login" role="button">Login</Link>
+                  </React.Fragment>
+                )}
+              <Link className="btn-link" to="/test" role="button">Test</Link>
+              <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
+              <Link className="btn-link" to="/testben" role="button">TestBen</Link>
+              {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
+            </div>
           </div>
-        </div>
-        <ParallaxHero
-          image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1499858476316-343e284f1f67?ixlib=rb-0.3.5&s=4985c13dbbf85d7d0f5b90df50ea8695&auto=format&fit=crop&w=1350&q=80)' }}
-          title="About our Company"
-        />
-        <div className='body-container'>
-          <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
-          <button
-            onClick={() => this.setModal({
-              header: "Kramer's Modal",
-              body:
-                <img src="https://pbs.twimg.com/profile_images/966923121482645507/qtpVrqVn_400x400.jpg" alt="Kramer" />,
-              footer: "Kramer's Modal Footer"
-            })}
-          >
-            Kramer!
+          <ParallaxHero
+            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1499858476316-343e284f1f67?ixlib=rb-0.3.5&s=4985c13dbbf85d7d0f5b90df50ea8695&auto=format&fit=crop&w=1350&q=80)' }}
+            title="About our Company"
+          />
+          <div className='body-container'>
+            <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
+            <button
+              onClick={() => this.setModal({
+                header: "Kramer's Modal",
+                body:
+                  <img src="https://pbs.twimg.com/profile_images/966923121482645507/qtpVrqVn_400x400.jpg" alt="Kramer" />,
+                footer: "Kramer's Modal Footer"
+              })}
+            >
+              Kramer!
               </button>
 
 
 
-              {/* {testing photo uploads...} */}
-          <h2>File Uploads</h2>
-          <form encType="multipart/form-data">
-            <Input
-              type="file"
-              name="file"
-              label="Upload an image"
-              onChange={this.fileSelectedHandler}
-            />
-            <FormBtn
-            onClick={this.handleUpload}
-            >
-              Submit
+            {/* {testing photo uploads...} */}
+            <h2>File Uploads</h2>
+            <form encType="multipart/form-data">
+              <Input
+                type="file"
+                name="file"
+                label="Upload an image"
+                onChange={this.fileSelectedHandler}
+              />
+              <FormBtn
+                onClick={this.handleUpload}
+              >
+                Submit
               </FormBtn>
-          </form>
+            </form>
 
 
-          <h2>Rentals Available:</h2>
-          <ul>
-            {this.state.rentals.map(rental => (
-              <li key={rental._id}>
-                <h3>{rental.name}</h3>
-                <button onClick={() => this.setModal({
-                  header: rental.name,
-                  body:
-                    <div>
-                      <h4>{rental.category}</h4>
-                      <h5>Maker: {rental.maker}</h5>
-                      <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>
-                    </div>,
-                  footer: rental.name
-                })}>
-                  see details
+            <h2>Rentals Available:</h2>
+            <ul>
+              {this.state.rentals.map(rental => (
+                <li key={rental._id}>
+                  <h3>{rental.name}</h3>
+                  <button onClick={() => this.setModal({
+                    header: rental.name,
+                    body:
+                      <div>
+                        <h4>{rental.category}</h4>
+                        <h5>Maker: {rental.maker}</h5>
+                        <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>
+                      </div>,
+                    footer: rental.name
+                  })}>
+                    see details
                     </button>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      </React.Fragment>
     );
   }
 }
