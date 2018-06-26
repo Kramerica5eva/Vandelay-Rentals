@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
-import ParallaxHero from "../../components/ParallaxHero";
 import API from "../../utils/API";
-import "./Rentals.css";
+import ParallaxHero from "./../../components/ParallaxHero";
+import { Input, Label, FormBtn } from "./../../components/Form";
+import "./../../App.css";
 
-class Rentals extends Component {
+class Test extends Component {
   state = {
     rentals: []
   };
@@ -23,7 +24,6 @@ class Rentals extends Component {
         console.log(this.state.rentals);
       })
       .catch(err => console.log(err));
-
   }
 
   handleInputChange = event => {
@@ -41,19 +41,20 @@ class Rentals extends Component {
   render() {
     return (
       <div className="main-container">
-      <ParallaxHero
-          image={{backgroundImage:'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)'}}
-          title="RENT"
-          />
-        <Header>
 
+        <Header>
+          <h1>CORBINS'S TEST PAGE</h1>
+          <h2>A Page for Testing Components</h2>
+          <h2>(SIGNTYPE)</h2>
+
+          {/* Navigation */}
           <div className="nav-container">
             <Link className="btn-link" to="/" role="button">Home</Link>
             <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
             <Link className="btn-link" to="/sales" role="button">Sales</Link>
             <Link className="btn-link" to="/courses" role="button">Courses</Link>
             {this.props.loggedIn ? (
-              <button className="btn-link" onClick={this.props.logout}>logout</button>
+              <button className="btn-link" role="button" onClick={this.props.logout}>logout</button>
             ) : (
                 <React.Fragment>
                   <Link className="btn-link" to="/signup" role="button">Signup</Link>
@@ -63,26 +64,13 @@ class Rentals extends Component {
             <Link className="btn-link" to="/test" role="button">Test</Link>
             <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
             <Link className="btn-link" to="/testben" role="button">TestBen</Link>
-            <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
-            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
+            <Link className="btn-link" to="/testCorb" role="button">TestCorb</Link>
+            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
           </div>
         </Header>
-        <div className='body-container'>
-          <h2>Rentals Available:</h2>
-          <ul>
-            {this.state.rentals.map(rental => (
-              <li key={rental._id}>
-                <h3>{rental.name}</h3>
-                <h4>{rental.category}</h4>
-                <h5>Maker: {rental.maker}</h5>
-                <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
     );
   }
 }
 
-export default Rentals;
+export default Test;

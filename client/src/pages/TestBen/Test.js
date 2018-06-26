@@ -64,6 +64,7 @@ class Test extends Component {
             <Link className="btn-link" to="/test" role="button">Test</Link>
             <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
             <Link className="btn-link" to="/testben" role="button">TestBen</Link>
+            <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
           </div>
         </Header>
