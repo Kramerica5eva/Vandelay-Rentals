@@ -123,7 +123,7 @@ class App extends Component {
           <Route exact path="/"
             render={routeProps => (
               <React.Fragment>
-                <NavBar{...routeProps}
+                <NavBar {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
                   updateUser={this.updateUser}
@@ -141,14 +141,14 @@ class App extends Component {
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-                <Footer/>
+                <Footer />
               </React.Fragment>
             )}
           />
           <Route exact path="/rentals"
             render={routeProps => (
               <React.Fragment>
-                <NavBar{...routeProps}
+                <NavBar {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
                   updateUser={this.updateUser}
@@ -166,13 +166,13 @@ class App extends Component {
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-                <Footer/>
+                <Footer />
               </React.Fragment>
             )} />
           <Route exact path="/sales"
             render={routeProps => (
               <React.Fragment>
-              <NavBar{...routeProps}
+                <NavBar {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
                   updateUser={this.updateUser}
@@ -190,14 +190,14 @@ class App extends Component {
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-                <Footer/>
+                <Footer />
               </React.Fragment>
             )}
           />
           <Route exact path="/courses"
             render={routeProps => (
               <React.Fragment>
-              <NavBar{...routeProps}
+                <NavBar {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
                   updateUser={this.updateUser}
@@ -215,14 +215,14 @@ class App extends Component {
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-                <Footer/>
+                <Footer />
               </React.Fragment>
             )}
           />
           <Route exact path="/signup"
             render={routeProps => (
               <React.Fragment>
-              <NavBar{...routeProps}
+                <NavBar {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
                   updateUser={this.updateUser}
@@ -238,13 +238,13 @@ class App extends Component {
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-                <Footer/>
+                <Footer />
               </React.Fragment>)}
           />
           <Route exact path="/login"
             render={routeProps => (
               <React.Fragment>
-              <NavBar{...routeProps}
+                <NavBar {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
                   updateUser={this.updateUser}
@@ -260,9 +260,9 @@ class App extends Component {
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-                <Footer/>
+                <Footer />
               </React.Fragment>
-              )}
+            )}
           />
           <PrivateRoute path="/test" component={AddPropsToRoute(Test, {
             toggleModal: this.toggleModal,
