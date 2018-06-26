@@ -2,6 +2,14 @@ import axios from "axios";
 
 export default {
 
+  uploadImage: function (arg) {
+    return axios.post('/upload', arg);
+  },
+
+  getImage: function (arg) {
+    return axios.get('/image');
+  },
+
   // AUTHORIZATION ROUTES
   // Get user info
   getUser: function () {
