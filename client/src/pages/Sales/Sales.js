@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import ParallaxHero from "../../components/ParallaxHero";
+import SaleCard from "./../../components/SaleCard";
 import API from "../../utils/API";
 import "./Sales.css";
 
@@ -70,13 +71,14 @@ class Sales extends Component {
           <h2>Purchase Items:</h2>
           <ul>
             {this.state.saleItems.filter(saleItem => saleItem.status === 'Available').map(item => (
-              <li key={item._id}>
-                <h3>{item.name}</h3>
-                <h4>{item.category}</h4>
-                <h5>Maker: {item.maker}</h5>
-                <h5>Condition: {item.saleType}</h5>
-                <p>Price: ${parseFloat(item.price.$numberDecimal).toFixed(2)}</p>
-              </li>
+              <SaleCard 
+              key={item._id}
+              name={item.name}
+              category={item.category}
+              maker={item.maker}
+              saleType={item.saleType}
+              price={parseFloat(item.price.$numberDecimal).toFixed(2)}>
+              </SaleCard>
             ))}
           </ul>
         </div>
