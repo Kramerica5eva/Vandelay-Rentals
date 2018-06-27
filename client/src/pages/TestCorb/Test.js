@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import Header from "./../../components/Header";
 import RentalCard from "./../../components/RentalCard";
 import API from "../../utils/API";
-import ParallaxHero from "./../../components/ParallaxHero";
-import { Input, Label, FormBtn } from "./../../components/Form";
+// import ParallaxHero from "./../../components/ParallaxHero";
+// import { Input, Label, FormBtn } from "./../../components/Form";
 import "./../../App.css";
 
 class Test extends Component {
@@ -55,7 +55,7 @@ class Test extends Component {
             <Link className="btn-link" to="/sales" role="button">Sales</Link>
             <Link className="btn-link" to="/courses" role="button">Courses</Link>
             {this.props.loggedIn ? (
-              <button className="btn-link" role="button" onClick={this.props.logout}>logout</button>
+              <button className="btn-link" onClick={this.props.logout}>logout</button>
             ) : (
                 <React.Fragment>
                   <Link className="btn-link" to="/signup" role="button">Signup</Link>
