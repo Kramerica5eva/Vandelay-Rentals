@@ -1,12 +1,22 @@
 const db = require('../models');
 const mongoose = require('mongoose');
 const Grid = require('gridfs-stream');
-const dbConnection = require('../connection/connection');
 
 let gfs;
 
-dbConnection.once('open', () => {
-  gfs = Grid(dbConnection.db, mongoose.mongo);
+// const dbConnection = require('../connection/connection');
+
+// dbConnection.once('open', () => {
+//   gfs = Grid(dbConnection.db, mongoose.mongo);
+//   gfs.collection('uploads');
+// });
+
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/vandelay_rental';
+
+const conn = mongoose.createConnection(mongoURI);
+
+conn.once('open', () => {
+  gfs = Grid(conn.db, mongoose.mongo);
   gfs.collection('uploads');
 });
 

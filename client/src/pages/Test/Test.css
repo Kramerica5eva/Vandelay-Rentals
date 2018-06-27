@@ -6,7 +6,7 @@
 body:not(ParallaxHero) {
   background-color: var(--page-color-whitecap);
   overflow-x: hidden;
-  /* combined with line 120 below (width: calc(100vw + 17px);), this pushes the right scrollbar off the screen without creating a new scrollbar on the bottom */
+  /* combined with the .main-container styling below (width: calc(100vw + 17px);), this pushes the right scrollbar off the screen without creating a new scrollbar on the bottom */
 }
 
 .main-container {
