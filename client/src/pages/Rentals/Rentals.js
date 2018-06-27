@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import ParallaxHero from "../../components/ParallaxHero";
+import RentalCard from "./../../components/RentalCard";
 import API from "../../utils/API";
 import "./Rentals.css";
 
@@ -71,12 +72,13 @@ class Rentals extends Component {
           <h2>Rentals Available:</h2>
           <ul>
             {this.state.rentals.map(rental => (
-              <li key={rental._id}>
-                <h3>{rental.name}</h3>
-                <h4>{rental.category}</h4>
-                <h5>Maker: {rental.maker}</h5>
-                <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>
-              </li>
+              <RentalCard 
+              key={rental._id} 
+              name={rental.name} 
+              category={rental.category}
+              maker={rental.maker}
+              rate= {parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
+              </RentalCard>
             ))}
           </ul>
         </div>

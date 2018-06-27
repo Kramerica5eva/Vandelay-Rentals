@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
-import Header from "../../components/Header";
+import Header from "./../../components/Header";
+import RentalCard from "./../../components/RentalCard";
 import API from "../../utils/API";
 import ParallaxHero from "./../../components/ParallaxHero";
 import { Input, Label, FormBtn } from "./../../components/Form";
@@ -68,6 +69,20 @@ class Test extends Component {
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
           </div>
         </Header>
+        <div className='body-container'>
+          <h2>Rentals Available:</h2>
+          <ul>
+            {this.state.rentals.map(rental => (
+              <RentalCard 
+              key={rental._id} 
+              name={rental.name} 
+              category={rental.category}
+              maker={rental.maker}
+              rate= {parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
+              </RentalCard>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }
