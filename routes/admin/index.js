@@ -4,7 +4,7 @@ const adminCoursesRoutes = require('./adminCourses');
 const adminRentalsRoutes = require('./adminRentals');
 const adminSalesRoutes = require('./adminSales');
 
-// Book routes
+// admin routes
 router.use('/users', adminUserRoutes);
 router.use('/courses', adminCoursesRoutes);
 router.use('/rentals', adminRentalsRoutes);

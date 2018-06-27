@@ -19,9 +19,11 @@ const rentalSeed = [
       { from: '2018-07-17', to: '2018-07-19' },
       { from: '2018-07-14', to: '2018-07-15' }
     ],
+    pastRentals: [],
     timesRented: 22,
     dateAcquired: '2017-06-25',
-    condition: 'Good'
+    condition: 'Good',
+    images: []
   },
   {
     name: 'Malibu Classic',
@@ -35,9 +37,11 @@ const rentalSeed = [
       { from: '2018-09-22', to: '2018-09-26' },
       { from: '2018-09-11', to: '2018-09-14' }
     ],
+    pastRentals: [],
     timesRented: 0,
     dateAcquired: '2018-06-15',
-    condition: 'New'
+    condition: 'New',
+    images: []
   },
   {
     name: 'HD Aero',
@@ -49,9 +53,11 @@ const rentalSeed = [
       { from: '2018-07-24', to: '2018-07-26' },
       { from: '2018-08-22', to: '2018-08-25' }
     ],
+    pastRentals: [],
     timesRented: 6,
     dateAcquired: '2018-05-19',
-    condition: 'Good'
+    condition: 'Good',
+    images: []
   },
   {
     name: 'Bark + prAna Aleka',
@@ -64,9 +70,11 @@ const rentalSeed = [
       { from: '2018-08-08', to: '2018-08-12' },
       { from: '2018-09-01', to: '2018-09-05' }
     ],
+    pastRentals: [],
     timesRented: 33,
     dateAcquired: '2017-03-15',
-    condition: 'Working'
+    condition: 'Working',
+    images: []
   },
   {
     name: 'Bay ST Folding Kayak',
@@ -78,10 +86,13 @@ const rentalSeed = [
       { from: '2018-07-27', to: '2018-07-27' },
       { from: '2018-08-02', to: '2018-08-05' }
     ],
+    pastRentals: [],
     timesRented: 112,
     dateAcquired: '2016-09-15',
-    condition: 'Disrepair'
-  },{
+    condition: 'Disrepair',
+    images: []
+  },
+  {
     name: 'Beach LT Folding Kayak',
     category: 'Kayak',
     maker: 'Oru Kayak',
@@ -92,9 +103,11 @@ const rentalSeed = [
       { from: '2018-07-25', to: '2018-07-28' },
       { from: '2018-09-01', to: '2018-09-05' }
     ],
+    pastRentals: [],
     timesRented: 87,
     dateAcquired: '2017-03-15',
-    condition: 'Working'
+    condition: 'Working',
+    images: []
   },
   {
     name: 'Unison 136T Tandem',
@@ -109,9 +122,11 @@ const rentalSeed = [
       { from: '2018-07-19', to: '2018-07-22' },
       { from: '2018-08-01', to: '2018-08-05' }
     ],
+    pastRentals: [],
     timesRented: 24,
     dateAcquired: '2018-03-15',
-    condition: 'Good'
+    condition: 'Good',
+    images: []
   },
   {
     name: 'Catch 120',
@@ -126,9 +141,11 @@ const rentalSeed = [
       { from: '2018-07-19', to: '2018-07-22' },
       { from: '2018-08-22', to: '2018-08-25' }
     ],
+    pastRentals: [],
     timesRented: 79,
     dateAcquired: '2017-06-22',
-    condition: 'Working'
+    condition: 'Working',
+    images: []
   }
 ];
 

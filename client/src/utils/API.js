@@ -2,13 +2,23 @@ import axios from "axios";
 
 export default {
 
-  uploadImage: function (arg) {
-    return axios.post('/upload', arg);
+  getImageNames: function (id) {
+    return axios.get(`/file/image/names/${id}`);
   },
 
-  getImage: function (arg) {
-    return axios.get('/image');
+  uploadImage: function (id, imageData) {
+    return axios.post(`/file/image/${id}`, imageData);
   },
+
+  getImage: function () {
+    return axios.get('/file/image/:filename');
+  },
+
+  deleteImage: function (id, imageData) {
+    return axios.delete(`/file/image/${id}`, imageData);
+  },
+
+
 
   // AUTHORIZATION ROUTES
   // Get user info

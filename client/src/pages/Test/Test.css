@@ -12,3 +12,7 @@ body:not(ParallaxHero) {
 .main-container {
   width: calc(100vw + 17px);
 }
+
+.rental-img {
+  width: 300px;
+}

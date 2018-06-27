@@ -33,7 +33,9 @@ const rentalSchema = new Schema({
     enum: ['New', 'Good', 'Working', 'Disrepair', 'Retired'],
     default: 'Good'
   },
-  images: [{ filepath: String }]
+  images: [{
+    type: Schema.Types.ObjectId
+   }]
 });
 
 const Rental = mongoose.model('Rental', rentalSchema);
