@@ -1,10 +1,13 @@
 import React from "react";
 import { Label } from "./Label";
+import "./Input.css"
 
 export const Input = props => (
-  <div>
+  <div className="group">
+    <input className="" {...props}/>
+     <span className="highlight"></span>
+      <span className="bar"></span>
     <Label htmlFor={props.name}>{props.label}</Label>
-    <input {...props} />
   </div>
 );
 

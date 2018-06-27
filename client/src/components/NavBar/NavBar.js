@@ -7,12 +7,29 @@ import "./NavBar.css"
 
 class NavBar extends React.Component {
 
+    componentDidMount = () => {
+        document.querySelector(".cross").style.display = 'none';
+        document.querySelector(".menu").style.display = 'none';
+    }
+
+    hamburgerClick = () => {
+      document.querySelector(".cross").style.display = 'flex';
+      document.querySelector(".menu").style.display = 'flex';
+      document.querySelector(".hamburger").style.display = 'none';
+    }
+
+    crossClick = () => {
+        document.querySelector(".cross").style.display = 'none';
+        document.querySelector(".menu").style.display = 'none';
+        document.querySelector(".hamburger").style.display = '';
+    }
+
     render() {
         return (
             <nav className='navbar'>
 
                 <div className='brand-logo'>
-                <Link className="btn-link" to="/" role="button">Logo</Link>
+                    <Link className="btn-link" to="/" role="button">Logo</Link>
                 </div>
                 <div className='links'>
                     <Link className="btn-link" to="/" role="button">Home</Link>
@@ -28,6 +45,24 @@ class NavBar extends React.Component {
                         </React.Fragment>
                     )}
                 </div>
+                <div className="hamburger-btns">
+                    <button onClick={this.hamburgerClick} className="hamburger">&#9776;</button>
+                    <button onClick={this.crossClick} className="cross">&#735;</button>
+                </div>
+                    <div className="menu" id="menu">
+                        <Link className="btn-link" to="/" role="button">Home</Link>
+                        <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
+                        <Link className="btn-link" to="/sales" role="button">Sales</Link>
+                        <Link className="btn-link" to="/courses" role="button">Courses</Link>
+                        {this.props.loggedIn ? (
+                            <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
+                            ) : (
+                            <React.Fragment>
+                                <Link className="btn-link" to="/signup" role="button">Signup</Link>
+                                <Link className="btn-link" to="/login" role="button">Login</Link>
+                            </React.Fragment>
+                        )}
+                    </div>
             </nav>
         );
     }
