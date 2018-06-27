@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
-import ParallaxHero from "./../../components/ParallaxHero";
-import { Input, Label, FormBtn } from "./../../components/Form";
+import Calendar from "../../components/Calendar";
 import "./../../App.css";
+
 
 class Test extends Component {
   state = {
@@ -54,7 +54,7 @@ class Test extends Component {
             <Link className="btn-link" to="/sales" role="button">Sales</Link>
             <Link className="btn-link" to="/courses" role="button">Courses</Link>
             {this.props.loggedIn ? (
-              <button className="btn-link" role="button" onClick={this.props.logout}>logout</button>
+              <button className="btn-link" onClick={this.props.logout}>logout</button>
             ) : (
                 <React.Fragment>
                   <Link className="btn-link" to="/signup" role="button">Signup</Link>
@@ -68,6 +68,7 @@ class Test extends Component {
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
           </div>
         </Header>
+        <Calendar/>
       </div>
     );
   }
