@@ -16,8 +16,8 @@ class Test extends Component {
     body: "",
     footer: "",
     rentals: [],
-
-    // testing photo uploads...
+    images: [],
+    rentalId: "",
     selectedFile: null,
     image: null
   };
@@ -65,30 +65,49 @@ class Test extends Component {
     });
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    //  blah blah blah
-  };
-
-  // testing photo uploads...
   fileSelectedHandler = event => {
     const newFile = event.target.files[0];
     this.setState({
       selectedFile: newFile
     });
-  }
-  // testing photo uploads...
+  };
+  
   handleUpload = event => {
     event.preventDefault();
+    const { name } = event.target;
     const fd = new FormData();
     fd.append('file', this.state.selectedFile, this.state.selectedFile.name);
-    API.uploadImage(fd).then(res => console.log(res));
-    console.log(fd);
+    API.uploadImage(name, fd).then(res => console.log(res));
+  }
+
+  getImages = id => {
+    API.getImageNames(id).then(res => {
+      this.setState({
+        images: res.data,
+        rentalId: id
+      })
+      console.log("Images in state:");
+      console.log(this.state.images);
+    });
+  }
+
+  deleteImage = image => {
+    API.deleteImage(image, this.state.rentalId)
+      .then(res => {
+        this.getImages(this.state.rentalId);
+      });
   }
 
   render() {
     return (
       <React.Fragment>
+        <Modal
+          show={this.state.isOpen}
+          toggleModal={this.toggleModal}
+          header={this.state.header}
+          body={this.state.body}
+          footer={this.state.footer}
+        />
         <NavBar
           toggleModal={this.props.toggleModal}
           setModal={this.props.setModal}
@@ -102,13 +121,6 @@ class Test extends Component {
           <ParallaxHero
             image={{ backgroundImage: 'url(https://images.unsplash.com/uploads/1412701079442fffb7c1a/6b7a62a4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=63428fdde80191f1d2299d803dfe61c3&auto=format&fit=crop&w=1350&q=80)' }}
             title="Vandelay Rentals"
-          />
-          <Modal
-            show={this.state.isOpen}
-            toggleModal={this.toggleModal}
-            header={this.state.header}
-            body={this.state.body}
-            footer={this.state.footer}
           />
           <div className='body-container'>
             <h1>Vandelay Test Page, Nomsayn?</h1>
@@ -137,6 +149,7 @@ class Test extends Component {
             image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1499858476316-343e284f1f67?ixlib=rb-0.3.5&s=4985c13dbbf85d7d0f5b90df50ea8695&auto=format&fit=crop&w=1350&q=80)' }}
             title="About our Company"
           />
+
           <div className='body-container'>
             <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
             <button
@@ -151,43 +164,49 @@ class Test extends Component {
               </button>
 
 
-
-            {/* {testing photo uploads...} */}
-            <h2>File Uploads</h2>
-            <form encType="multipart/form-data">
-              <Input
-                type="file"
-                name="file"
-                label="Upload an image"
-                onChange={this.fileSelectedHandler}
-              />
-              <FormBtn
-                onClick={this.handleUpload}
-              >
-                Submit
-              </FormBtn>
-            </form>
+            {this.state.images ? (
+              <React.Fragment>
+                <h2>Rental Images</h2>
+                <ul>
+                  {this.state.images.map(image => (
+                    <li key={image._id}>
+                      <p>image here:</p>
+                      <img className="rental-img" src={`file/image/${image.filename}`} alt="rental condition" />
+                      <button onClick={() => this.deleteImage(image._id)}>Delete</button>
+                    </li>
+                  ))}
+                </ul>
+              </React.Fragment>
+            ) : null}
 
 
             <h2>Rentals Available:</h2>
             <ul>
-              {this.state.rentals.map(rental => (
+              {this.state.rentals ? this.state.rentals.map(rental => (
                 <li key={rental._id}>
                   <h3>{rental.name}</h3>
-                  <button onClick={() => this.setModal({
-                    header: rental.name,
-                    body:
-                      <div>
-                        <h4>{rental.category}</h4>
-                        <h5>Maker: {rental.maker}</h5>
-                        <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>
-                      </div>,
-                    footer: rental.name
-                  })}>
-                    see details
-                    </button>
+                  <div>
+                    <h4>{rental.category}</h4>
+                    <h5>Maker: {rental.maker}</h5>
+                    <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>          <form encType="multipart/form-data">
+                      <Input
+                        type="file"
+                        name="file"
+                        label="Upload an image"
+                        onChange={this.fileSelectedHandler}
+                      />
+                      <FormBtn
+                        name={rental._id}
+                        onClick={this.handleUpload}
+                      >
+                        Submit
+                          </FormBtn>
+                    </form>
+
+                    <button onClick={() => this.getImages(rental._id)}>Get Images</button>
+                  </div>
                 </li>
-              ))}
+              )) : null}
             </ul>
           </div>
           <Footer />
