@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
 import Modal from "../../components/Modal";
+import NavBar from "../../components/NavBar";
+import Footer from "../../components/Footer";
 
 class Admin extends Component {
   state = {
@@ -213,6 +215,7 @@ class Admin extends Component {
             )) : null}
 
           </ul>
+          <Footer />
         </div>
       </React.Fragment >
     );

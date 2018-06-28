@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import Header from "../../components/Header";
+import NavBar from "../../components/NavBar";
+import FixedFooter from "../../components/FixedFooter";
 import { Input, FormBtn } from "../../components/Form";
 import API from "../../utils/API";
+import "./Login.css";
 
 
 class Login extends Component {
@@ -46,6 +49,7 @@ class Login extends Component {
       }).catch(err => console.log(err));
   };
 
+
   render() {
     const { from } = this.props.location.state || { from: null };
     const { redirect } = this.state;
@@ -59,6 +63,16 @@ class Login extends Component {
     }
 
     return (
+      <React.Fragment>
+      <NavBar
+          toggleModal={this.props.toggleModal}
+          setModal={this.props.setModal}
+          updateUser={this.props.updateUser}
+          loggedIn={this.props.loggedIn}
+          firstName={this.props.firstName}
+          admin={this.props.admin}
+          logout={this.props.logout}
+        />
       <div>
         <Header>
           <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
@@ -107,7 +121,9 @@ class Login extends Component {
               </FormBtn>
           </form>
         </div>
+        <FixedFooter/>
       </div>
+      </React.Fragment>
     );
   }
 }

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Link, Redirect } from 'react-router-dom';
 import Header from "../../components/Header";
-import ParallaxHero from "./../../components/ParallaxHero"
+import ParallaxHero from "./../../components/ParallaxHero";
+import NavBar from "../../components/NavBar";
+import Footer from "../../components/Footer";
 import API from "../../utils/API";
 import "./Courses.css";
 
@@ -44,6 +46,16 @@ class Courses extends Component {
       }} />
     }
     return (
+      <React.Fragment>
+      <NavBar
+          toggleModal={this.props.toggleModal}
+          setModal={this.props.setModal}
+          updateUser={this.props.updateUser}
+          loggedIn={this.props.loggedIn}
+          firstName={this.props.firstName}
+          admin={this.props.admin}
+          logout={this.props.logout}
+        />
       <div className="main-container">
       <ParallaxHero
           image={{backgroundImage:'url(https://images.unsplash.com/photo-1503477742902-923d33a4d8cc?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=62d2153b92eba59d1d60d72357929833&auto=format&fit=crop&w=1267&q=80)'}}
@@ -93,7 +105,9 @@ class Courses extends Component {
             ))}
           </ul>
         </div>
+        <Footer />
       </div>
+      </React.Fragment>
     );
   }
 }

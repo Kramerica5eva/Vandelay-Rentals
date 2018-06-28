@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import Header from "../../components/Header";
+import NavBar from "../../components/NavBar";
+import Footer from "../../components/Footer";
 import { Input, FormBtn } from "../../components/Form";
 import API from "../../utils/API";
+import "./Signup.css";
 
 class Signup extends Component {
   state = {
@@ -80,6 +83,16 @@ class Signup extends Component {
       }
     }
     return (
+      <React.Fragment>
+      <NavBar
+          toggleModal={this.props.toggleModal}
+          setModal={this.props.setModal}
+          updateUser={this.props.updateUser}
+          loggedIn={this.props.loggedIn}
+          firstName={this.props.firstName}
+          admin={this.props.admin}
+          logout={this.props.logout}
+        />
       <div>
         <Header>
           <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
@@ -205,7 +218,9 @@ class Signup extends Component {
               </FormBtn>
           </form>
         </div>
+        <Footer />
       </div>
+      </React.Fragment>
     );
   }
 }
