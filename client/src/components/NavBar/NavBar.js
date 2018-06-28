@@ -24,6 +24,7 @@ class NavBar extends React.Component {
         document.querySelector(".hamburger").style.display = '';
     }
 
+    //  wanted to call both functions from an onClick event, so this function calls them both
     multiClick = () => {
         this.props.toggleForm();
         this.crossClick();

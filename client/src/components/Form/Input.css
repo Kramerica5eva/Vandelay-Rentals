@@ -47,6 +47,10 @@ input:valid~label {
     color: #5264AE;
 }
 
+input:not(:focus):invalid {
+    background-color: rgba(255, 0, 0, 0.315);
+}
+
 /* BOTTOM BARS ================================= */
 
 .bar {
