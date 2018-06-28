@@ -8,7 +8,6 @@ import TestBen from "./pages/TestBen";
 import TestCorb from "./pages/TestCorb";
 import Sales from "./pages/Sales";
 import Courses from "./pages/Courses";
-import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import AdminKeith from "./pages/AdminKeith";
@@ -32,7 +31,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
         // send a state object with the redirect to inform the login page of the intended destination
           <Redirect to={{
             pathname: "/login",
-            state: { from: props.location }
+            state: { from: props.location, loginShow: true }
           }}
           />
         )
@@ -50,7 +49,7 @@ const AdminRoute = ({ component: Component, ...rest }) => (
         // send a state object with the redirect to inform the login page of the intended destination
           <Redirect to={{
             pathname: "/",
-            state: { from: props.location }
+            state: { from: props.location, loginShow: true }
           }}
           />
         )
@@ -186,12 +185,13 @@ class App extends Component {
           <Route exact path="/signup"
             render={routeProps => (
               <React.Fragment>
-                <Signup {...routeProps}
+                <Login {...routeProps}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
                   logout={this.logout}
+                  loginShow={false}
                 />
               </React.Fragment>)}
           />
@@ -204,6 +204,7 @@ class App extends Component {
                   firstName={this.state.firstName}
                   admin={this.state.admin}
                   logout={this.logout}
+                  loginShow={true}
                 />
               </React.Fragment>
             )}

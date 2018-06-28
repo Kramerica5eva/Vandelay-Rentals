@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import GreyBtn from "./../Buttons/GreyBtn";
 import "./NavBar.css"
 
@@ -24,6 +24,11 @@ class NavBar extends React.Component {
         document.querySelector(".hamburger").style.display = '';
     }
 
+    multiClick = () => {
+        this.props.toggleForm();
+        this.crossClick();
+    }
+
     render() {
         return (
             <nav className='navbar'>
@@ -40,10 +45,21 @@ class NavBar extends React.Component {
                         <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
                     ) : (
                             <React.Fragment>
-                                <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup</Link>
-                                <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login</Link>
+                                {this.props.loginShow ? (
+                                    <React.Fragment>
+                                        <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Signup</Link>
+                                        <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login</Link>
+                                    </React.Fragment>
+                                ) : (
+                                        <React.Fragment>
+                                            <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup</Link>
+                                            <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Login</Link>
+                                        </React.Fragment>
+                                    )
+                                }
                             </React.Fragment>
-                        )}
+                        )
+                    }
                 </div>
                 <div className="hamburger-btns">
                     <button onClick={this.hamburgerClick} className="hamburger">&#9776;</button>
@@ -58,10 +74,21 @@ class NavBar extends React.Component {
                         <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
                     ) : (
                             <React.Fragment>
-                                <Link className="btn-link" to="/signup" role="button">Signup</Link>
-                                <Link className="btn-link" to="/login" role="button">Login</Link>
+                                {this.props.loginShow ? (
+                                    <React.Fragment>
+                                        <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button">Signup</Link>
+                                        <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login</Link>
+                                    </React.Fragment>
+                                ) : (
+                                        <React.Fragment>
+                                            <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup</Link>
+                                            <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button">Login</Link>
+                                        </React.Fragment>
+                                    )
+                                }
                             </React.Fragment>
-                        )}
+                        )
+                    }
                 </div>
             </nav>
         );
