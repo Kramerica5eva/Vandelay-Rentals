@@ -30,7 +30,7 @@ const upload = multer({ storage });
 
 // Matches with '/file/image'
 router.route('/names/:id')
-  .get(imageController.findAll);
+  .get(isAdmin, imageController.findAll);
 
 router.route('/:filename')
   .get(isAdmin, imageController.findById);

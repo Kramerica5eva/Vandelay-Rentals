@@ -15,7 +15,6 @@ const DevLinks = props => (
           <React.Fragment>
             <Link className="btn-link" to={{ pathname: "/signup", state: { from: props.location.pathname } }} role="button">Signup</Link>
             <Link className="btn-link" to="/login" role="button">Login</Link>
-            <Link className="btn-link" to="/logintest" role="button">Login Test</Link>
           </React.Fragment>
         )}
       <Link className="btn-link" to="/test" role="button">Test</Link>
