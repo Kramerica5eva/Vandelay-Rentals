@@ -5,6 +5,7 @@ import API from "../../utils/API";
 import Modal from "../../components/Modal";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
+import DevLinks from "../../components/DevLinks";
 
 class Admin extends Component {
   state = {
@@ -122,11 +123,7 @@ class Admin extends Component {
           footer={this.state.footer}
         />
         <NavBar
-          toggleModal={this.props.toggleModal}
-          setModal={this.props.setModal}
-          updateUser={this.props.updateUser}
           loggedIn={this.props.loggedIn}
-          firstName={this.props.firstName}
           admin={this.props.admin}
           logout={this.props.logout}
           location={this.props.location}
@@ -134,25 +131,12 @@ class Admin extends Component {
         <Header>
           <h1>Vandelay Admin Page, Nomsayn?</h1>
           <h2>Admin Page</h2>
-          <div className="nav-container">
-            <Link className="btn-link" to="/" role="button">Home</Link>
-            <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
-            <Link className="btn-link" to="/sales" role="button">Sales</Link>
-            <Link className="btn-link" to="/courses" role="button">Courses</Link>
-            {this.props.loggedIn ? (
-              <button className="btn-link" onClick={this.props.logout}>logout</button>
-            ) : (
-                <React.Fragment>
-                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
-                  <Link className="btn-link" to="/login" role="button">Login</Link>
-                </React.Fragment>
-              )}
-            <Link className="btn-link" to="/test" role="button">Test</Link>
-            <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
-            <Link className="btn-link" to="/testben" role="button">TestBen</Link>
-            <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
-            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-          </div>
+          <DevLinks
+            loggedIn={this.props.loggedIn}
+            admin={this.props.admin}
+            logout={this.props.logout}
+            location={this.props.location}
+          />
         </Header>
         <div>
           <div className="admin-btn-array">
