@@ -15,7 +15,7 @@ const userSchema = new Schema({
 	city: String,
 	state: String,
 	zipcode: Number,
-	phone: Number,
+	phone: String,
 	waivers: [{
 		filepath: String,
 		signed: Boolean
