@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import ParallaxHero from "../../components/ParallaxHero";
@@ -44,7 +44,7 @@ class Rentals extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <Fragment>
         <NavBar
           loggedIn={this.props.loggedIn}
           admin={this.props.admin}
@@ -80,7 +80,7 @@ class Rentals extends Component {
           </div>
           <Footer />
         </div>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

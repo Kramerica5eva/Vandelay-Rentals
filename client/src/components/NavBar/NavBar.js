@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from 'react-router-dom';
 import GreyBtn from "./../Buttons/GreyBtn";
 import "./NavBar.css"
@@ -44,20 +44,20 @@ class NavBar extends React.Component {
                     {this.props.loggedIn ? (
                         <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
                     ) : (
-                            <React.Fragment>
+                            <Fragment>
                                 {this.props.loginShow ? (
-                                    <React.Fragment>
+                                    <Fragment>
                                         <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Signup</Link>
                                         <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login</Link>
-                                    </React.Fragment>
+                                    </Fragment>
                                 ) : (
-                                        <React.Fragment>
+                                        <Fragment>
                                             <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup</Link>
                                             <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Login</Link>
-                                        </React.Fragment>
+                                        </Fragment>
                                     )
                                 }
-                            </React.Fragment>
+                            </Fragment>
                         )
                     }
                 </div>
@@ -73,20 +73,20 @@ class NavBar extends React.Component {
                     {this.props.loggedIn ? (
                         <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
                     ) : (
-                            <React.Fragment>
+                            <Fragment>
                                 {this.props.loginShow ? (
-                                    <React.Fragment>
+                                    <Fragment>
                                         <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button">Signup</Link>
                                         <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login</Link>
-                                    </React.Fragment>
+                                    </Fragment>
                                 ) : (
-                                        <React.Fragment>
+                                        <Fragment>
                                             <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup</Link>
                                             <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button">Login</Link>
-                                        </React.Fragment>
+                                        </Fragment>
                                     )
                                 }
-                            </React.Fragment>
+                            </Fragment>
                         )
                     }
                 </div>

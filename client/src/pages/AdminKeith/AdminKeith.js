@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
@@ -114,7 +114,7 @@ class Admin extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <Fragment>
         <Modal
           show={this.state.isOpen}
           toggleModal={this.toggleModal}
@@ -211,7 +211,7 @@ class Admin extends Component {
           </ul>
           <Footer />
         </div>
-      </React.Fragment >
+      </Fragment >
     );
   }
 }
