@@ -69,12 +69,12 @@ class Home extends Component {
                 <p>View our wide selection of the latest and greatest stand up paddle boards and kayaks to purchase.</p>
               </div>
               <div className='image-box'>
-                <i class="fas fa-money-bill-alt icons"></i>
+                <i className="fas fa-money-bill-alt icons"></i>
               </div>
             </div>
             <div className='row-middle'>
             <div className='image-box'>
-              <i class="fas fa-exchange-alt icons"></i>
+              <i className="fas fa-exchange-alt icons"></i>
             </div>
             <div className='black-box'>
                 <h4>Rent</h4>
@@ -87,7 +87,7 @@ class Home extends Component {
                 <p>Sign up for a class with our instructional staff to start your adventure in a new sport, or to sharpen your skills.</p>
               </div>
               <div className='image-box'>
-                <i class="fab fa-leanpub icons"></i>
+                <i className="fab fa-leanpub icons"></i>
               </div>
             </div>
           </div>
