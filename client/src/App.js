@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import Rentals from "./pages/Rentals";
@@ -28,7 +28,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       isAuthenticated ? (
         <Component {...props} />
       ) : (
-        // send a state object with the redirect to inform the login page of the intended destination
+          //  send a state object with the redirect to inform the login page of the intended destination
+          //  'loginShow' is to make sure the login form shows instead of the signup form 
           <Redirect to={{
             pathname: "/login",
             state: { from: props.location, loginShow: true }
@@ -46,9 +47,10 @@ const AdminRoute = ({ component: Component, ...rest }) => (
       isAdmin ? (
         <Component {...props} />
       ) : (
-        // send a state object with the redirect to inform the login page of the intended destination
+          //  send a state object with the redirect to inform the login page of the intended destination
+          //  'loginShow' is to make sure the login form shows instead of the signup form 
           <Redirect to={{
-            pathname: "/",
+            pathname: "/login",
             state: { from: props.location, loginShow: true }
           }}
           />
@@ -125,7 +127,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/"
             render={routeProps => (
-              <React.Fragment>
+              <Fragment>
                 <Home {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
@@ -135,12 +137,12 @@ class App extends Component {
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-              </React.Fragment>
+              </Fragment>
             )}
           />
           <Route exact path="/rentals"
             render={routeProps => (
-              <React.Fragment>
+              <Fragment>
                 <Rentals {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
@@ -150,11 +152,11 @@ class App extends Component {
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-              </React.Fragment>
+              </Fragment>
             )} />
           <Route exact path="/sales"
             render={routeProps => (
-              <React.Fragment>
+              <Fragment>
                 <Sales {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
@@ -164,12 +166,12 @@ class App extends Component {
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-              </React.Fragment>
+              </Fragment>
             )}
           />
           <Route exact path="/courses"
             render={routeProps => (
-              <React.Fragment>
+              <Fragment>
                 <Courses {...routeProps}
                   toggleModal={this.toggleModal}
                   setModal={this.setModal}
@@ -179,12 +181,12 @@ class App extends Component {
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-              </React.Fragment>
+              </Fragment>
             )}
           />
           <Route exact path="/signup"
             render={routeProps => (
-              <React.Fragment>
+              <Fragment>
                 <Login {...routeProps}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
@@ -193,11 +195,11 @@ class App extends Component {
                   logout={this.logout}
                   loginShow={false}
                 />
-              </React.Fragment>)}
+              </Fragment>)}
           />
           <Route exact path="/login"
             render={routeProps => (
-              <React.Fragment>
+              <Fragment>
                 <Login {...routeProps}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
@@ -206,7 +208,7 @@ class App extends Component {
                   logout={this.logout}
                   loginShow={true}
                 />
-              </React.Fragment>
+              </Fragment>
             )}
           />
           <PrivateRoute path="/test" component={AddPropsToRoute(Test, {

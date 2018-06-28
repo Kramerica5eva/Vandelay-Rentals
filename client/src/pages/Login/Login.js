@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link, Redirect } from "react-router-dom";
 import Header from "../../components/Header";
 import DevLinks from "../../components/DevLinks";
@@ -76,7 +76,7 @@ class Login extends Component {
           <div id="login-forms-container">
 
             {this.state.loginShow ? (
-              <React.Fragment>
+              <Fragment>
                 <div className="login-toggle-div">
                   <button className="login-toggle-btn login-toggle-btn-light" onClick={this.toggleForm} >Signup</button>
                   <button className="login-toggle-btn">Login</button>
@@ -88,9 +88,9 @@ class Login extends Component {
                     updateUser={this.props.updateUser}
                   />
                 </div>
-              </React.Fragment>
+              </Fragment>
             ) : (
-                <React.Fragment>
+                <Fragment>
                   <div className="login-toggle-div">
                     <button className="login-toggle-btn">Signup</button>
                     <button className="login-toggle-btn login-toggle-btn-light" onClick={this.toggleForm} >Login</button>
@@ -102,7 +102,7 @@ class Login extends Component {
                       updateUser={this.props.updateUser}
                     />
                   </div>
-                </React.Fragment>
+                </Fragment>
               )}
 
           </div>

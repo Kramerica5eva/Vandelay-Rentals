@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import API from "../../utils/API";
@@ -101,7 +101,7 @@ class Test extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <Fragment>
         <Modal
           show={this.state.isOpen}
           toggleModal={this.toggleModal}
@@ -149,7 +149,7 @@ class Test extends Component {
 
 
             {this.state.images ? (
-              <React.Fragment>
+              <Fragment>
                 <h2>Rental Images</h2>
                 <ul>
                   {this.state.images.map(image => (
@@ -160,7 +160,7 @@ class Test extends Component {
                     </li>
                   ))}
                 </ul>
-              </React.Fragment>
+              </Fragment>
             ) : null}
 
 
@@ -195,7 +195,7 @@ class Test extends Component {
           </div>
           <Footer />
         </div>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

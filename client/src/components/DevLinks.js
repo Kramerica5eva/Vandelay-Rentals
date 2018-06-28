@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 
 const DevLinks = props => (
-  <React.Fragment>
+  <Fragment>
     <p className="dev-links-title">Dev Links</p>
     <div className="nav-container">
       <Link className="btn-link" to="/" role="button">Home</Link>
@@ -12,10 +12,10 @@ const DevLinks = props => (
       {props.loggedIn ? (
         <button className="btn-link" onClick={props.logout}>logout</button>
       ) : (
-          <React.Fragment>
+          <Fragment>
             <Link className="btn-link" to={{ pathname: "/signup", state: { from: props.location.pathname } }} role="button">Signup</Link>
             <Link className="btn-link" to="/login" role="button">Login</Link>
-          </React.Fragment>
+          </Fragment>
         )}
       <Link className="btn-link" to="/test" role="button">Test</Link>
       <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
@@ -24,7 +24,7 @@ const DevLinks = props => (
       {props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
       {props.admin ? <Link className="btn-link" to="/adminkeith" role="button">AdminKeith</Link> : null}
     </div>
-  </React.Fragment>
+  </Fragment>
 );
 
 export default DevLinks;
