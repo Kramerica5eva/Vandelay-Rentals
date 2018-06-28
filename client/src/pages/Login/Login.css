@@ -1,13 +1,54 @@
-
-.header h1 {
-   text-align: center;
-   margin-bottom: 10px;
+.header h3 {
+    text-align: center;
+    margin-bottom: 10px;
 }
 
-.header, .header + div {
+.header, .header+div {
     position: relative;
     top: 50px;
     padding: 15px;
 }
 
+#login-forms-container {
+    width: 370px;
+    margin: 50px auto;
+    padding: 0;
+    border: 1px solid #000;
+}
 
+.login-form-div {
+    border: 1px solid #000;
+    padding: 20px 5px 20px 35px;
+}
+
+.login-form-div h2 {
+    margin-bottom: 40px;
+}
+
+.login-toggle-div {
+    display: flex;
+    border: 1px solid #000;
+}
+
+.login-toggle-btn {
+    width: 50%;
+    background-color: #000;
+    color: #ddd;
+    padding: 10px 0;
+    border: none;
+    outline: transparent;
+}
+
+.login-toggle-btn-light {
+    opacity: .6;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sticky-footer-div {
+    flex: 1 0 auto;
+}

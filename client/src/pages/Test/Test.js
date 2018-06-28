@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import API from "../../utils/API";
@@ -7,6 +7,7 @@ import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 import ParallaxHero from "../../components/ParallaxHero"
 import { Input, FormBtn } from "../../components/Form";
+import DevLinks from "../../components/DevLinks";
 import "./Test.css";
 
 class Test extends Component {
@@ -71,7 +72,7 @@ class Test extends Component {
       selectedFile: newFile
     });
   };
-  
+
   handleUpload = event => {
     event.preventDefault();
     const { name } = event.target;
@@ -100,7 +101,7 @@ class Test extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <Fragment>
         <Modal
           show={this.state.isOpen}
           toggleModal={this.toggleModal}
@@ -109,13 +110,10 @@ class Test extends Component {
           footer={this.state.footer}
         />
         <NavBar
-          toggleModal={this.props.toggleModal}
-          setModal={this.props.setModal}
-          updateUser={this.props.updateUser}
           loggedIn={this.props.loggedIn}
-          firstName={this.props.firstName}
           admin={this.props.admin}
           logout={this.props.logout}
+          location={this.props.location}
         />
         <div className="main-container">
           <ParallaxHero
@@ -123,28 +121,13 @@ class Test extends Component {
             title="Vandelay Rentals"
           />
           <div className='body-container'>
-            <h1>Vandelay Test Page, Nomsayn?</h1>
-            <h2>A Page for Testing Components</h2>
-            <h2>(showing Rental results for dev purposes)</h2>
-            <div className="nav-container">
-              <Link className="btn-link" to="/" role="button">Home</Link>
-              <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
-              <Link className="btn-link" to="/sales" role="button">Sales</Link>
-              <Link className="btn-link" to="/courses" role="button">Courses</Link>
-              {this.props.loggedIn ? (
-                <button className="btn-link" onClick={this.props.logout}>logout</button>
-              ) : (
-                  <React.Fragment>
-                    <Link className="btn-link" to="/signup" role="button">Signup</Link>
-                    <Link className="btn-link" to="/login" role="button">Login</Link>
-                  </React.Fragment>
-                )}
-              <Link className="btn-link" to="/test" role="button">Test</Link>
-              <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
-              <Link className="btn-link" to="/testben" role="button">TestBen</Link>
-              <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
-              {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-            </div>
+            <h1>Keith's Admin Test Page</h1>
+            <DevLinks
+              loggedIn={this.props.loggedIn}
+              admin={this.props.admin}
+              logout={this.props.logout}
+              location={this.props.location}
+            />
           </div>
           <ParallaxHero
             image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1499858476316-343e284f1f67?ixlib=rb-0.3.5&s=4985c13dbbf85d7d0f5b90df50ea8695&auto=format&fit=crop&w=1350&q=80)' }}
@@ -166,7 +149,7 @@ class Test extends Component {
 
 
             {this.state.images ? (
-              <React.Fragment>
+              <Fragment>
                 <h2>Rental Images</h2>
                 <ul>
                   {this.state.images.map(image => (
@@ -177,7 +160,7 @@ class Test extends Component {
                     </li>
                   ))}
                 </ul>
-              </React.Fragment>
+              </Fragment>
             ) : null}
 
 
@@ -212,7 +195,7 @@ class Test extends Component {
           </div>
           <Footer />
         </div>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

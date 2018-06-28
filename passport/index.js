@@ -18,7 +18,7 @@ passport.deserializeUser((id, done) => {
 	console.log('DeserializeUser called');
 	User.findOne({ _id: id }).then(user => {
 		if (user) done(null, user);
-		else done(user.errors, null);
+		else done({ error: "Error"}, null);
 	}).catch(err => console.log(err));
 });
 
