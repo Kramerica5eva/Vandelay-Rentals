@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import ParallaxHero from "../../components/ParallaxHero";
+import NavBar from "../../components/NavBar";
+import Footer from "../../components/Footer";
 import SaleCard from "./../../components/SaleCard";
 import API from "../../utils/API";
 import "./Sales.css";
@@ -40,6 +42,16 @@ class Sales extends Component {
 
   render() {
     return (
+      <React.Fragment>
+      <NavBar
+          toggleModal={this.props.toggleModal}
+          setModal={this.props.setModal}
+          updateUser={this.props.updateUser}
+          loggedIn={this.props.loggedIn}
+          firstName={this.props.firstName}
+          admin={this.props.admin}
+          logout={this.props.logout}
+        />
       <div className="main-container">
       <ParallaxHero
           image={{backgroundImage:'url(https://images.unsplash.com/photo-1499936324534-c3e0da6694eb?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c3766361d47840f16392e54c4ea7cbb2&auto=format&fit=crop&w=800&q=80)'}}
@@ -71,7 +83,7 @@ class Sales extends Component {
           <h2>Purchase Items:</h2>
           <ul>
             {this.state.saleItems.filter(saleItem => saleItem.status === 'Available').map(item => (
-              <SaleCard 
+              <SaleCard
               key={item._id}
               name={item.name}
               category={item.category}
@@ -82,7 +94,9 @@ class Sales extends Component {
             ))}
           </ul>
         </div>
+        <Footer />
       </div>
+      </React.Fragment>
     );
   }
 }

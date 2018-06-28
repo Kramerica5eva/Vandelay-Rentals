@@ -1,6 +1,7 @@
 
 .body-container {
     background-color: white;
+    padding-bottom: 50px;
 }
 
 .desc-heading {
@@ -40,7 +41,7 @@
 
     background-color: black;
     color: white;
-    height: 250px;
+    height: 275px;
     font-size: 3em;
     padding: 3% 5%;
     text-align: center;
@@ -109,4 +110,8 @@
     line-height: 35px;
     letter-spacing: 1px;
     text-align: justify;
+}
+
+.about-us:parent {
+    margin-bottom: 0;
 }

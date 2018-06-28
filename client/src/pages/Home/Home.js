@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-import ParallaxHero from "./../../components/ParallaxHero"
+import ParallaxHero from "./../../components/ParallaxHero";
+import NavBar from "../../components/NavBar";
+import Footer from "../../components/Footer";
 import "./Home.css";
 
 class Home extends Component {
@@ -27,6 +29,16 @@ class Home extends Component {
 
   render() {
     return (
+      <React.Fragment>
+      <NavBar
+          toggleModal={this.props.toggleModal}
+          setModal={this.props.setModal}
+          updateUser={this.props.updateUser}
+          loggedIn={this.props.loggedIn}
+          firstName={this.props.firstName}
+          admin={this.props.admin}
+          logout={this.props.logout}
+        />
       <div className="main-container">
       <ParallaxHero
           image={{backgroundImage:'url(https://images.unsplash.com/uploads/1412701079442fffb7c1a/6b7a62a4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=63428fdde80191f1d2299d803dfe61c3&auto=format&fit=crop&w=1350&q=80)'}}
@@ -107,7 +119,9 @@ class Home extends Component {
 
           </div>
         </div>
+        <Footer />
       </div>
+      </React.Fragment>
     );
   }
 }
