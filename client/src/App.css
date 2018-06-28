@@ -129,6 +129,15 @@ li {
 /*  USED FOR THE PARALLAXHEADER COMPONENT */
 
 
+/*  CALENDAR */
+
+.calendar {
+    margin: 15px;
+}
+
+/*  END CALENDAR */
+
+
 /* Dev links styling */
 
 .nav-container {
@@ -167,3 +176,4 @@ li {
 }
 
 /* end Dev links styling */
+

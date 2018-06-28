@@ -8,7 +8,7 @@ import "./../../App.css";
 let moment = require("moment");
 
 let date = new Date();
-let dateWrapper = moment(date);
+// let dateWrapper = moment(date);
 
 class Test extends Component {
 
@@ -41,15 +41,24 @@ class Test extends Component {
   };
 
   handleFormSubmit = event => {
-    event.preventDefault();
+    event.preventDefault(); //<-----Keith, you know what this does right? 
     //  blah blah blah
   };
 
   onChange = date => {
+    this.getDays(date);
+  }
+
+  getDays = date => { //date is the array that is passed from the calendar when days are selected. 
+    let temp = [];
     let range = [];
-    date.map(dates => range.push(Date.parse(dates) / 1000))
-    this.setState({ unix: range, date: date });
-    console.log(range);
+    date.map(dates => temp.push(Date.parse(dates) / 1000)); //stores first and last day in temporary array
+    let days = Math.floor((temp[1] - temp[0]) / 86400); //seconds in day = 86400  Calculates total number of days for rental.
+    range.push(temp[0]); //store first day in range array.
+    for (let i = 0; i < days; i++) { //adds each day (including last) to range array
+      range.push(range[i] + 86400);
+    }
+    this.setState({ unix: range, date: date }); //sets state
   }
 
   render() {
@@ -88,9 +97,9 @@ class Test extends Component {
           calendarType={"US"}
           selectRange={true}
           returnValue={"range"}
+          className={"calendar"}
         />
-        <div>{this.state.unix.join(" ")}</div>
-        {/* {console.log(this.state.unix)} */}
+        <div style={{ position: 'relative', top: 50 + 'px', left: 25 + 'px' }}>{this.state.unix.join(" ")}</div>
       </div>
     );
   }
