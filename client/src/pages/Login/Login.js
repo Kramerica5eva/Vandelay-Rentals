@@ -43,7 +43,7 @@ class Login extends Component {
               admin: res.data.admin
             }
           });
-          // go back to the page the user was on before login
+          // Once logged in, set this.state.redirect to true so the component will reload and trigger the if/else to redirect elsewhere
           this.setState({ redirect: true });
         }
       }).catch(err => console.log(err));
@@ -51,12 +51,17 @@ class Login extends Component {
 
 
   render() {
+    //  'from' is set as a referrer either:
+    //    a) when login is arrived at due to a redirect caused by trying to access a protected route prior to signing in
+    //    b) when the login page is arrived at from the signup page - this allows us to prevent sending a user back to signup after logging in
+    console.log(this.props.location.state);
     const { from } = this.props.location.state || { from: null };
-    const { redirect } = this.state;
 
-    if (redirect) {
-      if (from) {
+    if (this.state.redirect) {
+      if (from && from !== "/signup") {
         return <Redirect to={from} />
+      } else if (from === "/signup") {
+        return <Redirect to="/" />
       } else {
         this.props.history.goBack();
       }
@@ -72,6 +77,7 @@ class Login extends Component {
           firstName={this.props.firstName}
           admin={this.props.admin}
           logout={this.props.logout}
+          location={this.props.location}
         />
       <div>
         <Header>
@@ -86,7 +92,7 @@ class Login extends Component {
               <button className="btn-link" onClick={this.props.logout}>logout</button>
             ) : (
                 <React.Fragment>
-                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
+                  <Link className="btn-link" to={{pathname: "/signup", state: { from: this.props.location.pathname }}} role="button">Signup</Link>
                   <Link className="btn-link" to="/login" role="button">Login</Link>
                 </React.Fragment>
               )}
@@ -95,6 +101,7 @@ class Login extends Component {
             <Link className="btn-link" to="/testben" role="button">TestBen</Link>
             <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
+            {this.props.admin ? <Link className="btn-link" to="/adminkeith" role="button">AdminKeith</Link> : null }
           </div>
         </Header>
         <div>

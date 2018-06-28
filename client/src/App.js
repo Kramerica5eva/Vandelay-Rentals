@@ -11,6 +11,7 @@ import Courses from "./pages/Courses";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
+import AdminKeith from "./pages/AdminKeith";
 import AddPropsToRoute from "./components/AddPropsToRoute";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
@@ -28,6 +29,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       isAuthenticated ? (
         <Component {...props} />
       ) : (
+        // send a state object with the redirect to inform the login page of the intended destination
           <Redirect to={{
             pathname: "/login",
             state: { from: props.location }
@@ -45,6 +47,7 @@ const AdminRoute = ({ component: Component, ...rest }) => (
       isAdmin ? (
         <Component {...props} />
       ) : (
+        // send a state object with the redirect to inform the login page of the intended destination
           <Redirect to={{
             pathname: "/",
             state: { from: props.location }
@@ -246,6 +249,16 @@ class App extends Component {
           })}
           />
           <AdminRoute path="/admin" component={AddPropsToRoute(Admin, {
+            toggleModal: this.toggleModal,
+            setModal: this.setModal,
+            updateUser: this.updateUser,
+            loggedIn: this.state.loggedIn,
+            firstName: this.state.firstName,
+            admin: this.state.admin,
+            logout: this.logout
+          })}
+          />
+          <AdminRoute path="/adminkeith" component={AddPropsToRoute(AdminKeith, {
             toggleModal: this.toggleModal,
             setModal: this.setModal,
             updateUser: this.updateUser,

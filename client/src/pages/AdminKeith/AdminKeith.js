@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
 import Modal from "../../components/Modal";
-import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
+import NavBar from "../../components/NavBar";
 
 class Admin extends Component {
   state = {
@@ -122,15 +122,15 @@ class Admin extends Component {
           footer={this.state.footer}
         />
         <NavBar
-          toggleModal={this.props.toggleModal}
-          setModal={this.props.setModal}
-          updateUser={this.props.updateUser}
-          loggedIn={this.props.loggedIn}
-          firstName={this.props.firstName}
-          admin={this.props.admin}
-          logout={this.props.logout}
-          location={this.props.location}
-        />
+            toggleModal={this.props.toggleModal}
+            setModal={this.props.setModal}
+            updateUser={this.props.updateUser}
+            loggedIn={this.props.loggedIn}
+            firstName={this.props.firstName}
+            admin={this.props.admin}
+            logout={this.props.logout}
+            location={this.props.location}
+          />
         <Header>
           <h1>Vandelay Admin Page, Nomsayn?</h1>
           <h2>Admin Page</h2>
