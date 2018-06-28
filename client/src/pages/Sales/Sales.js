@@ -51,6 +51,7 @@ class Sales extends Component {
           firstName={this.props.firstName}
           admin={this.props.admin}
           logout={this.props.logout}
+          location={this.props.location}
         />
       <div className="main-container">
       <ParallaxHero
@@ -77,6 +78,7 @@ class Sales extends Component {
             <Link className="btn-link" to="/testben" role="button">TestBen</Link>
             <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
+            {this.props.admin ? <Link className="btn-link" to="/adminkeith" role="button">AdminKeith</Link> : null }
           </div>
         </Header>
         <div className='body-container'>

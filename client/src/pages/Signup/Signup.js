@@ -47,6 +47,7 @@ class Signup extends Component {
       phone: this.state.phone
     })
       .then(res => {
+        //  'errmsg' seems to be standard MongoDB terminology...
         if (!res.data.errmsg) {
           // update App.js state
           this.props.updateUser({
@@ -57,7 +58,7 @@ class Signup extends Component {
               firstName: res.data.firstName
             }
           });
-          // go back to the page the user was on before login
+          // Once signed up, set this.state.redirect to true so the component will reload and trigger the if/else to redirect elsewhere
           this.setState({ redirect: true });
         } else {
           console.log('username already taken');
@@ -65,26 +66,28 @@ class Signup extends Component {
       }).catch(error => {
         console.log('signup error: ');
         console.log(error);
-
-      })
+      });
   };
 
 
   render() {
+    //  'from' is set as a referrer when the signup page is arrived at from the login page
+    //  This is being used to prevent sending a user back to signup after logging in
     console.log(this.props.location.state);
     const { from } = this.props.location.state || { from: null };
-    const { redirect } = this.state;
 
-    if (redirect) {
-      if (from) {
+    if (this.state.redirect) {
+      if (from && from !== "/login") {
         return <Redirect to={from} />
+      } else if (from === "/login") {
+        return <Redirect to="/" />
       } else {
         this.props.history.goBack();
       }
     }
     return (
       <React.Fragment>
-      <NavBar
+        <NavBar
           toggleModal={this.props.toggleModal}
           setModal={this.props.setModal}
           updateUser={this.props.updateUser}
@@ -92,134 +95,135 @@ class Signup extends Component {
           firstName={this.props.firstName}
           admin={this.props.admin}
           logout={this.props.logout}
+          location={this.props.location}
         />
-      <div>
-        <Header>
-          <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
-          <h2>Create an account</h2>
-          <div className="nav-container">
-            <Link className="btn-link" to="/" role="button">Home</Link>
-            <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
-            <Link className="btn-link" to="/sales" role="button">Sales</Link>
-            <Link className="btn-link" to="/courses" role="button">Courses</Link>
-            {this.props.loggedIn ? (
-              <button className="btn-link" onClick={this.props.logout}>logout</button>
-            ) : (
-                <React.Fragment>
-                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
-                  <Link className="btn-link" to="/login" role="button">Login</Link>
-                </React.Fragment>
-              )}
-            <Link className="btn-link" to="/test" role="button">Test</Link>
-            <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
-            <Link className="btn-link" to="/testben" role="button">TestBen</Link>
-            <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
-            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null }
-          </div>
-        </Header>
         <div>
-          <form>
-            <Input
-              value={this.state.username}
-              onChange={this.handleInputChange}
-              name="username"
-              type="text"
-              label="Create a Username:"
-            />
-            <Input
-              value={this.state.password}
-              onChange={this.handleInputChange}
-              name="password"
-              type="password"
-              label="Create a Password:"
-            />
-            <Input
-              value={this.state.confirmPassword}
-              onChange={this.handleInputChange}
-              name="confirmPassword"
-              type="password"
-              label="Confirm your password:"
-            />
-            <Input
-              value={this.state.firstName}
-              onChange={this.handleInputChange}
-              name="firstName"
-              type="text"
-              label="First Name:"
-            />
-            <Input
-              value={this.state.lastName}
-              onChange={this.handleInputChange}
-              name="lastName"
-              type="text"
-              label="Last Name:"
-            />
-            <Input
-              value={this.state.email}
-              onChange={this.handleInputChange}
-              name="email"
-              type="email"
-              label="Email:"
-            />
-            <Input
-              value={this.state.street}
-              onChange={this.handleInputChange}
-              name="street"
-              type="text"
-              label="Street Address:"
-            />
-            <Input
-              value={this.state.city}
-              onChange={this.handleInputChange}
-              name="city"
-              type="text"
-              label="City:"
-            />
-            <Input
-              value={this.state.state}
-              onChange={this.handleInputChange}
-              name="state"
-              type="text"
-              label="State:"
-            />
-            <Input
-              value={this.state.zipcode}
-              onChange={this.handleInputChange}
-              name="zipcode"
-              type="text"
-              label="Zip Code:"
-            />
-            <Input
-              value={this.state.phone}
-              onChange={this.handleInputChange}
-              name="phone"
-              type="Number"
-              label="Phone Number:"
-            />
-            <FormBtn
-              disabled={(
-                !this.state.username ||
-                !this.state.password ||
-                !this.state.confirmPassword ||
-                !this.state.username ||
-                !this.state.password ||
-                !this.state.firstName ||
-                !this.state.lastName ||
-                !this.state.email ||
-                !this.state.street ||
-                !this.state.city ||
-                !this.state.state ||
-                !this.state.zipcode ||
-                !this.state.phone
-              ) || (this.state.password !== this.state.confirmPassword)}
-              onClick={this.handleFormSubmit}
-            >
-              Submit
+          <Header>
+            <h1>Vandelay Outdoor Gear, Nomsayn?</h1>
+            <h2>Create an account</h2>
+            <div className="nav-container">
+              <Link className="btn-link" to="/" role="button">Home</Link>
+              <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
+              <Link className="btn-link" to="/sales" role="button">Sales</Link>
+              <Link className="btn-link" to="/courses" role="button">Courses</Link>
+              {this.props.loggedIn ? (
+                <button className="btn-link" onClick={this.props.logout}>logout</button>
+              ) : (
+                  <React.Fragment>
+                    <Link className="btn-link" to="/signup" role="button">Signup</Link>
+                    <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login</Link>
+                  </React.Fragment>
+                )}
+              <Link className="btn-link" to="/test" role="button">Test</Link>
+              <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
+              <Link className="btn-link" to="/testben" role="button">TestBen</Link>
+              <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
+              {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
+            </div>
+          </Header>
+          <div>
+            <form>
+              <Input
+                value={this.state.username}
+                onChange={this.handleInputChange}
+                name="username"
+                type="text"
+                label="Create a Username:"
+              />
+              <Input
+                value={this.state.password}
+                onChange={this.handleInputChange}
+                name="password"
+                type="password"
+                label="Create a Password:"
+              />
+              <Input
+                value={this.state.confirmPassword}
+                onChange={this.handleInputChange}
+                name="confirmPassword"
+                type="password"
+                label="Confirm your password:"
+              />
+              <Input
+                value={this.state.firstName}
+                onChange={this.handleInputChange}
+                name="firstName"
+                type="text"
+                label="First Name:"
+              />
+              <Input
+                value={this.state.lastName}
+                onChange={this.handleInputChange}
+                name="lastName"
+                type="text"
+                label="Last Name:"
+              />
+              <Input
+                value={this.state.email}
+                onChange={this.handleInputChange}
+                name="email"
+                type="email"
+                label="Email:"
+              />
+              <Input
+                value={this.state.street}
+                onChange={this.handleInputChange}
+                name="street"
+                type="text"
+                label="Street Address:"
+              />
+              <Input
+                value={this.state.city}
+                onChange={this.handleInputChange}
+                name="city"
+                type="text"
+                label="City:"
+              />
+              <Input
+                value={this.state.state}
+                onChange={this.handleInputChange}
+                name="state"
+                type="text"
+                label="State:"
+              />
+              <Input
+                value={this.state.zipcode}
+                onChange={this.handleInputChange}
+                name="zipcode"
+                type="text"
+                label="Zip Code:"
+              />
+              <Input
+                value={this.state.phone}
+                onChange={this.handleInputChange}
+                name="phone"
+                type="Number"
+                label="Phone Number:"
+              />
+              <FormBtn
+                disabled={(
+                  !this.state.username ||
+                  !this.state.password ||
+                  !this.state.confirmPassword ||
+                  !this.state.username ||
+                  !this.state.password ||
+                  !this.state.firstName ||
+                  !this.state.lastName ||
+                  !this.state.email ||
+                  !this.state.street ||
+                  !this.state.city ||
+                  !this.state.state ||
+                  !this.state.zipcode ||
+                  !this.state.phone
+                ) || (this.state.password !== this.state.confirmPassword)}
+                onClick={this.handleFormSubmit}
+              >
+                Submit
               </FormBtn>
-          </form>
+            </form>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
       </React.Fragment>
     );
   }
