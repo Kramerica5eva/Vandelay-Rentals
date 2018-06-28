@@ -121,7 +121,7 @@ li {
 }
 
 .main-container > .body-container {
-    padding: 1% 5%;
+    padding: 1% 5% 5% 5%;
     min-height: 55vh;
 }
 
