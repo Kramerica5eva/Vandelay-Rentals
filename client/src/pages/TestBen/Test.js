@@ -2,13 +2,20 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
-import Calendar from "../../components/Calendar";
+// import Calendar from "../../components/Calendar";
+import Calendar from "react-calendar";
 import "./../../App.css";
+let moment = require("moment");
 
+let date = new Date();
+let dateWrapper = moment(date);
 
 class Test extends Component {
+
   state = {
-    rentals: []
+    rentals: [],
+    date: new Date(),
+    unix: []
   };
 
   componentDidMount() {
@@ -37,6 +44,13 @@ class Test extends Component {
     event.preventDefault();
     //  blah blah blah
   };
+
+  onChange = date => {
+    let range = [];
+    date.map(dates => range.push(Date.parse(dates) / 1000))
+    this.setState({ unix: range, date: date });
+    console.log(range);
+  }
 
   render() {
     return (
@@ -68,7 +82,15 @@ class Test extends Component {
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
           </div>
         </Header>
-        <Calendar/>
+        <Calendar
+          onChange={this.onChange}
+          value={this.state.date}
+          calendarType={"US"}
+          selectRange={true}
+          returnValue={"range"}
+        />
+        <div>{this.state.unix.join(" ")}</div>
+        {/* {console.log(this.state.unix)} */}
       </div>
     );
   }
