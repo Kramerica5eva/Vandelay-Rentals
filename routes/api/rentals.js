@@ -19,10 +19,14 @@ router
 
 // Matches with '/api/date/:from/:to'
 // get finds items available by date
-// put makes a reservation
 router
   .route('/date/:from/:to')
-  .get(rentalsController.findbyDates)
+  .get(rentalsController.findbyDates);
+
+// Matches with '/api/date/:from/:to/:id'
+// put makes a reservation
+router
+  .route('/date/:from/:to/:id')
   .put(isLoggedIn, rentalsController.makeReservation);
 
 // Matches with '/api/remove/:from/:to'

@@ -23,20 +23,20 @@ const userSchema = new Schema({
 	reservations: [{
 		itemId: String,
 		date: {
-			from: Date,
-			to: Date
+			from: Number,
+			to: Number
 		}
 	}],
 	pastRentals: [{
 		itemId: String,
 		date: {
-			from: Date,
-			to: Date
+			from: Number,
+			to: Number
 		}
 	}],
 	purchases: [{
 		itemId: String,
-		date: Date,
+		date: Number,
 		price: Schema.Types.Decimal128
 	}],
 	standing: {

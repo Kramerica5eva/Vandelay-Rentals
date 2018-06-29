@@ -21,7 +21,10 @@ class Test extends Component {
     images: [],
     rentalId: "",
     selectedFile: null,
-    image: null
+    image: null,
+    rent_from: "",
+    rent_to: "",
+    rental_id: ""
   };
 
   componentDidMount() {
@@ -80,19 +83,54 @@ class Test extends Component {
 
   handleDateSearch = event => {
     event.preventDefault();
-    // const from = this.state.date_from;
-    // const to = this.state.date_to;
-    const from = "1532088600";
-    const to = "1532390200";
+    const from = this.state.date_from;
+    const to = this.state.date_to;
 
-    console.log(from);
-    console.log(to);
+    API.getAllRentals(from, to)
+      .then(results => {
+        console.log(results);
 
-    API.getRentalsByDates(from, to)
-      .then(res => {
-        console.log(res);
+        let availableArray = [];
+
+        results.data.forEach(function (model) {
+          let testingArray = [];
+
+          model.reservations.map(each => {
+
+            if (!(each.date.to < from) && !(each.date.from > to)) {
+              // if the reservation is a match (meaning it's unavailable)
+              testingArray.push("match");
+            }
+
+          })
+
+          if (testingArray.length === 0) {
+            availableArray.push(model);
+          }
+
+        })
+
+        this.setState({
+          rentals: availableArray
+        });
+
       })
       .catch(err => console.log(err));
+  }
+
+  handleReserveRental = event => {
+    event.preventDefault();
+    const from = this.state.rent_from;
+    const to = this.state.rent_to;
+    const id = this.state.rental_id;
+
+    API.reserveRental(from, to, id)
+      .then(response => {
+        API.addRentalToUser(from, to, id)
+          .then(result => {
+            console.log(result);
+          })
+      })
   }
 
   fileSelectedHandler = event => {
@@ -163,8 +201,10 @@ class Test extends Component {
               <button onClick={() => this.getByCategory("Kayak")}>Kayaks</button>
               <button onClick={this.getAllRentals}>See All</button>
             </div>
-            <div className="rentals-by-date-div">
-              <form>
+            <div className="rentals-by-date-form-div">
+
+              <form className="see-rentals-form">
+                <h4>See Rentals Available by Date</h4>
                 <Input
                   value={this.state.date_from}
                   onChange={this.handleInputChange}
@@ -189,6 +229,39 @@ class Test extends Component {
                 </FormBtn>
               </form>
 
+              <form className="reserve-rentals-form">
+                <h4>Reserve an Item</h4>
+                <Input
+                  value={this.state.rent_from}
+                  onChange={this.handleInputChange}
+                  name="rent_from"
+                  type="text"
+                  label="From:"
+                />
+                <Input
+                  value={this.state.rent_to}
+                  onChange={this.handleInputChange}
+                  name="rent_to"
+                  type="text"
+                  label="To:"
+                />
+                <Input
+                  value={this.state.rental_id}
+                  onChange={this.handleInputChange}
+                  name="rental_id"
+                  type="text"
+                  label="Item Id:"
+                />
+                <FormBtn
+                  disabled={(
+                    !this.state.rent_from || !this.state.rent_to || !this.state.rental_id
+                  )}
+                  onClick={this.handleReserveRental}
+                >
+                  Submit
+                </FormBtn>
+              </form>
+
             </div>
 
             <h2>Rentals:</h2>
@@ -205,8 +278,8 @@ class Test extends Component {
                   <div className="reservations-div">
                     {rental.reservations ? rental.reservations.map(res => (
                       <div className="reservation">
-                        <p>From: {res.from}</p>
-                        <p>To: {res.to}</p>
+                        <p>From: {res.date.from}</p>
+                        <p>To: {res.date.to}</p>
                       </div>
                     )) : null}
                   </div>

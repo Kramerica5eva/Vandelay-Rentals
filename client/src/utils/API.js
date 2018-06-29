@@ -79,8 +79,12 @@ export default {
     return axios.get(`/api/rentals/date/${from}/${to}`);
   },
   // Reserves Rental by date range - reservation data will include the item and the user.
-  reserveRental: function (from, to, reservationData) {
-    return axios.put(`/api/rentals/date/${from}/${to}`, reservationData);
+  reserveRental: function (from, to, id) {
+    return axios.put(`/api/rentals/date/${from}/${to}/${id}`);
+  },
+  // Adds reservation data to user's database document
+  addRentalToUser: function (from, to, id) {
+    return axios.put(`/user/${from}/${to}/${id}`);
   },
   // Cancels a reservation - 'reservationData' collected by event listener and should include the item info and the user.
   removeRentalReservation: function (from, to, reservationData) {
