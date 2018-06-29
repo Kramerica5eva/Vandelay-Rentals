@@ -8,6 +8,7 @@ import Footer from "../../components/Footer";
 import ParallaxHero from "../../components/ParallaxHero"
 import { Input, FormBtn } from "../../components/Form";
 import DevLinks from "../../components/DevLinks";
+import RentalCard from "../../components/RentalCard";
 import "./Test.css";
 
 class Test extends Component {
@@ -59,12 +60,40 @@ class Test extends Component {
       .catch(err => console.log(err));
   }
 
+  getByCategory = category => {
+    API.getRentalsByCategory(category)
+      .then(res => {
+        this.setState({
+          rentals: res.data
+        })
+        console.log(this.state.rentals);
+      })
+      .catch(err => console.log(err));
+  }
+
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
       [name]: value
     });
   };
+
+  handleDateSearch = event => {
+    event.preventDefault();
+    // const from = this.state.date_from;
+    // const to = this.state.date_to;
+    const from = "1532088600";
+    const to = "1532390200";
+
+    console.log(from);
+    console.log(to);
+
+    API.getRentalsByDates(from, to)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.log(err));
+  }
 
   fileSelectedHandler = event => {
     const newFile = event.target.files[0];
@@ -128,7 +157,67 @@ class Test extends Component {
               logout={this.props.logout}
               location={this.props.location}
             />
+
+            <div className="category-btn-container">
+              <button onClick={() => this.getByCategory("Paddleboard")}>PaddleBoards</button>
+              <button onClick={() => this.getByCategory("Kayak")}>Kayaks</button>
+              <button onClick={this.getAllRentals}>See All</button>
+            </div>
+            <div className="rentals-by-date-div">
+              <form>
+                <Input
+                  value={this.state.date_from}
+                  onChange={this.handleInputChange}
+                  name="date_from"
+                  type="text"
+                  label="From:"
+                />
+                <Input
+                  value={this.state.date_to}
+                  onChange={this.handleInputChange}
+                  name="date_to"
+                  type="text"
+                  label="To:"
+                />
+                <FormBtn
+                  disabled={(
+                    !this.state.date_from || !this.state.date_to
+                  )}
+                  onClick={this.handleDateSearch}
+                >
+                  Submit
+                </FormBtn>
+              </form>
+
+            </div>
+
+            <h2>Rentals:</h2>
+            <div className="rental-results-div">
+              {this.state.rentals ? this.state.rentals.map(rental => (
+
+                <div id="rentalCard" className="rentalCard">
+                  <div key={rental._id}>
+                    <h3>{rental.name}</h3>
+                    <h4>{rental.category}</h4>
+                    <h5>Maker: {rental.maker}</h5>
+                    <p>Daily rate: ${rental.rate}</p>
+                  </div>
+                  <div className="reservations-div">
+                    {rental.reservations ? rental.reservations.map(res => (
+                      <div className="reservation">
+                        <p>From: {res.from}</p>
+                        <p>To: {res.to}</p>
+                      </div>
+                    )) : null}
+                  </div>
+                </div>
+
+              )) : null}
+            </div>
+
           </div>
+
+
           <ParallaxHero
             image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1499858476316-343e284f1f67?ixlib=rb-0.3.5&s=4985c13dbbf85d7d0f5b90df50ea8695&auto=format&fit=crop&w=1350&q=80)' }}
             title="About our Company"
@@ -164,34 +253,6 @@ class Test extends Component {
             ) : null}
 
 
-            <h2>Rentals Available:</h2>
-            <ul>
-              {this.state.rentals ? this.state.rentals.map(rental => (
-                <li key={rental._id}>
-                  <h3>{rental.name}</h3>
-                  <div>
-                    <h4>{rental.category}</h4>
-                    <h5>Maker: {rental.maker}</h5>
-                    <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>          <form encType="multipart/form-data">
-                      <Input
-                        type="file"
-                        name="file"
-                        label="Upload an image"
-                        onChange={this.fileSelectedHandler}
-                      />
-                      <FormBtn
-                        name={rental._id}
-                        onClick={this.handleUpload}
-                      >
-                        Submit
-                          </FormBtn>
-                    </form>
-
-                    <button onClick={() => this.getImages(rental._id)}>Get Images</button>
-                  </div>
-                </li>
-              )) : null}
-            </ul>
           </div>
           <Footer />
         </div>

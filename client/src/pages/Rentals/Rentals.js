@@ -69,7 +69,7 @@ class Rentals extends Component {
             <ul>
               {this.state.rentals.map(rental => (
                 <RentalCard
-                  key={rental._id}
+                  id={rental._id}
                   name={rental.name}
                   category={rental.category}
                   maker={rental.maker}

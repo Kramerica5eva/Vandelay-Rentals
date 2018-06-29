@@ -133,7 +133,7 @@ class SignupForm extends Component {
             onChange={this.handleInputChange}
             name="password"
             type="password"
-            pattern="^[\S]{4}$"
+            pattern="^[\S]{4,}$"
             label="Create a Password:"
           />
           <Input

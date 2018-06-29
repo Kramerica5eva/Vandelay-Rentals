@@ -73,11 +73,6 @@ module.exports = {
         res.json(user);
       }
     });
-    // console.log('logged in', req.user);
-    // var userInfo = {
-    //   username: req.user.username
-    // };
-    // res.send(userInfo);
   },
 
   logout: function (req, res) {
