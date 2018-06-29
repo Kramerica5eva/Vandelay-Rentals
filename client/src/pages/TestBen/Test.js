@@ -5,6 +5,7 @@ import API from "../../utils/API";
 // import Calendar from "../../components/Calendar";
 import Calendar from "react-calendar";
 import "./../../App.css";
+import RentalCard from "../../components/RentalCard";
 let moment = require("moment");
 
 let date = new Date();
@@ -14,7 +15,7 @@ class Test extends Component {
 
   state = {
     rentals: [],
-    date: new Date(),
+    // date: new Date(),
     unix: []
   };
 
@@ -50,6 +51,7 @@ class Test extends Component {
   }
 
   getDays = date => { //date is the array that is passed from the calendar when days are selected. 
+    console.log("running getDays")
     let temp = [];
     let range = [];
     date.map(dates => temp.push(Date.parse(dates) / 1000)); //stores first and last day in temporary array
@@ -59,6 +61,53 @@ class Test extends Component {
       range.push(range[i] + 86400);
     }
     this.setState({ unix: range, date: date }); //sets state
+  }
+
+  // checkAvailability = itemRes => {
+  //   for (let i = 0; i < itemRes.length; i++) {
+  //     for (let j = 0; j < itemRes[i].reservations.length; j++) {
+  //       let temp = [];
+  //       let range = [];
+
+  //       temp.push(Date.parse(itemRes.reserverations[j].from));
+  //       temp.push(Date.parse(itemRes.reserverations[j].to));
+
+  //       let days = Math.floor((temp[1] - temp[0]) / 86400);
+  //       range.push(temp[0]);
+  //       for (let k = 0; k < days; k++) {
+  //         range.push(range[k] + 86400);
+  //       }
+  //       for (let l = 0; l < range.length; l++) {
+  //         for (let m = 0; m < this.state.unix.length; m++) {
+  //           if (this.state.unix[m] === range[l]) {
+  //             return false;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return true;
+  // }
+
+  checkAvailability = itemRes => { //passed all the reservations for a given item
+    console.log("checking availability")
+    for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
+      let range = []; //holds each individual day of a reservation
+      let days = (itemRes[i].to - itemRes[i].from) / 86400; //determines total number of days for each reservation
+      range.push(itemRes[i].from); //pushes the first day of the reservation
+      for (let j = 0; j < days; j++) {//
+        range.push(range[j] + 86400); //adds all days of a reservation to range for comparison
+      };  
+      console.log(range);
+      console.log(this.state.unix);                            //
+      for (let k = 0; k < this.state.unix.length; k++) { //compares each index in this.state.unix to each index in range
+        console.log("in the for loop")
+        if (range.includes(this.state.unix[k])) { //
+          return false;                           //returns false if range include the index value of this.state.unix
+        }                                         //
+      }
+    }
+    return true; //returns true if no matches are found
   }
 
   render() {
@@ -93,13 +142,30 @@ class Test extends Component {
         </Header>
         <Calendar
           onChange={this.onChange}
-          value={this.state.date}
+          // value={this.state.date}
           calendarType={"US"}
           selectRange={true}
           returnValue={"range"}
           className={"calendar"}
         />
         <div style={{ position: 'relative', top: 50 + 'px', left: 25 + 'px' }}>{this.state.unix.join(" ")}</div>
+        <div className='rentals'>
+          <h2>Rentals Available:</h2>
+          {/* <ul> */}
+          {this.state.rentals.map(rental => (
+            <RentalCard
+              key={rental._id}
+              id={rental._id}
+              name={rental.name}
+              category={rental.category}
+              maker={rental.maker}
+              reservations={rental.reservations}
+              availability={this.checkAvailability(rental.reservations) ? "Available" : "Unavailable"}
+              rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
+            </RentalCard>
+          ))}
+          {/* </ul> */}
+        </div>
       </div>
     );
   }
