@@ -136,8 +136,8 @@ const rentalSeed = [
     sku: 'p-2017-66b-002',
     dailyRate: 20.00,
     reservations: [
-      { from: 1532044800-64800, to:1532304000-64800 },
-      { from: 1532736000-64800, to:1532822400-64800 }
+      { from: 1532044800-64800, to:1532304000-64800 }, //subtracting 64800 normalizes all of the times to midnight on the morning of the desired date. 
+      { from: 1532736000-64800, to:1532822400-64800 }  //it was easier to do this rather than recalculate all of the unix timestamps
     ],
     pastRentals: [],
     timesRented: 22,

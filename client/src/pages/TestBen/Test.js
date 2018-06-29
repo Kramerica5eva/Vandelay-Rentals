@@ -63,32 +63,6 @@ class Test extends Component {
     this.setState({ unix: range, date: date }); //sets state
   }
 
-  // checkAvailability = itemRes => {
-  //   for (let i = 0; i < itemRes.length; i++) {
-  //     for (let j = 0; j < itemRes[i].reservations.length; j++) {
-  //       let temp = [];
-  //       let range = [];
-
-  //       temp.push(Date.parse(itemRes.reserverations[j].from));
-  //       temp.push(Date.parse(itemRes.reserverations[j].to));
-
-  //       let days = Math.floor((temp[1] - temp[0]) / 86400);
-  //       range.push(temp[0]);
-  //       for (let k = 0; k < days; k++) {
-  //         range.push(range[k] + 86400);
-  //       }
-  //       for (let l = 0; l < range.length; l++) {
-  //         for (let m = 0; m < this.state.unix.length; m++) {
-  //           if (this.state.unix[m] === range[l]) {
-  //             return false;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return true;
-  // }
-
   checkAvailability = itemRes => { //passed all the reservations for a given item
     console.log("checking availability")
     for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
@@ -97,11 +71,8 @@ class Test extends Component {
       range.push(itemRes[i].from); //pushes the first day of the reservation
       for (let j = 0; j < days; j++) {//
         range.push(range[j] + 86400); //adds all days of a reservation to range for comparison
-      };  
-      console.log(range);
-      console.log(this.state.unix);                            //
+      };                              //
       for (let k = 0; k < this.state.unix.length; k++) { //compares each index in this.state.unix to each index in range
-        console.log("in the for loop")
         if (range.includes(this.state.unix[k])) { //
           return false;                           //returns false if range include the index value of this.state.unix
         }                                         //
