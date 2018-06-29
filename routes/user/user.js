@@ -10,6 +10,8 @@ router.post('/login', passport.authenticate('local'), userController.login);
 
 router.post('/logout', userController.logout);
 
+router.put(`/:from/:to/:id`, userController.addReservation);
+
 //  this route isn't currently being used - thought it might be useful for validating a user
 router.get('/auth', function (req, res) {
   if (req.isAuthenticated())

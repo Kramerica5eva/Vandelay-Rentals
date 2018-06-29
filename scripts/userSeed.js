@@ -23,7 +23,11 @@ const userSeed = [
     state: "UT",
     zipcode: 84010,
     phone: 8018666301,
-    admin: true
+    waivers: [],
+    reservations: [],
+    pastRentals: [],
+    admin: true,
+
   },
   {
     username: "ben",
@@ -36,6 +40,9 @@ const userSeed = [
     state: "UT",
     zipcode: 84043,
     phone: 8013693718,
+    waivers: [],
+    reservations: [],
+    pastRentals: [],
     admin: true
   },
   {
@@ -48,7 +55,25 @@ const userSeed = [
     state: "UT",
     zipcode: 84010,
     phone: 1234567890,
-    admin: false
+    waivers: [],
+    reservations: [],
+    pastRentals: [],
+    admin: true
+  },
+  {
+    username: "Doofy",
+    firstName: "Mr",
+    lastName: "Sillyface",
+    email: "Why@gmail.com",
+    street: "123 Home St",
+    city: "Bountiful",
+    state: "UT",
+    zipcode: 84010,
+    phone: 678-899-1254,
+    waivers: [],
+    reservations: [],
+    pastRentals: [],
+    admin: true
   }
 ]
 

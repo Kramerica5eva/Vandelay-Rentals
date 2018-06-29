@@ -25,6 +25,27 @@ body:not(ParallaxHero) {
   grid-template-columns: 250px;
 }
 
+.category-btn-container {
+  width: 300px;
+  margin: 50px auto;
+}
+
+.rentals-by-date-form-div {
+  border: 1px solid #000;
+  display: flex;
+  width: 750px;
+  margin: 50px auto;
+  padding: 15px;
+}
+
+.rentals-by-date-form-div h4 {
+  margin-bottom: 50px;
+}
+
+.see-rentals-form {
+  width: 50%;
+}
+
 @media (min-width: 600px) {
   .rental-results-div {
     width: 530px;

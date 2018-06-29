@@ -8,6 +8,19 @@ mongoose.connect(
   process.env.MONGODB_URI || "mongodb://localhost/vandelay_rental"
 );
 
+const rentalDates = [
+  { from: 1532088000, to: 1532390400 },
+  { from: 1532779200, to: 1532908800 },
+  { from: 1533297600, to: 1533513600 },
+  { from: 1533643200, to: 1533945600 },
+  { from: 1533902400, to: 1534118400 },
+  { from: 1533902400, to: 1534723200 },
+  { from: 1534334400, to: 1534723200 },
+  { from: 1536321600, to: 1536624000 },
+  { from: 1533902400, to: 1534204800 },
+  { from: 1536321600, to: 1536624000 }
+]
+
 const rentalSeed = [
   {
     name: 'Tough-Tec',
@@ -15,10 +28,7 @@ const rentalSeed = [
     maker: 'BIC Sport',
     sku: 'p-2017-66b-002',
     dailyRate: 20.00,
-    reservations: [
-      { from: '1532088000', to:'1532390400' },
-      { from: '1532779200', to:'1532908800' }
-    ],
+    reservations: [],
     pastRentals: [],
     timesRented: 22,
     dateAcquired: '1492257600',
@@ -31,12 +41,7 @@ const rentalSeed = [
     maker: 'Pau Hana',
     sku: 'p-2018-89k-004',
     dailyRate: 22.00,
-    reservations: [
-      { from: '1532779200', to:'1532908800' },
-      { from: '1533297600', to:'1533513600' },
-      { from: '1533643200', to:'1533945600' },
-      { from: '1533902400', to:'1534118400' }
-    ],
+    reservations: [],
     pastRentals: [],
     timesRented: 0,
     dateAcquired: '1525435200',
@@ -49,10 +54,7 @@ const rentalSeed = [
     maker: 'Bote',
     sku: 'p-2018-79p-011',
     dailyRate: 32.00,
-    reservations: [
-      { from: '1532779200', to:'1532908800' },
-      { from: '1533902400', to:'1534723200' }
-    ],
+    reservations: [],
     pastRentals: [],
     timesRented: 6,
     dateAcquired: '1492257600',
@@ -65,11 +67,7 @@ const rentalSeed = [
     maker: 'Surftech',
     sku: 'p-2018-67r-059',
     dailyRate: 29.00,
-    reservations: [
-      { from: '1532088000', to:'1532390400' },
-      { from: '1533297600', to:'1533513600' },
-      { from: '1534334400', to:'1534723200' }
-    ],
+    reservations: [],
     pastRentals: [],
     timesRented: 33,
     dateAcquired: '1525435200',
@@ -82,10 +80,7 @@ const rentalSeed = [
     maker: 'Oru Kayak',
     sku: 'k-554-urq-14',
     dailyRate: 45.00,
-    reservations: [
-      { from: '1532779200', to:'1532908800' },
-      { from: '1533902400', to:'1534118400' }
-    ],
+    reservations: [],
     pastRentals: [],
     timesRented: 112,
     dateAcquired: '1464868800',
@@ -98,11 +93,7 @@ const rentalSeed = [
     maker: 'Oru Kayak',
     sku: 'k-122-hrs-01',
     dailyRate: 38.00,
-    reservations: [
-      { from: '1532088000', to:'1532390400' },
-      { from: '1533902400', to:'1534118400' },
-      { from: '1536321600', to:'1536624000' }
-    ],
+    reservations: [],
     pastRentals: [],
     timesRented: 87,
     dateAcquired: '1464868800',
@@ -115,13 +106,7 @@ const rentalSeed = [
     maker: 'Pelican Premium',
     sku: 'k-404-kov-07',
     dailyRate: 32.00,
-    reservations: [
-      { from: '1532779200', to:'1532908800' },
-      { from: '1533297600', to:'1533513600' },
-      { from: '1533902400', to:'1534204800' },
-      { from: '1534334400', to:'1534723200' },
-      { from: '1536321600', to:'1536624000' }
-    ],
+    reservations: [],
     pastRentals: [],
     timesRented: 24,
     dateAcquired: '1464868800',
@@ -134,12 +119,7 @@ const rentalSeed = [
     maker: 'Pelican Premium',
     sku: 'k-212-aja-118',
     dailyRate: 34.00,
-    reservations: [
-      { from: '1533297600', to:'1533513600' },
-      { from: '1533902400', to:'1534118400' },
-      { from: '1534334400', to:'1534723200' },
-      { from: '1536321600', to:'1536624000' }
-    ],
+    reservations: [],
     pastRentals: [],
     timesRented: 79,
     dateAcquired: '1464868800',
@@ -147,6 +127,146 @@ const rentalSeed = [
     images: []
   }
 ];
+
+// const rentalSeed = [
+//   {
+//     name: 'Tough-Tec',
+//     category: 'Paddleboard',
+//     maker: 'BIC Sport',
+//     sku: 'p-2017-66b-002',
+//     dailyRate: 20.00,
+//     reservations: [
+//       { from: 1532088000, to:1532390400 },
+//       { from: 1532779200, to:1532908800 }
+//     ],
+//     pastRentals: [],
+//     timesRented: 22,
+//     dateAcquired: '1492257600',
+//     condition: 'Good',
+//     images: []
+//   },
+//   {
+//     name: 'Malibu Classic',
+//     category: 'Paddleboard',
+//     maker: 'Pau Hana',
+//     sku: 'p-2018-89k-004',
+//     dailyRate: 22.00,
+//     reservations: [
+//       { from: 1532779200, to:1532908800 },
+//       { from: 1533297600, to:1533513600 },
+//       { from: 1533643200, to:1533945600 },
+//       { from: 1533902400, to:1534118400 }
+//     ],
+//     pastRentals: [],
+//     timesRented: 0,
+//     dateAcquired: '1525435200',
+//     condition: 'New',
+//     images: []
+//   },
+//   {
+//     name: 'HD Aero',
+//     category: 'Paddleboard',
+//     maker: 'Bote',
+//     sku: 'p-2018-79p-011',
+//     dailyRate: 32.00,
+//     reservations: [
+//       { from: 1532779200, to:1532908800 },
+//       { from: 1533902400, to:1534723200 }
+//     ],
+//     pastRentals: [],
+//     timesRented: 6,
+//     dateAcquired: '1492257600',
+//     condition: 'Good',
+//     images: []
+//   },
+//   {
+//     name: 'Bark + prAna Aleka',
+//     category: 'Paddleboard',
+//     maker: 'Surftech',
+//     sku: 'p-2018-67r-059',
+//     dailyRate: 29.00,
+//     reservations: [
+//       { from: 1532088000, to:1532390400 },
+//       { from: 1533297600, to:1533513600 },
+//       { from: 1534334400, to:1534723200 }
+//     ],
+//     pastRentals: [],
+//     timesRented: 33,
+//     dateAcquired: '1525435200',
+//     condition: 'Working',
+//     images: []
+//   },
+//   {
+//     name: 'Bay ST Folding Kayak',
+//     category: 'Kayak',
+//     maker: 'Oru Kayak',
+//     sku: 'k-554-urq-14',
+//     dailyRate: 45.00,
+//     reservations: [
+//       { from: 1532779200, to:1532908800 },
+//       { from: 1533902400, to:1534118400 }
+//     ],
+//     pastRentals: [],
+//     timesRented: 112,
+//     dateAcquired: '1464868800',
+//     condition: 'Disrepair',
+//     images: []
+//   },
+//   {
+//     name: 'Beach LT Folding Kayak',
+//     category: 'Kayak',
+//     maker: 'Oru Kayak',
+//     sku: 'k-122-hrs-01',
+//     dailyRate: 38.00,
+//     reservations: [
+//       { from: 1532088000, to:1532390400 },
+//       { from: 1533902400, to:1534118400 },
+//       { from: 1536321600, to:1536624000 }
+//     ],
+//     pastRentals: [],
+//     timesRented: 87,
+//     dateAcquired: '1464868800',
+//     condition: 'Working',
+//     images: []
+//   },
+//   {
+//     name: 'Unison 136T Tandem',
+//     category: 'Kayak',
+//     maker: 'Pelican Premium',
+//     sku: 'k-404-kov-07',
+//     dailyRate: 32.00,
+//     reservations: [
+//       { from: 1532779200, to:1532908800 },
+//       { from: 1533297600, to:1533513600 },
+//       { from: 1533902400, to:1534204800 },
+//       { from: 1534334400, to:1534723200 },
+//       { from: 1536321600, to:1536624000 }
+//     ],
+//     pastRentals: [],
+//     timesRented: 24,
+//     dateAcquired: '1464868800',
+//     condition: 'Good',
+//     images: []
+//   },
+//   {
+//     name: 'Catch 120',
+//     category: 'Kayak',
+//     maker: 'Pelican Premium',
+//     sku: 'k-212-aja-118',
+//     dailyRate: 34.00,
+//     reservations: [
+//       { from: 1533297600, to:1533513600 },
+//       { from: 1533902400, to:1534118400 },
+//       { from: 1534334400, to:1534723200 },
+//       { from: 1536321600, to:1536624000 }
+//     ],
+//     pastRentals: [],
+//     timesRented: 79,
+//     dateAcquired: '1464868800',
+//     condition: 'Working',
+//     images: []
+//   }
+// ];
 
 db.Rental
   .remove({})

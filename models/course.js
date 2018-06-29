@@ -12,7 +12,7 @@ const courseSchema = new Schema({
     enum: ['Advanced', 'Intermediate', 'Beginner'],
     default: 'Beginner'
   },
-  date: Date,
+  date: Number,
   slots: Number,
   participants: [{
     name: String,
