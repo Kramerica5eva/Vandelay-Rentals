@@ -4,6 +4,7 @@ import Header from "../../components/Header";
 import ParallaxHero from "./../../components/ParallaxHero";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
+import CourseCard from "./../../components/CourseCard";
 import API from "../../utils/API";
 import DevLinks from "../../components/DevLinks";
 import "./Courses.css";
@@ -73,20 +74,18 @@ class Courses extends Component {
             <h2>Courses Available:</h2>
             <ul>
               {this.state.courses.map(course => (
-                <li key={course._id}>
-                  <h3>{course.name}</h3>
-                  <h4>"{course.abstract}"</h4>
-                  <h5>Level: {course.level}</h5>
-                  <p>${parseFloat(course.price.$numberDecimal).toFixed(2)} per person</p>
-                  <p>"{course.detail}"</p>
-                  <h4>Topics covered:</h4>
-                  <ul>
-                    {course.topics.map((topic, index) => (
+                <CourseCard
+                  key={course._id}
+                  name={course.name}
+                  abstract={course.abstract}
+                  level={course.level}
+                  price={parseFloat(course.price.$numberDecimal).toFixed(2)}
+                  detail={course.detail}
+                  topic={course.topics.map((topic, index) => (
                       <li key={`${index}-${course._id}`}>{topic}</li>
                     ))}
-                  </ul>
-                  <p>spaces left: {course.slots}</p>
-                </li>
+                  slots={course.slots}>
+                </CourseCard>
               ))}
             </ul>
           </div>
