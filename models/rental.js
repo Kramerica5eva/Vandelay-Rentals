@@ -15,8 +15,8 @@ const rentalSchema = new Schema({
   reservations: [{
     customerId: Number,
     date: {
-      from: Date,
-      to: Date
+      from: Number,
+      to: Number
     }
   }],
   pastRentals: [{

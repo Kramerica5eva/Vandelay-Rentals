@@ -16,3 +16,28 @@ body:not(ParallaxHero) {
 .rental-img {
   width: 300px;
 }
+
+.rental-results-div {
+  width: 250px;
+  display: grid;
+  margin: auto;
+  grid-gap: 30px;
+  grid-template-columns: 250px;
+}
+
+@media (min-width: 600px) {
+  .rental-results-div {
+    width: 530px;
+    margin: auto;
+    grid-gap: 30px;
+    grid-template-columns: 250px 250px;
+  }
+}
+
+@media (min-width: 860px) {
+  .rental-results-div {
+    width: 810px;
+    margin: auto;
+    grid-template-columns: 250px 250px 250px;
+  }
+}

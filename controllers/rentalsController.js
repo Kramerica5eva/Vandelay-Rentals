@@ -36,10 +36,35 @@ module.exports = {
   },
 
   findbyDates: function (req, res) {
+    console.log("From: " + req.params.from);
+    console.log("To: " + req.params.to);
+
+    const fromSearch = parseInt(req.params.from);
+    const toSearch = parseInt(req.params.to);
+
     db.Rental
-      .find({ /* search parameters */ })
+      .find({
+        // reservations: {
+        //   $or: [
+        //     {
+        //       $and: [
+        //         { from: { $lte: fromSearch } },
+        //         { to: { $gte: fromSearch } }
+        //       ]
+        //     },
+        //     {
+        //       $and: [
+        //         { from: { $gte: toSearch } },
+        //         { to: { $lte: toSearch } }
+        //       ]
+        //     }
+        //   ]
+        // }
+
+      })
       .sort({ date: -1 })
       .then(dbModel => {
+        console.log(dbModel);
         const rentalArray = filterRentalItemData(dbModel);
         res.json(rentalArray);
       })
