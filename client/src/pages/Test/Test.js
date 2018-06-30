@@ -24,7 +24,8 @@ class Test extends Component {
     image: null,
     rent_from: "",
     rent_to: "",
-    rental_id: ""
+    rental_id: "",
+    unix: []
   };
 
   componentDidMount() {
@@ -166,6 +167,24 @@ class Test extends Component {
       });
   }
 
+  checkAvailability = itemRes => { //passed all the reservations for a given item
+    console.log("checking availability")
+    for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
+      let range = []; //holds each individual day of a reservation
+      let days = (itemRes[i].to - itemRes[i].from) / 86400; //determines total number of days for each reservation
+      range.push(itemRes[i].from); //pushes the first day of the reservation
+      for (let j = 0; j < days; j++) {//
+        range.push(range[j] + 86400); //adds all days of a reservation to range for comparison
+      };                              //
+      for (let k = 0; k < this.state.unix.length; k++) { //compares each index in this.state.unix to each index in range
+        if (range.includes(this.state.unix[k])) { //
+          return false;                           //returns false if range include the index value of this.state.unix
+        }                                         //
+      }
+    }
+    return true; //returns true if no matches are found
+  }
+
   render() {
     return (
       <Fragment>
@@ -267,24 +286,16 @@ class Test extends Component {
             <h2>Rentals:</h2>
             <div className="rental-results-div">
               {this.state.rentals ? this.state.rentals.map(rental => (
-
-                <div id="rentalCard" className="rentalCard">
-                  <div key={rental._id}>
-                    <h3>{rental.name}</h3>
-                    <h4>{rental.category}</h4>
-                    <h5>Maker: {rental.maker}</h5>
-                    <p>Daily rate: ${rental.rate}</p>
-                  </div>
-                  <div className="reservations-div">
-                    {rental.reservations ? rental.reservations.map(res => (
-                      <div className="reservation">
-                        <p>From: {res.date.from}</p>
-                        <p>To: {res.date.to}</p>
-                      </div>
-                    )) : null}
-                  </div>
-                </div>
-
+                <RentalCard
+                  key={rental._id}
+                  id={rental._id}
+                  name={rental.name}
+                  category={rental.category}
+                  maker={rental.maker}
+                  reservations={rental.reservations}
+                  availability={this.checkAvailability(rental.reservations) ? "Available" : "Unavailable"}
+                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
+                </RentalCard>
               )) : null}
             </div>
 
