@@ -20,9 +20,11 @@ const DevLinks = props => (
       <Link className="btn-link" to="/test" role="button">Test</Link>
       <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
       <Link className="btn-link" to="/testben" role="button">TestBen</Link>
+      <Link className="btn-link" to="/testbrandon" role="button">TestBrandon</Link>
       <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
       {props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
       {props.admin ? <Link className="btn-link" to="/adminkeith" role="button">AdminKeith</Link> : null}
+      {props.admin ? <Link className="btn-link" to="/adminbrandon" role="button">AdminBrandon</Link> : null}
     </div>
   </Fragment>
 );
