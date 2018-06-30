@@ -75,16 +75,16 @@ class Courses extends Component {
             <ul>
               {this.state.courses.map(course => (
                 <CourseCard
-                  key={course._id}
+                  id={course._id}
                   name={course.name}
                   abstract={course.abstract}
                   level={course.level}
                   price={parseFloat(course.price.$numberDecimal).toFixed(2)}
                   detail={course.detail}
-                  topic={course.topics.map((topic, index) => (
-                      <li key={`${index}-${course._id}`}>{topic}</li>
-                    ))}
                   slots={course.slots}>
+                  {course.topics.map((topic, index) => (
+                      <li key={`${index}-${course._id}`}>{topic}</li>
+                  ))}
                 </CourseCard>
               ))}
             </ul>

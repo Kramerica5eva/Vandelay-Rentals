@@ -6,7 +6,7 @@ class CourseCard extends Component {
   render() {
     return (
       <div id="courseCard" className="courseCard">
-        <li key={this.props.key}>
+        <li key={this.props.id}>
           <h3>{this.props.name}</h3>
           <h4>{this.props.abstract}</h4>
           <h5>Level: {this.props.level}</h5>
@@ -14,7 +14,7 @@ class CourseCard extends Component {
           <p>"{this.props.detail}"</p>
           <h4>Topics covered:</h4>
             <ul>
-                {this.props.topics}
+                {this.props.children}
             </ul>
           <p>Spaces left: {this.props.slots}</p>
         </li>
