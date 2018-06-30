@@ -68,7 +68,7 @@ class Sales extends Component {
             <ul>
               {this.state.saleItems.filter(saleItem => saleItem.status === 'Available').map(item => (
                 <SaleCard
-                  key={item._id}
+                  id={item._id}
                   name={item.name}
                   category={item.category}
                   maker={item.maker}
