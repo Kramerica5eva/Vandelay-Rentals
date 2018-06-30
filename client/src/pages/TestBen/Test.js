@@ -131,7 +131,7 @@ class Test extends Component {
               category={rental.category}
               maker={rental.maker}
               reservations={rental.reservations}
-              availability={this.checkAvailability(rental.reservations) ? "Available" : "Unavailable"}
+              className={!this.checkAvailability(rental.reservations) ? "unavailable rentalCard" : "rentalCard"}
               rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
             </RentalCard>
           ))}

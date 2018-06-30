@@ -6,7 +6,7 @@ class RentalCard extends Component {
 
   render() {
     return (
-      <div id={this.props.id} className="rentalCard">
+      <div id={this.props.id} className={this.props.className}>
         <li>
           <h3>{this.props.name}</h3>
           <h4>{this.props.category}</h4>
