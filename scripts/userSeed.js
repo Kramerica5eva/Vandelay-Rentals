@@ -4,6 +4,7 @@ mongoose.Promise = global.Promise;
 const bcrypt = require('bcryptjs');
 
 const pw = bcrypt.hashSync("1234", bcrypt.genSaltSync(10), null);
+const pw2 = bcrypt.hashSync("1111", bcrypt.genSaltSync(10), null);
 
 // This file empties the User collection and inserts the users below
 
@@ -23,6 +24,23 @@ const userSeed = [
     state: "UT",
     zipcode: 84010,
     phone: 8018666301,
+    waivers: [],
+    reservations: [],
+    pastRentals: [],
+    admin: true,
+
+	},
+	{
+    username: "bmorin",
+    password: pw2,
+    firstName: "Brandon",
+    lastName: "hdah",
+    email: "brandonmorin@gmail.com",
+    street: "5700 Ferron Dr",
+    city: "Taylorsville",
+    state: "UT",
+    zipcode: 84129,
+    phone: 8018243638,
     waivers: [],
     reservations: [],
     pastRentals: [],
