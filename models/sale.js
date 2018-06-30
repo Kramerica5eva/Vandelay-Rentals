@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const saleSchema = new Schema({
+  
   name: { type: String, required: true },
   category: {
     type: String,
@@ -10,9 +11,11 @@ const saleSchema = new Schema({
     required: true
   },
   maker: String,
+
   sku: String,
   cost: Schema.Types.Decimal128,
   price: Schema.Types.Decimal128,
+  
   dateAcquired: Date,
   saleType: {
     type: String,
@@ -24,7 +27,9 @@ const saleSchema = new Schema({
     enum: ['New', 'Excellent', 'Good', 'Fair', 'Poor'],
     default: 'New'
   },
-  images: [{ filepath: String }],
+  images: [{
+    type: Schema.Types.ObjectId
+   }],
   status: {
     type: String,
     enum: ['Available', 'Sold'],
