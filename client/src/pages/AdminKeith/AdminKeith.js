@@ -164,6 +164,26 @@ class Admin extends Component {
 
   //end of react table testing//
 
+  // editable react table testing
+
+  renderEditable(cellInfo) {
+    return (
+      <div
+        style={{ backgroundColor: "#fafafa" }}
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          const data = [...this.state.data];
+          data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ data });
+        }}
+        dangerouslySetInnerHTML={{
+          __html: this.state.data[cellInfo.index][cellInfo.column.id]
+        }}
+      />
+    );
+  }
+
 
   render() {
     return (
@@ -204,19 +224,19 @@ class Admin extends Component {
 
           {this.state.courses ? (
             <ReactTable
-              data={this.state.data}
+              data={this.state.rentals}
               columns={[
                 {
-                  Header: "Shitbag",
+                  Header: "Category",
                   columns: [
                     {
-                      Header: "First Name",
-                      accessor: "firstName"
+                      Header: "Name",
+                      accessor: "name"
                     },
                     {
-                      Header: "Last Name",
-                      id: "lastName",
-                      accessor: d => d.lastName
+                      Header: "Category",
+                      id: "category",
+                      accessor: d => d.category
                     }
                   ]
                 },
@@ -224,21 +244,23 @@ class Admin extends Component {
                   Header: "Info",
                   columns: [
                     {
-                      Header: "Age",
-                      accessor: "age"
+                      Header: "Manufacturer",
+                      accessor: "maker"
                     },
                     {
-                      Header: "Status",
-                      accessor: "status"
+                      Header: "Condition",
+                      accessor: "condition"
                     }
                   ]
                 },
                 {
-                  Header: 'Stats',
+                  Header: 'Daily Rate',
                   columns: [
                     {
-                      Header: "Visits",
-                      accessor: "visits"
+                      Header: "Daily Rate",
+                      accessor: function () {
+                        return <button>Stuff</button>
+                      }
                     }
                   ]
                 }
@@ -285,6 +307,18 @@ class Admin extends Component {
                     {
                       Header: "Daily Rate",
                       accessor: "rate"
+                    }
+                  ]
+                },
+                {
+                  Header: 'Buttons',
+                  columns: [
+                    {
+                      Header: "Edit Buttons",
+                      id: "edit-buttons",
+                      accessor: function () {
+                        return <button>Stuff</button>;
+                      }
                     }
                   ]
                 }
