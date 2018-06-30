@@ -73,6 +73,7 @@ class Rentals extends Component {
                   name={rental.name}
                   category={rental.category}
                   maker={rental.maker}
+                  reservations={rental.reservations}
                   rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
                 </RentalCard>
               ))}
@@ -80,7 +81,7 @@ class Rentals extends Component {
           </div>
           <Footer />
         </div>
-      </Fragment>
+      </Fragment >
     );
   }
 }
