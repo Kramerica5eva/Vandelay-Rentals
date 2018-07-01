@@ -15,10 +15,12 @@ import namor from "namor";
 
 class Admin extends Component {
   state = {
-    isOpen: false,
-    header: "",
-    body: "",
-    footer: "",
+    modal: {
+      isOpen: false,
+      header: "",
+      body: "",
+      footer: ""
+    },
     courses: [],
     rentals: [],
     sales: [],
@@ -36,18 +38,20 @@ class Admin extends Component {
 
   toggleModal = () => {
     this.setState({
-      isOpen: !this.state.isOpen
+      modal: { isOpen: !this.state.modal.isOpen }
     });
-  };
+  }
 
-  setModal = modalInput => {
+  setModal = (modalInput) => {
     this.setState({
-      isOpen: !this.state.isOpen,
-      header: modalInput.header,
-      body: modalInput.body,
-      footer: modalInput.footer
+      modal: {
+        isOpen: !this.state.modal.isOpen,
+        header: modalInput.header,
+        body: modalInput.body,
+        footer: modalInput.footer
+      }
     });
-  };
+  }
 
   adminGetAllCourses = () => {
     API.adminGetAllCourses()
