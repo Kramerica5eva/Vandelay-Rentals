@@ -191,16 +191,16 @@ export class RentalsTable extends Component {
           footer={this.state.modal.footer}
         />
 
+        <h2>Rentals</h2>
+
         {/* if no rows have been selected, button remains disabled
             clicking the button without anything selected results in an error */}
         <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
         <button onClick={this.props.hideRentals}>Hide Table</button>
         <button onClick={this.logSelection}>Log Selection</button>
 
-        <h2>Rentals</h2>
         <CheckboxTable
-
-        // this is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
+        // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
           ref={r => (this.checkboxTable = r)}
           data={this.state.rentals}
           columns={[
@@ -214,8 +214,7 @@ export class RentalsTable extends Component {
                 },
                 {
                   Header: "Category",
-                  id: "category",
-                  accessor: d => d.category,
+                  accessor: "category",
                   Cell: this.renderEditable
                 },
                 {

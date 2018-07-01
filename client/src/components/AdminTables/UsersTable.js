@@ -157,11 +157,12 @@ export class UsersTable extends Component {
           footer={this.state.footer}
         />
 
+        <h2>All Users</h2>
+
         <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
         <button onClick={this.props.hideUsers}>Hide Table</button>
         <button onClick={this.logSelection}>Log Selection</button>
-
-        <h2>All Users</h2>
+        
         <CheckboxTable
           ref={r => (this.checkboxTable = r)}
           data={this.state.users}
@@ -186,8 +187,7 @@ export class UsersTable extends Component {
                 },
                 {
                   Header: "Last Name",
-                  id: "lastName",
-                  accessor: d => d.lastName,
+                  accessor: "lastName",
                   Cell: this.renderEditable
                 },
                 {

@@ -1,15 +1,11 @@
 import React, { Component, Fragment } from "react";
+import { Input, FormBtn } from "../Form";
 import API from "../../utils/API";
 import Modal from "../../components/Modal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
-
-
-//  Select Table (HOC) testing import
 import checkboxHOC from "react-table/lib/hoc/selectTable";
-
-//  Select Table (HOC) testing HOC wrap
 const CheckboxTable = checkboxHOC(ReactTable);
 
 export class TestTable extends Component {
@@ -22,30 +18,57 @@ export class TestTable extends Component {
         body: "",
         footer: ""
       },
-      users: [],
+      categories: [],
+      rentals: [],
       selection: [],
       selectedRow: {}
     };
   }
 
   componentDidMount() {
-    this.adminGetAllUsers();
+    this.adminGetAllRentals();
   }
 
-  adminGetAllUsers = () => {
-    API.adminGetAllUsers()
+  toggleModal = () => {
+    this.setState({
+      modal: { isOpen: !this.state.modal.isOpen }
+    });
+  }
+
+  setModal = (modalInput) => {
+    this.setState({
+      modal: {
+        isOpen: !this.state.modal.isOpen,
+        header: modalInput.header,
+        body: modalInput.body,
+        footer: modalInput.footer
+      }
+    });
+  }
+
+  adminGetAllRentals = () => {
+    API.adminGetAllRentals()
       .then(res => {
-        // res.data.map(r => {
-        //   // const rate = "$" + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
-        //   // r.rate = rate;
-        // });
-        console.log(res);
-        this.setState({
-          users: res.data
+
+        //  loop through the response array and add a new key/value pair with the formatted rate
+        res.data.map(r => {
+          const rate = "$" + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
+          r.rate = rate;
         });
-        console.log(this.state.users);
+
+        this.setState({
+          rentals: res.data,
+          selection: []
+        });
       })
       .catch(err => console.log(err));
+  };
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
   };
 
   //  Select Table HOC functions
@@ -66,6 +89,7 @@ export class TestTable extends Component {
       selection.push(key);
     }
 
+    //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
     this.setState({ selection, selectedRow: row });
   };
 
@@ -74,52 +98,110 @@ export class TestTable extends Component {
   };
 
   updateSelectedRow = () => {
-    const { city, email, firstName, lastName, password, phone, standing, state, street, username, zipcode, _id } = this.state.selectedRow;
+    const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
+
+    let newRate;
+    if (rate)
+      if (rate.includes("$")) {
+        newRate = dailyRate.$numberDecimal;
+      } else {
+        newRate = rate;
+      }
+
     const updateObject = {
-      city: city,
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      password: password,
-      phone: phone,
-      standing: standing,
-      state: state,
-      street: street,
-      username: username,
-      zipcode: zipcode
-    }
-    console.log(updateObject);
-    API.updateUser(_id, updateObject)
+      category: category,
+      condition: condition,
+      dateAcquired: dateAcquired,
+      maker: maker,
+      name: name,
+      dailyRate: newRate,
+      sku: sku,
+      timesRented: timesRented
+    };
+
+    API.adminUpdateRental(_id, updateObject)
       .then(response => {
-        console.log(response);
+        if (response.status === 200) {
+
+          // Modal for feedback
+          this.setModal({
+            header: "Success!",
+            body: <h3>Database successfully updated</h3>
+          });
+
+          //  query the db and reload the table
+          this.adminGetAllRentals();
+        }
       })
-  }
+      .catch(err => console.log(err));
+  };
 
   logSelection = () => {
     console.log("Selection:", this.state.selection);
     console.log("Row: ", this.state.selectedRow);
   };
 
-  renderEditable = cellInfo => {
+  changeCategory = e => {
+    e.preventDefault();
+    console.log(this.state.category);
+    const { _id } = this.state.selectedRow;
+    API.adminUpdateRental(_id, { category: this.state.category })
+      .then(res => {
+        this.adminGetAllRentals();
+        this.toggleModal();
+      });
+  }
+
+  categoryModal = () => {
+    this.setModal({
+      header: "Change Category",
+      body:
+        <Fragment>
+          <form>
+            <label>Select a Category:</label>
+            <select
+              className="form-select"
+              name="category"
+              onChange={this.handleInputChange}
+              value={this.state.category}
+            >
+              <option></option>
+              <option>Paddleboard</option>
+              <option>Kayak</option>
+            </select>
+            <FormBtn
+              onClick={this.changeCategory}
+            >
+              Submit
+            </FormBtn>
+          </form>
+        </Fragment>
+    })
+  }
+
+  // editable react table
+
+  renderEditable = (cellInfo) => {
     return (
       <div
         style={{ backgroundColor: "#fafafa" }}
         contentEditable
         suppressContentEditableWarning
         onBlur={e => {
-          const users = [...this.state.users];
-          users[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-          this.setState({ users });
+          const rentals = [...this.state.rentals];
+          rentals[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ rentals: rentals });
         }}
         dangerouslySetInnerHTML={{
-          __html: this.state.users[cellInfo.index][cellInfo.column.id]
+          __html: this.state.rentals[cellInfo.index][cellInfo.column.id]
         }}
       />
     );
-  }
+  };
+
 
   render() {
-    const { toggleSelection, isSelected, logSelection } = this;
+    const { toggleSelection, isSelected } = this;
 
     const checkboxProps = {
       isSelected,
@@ -132,7 +214,7 @@ export class TestTable extends Component {
         }
         return {
           style: {
-            backgroundColor: selected ? "#00eef7" : "inherit",
+            backgroundColor: selected ? "yellow" : "inherit",
             color: selected ? '#000' : 'inherit',
           }
         };
@@ -141,82 +223,75 @@ export class TestTable extends Component {
 
     return (
       <Fragment>
+        <Modal
+          show={this.state.modal.isOpen}
+          toggleModal={this.toggleModal}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
+        />
 
-        <button onClick={this.updateSelectedRow}>Update Selected Row</button>
+        <h2>Rental Test Table</h2>
+
+        {/* if no rows have been selected, button remains disabled
+            clicking the button without anything selected results in an error */}
+        <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
         <button onClick={this.props.hideTest}>Hide Table</button>
+        <button onClick={this.logSelection}>Log Selection</button>
 
-        <h2>Test Table</h2>
         <CheckboxTable
+          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
           ref={r => (this.checkboxTable = r)}
-          data={this.state.users}
+          data={this.state.rentals}
           columns={[
             {
-              Header: "User",
+              Header: "Rental Info",
               columns: [
                 {
-                  Header: "Username",
-                  accessor: "username",
+                  Header: "Name",
+                  accessor: "name",
                   Cell: this.renderEditable
                 },
                 {
-                  Header: "Password",
-                  accessor: "password",
+                  Header: "Category",
+                  accessor: "category",
+                  Cell: row => {
+                    return <button className="table-btn-invis" onClick={this.categoryModal}>{row.value}</button>
+                  }
+                },
+                {
+                  Header: "Manufacturer",
+                  accessor: "maker",
                   Cell: this.renderEditable
                 },
                 {
-                  Header: "Admin?",
-                  accessor: "admin",
+                  Header: "SKU",
+                  accessor: "sku",
                   Cell: this.renderEditable
                 },
-                {
-                  Header: "First Name",
-                  accessor: "firstName",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Last Name",
-                  id: "lastName",
-                  accessor: d => d.lastName,
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Standing",
-                  accessor: "standing",
-                  Cell: this.renderEditable
-                }
               ]
             },
             {
-              Header: "Contact Info",
+              Header: "Rental Details",
               columns: [
                 {
-                  Header: "Email",
-                  accessor: "email",
+                  Header: "Daily Rate",
+                  accessor: "rate",
                   Cell: this.renderEditable
                 },
                 {
-                  Header: "Street",
-                  accessor: "street",
+                  Header: "Date Acq.",
+                  accessor: "dateAcquired",
                   Cell: this.renderEditable
                 },
                 {
-                  Header: "City",
-                  accessor: "city",
+                  Header: "Times Rented",
+                  accessor: "timesRented",
                   Cell: this.renderEditable
                 },
                 {
-                  Header: "State",
-                  accessor: "state",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Zipcode",
-                  accessor: "zipcode",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Phone",
-                  accessor: "phone",
+                  Header: "Condition",
+                  accessor: "condition",
                   Cell: this.renderEditable
                 }
               ]
@@ -227,7 +302,7 @@ export class TestTable extends Component {
                 {
                   Header: "Edit Buttons",
                   id: "edit-buttons",
-                  accessor: function () {
+                  accessor: () => {
                     return <button>Stuff</button>;
                   }
                 }

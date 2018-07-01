@@ -58,6 +58,17 @@
   animation-duration: 0.4s
 }
 
+.my-modal-body > form > label,
+.my-modal-body > form > input {
+    top: unset;
+    font-size: 14px;
+    color: #5264AE;
+}
+
+.my-modal-body > form > .form-select {
+  margin-top: 20px;
+}
+
 /* Add Animation */
 @keyframes fadein {
   from {opacity: 0}

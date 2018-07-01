@@ -23,3 +23,12 @@
 .rt-td input:not(:focus):invalid {
   background-color: unset;
 }
+
+.table-btn-invis {
+  border: none;
+  outline: transparent;
+  background: transparent;
+  font-family: var(--font-Raleway);
+  cursor: pointer;
+  font-size: 14px;
+}
