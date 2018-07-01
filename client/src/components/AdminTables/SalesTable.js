@@ -66,9 +66,9 @@ export class SalesTable extends Component {
     });
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    //  blah blah blah
+  logSelection = () => {
+    console.log("Selection:", this.state.selection);
+    console.log("Row: ", this.state.selectedRow);
   };
 
   // editable react table testing
@@ -103,10 +103,12 @@ export class SalesTable extends Component {
           footer={this.state.footer}
         />
 
+        <h2>Sale Items</h2>
+
         <button onClick={this.updateSelectedRow}>Update Selected Row</button>
         <button onClick={this.props.hideSaleItems}>Hide Table</button>
+        <button onClick={this.logSelection}>Log Selection</button>
 
-        <h2>Sale Items</h2>
         <ReactTable
           data={this.state.sales}
           columns={[

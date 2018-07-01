@@ -59,9 +59,9 @@ export class CoursesTable extends Component {
     });
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    //  blah blah blah
+  logSelection = () => {
+    console.log("Selection:", this.state.selection);
+    console.log("Row: ", this.state.selectedRow);
   };
 
   renderEditable = (cellInfo) => {
@@ -94,10 +94,12 @@ export class CoursesTable extends Component {
           footer={this.state.footer}
         />
 
+        <h2>Courses</h2>
+
         <button onClick={this.updateSelectedRow}>Update Selected Row</button>
         <button onClick={this.props.hideCourses}>Hide Table</button>
+        <button onClick={this.logSelection}>Log Selection</button>
 
-        <h2>Courses</h2>
         <ReactTable
           data={this.state.courses}
           columns={[
