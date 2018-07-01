@@ -3,17 +3,25 @@ import API from "../../utils/API";
 import Modal from "../../components/Modal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import "./AdminTables.css";
+import checkboxHOC from "react-table/lib/hoc/selectTable";
+const CheckboxTable = checkboxHOC(ReactTable);
 
 export class UsersTable extends Component {
-  state = {
-    modal: {
-      isOpen: false,
-      header: "",
-      body: "",
-      footer: ""
-    },
-    users: []
-  };
+  constructor() {
+    super();
+    this.state = {
+      modal: {
+        isOpen: false,
+        header: "",
+        body: "",
+        footer: ""
+      },
+      users: [],
+      selection: [],
+      selectedRow: {}
+    };
+  }
 
   componentDidMount() {
     this.adminGetAllUsers();
@@ -39,10 +47,6 @@ export class UsersTable extends Component {
   adminGetAllUsers = () => {
     API.adminGetAllUsers()
       .then(res => {
-        res.data.map(r => {
-          // const rate = "$" + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
-          // r.rate = rate;
-        });
         console.log(res);
         this.setState({
           users: res.data
@@ -52,25 +56,59 @@ export class UsersTable extends Component {
       .catch(err => console.log(err));
   };
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
+  //  Select Table HOC functions
+
+  toggleSelection = (key, shift, row) => {
+    let selection = [...this.state.selection];
+    const keyIndex = selection.indexOf(key);
+
+    if (keyIndex >= 0) {
+      // it does exist so we will remove it
+      selection = [
+        ...selection.slice(0, keyIndex),
+        ...selection.slice(keyIndex + 1)
+      ];
+    } else {
+      // it does not exist so add it
+      selection = [];
+      selection.push(key);
+    }
+
+    this.setState({ selection, selectedRow: row });
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    //  blah blah blah
+  isSelected = key => {
+    return this.state.selection.includes(key);
   };
 
-  updateRow = () => {
-
+  updateSelectedRow = () => {
+    const { city, email, firstName, lastName, phone, standing, state, street, username, zipcode, _id } = this.state.selectedRow;
+    const updateObject = {
+      city: city,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone,
+      standing: standing,
+      state: state,
+      street: street,
+      username: username,
+      zipcode: zipcode
+    }
+    console.log(updateObject);
+    API.updateUser(_id, updateObject)
+      .then(response => {
+        console.log(response);
+        this.adminGetAllUsers();
+      })
   }
 
-  // editable react table testing
+  logSelection = () => {
+    console.log("Selection:", this.state.selection);
+    console.log("Row: ", this.state.selectedRow);
+  };
 
-  renderEditable = (cellInfo) => {
+  renderEditable = cellInfo => {
     return (
       <div
         style={{ backgroundColor: "#fafafa" }}
@@ -88,12 +126,26 @@ export class UsersTable extends Component {
     );
   }
 
-  handleRowClick = () => {
-    console.log("Eat a dick");
-  }
-
-
   render() {
+    const { toggleSelection, isSelected } = this;
+
+    const checkboxProps = {
+      isSelected,
+      toggleSelection,
+      selectType: "checkbox",
+      getTrProps: (s, r) => {
+        let selected;
+        if (r) {
+          selected = this.isSelected(r.original._id);
+        }
+        return {
+          style: {
+            backgroundColor: selected ? "#00eef7" : "inherit",
+            color: selected ? '#000' : 'inherit',
+          }
+        };
+      }
+    };
 
     return (
       <Fragment>
@@ -105,7 +157,13 @@ export class UsersTable extends Component {
           footer={this.state.footer}
         />
 
-        <ReactTable
+        <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
+        <button onClick={this.props.hideUsers}>Hide Table</button>
+        <button onClick={this.logSelection}>Log Selection</button>
+
+        <h2>All Users</h2>
+        <CheckboxTable
+          ref={r => (this.checkboxTable = r)}
           data={this.state.users}
           columns={[
             {
@@ -114,11 +172,6 @@ export class UsersTable extends Component {
                 {
                   Header: "Username",
                   accessor: "username",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Password",
-                  accessor: "password",
                   Cell: this.renderEditable
                 },
                 {
@@ -180,16 +233,6 @@ export class UsersTable extends Component {
               ]
             },
             {
-              Header: 'Bidness Info',
-              columns: [
-                {
-                  Header: "Waivers",
-                  accessor: "waivers",
-                  Cell: this.renderEditable
-                }
-              ]
-            },
-            {
               Header: 'Buttons',
               columns: [
                 {
@@ -204,6 +247,7 @@ export class UsersTable extends Component {
           ]}
           defaultPageSize={10}
           className="-striped -highlight"
+          {...checkboxProps}
         />
       </Fragment>
     );

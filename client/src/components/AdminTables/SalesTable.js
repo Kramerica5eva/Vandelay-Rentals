@@ -103,6 +103,10 @@ export class SalesTable extends Component {
           footer={this.state.footer}
         />
 
+        <button onClick={this.updateSelectedRow}>Update Selected Row</button>
+        <button onClick={this.props.hideSaleItems}>Hide Table</button>
+
+        <h2>Sale Items</h2>
         <ReactTable
           data={this.state.sales}
           columns={[

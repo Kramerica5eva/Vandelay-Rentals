@@ -94,6 +94,10 @@ export class CoursesTable extends Component {
           footer={this.state.footer}
         />
 
+        <button onClick={this.updateSelectedRow}>Update Selected Row</button>
+        <button onClick={this.props.hideCourses}>Hide Table</button>
+
+        <h2>Courses</h2>
         <ReactTable
           data={this.state.courses}
           columns={[

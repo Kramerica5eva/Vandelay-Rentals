@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import Header from "../../components/Header";
-import API from "../../utils/API";
 import Modal from "../../components/Modal";
 import NavBar from "../../components/NavBar";
 import DevLinks from "../../components/DevLinks";
@@ -14,16 +13,15 @@ class Admin extends Component {
       body: "",
       footer: ""
     },
-    courses: null,
-    rentals: null,
-    sales: null,
-    users: null,
-    test: null,
-    title: ""
+    courses: false,
+    rentals: false,
+    sales: false,
+    users: false,
+    test: false
   };
 
   componentDidMount() {
-    this.adminGetAllRentals();
+    this.showRentals();
   }
 
   toggleModal = () => {
@@ -45,65 +43,79 @@ class Admin extends Component {
 
   setTestTrue = () => {
     this.setState({
-      test: true,
-      courses: null,
-      rentals: null,
-      sales: null,
-      users: null,
-      title: "Test Table"
+      test: true
     });
+  };
+
+  hideTest = () => {
+    this.setState({
+      test: false
+    })
+  };
+
+  showCourses = () => {
+    this.setState({
+      courses: true
+    });
+  };
+
+  hideCourses = () => {
+    this.setState({
+      courses: false
+    })
+  };
+
+  showRentals = () => {
+    this.setState({
+      rentals: true
+    });
+  };
+
+  hideRentals = () => {
+    this.setState({
+      rentals: false
+    })
+  };
+
+  showSaleItems = () => {
+    this.setState({
+      sales: true
+    });
+  };
+
+  hideSaleItems = () => {
+    this.setState({
+      sales: false
+    })
+  };
+
+  showUsers = () => {
+    this.setState({
+      users: true
+    });
+  };
+
+  hideUsers = () => {
+    this.setState({
+      users: false
+    })
+  };
+
+  hideAllTables = () => {
+    this.setState({
+      courses: false,
+      rentals: false,
+      sales: false,
+      users: false,
+      test: false
+    })
   }
-
-  adminGetAllCourses = () => {
-    this.setState({
-      courses: true,
-      rentals: null,
-      sales: null,
-      users: null,
-      title: "All Courses"
-    });
-  };
-
-  adminGetAllRentals = () => {
-    this.setState({
-      courses: null,
-      rentals: true,
-      sales: null,
-      users: null,
-      title: "All Rentals"
-    });
-  };
-
-  adminGetAllSaleItems = () => {
-    this.setState({
-      courses: null,
-      rentals: null,
-      sales: true,
-      users: null,
-      title: "All Sale Items"
-    });
-  };
-
-  adminGetAllUsers = () => {
-    this.setState({
-      courses: null,
-      rentals: null,
-      sales: null,
-      users: true,
-      title: "All Users"
-    });
-  };
 
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
       [name]: value
     });
-  };
-
-  handleFormSubmit = event => {
-    event.preventDefault();
-    //  blah blah blah
   };
 
   render() {
@@ -123,8 +135,7 @@ class Admin extends Component {
           location={this.props.location}
         />
         <Header>
-          <h1>Vandelay Admin Page, Nomsayn?</h1>
-          <h2>Admin Page</h2>
+          <h1>Vandelay Admin Page</h1>
           <DevLinks
             loggedIn={this.props.loggedIn}
             admin={this.props.admin}
@@ -135,46 +146,42 @@ class Admin extends Component {
         <div>
 
           <div className="admin-btn-array">
-            <button onClick={this.adminGetAllUsers}>See All Users</button>
-            <button onClick={this.adminGetAllRentals}>See All Rentals</button>
-            <button onClick={this.adminGetAllSaleItems}>See All Items For Sale</button>
-            <button onClick={this.adminGetAllCourses}>See All Courses</button>
+            <button onClick={this.showCourses}>See All Courses</button>
+            <button onClick={this.showRentals}>See All Rentals</button>
+            <button onClick={this.showSaleItems}>See All Items For Sale</button>
+            <button onClick={this.showUsers}>See All Users</button>
             <button onClick={this.setTestTrue}>Test</button>
+            <button onClick={this.hideAllTables}>Clear All</button>
           </div>
 
           {this.state.courses ? (
-            <Fragment>
-              <h2>{this.state.title}</h2>
-              <CoursesTable />
-            </Fragment>
+            <CoursesTable
+              hideCourses={this.hideCourses}
+            />
           ) : null}
 
           {this.state.rentals ? (
-            <Fragment>
-              <h2>{this.state.title}</h2>
-              <RentalsTable />
-            </Fragment>
+            <RentalsTable
+              hideRentals={this.hideRentals}
+            />
           ) : null}
 
           {this.state.sales ? (
-            <Fragment>
-              <h2>{this.state.title}</h2>
-              <SalesTable />
-            </Fragment>
+            <SalesTable
+              hideSaleItems={this.hideSaleItems}
+            />
           ) : null}
 
           {this.state.users ? (
-            <Fragment>
-              <h2>{this.state.title}</h2>
-              <UsersTable />
-            </Fragment>
+            <UsersTable
+              hideUsers={this.hideUsers}
+            />
           ) : null}
 
           {this.state.test ? (
-            <Fragment>
-              <h2>{this.state.title}</h2>
-              <TestTable />
-            </Fragment>
+            <TestTable
+              hideTest={this.hideTest}
+            />
           ) : null}
 
         </div>

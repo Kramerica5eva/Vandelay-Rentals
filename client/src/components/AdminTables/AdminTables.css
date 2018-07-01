@@ -1,0 +1,25 @@
+.rt-td input {
+  font-size: unset;
+  padding: unset;
+  display: unset;
+  width: unset;
+  border: unset;
+  border-bottom: unset;
+}
+
+.rt-td input:focus {
+  outline: unset;
+}
+
+/* active state */
+
+.rt-td input:focus~label,
+.rt-td input:valid~label {
+  top: unset;
+  font-size: unset;
+  color: unset;
+}
+
+.rt-td input:not(:focus):invalid {
+  background-color: unset;
+}
