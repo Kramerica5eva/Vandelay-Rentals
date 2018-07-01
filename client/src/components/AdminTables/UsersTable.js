@@ -12,9 +12,7 @@ export class UsersTable extends Component {
       body: "",
       footer: ""
     },
-    users: [],
-    selection: [],
-    selectAll: false
+    users: []
   };
 
   componentDidMount() {
@@ -90,11 +88,13 @@ export class UsersTable extends Component {
     );
   }
 
-
-  //  Select Table (HOC) testing
+  handleRowClick = () => {
+    console.log("Eat a dick");
+  }
 
 
   render() {
+
     return (
       <Fragment>
         <Modal
@@ -179,16 +179,16 @@ export class UsersTable extends Component {
                 }
               ]
             },
-            // {
-            //   Header: 'Bidness Info',
-            //   columns: [
-            //     {
-            //       Header: "Waivers",
-            //       accessor: "waivers",
-            //       Cell: this.renderEditable
-            //     }
-            //   ]
-            // },
+            {
+              Header: 'Bidness Info',
+              columns: [
+                {
+                  Header: "Waivers",
+                  accessor: "waivers",
+                  Cell: this.renderEditable
+                }
+              ]
+            },
             {
               Header: 'Buttons',
               columns: [
@@ -196,7 +196,7 @@ export class UsersTable extends Component {
                   Header: "Edit Buttons",
                   id: "edit-buttons",
                   accessor: function () {
-                    return <button onClick={() => this.updateRow()}>Stuff</button>;
+                    return <button>Stuff</button>;
                   }
                 }
               ]
@@ -209,5 +209,3 @@ export class UsersTable extends Component {
     );
   }
 }
-
-// export RentalTable;

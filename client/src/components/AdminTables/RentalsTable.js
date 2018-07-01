@@ -45,8 +45,7 @@ export class RentalsTable extends Component {
         });
         console.log(res);
         this.setState({
-          rentals: res.data,
-          title: "All Rentals" // maybe call this in a function that sets state on the admin page
+          rentals: res.data
         });
         console.log(this.state.rentals);
       })
@@ -60,10 +59,9 @@ export class RentalsTable extends Component {
     });
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    //  blah blah blah
-  };
+  handleTableButtonClick = obj => {
+    console.log(obj.target);
+  }
 
   // editable react table testing
 
@@ -98,7 +96,7 @@ export class RentalsTable extends Component {
         />
 
         <ReactTable
-          data={this.state.rentals}
+          data={this.state.rentals}          
           columns={[
             {
               Header: "Category",
@@ -147,8 +145,8 @@ export class RentalsTable extends Component {
                 {
                   Header: "Edit Buttons",
                   id: "edit-buttons",
-                  accessor: function () {
-                    return <button>Stuff</button>;
+                  accessor: () => {
+                    return <button onClick={this.handleTableButtonClick.bind(this)}>Stuff</button>;
                   }
                 }
               ]

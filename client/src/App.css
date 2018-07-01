@@ -169,3 +169,7 @@ li {
 }
 
 /* end Dev links styling */
+
+.rt-td input {
+    background-color: red;
+}

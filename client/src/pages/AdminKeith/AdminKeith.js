@@ -4,7 +4,7 @@ import API from "../../utils/API";
 import Modal from "../../components/Modal";
 import NavBar from "../../components/NavBar";
 import DevLinks from "../../components/DevLinks";
-import { RentalsTable, CoursesTable, SalesTable, UsersTable } from "../../components/AdminTables";
+import { RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
 
 class Admin extends Component {
   state = {
@@ -18,6 +18,7 @@ class Admin extends Component {
     rentals: null,
     sales: null,
     users: null,
+    test: null,
     title: ""
   };
 
@@ -39,6 +40,17 @@ class Admin extends Component {
         body: modalInput.body,
         footer: modalInput.footer
       }
+    });
+  }
+
+  setTestTrue = () => {
+    this.setState({
+      test: true,
+      courses: null,
+      rentals: null,
+      sales: null,
+      users: null,
+      title: "Test Table"
     });
   }
 
@@ -127,6 +139,7 @@ class Admin extends Component {
             <button onClick={this.adminGetAllRentals}>See All Rentals</button>
             <button onClick={this.adminGetAllSaleItems}>See All Items For Sale</button>
             <button onClick={this.adminGetAllCourses}>See All Courses</button>
+            <button onClick={this.setTestTrue}>Test</button>
           </div>
 
           {this.state.courses ? (
@@ -154,6 +167,13 @@ class Admin extends Component {
             <Fragment>
               <h2>{this.state.title}</h2>
               <UsersTable />
+            </Fragment>
+          ) : null}
+
+          {this.state.test ? (
+            <Fragment>
+              <h2>{this.state.title}</h2>
+              <TestTable />
             </Fragment>
           ) : null}
 
