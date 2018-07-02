@@ -206,7 +206,7 @@ class Admin extends Component {
 
           {this.state.showForms ? (
             <AdminForms
-            updateUser={this.props.updateUser}
+              updateUser={this.props.updateUser}
             />
           ) : null}
 

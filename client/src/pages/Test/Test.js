@@ -2,14 +2,15 @@ import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import API from "../../utils/API";
-import Modal from "../../components/Modal";
-import NavBar from "../../components/NavBar";
-import Footer from "../../components/Footer";
+import Modal from "../../components/Elements/Modal";
+import NavBar from "../../components/Elements/NavBar";
+import Footer from "../../components/Elements/Footer";
 import ParallaxHero from "../../components/ParallaxHero"
-import { Input, FormBtn } from "../../components/Form";
+import { Input, FormBtn } from "../../components/Elements/Form";
 import DevLinks from "../../components/DevLinks";
-import RentalCard from "../../components/RentalCard";
+import RentalCard from "../../components/Cards/RentalCard";
 import "./Test.css";
+import { CategoryCard } from "../../components/Cards/CategoryCard/CategoryCard";
 
 class Test extends Component {
   state = {
@@ -31,12 +32,11 @@ class Test extends Component {
   };
 
   componentDidMount() {
-    this.getAllRentals();
-    axios.get("/image")
-      .then(image => {
+    API.getAllCategories()
+      .then(categories => {
         this.setState({
-          image: image
-        });
+          categories: categories.data
+        })
       })
   }
 
@@ -190,6 +190,7 @@ class Test extends Component {
   }
 
   render() {
+    console.log(this.state.categories);
     return (
       <Fragment>
         <Modal
@@ -220,10 +221,60 @@ class Test extends Component {
             />
 
             <div className="category-btn-container">
-              <button onClick={() => this.getByCategory("Paddleboard")}>PaddleBoards</button>
-              <button onClick={() => this.getByCategory("Kayak")}>Kayaks</button>
-              <button onClick={this.getAllRentals}>See All</button>
+
+              {this.state.categories ? this.state.categories.map(category => (
+                <Fragment>
+                  <CategoryCard
+                    onClick={() => this.getByCategory(category.category)}
+                    category={category.category}
+                    description={category.description}
+                  />
+                </Fragment>
+              )) : null}
+              <CategoryCard
+                category="See All"
+                description="See all of our rentals"
+                onClick={this.getAllRentals}
+              />
             </div>
+
+            <h2>Rentals:</h2>
+            <div className="rental-results-div">
+              {this.state.rentals ? this.state.rentals.map(rental => (
+                <RentalCard
+                  key={rental._id}
+                  id={rental._id}
+                  name={rental.name}
+                  category={rental.category}
+                  maker={rental.maker}
+                  reservations={rental.reservations}
+                  availability={this.checkAvailability(rental.reservations) ? "Available" : "Unavailable"}
+                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
+                </RentalCard>
+              )) : null}
+            </div>
+
+          </div>
+
+
+          <ParallaxHero
+            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1499858476316-343e284f1f67?ixlib=rb-0.3.5&s=4985c13dbbf85d7d0f5b90df50ea8695&auto=format&fit=crop&w=1350&q=80)' }}
+            title="About our Company"
+          />
+
+          <div className='body-container'>
+            <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
+            <button
+              onClick={() => this.setModal({
+                header: "Kramer's Modal",
+                body:
+                  <img src="https://pbs.twimg.com/profile_images/966923121482645507/qtpVrqVn_400x400.jpg" alt="Kramer" />,
+                footer: "Kramer's Modal Footer"
+              })}
+            >
+              Kramer!
+              </button>
+
             <div className="rentals-by-date-form-div">
 
               <form className="see-rentals-form">
@@ -286,43 +337,6 @@ class Test extends Component {
               </form>
 
             </div>
-
-            <h2>Rentals:</h2>
-            <div className="rental-results-div">
-              {this.state.rentals ? this.state.rentals.map(rental => (
-                <RentalCard
-                  key={rental._id}
-                  id={rental._id}
-                  name={rental.name}
-                  category={rental.category}
-                  maker={rental.maker}
-                  reservations={rental.reservations}
-                  availability={this.checkAvailability(rental.reservations) ? "Available" : "Unavailable"}
-                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
-                </RentalCard>
-              )) : null}
-            </div>
-
-          </div>
-
-
-          <ParallaxHero
-            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1499858476316-343e284f1f67?ixlib=rb-0.3.5&s=4985c13dbbf85d7d0f5b90df50ea8695&auto=format&fit=crop&w=1350&q=80)' }}
-            title="About our Company"
-          />
-
-          <div className='body-container'>
-            <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
-            <button
-              onClick={() => this.setModal({
-                header: "Kramer's Modal",
-                body:
-                  <img src="https://pbs.twimg.com/profile_images/966923121482645507/qtpVrqVn_400x400.jpg" alt="Kramer" />,
-                footer: "Kramer's Modal Footer"
-              })}
-            >
-              Kramer!
-              </button>
 
 
             {this.state.images ? (

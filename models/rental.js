@@ -5,8 +5,6 @@ const rentalSchema = new Schema({
   name: { type: String, required: true },
   category: {
     type: String,
-    enum: ['Paddleboard', 'Kayak'],
-    default: 'Kayak',
     required: true
   },
   maker: String,
