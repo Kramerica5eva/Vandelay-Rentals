@@ -104,7 +104,6 @@ export default {
     return axios.get(`/api/sales/${category}/${id}`);
   },
 
-
   // ADMIN ROUTES
   // ADMIN USER ROUTES
   // Gets all users
@@ -125,6 +124,25 @@ export default {
   // Gets one user by id
   deleteUser: function (id) {
     return axios.delete(`/admin/users/${id}`);
+  },
+
+  //ADMIN CATEGORY ROUTES
+  // Gets all categories
+  // This route is only in admin because a single route doesn't need a new pathway and controller file
+  getAllCategories: function () {
+    return axios.get('/admin/category');
+  },
+  // Add new category
+  adminAddNewCategory: function (categoryData) {
+    return axios.post('/admin/category', categoryData);
+  },
+  // Modify category
+  adminUpdateCategory: function (id, categoryData) {
+    return axios.put(`/admin/category/${id}`, categoryData);
+  },
+  // Delete category
+  adminDeleteCategory: function (id) {
+    return axios.delete(`/admin/category/${id}`);
   },
 
   // ADMIN COURSE ROUTES

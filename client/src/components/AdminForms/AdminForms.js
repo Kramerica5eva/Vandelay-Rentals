@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import Modal from "../../components/Modal";
-import { AddCourseForm, AddRentalForm, AddSaleItemForm, AddUserForm } from "../../components/AdminForms";
+import { AddCourseForm, AddRentalForm, AddSaleItemForm, AddUserForm, AddCategoryForm } from "../../components/AdminForms";
 
 export class AdminForms extends Component {
   state = {
@@ -14,7 +14,8 @@ export class AdminForms extends Component {
       addCourse: false,
       addRental: true,
       addSaleItem: false,
-      addUser: false
+      addUser: false,
+      addCategory: false
     }
   };
 
@@ -48,7 +49,8 @@ export class AdminForms extends Component {
         addCourse: true,
         addRental: false,
         addSaleItem: false,
-        addUser: false
+        addUser: false,
+        addCategory: false
       }
     });
   }
@@ -59,7 +61,8 @@ export class AdminForms extends Component {
         addCourse: false,
         addRental: true,
         addSaleItem: false,
-        addUser: false
+        addUser: false,
+        addCategory: false
       }
     });
   }
@@ -70,7 +73,8 @@ export class AdminForms extends Component {
         addCourse: false,
         addRental: false,
         addSaleItem: true,
-        addUser: false
+        addUser: false,
+        addCategory: false
       }
     });
   }
@@ -81,7 +85,20 @@ export class AdminForms extends Component {
         addCourse: false,
         addRental: false,
         addSaleItem: false,
-        addUser: true
+        addUser: true,
+        addCategory: false
+      }
+    });
+  }
+
+  toggleCategoryForm = () => {
+    this.setState({
+      forms: {
+        addCourse: false,
+        addRental: false,
+        addSaleItem: false,
+        addUser: false,
+        addCategory: true
       }
     });
   }
@@ -100,13 +117,15 @@ export class AdminForms extends Component {
           {this.state.forms.addCourse ? (
             <Fragment>
               <div className="admin-forms-toggle-div">
-                <button className="admin-toggle-btn">Add Course</button>
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleRentalForm}>Add Rental</button>
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleSaleItemForm}>Add Sale Item</button>
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleUserForm}>Add User</button>
+                <h3>Select a Form</h3>
+                <button className="admin-toggle-btn">Course</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleRentalForm}>Rental</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleSaleItemForm}>Sale Item</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleUserForm}>User</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleCategoryForm}>Category</button>
               </div>
               <div className="admin-form-div">
-                <h2>Add New Course</h2>
+                <h2>New Course</h2>
                 <AddCourseForm />
               </div>
             </Fragment>
@@ -115,13 +134,15 @@ export class AdminForms extends Component {
           {this.state.forms.addRental ? (
             <Fragment>
               <div className="admin-forms-toggle-div">
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleCourseForm}>Add Course</button>
-                <button className="admin-toggle-btn">Add Rental</button>
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleSaleItemForm}>Add Sale Item</button>
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleUserForm}>Add User</button>
+                <h3>Select a Form</h3>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleCourseForm}>Course</button>
+                <button className="admin-toggle-btn">Rental</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleSaleItemForm}>Sale Item</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleUserForm}>User</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleCategoryForm}>Category</button>
               </div>
               <div className="admin-form-div">
-                <h2>Add New Rental</h2>
+                <h2>New Rental</h2>
                 <AddRentalForm />
               </div>
             </Fragment>
@@ -130,13 +151,15 @@ export class AdminForms extends Component {
           {this.state.forms.addSaleItem ? (
             <Fragment>
               <div className="admin-forms-toggle-div">
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleCourseForm}>Add Course</button>
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleRentalForm}>Add Rental</button>
-                <button className="admin-toggle-btn">Add Sale Item</button>
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleUserForm}>Add User</button>
+                <h3>Select a Form</h3>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleCourseForm}>Course</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleRentalForm}>Rental</button>
+                <button className="admin-toggle-btn">Sale Item</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleUserForm}>User</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleCategoryForm}>Category</button>
               </div>
               <div className="admin-form-div">
-                <h2>Add New Sale Item</h2>
+                <h2>New Sale Item</h2>
                 <AddSaleItemForm />
               </div>
             </Fragment>
@@ -145,14 +168,33 @@ export class AdminForms extends Component {
           {this.state.forms.addUser ? (
             <Fragment>
               <div className="admin-forms-toggle-div">
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleCourseForm}>Add Course</button>
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleRentalForm}>Add Rental</button>
-                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleSaleItemForm}>Add Sale Item</button>
-                <button className="admin-toggle-btn">Add User</button>
+                <h3>Select a Form</h3>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleCourseForm}>Course</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleRentalForm}>Rental</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleSaleItemForm}>Sale Item</button>
+                <button className="admin-toggle-btn">User</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleCategoryForm}>Category</button>
               </div>
               <div className="admin-form-div">
-                <h2>Add New User</h2>
+                <h2>New User</h2>
                 <AddUserForm />
+              </div>
+            </Fragment>
+          ) : null}
+
+          {this.state.forms.addCategory ? (
+            <Fragment>
+              <div className="admin-forms-toggle-div">
+                <h3>Select a Form</h3>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleCourseForm}>Course</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleRentalForm}>Rental</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleSaleItemForm}>Sale Item</button>
+                <button className="admin-toggle-btn admin-toggle-btn-light" onClick={this.toggleUserForm}>User</button>
+                <button className="admin-toggle-btn">Category</button>
+              </div>
+              <div className="admin-form-div">
+                <h2>New Category</h2>
+                <AddCategoryForm />
               </div>
             </Fragment>
           ) : null}

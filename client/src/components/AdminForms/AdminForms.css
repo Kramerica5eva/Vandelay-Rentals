@@ -16,18 +16,37 @@
 
 .admin-forms-toggle-div {
   display: flex;
+  flex-wrap: wrap;
   border: 1px solid #000;
 }
 
+.admin-forms-toggle-div h3 {
+  min-width: 100%;
+  text-align: center;
+  background-color: #dadada;
+  border-bottom: 1px solid #000;
+  color: #000;
+  padding: 10px 0;
+}
+
 .admin-toggle-btn {
-  width: 25%;
+  width: 20%;
+  flex-grow: 1;
   background-color: #000;
   color: #ddd;
   padding: 10px 0;
   border: none;
-  outline: transparent;
+  outline: #000;
+}
+
+.admin-toggle-btn {
+  border-right: 1px solid #000;
+}
+
+.admin-toggle-btn:last-child {
+  border: none;
 }
 
 .admin-toggle-btn-light {
-  opacity: .6;
+  background-color: #00000099;
 }

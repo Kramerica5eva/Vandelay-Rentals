@@ -3,5 +3,5 @@ module.exports = {
   Rental: require('./rental'),
   Sale: require('./sale'),
   User: require('./user'),
-  Image: require('./image')
+  Category: require('./category')
 };

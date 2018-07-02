@@ -15,7 +15,7 @@ module.exports = {
   },
 
   signup: function (req, res) {
-    const { username, firstName, lastName, email, state, zipcode, phone, admin } = req.body;
+    const { username, firstName, lastName, email, state, zipcode, phone } = req.body;
 
     let zipTest = /^\d{5}(-\d{4})?$/.test(zipcode);
     let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);

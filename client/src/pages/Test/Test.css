@@ -26,7 +26,10 @@ body:not(ParallaxHero) {
 }
 
 .category-btn-container {
-  width: 300px;
+  width: 900px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
   margin: 50px auto;
 }
 
