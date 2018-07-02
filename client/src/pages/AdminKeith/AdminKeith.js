@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import Modal from "../../components/Modal";
 import NavBar from "../../components/NavBar";
 import DevLinks from "../../components/DevLinks";
-import { RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
+import { BrandonTestTable, RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
 
 class Admin extends Component {
   state = {
@@ -17,7 +17,8 @@ class Admin extends Component {
     rentals: false,
     sales: false,
     users: false,
-    test: false
+    test: false,
+    brandonTest: false
   };
 
   componentDidMount() {
@@ -50,6 +51,18 @@ class Admin extends Component {
   hideTest = () => {
     this.setState({
       test: false
+    })
+  };
+
+  setBrandonTestTrue = () => {
+    this.setState({
+      brandonTest: true
+    });
+  };
+
+  hideBrandonTest = () => {
+    this.setState({
+      brandonTest: false
     })
   };
 
@@ -151,6 +164,7 @@ class Admin extends Component {
             <button onClick={this.showSaleItems}>See All Items For Sale</button>
             <button onClick={this.showUsers}>See All Users</button>
             <button onClick={this.setTestTrue}>Test</button>
+            <button onClick={this.setBrandonTestTrue}>BrandonTest</button>
             <button onClick={this.hideAllTables}>Clear All</button>
           </div>
 
@@ -181,6 +195,12 @@ class Admin extends Component {
           {this.state.test ? (
             <TestTable
               hideTest={this.hideTest}
+            />
+          ) : null}
+
+          {this.state.brandonTest ? (
+            <BrandonTestTable
+              hideBrandonTest={this.hideBrandonTest}
             />
           ) : null}
 
