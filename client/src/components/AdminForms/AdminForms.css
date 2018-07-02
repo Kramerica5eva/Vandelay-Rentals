@@ -1,0 +1,33 @@
+#admin-forms-container {
+  width: 400px;
+  margin: 50px auto;
+  padding: 0;
+  border: 1px solid #000;
+}
+
+.admin-form-div {
+  border: 1px solid #000;
+  padding: 20px 5px 20px 35px;
+}
+
+.admin-form-div h2 {
+  margin-bottom: 40px;
+}
+
+.admin-forms-toggle-div {
+  display: flex;
+  border: 1px solid #000;
+}
+
+.admin-toggle-btn {
+  width: 25%;
+  background-color: #000;
+  color: #ddd;
+  padding: 10px 0;
+  border: none;
+  outline: transparent;
+}
+
+.admin-toggle-btn-light {
+  opacity: .6;
+}

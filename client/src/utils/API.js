@@ -37,10 +37,9 @@ export default {
   logout: function () {
     return axios.post('/user/logout');
   },
-  // Authentication Route
-  // Checks to see if a user is logged in before seeing protected routes
-  authenticate: function () {
-    return axios.get('/user/auth');
+  //  Checks current password before changing it
+  checkPassword: function (pwData) {
+    return axios.post('/user/check', pwData);
   },
 
   // USER COURSE ROUTES

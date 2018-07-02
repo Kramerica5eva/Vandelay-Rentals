@@ -4,6 +4,7 @@ import Modal from "../../components/Modal";
 import NavBar from "../../components/NavBar";
 import DevLinks from "../../components/DevLinks";
 import { BrandonTestTable, RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
+import { AdminForms } from "../../components/AdminForms";
 
 class Admin extends Component {
   state = {
@@ -13,17 +14,14 @@ class Admin extends Component {
       body: "",
       footer: ""
     },
+    showForms: false,
     courses: false,
-    rentals: false,
+    rentals: true,
     sales: false,
     users: false,
     test: false,
     brandonTest: false
   };
-
-  componentDidMount() {
-    this.showRentals();
-  }
 
   toggleModal = () => {
     this.setState({
@@ -42,76 +40,72 @@ class Admin extends Component {
     });
   }
 
-  setTestTrue = () => {
+  //  Test Pages - remove these functiosn from the final version
+  toggleTest = () => {
     this.setState({
-      test: true
+      test: !this.state.test,
+      showForms: false
     });
   };
 
-  hideTest = () => {
+  toggleBrandonTest = () => {
     this.setState({
-      test: false
-    })
-  };
-
-  setBrandonTestTrue = () => {
-    this.setState({
-      brandonTest: true
+      brandonTest: !this.state.brandonTest,
+      showForms: false
     });
   };
+  // END Test Pages
 
-  hideBrandonTest = () => {
+  toggleForms = () => {
     this.setState({
+      showForms: true,
+      courses: false,
+      rentals: false,
+      sales: false,
+      users: false,
+      test: false,
       brandonTest: false
-    })
-  };
+    });
+  }
 
-  showCourses = () => {
+  toggleTables = () => {
     this.setState({
-      courses: true
+      showForms: false,
+      courses: false,
+      rentals: true,
+      sales: false,
+      users: false,
+      test: false,
+      brandonTest: false
+    });
+  }
+
+  toggleCourses = () => {
+    this.setState({
+      courses: !this.state.courses,
+      showForms: false
     });
   };
 
-  hideCourses = () => {
+  toggleRentals = () => {
     this.setState({
-      courses: false
-    })
-  };
-
-  showRentals = () => {
-    this.setState({
-      rentals: true
+      rentals: !this.state.rentals,
+      showForms: false
     });
   };
 
-  hideRentals = () => {
+  toggleSaleItems = () => {
     this.setState({
-      rentals: false
-    })
-  };
-
-  showSaleItems = () => {
-    this.setState({
-      sales: true
+      sales: !this.state.sales,
+      showForms: false
     });
   };
 
-  hideSaleItems = () => {
+  toggleUsers = () => {
     this.setState({
-      sales: false
-    })
-  };
-
-  showUsers = () => {
-    this.setState({
-      users: true
+      users: !this.state.users,
+      showForms: false
     });
-  };
-
-  hideUsers = () => {
-    this.setState({
-      users: false
-    })
   };
 
   hideAllTables = () => {
@@ -120,9 +114,10 @@ class Admin extends Component {
       rentals: false,
       sales: false,
       users: false,
-      test: false
-    })
-  }
+      test: false,
+      brandonTest: false
+    });
+  };
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -135,11 +130,11 @@ class Admin extends Component {
     return (
       <Fragment>
         <Modal
-          show={this.state.isOpen}
+          show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
-          header={this.state.header}
-          body={this.state.body}
-          footer={this.state.footer}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
         />
         <NavBar
           loggedIn={this.props.loggedIn}
@@ -159,50 +154,62 @@ class Admin extends Component {
         <div>
 
           <div className="admin-btn-array">
-            <button onClick={this.showCourses}>See All Courses</button>
-            <button onClick={this.showRentals}>See All Rentals</button>
-            <button onClick={this.showSaleItems}>See All Items For Sale</button>
-            <button onClick={this.showUsers}>See All Users</button>
-            <button onClick={this.setTestTrue}>Test</button>
-            <button onClick={this.setBrandonTestTrue}>BrandonTest</button>
-            <button onClick={this.hideAllTables}>Clear All</button>
+            <button onClick={this.toggleCourses}>See All Courses</button>
+            <button onClick={this.toggleRentals}>See All Rentals</button>
+            <button onClick={this.toggleSaleItems}>See All Items For Sale</button>
+            <button onClick={this.toggleUsers}>See All Users</button>
+            <button onClick={this.toggleTest}>Test</button>
+            <button onClick={this.toggleBrandonTest}>BrandonTest</button>
+            <button onClick={this.hideAllTables}>Clear Tables</button>
+            {this.state.showForms ? (
+              <button onClick={this.toggleTables}>Show Tables</button>
+            ) : (
+                <button onClick={this.toggleForms}>Show Forms</button>
+              )}
           </div>
 
           {this.state.courses ? (
             <CoursesTable
-              hideCourses={this.hideCourses}
+              hideCourses={this.toggleCourses}
             />
           ) : null}
 
           {this.state.rentals ? (
             <RentalsTable
-              hideRentals={this.hideRentals}
+              hideRentals={this.toggleRentals}
             />
           ) : null}
 
           {this.state.sales ? (
             <SalesTable
-              hideSaleItems={this.hideSaleItems}
+              hideSaleItems={this.toggleSaleItems}
             />
           ) : null}
 
           {this.state.users ? (
             <UsersTable
-              hideUsers={this.hideUsers}
+              hideUsers={this.toggleUsers}
             />
           ) : null}
 
           {this.state.test ? (
             <TestTable
-              hideTest={this.hideTest}
+              hideTest={this.toggleTest}
             />
           ) : null}
 
           {this.state.brandonTest ? (
             <BrandonTestTable
-              hideBrandonTest={this.hideBrandonTest}
+              hideBrandonTest={this.toggleBrandonTest}
             />
           ) : null}
+
+          {this.state.showForms ? (
+            <AdminForms
+            updateUser={this.props.updateUser}
+            />
+          ) : null}
+
 
         </div>
       </Fragment>

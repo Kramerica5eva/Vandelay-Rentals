@@ -4,8 +4,7 @@ import Header from "../../components/Header";
 import DevLinks from "../../components/DevLinks";
 import NavBar from "../../components/NavBar";
 import FixedFooter from "../../components/FixedFooter";
-import LoginForm from "../../components/LoginForm";
-import SignupForm from "../../components/SignupForm";
+import { LoginForm, SignupForm } from "../../components/AuthForms";
 import "./Login.css";
 
 

@@ -3,12 +3,14 @@ import { Input, FormBtn } from "../Form";
 import Modal from "../../components/Modal";
 import API from "../../utils/API";
 
-class SignupForm extends Component {
+export class AddUserForm extends Component {
   state = {
-    isOpen: false,
-    header: "",
-    body: "",
-    footer: "",
+    modal: {
+      isOpen: false,
+      header: "",
+      body: "",
+      footer: ""
+    },
     username: "",
     password: "",
     confirmPassword: "",
@@ -19,26 +21,31 @@ class SignupForm extends Component {
     city: "",
     state: "",
     zipcode: "",
-    phone: ""
+    phone: "",
+    admin: false
   }
 
   toggleModal = () => {
     this.setState({
-      isOpen: !this.state.isOpen
+      modal: { isOpen: !this.state.modal.isOpen }
     });
   }
 
   setModal = (modalInput) => {
     this.setState({
-      isOpen: !this.state.isOpen,
-      header: modalInput.header,
-      body: modalInput.body,
-      footer: modalInput.footer
+      modal: {
+        isOpen: !this.state.modal.isOpen,
+        header: modalInput.header,
+        body: modalInput.body,
+        footer: modalInput.footer
+      }
     });
   }
 
   handleInputChange = event => {
-    const { name, value } = event.target;
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const { name } = event.target;
     this.setState({
       [name]: value
     });
@@ -58,7 +65,8 @@ class SignupForm extends Component {
       city: this.state.city,
       state: this.state.state,
       zipcode: this.state.zipcode,
-      phone: this.state.phone
+      phone: this.state.phone,
+      admin: this.state.admin
     })
       .then(res => {
         console.log(res);
@@ -76,12 +84,12 @@ class SignupForm extends Component {
                 body: <h4>That email already exists in our database</h4>
               });
               break;
-              case "did not validate":
-                this.setModal({
-                  header: "Error",
-                  body: <h4>Please correct highlighted items</h4>
-                });
-                break;
+            case "did not validate":
+              this.setModal({
+                header: "Error",
+                body: <h4>Please correct highlighted items</h4>
+              });
+              break;
           }
         }
         //  'errmsg' seems to be standard MongoDB terminology...
@@ -89,19 +97,7 @@ class SignupForm extends Component {
 
           console.log("Creating user:")
           console.log(res);
-          // update App.js state
-          this.props.updateUser({
-            auth: true,
-            state: {
-              loggedIn: true,
-              username: res.data.username,
-              firstName: res.data.firstName
-            }
-          });
-          // Once signed up, set this.state.redirect to true so the component will reload and trigger the if/else to redirect elsewhere
-          this.props.setRedirect();
-        } else {
-          console.log('username already taken');
+
         }
       }).catch(error => {
         console.log('signup error: ');
@@ -113,11 +109,11 @@ class SignupForm extends Component {
     return (
       <Fragment>
         <Modal
-          show={this.state.isOpen}
+          show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
-          header={this.state.header}
-          body={this.state.body}
-          footer={this.state.footer}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
         />
         <form>
           <Input
@@ -208,6 +204,17 @@ class SignupForm extends Component {
             label="Phone Number:"
             placeholder="e.g. xxx-xxx-xxxx"
           />
+          <Fragment>
+            <label>Admin:</label>
+            <Input
+              checked={this.state.admin}
+              onChange={this.handleInputChange}
+              name="admin"
+              label="Admin:"
+              type="checkbox"
+              style={{ display: "inline-block", width: "20px" }}
+            />
+          </Fragment>
           <FormBtn
             disabled={(
               !this.state.username ||
@@ -233,7 +240,4 @@ class SignupForm extends Component {
     )
   }
 
-
 }
-
-export default SignupForm;

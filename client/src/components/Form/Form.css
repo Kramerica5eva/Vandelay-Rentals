@@ -1,16 +1,31 @@
 /* form starting stylings ------------------------------- */
 
+.group-select select {
+    margin-top: 25px;
+    background: transparent;
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid #757575;
+    font-size: 18px;
+    padding: 10px 10px 10px 5px;
+}
+
+.group-select label {
+    top: unset;
+    font-size: 14px;
+    color: #5264AE;
+}
+
 .group {
     position: relative;
     margin-bottom: 45px;
+}
+
+.group input {
     background: transparent;
 }
 
-.group input{
-    background: transparent;
-}
-
-input {
+input, textarea {
     font-size: 18px;
     padding: 10px 10px 10px 5px;
     display: block;
@@ -19,8 +34,22 @@ input {
     border-bottom: 1px solid #757575;
 }
 
-input:focus {
-    outline: none;
+textarea {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #dfe4e9;
+    min-width: 300px;
+    max-width: 300px;
+    
+}
+
+.group-textarea label {
+  margin-top: -30px;
+  font-size: 14px;
+  color: #5264AE;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: transparent;
 }
 
 /* LABEL ======================================= */
@@ -40,8 +69,7 @@ label {
 
 /* active state */
 
-input:focus~label,
-input:valid~label {
+input:focus~label, input:valid~label {
     top: -20px;
     font-size: 14px;
     color: #5264AE;
@@ -59,8 +87,7 @@ input:not(:focus):invalid {
     width: 300px;
 }
 
-.bar:before,
-.bar:after {
+.bar:before, .bar:after {
     content: '';
     height: 2px;
     width: 0;
@@ -83,7 +110,9 @@ input:not(:focus):invalid {
 /* active state */
 
 input:focus~.bar:before,
-input:focus~.bar:after {
+input:focus~.bar:after,
+textarea:focus~.bar:before,
+textarea:focus~.bar:after {
     width: 50%;
 }
 
@@ -105,6 +134,42 @@ input:focus~.highlight {
     -webkit-animation: inputHighlighter 0.3s ease;
     -moz-animation: inputHighlighter 0.3s ease;
     animation: inputHighlighter 0.3s ease;
+}
+
+/* form button */
+
+.form-btn {
+    font-family: var(--font-Raleway);
+    font-size: 14px;
+    margin: 10px 0;
+    display: block;
+    background-color: #272727;
+    border: 1px solid #272727;
+    padding: 7px 10px;
+    color: #000000;
+    font-weight: bold;
+    text-decoration: none;
+    text-shadow: 0 0 2px #fff,
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 15px #fff,
+    0 0 20px #fff,
+    0 0 25px #fff;
+}
+
+.form-btn:hover {
+    color: #fff;
+    background-color: #000;
+    text-shadow: 0 0 1px #000,
+    0 0 2px #000,
+    0 0 3px #000,
+    0 0 4px #000,
+    0 0 5px #000,
+    0 0 6px #fff,
+    0 0 8px #fff,
+    0 0 10px #fff,
+    0 0 20px #fff,
+    0 0 30px #fff;
 }
 
 /* ANIMATIONS ================ */

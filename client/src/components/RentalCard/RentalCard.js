@@ -7,7 +7,7 @@ class RentalCard extends Component {
   render() {
     return (
       <div id={this.props.id} className={this.props.className}>
-        <li>
+        {/* <li> */}
           <h3>{this.props.name}</h3>
           <h4>{this.props.category}</h4>
           <h5>Maker: {this.props.maker}</h5>
@@ -19,7 +19,7 @@ class RentalCard extends Component {
           ))}
           <h2>{this.props.availability}</h2>
           {/* ***End*** */}
-        </li>
+        {/* </li> */}
       </div>
     )
   }
