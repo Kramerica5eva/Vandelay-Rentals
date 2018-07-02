@@ -8,7 +8,7 @@
     "start:prod": "node server.js",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
-    "seed": "node scripts/courseSeed.js && node scripts/rentalSeed.js && node scripts/saleSeed.js && node scripts/userSeed.js",
+    "seed": "node scripts/courseSeed.js && node scripts/rentalSeed.js && node scripts/saleSeed.js && node scripts/userSeed.js && node scripts/categorySeed.js",
     "install": "cd client && yarn install",
     "build": "cd client && npm run build",
     "heroku-postbuild": "npm run build"
@@ -23,6 +23,7 @@
     "axios": "^0.16.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
+    "chance": "^1.0.16",
     "connect-mongo": "^2.0.1",
     "express": "^4.15.4",
     "express-session": "^1.15.6",

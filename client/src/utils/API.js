@@ -37,10 +37,9 @@ export default {
   logout: function () {
     return axios.post('/user/logout');
   },
-  // Authentication Route
-  // Checks to see if a user is logged in before seeing protected routes
-  authenticate: function () {
-    return axios.get('/user/auth');
+  //  Checks current password before changing it
+  checkPassword: function (pwData) {
+    return axios.post('/user/check', pwData);
   },
 
   // USER COURSE ROUTES
@@ -113,7 +112,6 @@ export default {
     return axios.get(`/api/sales/${category}/${id}`);
   },
 
-
   // ADMIN ROUTES
   // ADMIN USER ROUTES
   // Gets all users
@@ -134,6 +132,25 @@ export default {
   // Gets one user by id
   deleteUser: function (id) {
     return axios.delete(`/admin/users/${id}`);
+  },
+
+  //ADMIN CATEGORY ROUTES
+  // Gets all categories
+  // This route is only in admin because a single route doesn't need a new pathway and controller file
+  getAllCategories: function () {
+    return axios.get('/admin/category');
+  },
+  // Add new category
+  adminAddNewCategory: function (categoryData) {
+    return axios.post('/admin/category', categoryData);
+  },
+  // Modify category
+  adminUpdateCategory: function (id, categoryData) {
+    return axios.put(`/admin/category/${id}`, categoryData);
+  },
+  // Delete category
+  adminDeleteCategory: function (id) {
+    return axios.delete(`/admin/category/${id}`);
   },
 
   // ADMIN COURSE ROUTES

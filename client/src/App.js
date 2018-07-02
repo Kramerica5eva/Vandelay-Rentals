@@ -144,8 +144,6 @@ class App extends Component {
               <Fragment>
                 <Home
                   {...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
@@ -162,8 +160,6 @@ class App extends Component {
               <Fragment>
                 <Rentals
                   {...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
@@ -180,8 +176,6 @@ class App extends Component {
               <Fragment>
                 <Sales
                   {...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
@@ -198,8 +192,6 @@ class App extends Component {
               <Fragment>
                 <Courses
                   {...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
@@ -246,8 +238,6 @@ class App extends Component {
           <PrivateRoute
             path="/test"
             component={AddPropsToRoute(Test, {
-              toggleModal: this.toggleModal,
-              setModal: this.setModal,
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -258,8 +248,6 @@ class App extends Component {
           <PrivateRoute
             path="/testnick"
             component={AddPropsToRoute(TestNick, {
-              toggleModal: this.toggleModal,
-              setModal: this.setModal,
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -270,8 +258,6 @@ class App extends Component {
           <PrivateRoute
             path="/testben"
             component={AddPropsToRoute(TestBen, {
-              toggleModal: this.toggleModal,
-              setModal: this.setModal,
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -282,8 +268,6 @@ class App extends Component {
 					          <PrivateRoute
             path="/testbrandon"
             component={AddPropsToRoute(TestBrandon, {
-              toggleModal: this.toggleModal,
-              setModal: this.setModal,
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -294,8 +278,6 @@ class App extends Component {
           <PrivateRoute
             path="/testcorb"
             component={AddPropsToRoute(TestCorb, {
-              toggleModal: this.toggleModal,
-              setModal: this.setModal,
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -318,8 +300,6 @@ class App extends Component {
           <AdminRoute
             path="/admin"
             component={AddPropsToRoute(Admin, {
-              toggleModal: this.toggleModal,
-              setModal: this.setModal,
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -330,8 +310,6 @@ class App extends Component {
           <AdminRoute
             path="/adminbrandon"
             component={AddPropsToRoute(AdminBrandon, {
-              toggleModal: this.toggleModal,
-              setModal: this.setModal,
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -342,8 +320,6 @@ class App extends Component {
           <AdminRoute
             path="/adminkeith"
             component={AddPropsToRoute(AdminKeith, {
-              toggleModal: this.toggleModal,
-              setModal: this.setModal,
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
