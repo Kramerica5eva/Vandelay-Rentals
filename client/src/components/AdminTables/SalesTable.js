@@ -46,7 +46,7 @@ export class SalesTable extends Component {
           r.parsedCost = cost;
           const price = "$" + parseFloat(r.price.$numberDecimal).toFixed(2);
           r.parsedPrice = price;
-          if (r.finalSale) {
+          if (r.finalSale && r.finalSale !== 'n/a') {
             const sale = "$" + parseFloat(r.finalSale.$numberDecimal).toFixed(2) || null;
             r.parsedSale = sale;
           }
@@ -96,11 +96,11 @@ export class SalesTable extends Component {
     return (
       <Fragment>
         <Modal
-          show={this.state.isOpen}
+          show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
-          header={this.state.header}
-          body={this.state.body}
-          footer={this.state.footer}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
         />
 
         <h2>Sale Items</h2>

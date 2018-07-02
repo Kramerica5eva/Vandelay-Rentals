@@ -1,6 +1,6 @@
 import React from "react";
 import { Label } from "./Label";
-import "./Input.css"
+import "./Form.css"
 
 export const Input = props => (
   <div className="group">

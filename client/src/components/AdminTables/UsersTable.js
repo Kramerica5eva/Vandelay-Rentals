@@ -150,11 +150,11 @@ export class UsersTable extends Component {
     return (
       <Fragment>
         <Modal
-          show={this.state.isOpen}
+          show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
-          header={this.state.header}
-          body={this.state.body}
-          footer={this.state.footer}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
         />
 
         <h2>All Users</h2>
@@ -162,7 +162,7 @@ export class UsersTable extends Component {
         <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
         <button onClick={this.props.hideUsers}>Hide Table</button>
         <button onClick={this.logSelection}>Log Selection</button>
-        
+
         <CheckboxTable
           ref={r => (this.checkboxTable = r)}
           data={this.state.users}

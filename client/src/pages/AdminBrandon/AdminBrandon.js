@@ -135,11 +135,11 @@ class Admin extends Component {
     return (
       <Fragment>
         <Modal
-          show={this.state.isOpen}
+          show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
-          header={this.state.header}
-          body={this.state.body}
-          footer={this.state.footer}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
         />
         <NavBar
           loggedIn={this.props.loggedIn}
@@ -200,7 +200,7 @@ class Admin extends Component {
 
           {this.state.brandonTest ? (
             <BrandonTestTable
-            hideBrandonTest={this.hideBrandonTest}
+              hideBrandonTest={this.hideBrandonTest}
             />
           ) : null}
 

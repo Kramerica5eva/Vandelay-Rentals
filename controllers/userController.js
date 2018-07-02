@@ -15,7 +15,7 @@ module.exports = {
   },
 
   signup: function (req, res) {
-    const { username, firstName, lastName, email, state, zipcode, phone } = req.body;
+    const { username, firstName, lastName, email, state, zipcode, phone, admin } = req.body;
 
     let zipTest = /^\d{5}(-\d{4})?$/.test(zipcode);
     let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);
@@ -33,6 +33,12 @@ module.exports = {
     console.log(lastTest);
 
     if (!zipTest || !emailTest || !phoneTest || !userTest || !firstTest || !lastTest || !stateTest) {
+      console.log(zipTest);
+      console.log(emailTest);
+      console.log(phoneTest);
+      console.log(userTest);
+      console.log(firstTest);
+      console.log(lastTest);
       return res.json({ error: 'did not validate' });
     }
 
@@ -84,6 +90,14 @@ module.exports = {
     } else {
       res.send({ msg: 'no user to log out' })
     }
+  },
+
+  checkPw: function (res, req) {
+    console.log(req.body);
+    db.User.checkPassword(req.body)
+      .then(res => {
+        res.json(res);
+      })
   },
 
   addReservation: function (req, res) {
