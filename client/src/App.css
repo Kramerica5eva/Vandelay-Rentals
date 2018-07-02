@@ -65,7 +65,16 @@ table {
 }
 
 body {
-    background-color: var(--page-color-whitecap);
+    /* background-color: var(--page-color-whitecap); */
+    /* background: #00d2ff;  fallback for old browsers */
+    /* background: -webkit-linear-gradient(to bottom, #3a7bd5, #00d2ff);  Chrome 10-25, Safari 5.1-6 */
+    /* background: linear-gradient(to bottom, #3a7bd5, #00d2ff); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    background: #74ebd5;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #ACB6E5, #74ebd5);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #ACB6E5, #74ebd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
     font-family: var(--font-Montserrat);
     text-shadow: 1px 1px 3px rgba(150, 150, 150, 1);
     font-size: 14px;

@@ -27,6 +27,8 @@
     "express": "^4.15.4",
     "express-session": "^1.15.6",
     "gridfs-stream": "^1.1.1",
+    "hellosign-embedded": "^1.3.3",
+    "hellosign-sdk": "^1.2.0",
     "if-env": "^1.0.4",
     "method-override": "^2.3.10",
     "moment": "^2.22.2",

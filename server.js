@@ -16,6 +16,10 @@ app.use(bodyParser.json());
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('client/build'));
 }
+// added by NICK -- double check with KEITH. Is redundant? or needed in order to reach static in dev?
+else {
+	app.use(express.static('client/public'));
+}
 
 // Sessions
 app.use(

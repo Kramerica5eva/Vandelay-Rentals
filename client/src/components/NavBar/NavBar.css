@@ -1,6 +1,10 @@
 .navbar {
     align-items: center;
-    background-color: rgba(129, 129, 129, 0.75);
+    /* background-color: rgba(139, 172, 180, 0.75); */
+    background-color: #00d0ffb6;  /* fallback for old browsers */
+    background-color: -webkit-linear-gradient(to top, #3a7bd5, #00d2ff);  /* Chrome 10-25, Safari 5.1-6 */
+    background-color: linear-gradient(to top, #3a7bd5, #00d2ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
     color: white;
     display: flex;
     height: 50px;
@@ -44,22 +48,33 @@
 
 }
 
+/* .links > .btn-link, .brand-logo > .btn-link {
+    text-shadow: 0 0 1px #000,
+    0px 0px 1px #000,
+    0px 0px 2px #000,
+    0px 0px 3px #000,
+    0px 0px 5px rgb(175, 78, 78),
+    0px 0px 6px #fff;
+} */
+
 .links > .btn-link, .brand-logo > .btn-link {
     text-shadow: 0 0 1px #000,
     0 0 1px #000,
     0 0 2px #000,
     0 0 3px #000,
-    0 0 5px #fff,
-    /* 0 0 6px #fff; */
+    0 0 4px #fff,
+    0 0 4px #fff;
 }
 
 .links > .btn-link:hover, .brand-logo > .btn-link:hover {
-    text-shadow: 0 0 2px #000,
+    /* text-shadow: 0 0 2px #000,
     0 0 5px #000,
     0 0 10px #000,
     0 0 15px #000,
     0 0 20px #fff,
-    0 0 25px #fff;
+    0 0 25px #fff; */
+    padding-bottom: 3px;
+    border-bottom: 2px solid white;
 }
 
 
