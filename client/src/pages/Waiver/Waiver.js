@@ -77,17 +77,21 @@ class Waiver extends Component {
   createRequest = () => {
     API.createSignatureRequest()
        .then((response) => {
+        console.log("REESPONSE1 AFTER AXIOS:");
         console.log(response);
-        return response;
+        if (response.data.success) {
+          // this.openRequest(response.data);
+          this.openRequest(response.data.data.signUrl);
+        }
         // return response.json(); // rtns typeError response.json() is not a func,
-        })
-        .then((response) => {
-        // commented out lines starting ate 82---- are following the hellosign-embeded npm pkg demo app instructions
-      if (response.status === 200) {
+        // })
+      //   .then((response) => {
+      //   // commented out lines starting ate 82---- are following the hellosign-embeded npm pkg demo app instructions
+      // // if (response.status === 200) {
       // if (response.success) {
-        this.openRequest(response.data);
-        // this.openRequest(response.data.signUrl);
-      }
+      //   // this.openRequest(response.data);
+      //   this.openRequest(response.data.signUrl);
+      // }
       else {
         alert(
           'Something went wrong. Did you enter your ' +
@@ -104,6 +108,7 @@ class Waiver extends Component {
     HelloSign.init("aaad4deadb45633d2cc5ebe07ed2eff2");
 
     const options = {
+      clientId: "aaad4deadb45633d2cc5ebe07ed2eff2",
       url: signUrl,
       allowCancel: true,
       debug: true,
@@ -114,13 +119,25 @@ class Waiver extends Component {
       }
     };
 
+    console.log(signUrl);
+    HelloSign.open(options);
+    // HelloSign.open({
+    // url: signUrl,
+    // uxVersion: 2,
+    // allowCancel: true,
+    // messageListener: function(eventData) {
+    //   console.log(111111111);
+
+    // }
+// });
 
     // Set the redirect URL, if defined by the user.
     // if (redirectUrlElement.value.length) {
       // options.redirectUrl = redirectUrlElement.value;
     // }
+    // console.log(options);
 
-    HelloSign.open(options);
+    // HelloSign.open(options);
   }
 
   //  saveConfig = () => {
@@ -191,7 +208,7 @@ class Waiver extends Component {
           </div>
           <Footer />
         </div>
-        {/* <script type="text/javascript" src="https://s3.amazonaws.com/cdn.hellosign.com/public/js/hellosign-embedded.LATEST.min.js"></script> */}
+        <script type="text/javascript" src="https://s3.amazonaws.com/cdn.hellosign.com/public/js/hellosign-embedded.LATEST.min.js"></script>
       </Fragment>
     );
   }

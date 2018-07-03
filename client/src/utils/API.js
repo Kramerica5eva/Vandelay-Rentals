@@ -89,9 +89,12 @@ export default {
   removeRentalReservation: function (from, to, reservationData) {
     return axios.put(`/api/rentals/remove/${from}/${to}`, reservationData);
   },
+  // Creates a new signature request using the helloSign API
   createSignatureRequest: function () {
-    return  axios.post('/file/wavier/create-signature-request',
+    return  axios.post('/file/waiver/create-signature-request',
                         {
+                          clientEmail: "email@email.com",
+                          clientName: "John Smith",
                           clientId: "aaad4deadb45633d2cc5ebe07ed2eff2",
                           apiKey: "885fe716760ad052c0df78878bd1aeb6f09292b59d82fe035888a457cc4c133a"
                         }

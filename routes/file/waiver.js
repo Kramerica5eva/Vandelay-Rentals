@@ -19,7 +19,7 @@ router
 // ==============End Nick's Code===============
 
 
-// Matches with '/file/wavier/create-signature-request'
+// Matches with '/file/waiver/create-signature-request'
 router
   .route('/create-signature-request')
   .post(waiverController.createSignatureRequest);
