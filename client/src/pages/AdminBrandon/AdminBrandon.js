@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
-import Header from "../../components/Header";
-import Modal from "../../components/Modal";
-import NavBar from "../../components/NavBar";
+import Header from "../../components/Elements/Header";
+import Modal from "../../components/Elements/Modal";
+import NavBar from "../../components/Elements/NavBar";
 import DevLinks from "../../components/DevLinks";
 import { BrandonTestTable, RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
 

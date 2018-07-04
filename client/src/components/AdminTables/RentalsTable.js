@@ -1,11 +1,16 @@
 import React, { Component, Fragment } from "react";
+import { Input, FormBtn, Select, Option } from "../Elements/Form";
 import API from "../../utils/API";
-import Modal from "../../components/Modal";
+import Modal from "../../components/Elements/Modal";
+import ImageModal from "../../components/Elements/ImageModal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
 const CheckboxTable = checkboxHOC(ReactTable);
+
+
+// seeReservations and seePastRentals functions (ctrl+f 'seeReservations' & 'seePastRentals') will need to be updated once Ben's calendar/Date functionality is in place
 
 export class RentalsTable extends Component {
   constructor() {
@@ -17,9 +22,20 @@ export class RentalsTable extends Component {
         body: "",
         footer: ""
       },
+      imageModal: {
+        isOpen: false,
+        header: "",
+        body: "",
+        footer: ""
+      },
+      categories: [],
+      images: [],
+      selectedFile: null,
+      image: null,
       rentals: [],
       selection: [],
-      selectedRow: {}
+      selectedRow: {},
+      lightboxIsOpen: false
     };
   }
 
@@ -27,6 +43,7 @@ export class RentalsTable extends Component {
     this.adminGetAllRentals();
   }
 
+  // MODAL TOGGLE FUNCTIONS
   toggleModal = () => {
     this.setState({
       modal: { isOpen: !this.state.modal.isOpen }
@@ -43,7 +60,28 @@ export class RentalsTable extends Component {
       }
     });
   }
+  // END MODAL TOGGLE FUNCTIONS
 
+  // IMAGEMODAL TOGGLE FUNCTIONS
+  toggleImageModal = () => {
+    this.setState({
+      imageModal: { isOpen: !this.state.imageModal.isOpen }
+    });
+  }
+
+  setImageModal = (modalInput) => {
+    this.setState({
+      imageModal: {
+        isOpen: !this.state.imageModal.isOpen,
+        header: modalInput.header,
+        body: modalInput.body,
+        footer: modalInput.footer
+      }
+    });
+  }
+  // END MODAL TOGGLE FUNCTIONS
+
+  // Get rentals and set state so the table will display
   adminGetAllRentals = () => {
     API.adminGetAllRentals()
       .then(res => {
@@ -54,6 +92,7 @@ export class RentalsTable extends Component {
           r.rate = rate;
         });
 
+        // set state for rentals, but also empty selection - selection is where the selected (highlighted) row _id is kept. This unselects the row - when a row is selected and the data is updated, it calls this function (adminGetAllRentals), and emptying this.state.selected results in unselecting the row, which works as a visual cue that an update operation is complete.
         this.setState({
           rentals: res.data,
           selection: []
@@ -62,6 +101,7 @@ export class RentalsTable extends Component {
       .catch(err => console.log(err));
   };
 
+  // Standard input change controller
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -69,8 +109,9 @@ export class RentalsTable extends Component {
     });
   };
 
-  //  Select Table HOC functions
+  //  REACT-TABLE: SELECT TABLE HOC FUNCTION
 
+  //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
   toggleSelection = (key, shift, row) => {
     let selection = [...this.state.selection];
     const keyIndex = selection.indexOf(key);
@@ -91,13 +132,44 @@ export class RentalsTable extends Component {
     this.setState({ selection, selectedRow: row });
   };
 
+  // Inside the render function, isSelected returns a true or false depending on if a row is selected
   isSelected = key => {
     return this.state.selection.includes(key);
   };
 
+  // editable react table
+  renderEditable = (cellInfo) => {
+    return (
+      <div
+        style={{ backgroundColor: "#fafafa" }}
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          const rentals = [...this.state.rentals];
+          rentals[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ rentals: rentals });
+        }}
+        dangerouslySetInnerHTML={{
+          __html: this.state.rentals[cellInfo.index][cellInfo.column.id]
+        }}
+      />
+    );
+  };
+
+  //  logs the selected row and the selection array to the console
+  logSelection = () => {
+    console.log("Selection:", this.state.selection);
+    console.log("Row: ", this.state.selectedRow);
+  };
+
+  //  END - REACT-TABLE: SELECT TABLE HOC FUNCTION
+
+  //  Update selected Row - sends current field info to db and updates that item
   updateSelectedRow = () => {
+    //  extract variables from the selectedRow object
     const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
 
+    // if rate exists (it should, but to avoid an error, checking first...) and hasn't been changed, it will have a dollar sign in it, a format that does not exist in the database and will throw an error if submitted to the database as-is. This replaces it with the current (unchanged) rate. If it has changed, it shouldn't have a $ in front of it and can be submitted as is.
     let newRate;
     if (rate)
       if (rate.includes("$")) {
@@ -134,33 +206,193 @@ export class RentalsTable extends Component {
       .catch(err => console.log(err));
   };
 
-  logSelection = () => {
-    console.log("Selection:", this.state.selection);
-    console.log("Row: ", this.state.selectedRow);
+  //  Gets modal with the change category form - category is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
+  categoryModal = () => {
+    this.setModal({
+      header: "Change Category",
+      body:
+        <Fragment>
+          <form>
+            <Select
+              name="category"
+              onChange={this.handleInputChange}
+              value={this.state.category}
+              label="Select a Category"
+            >
+              <Option></Option>
+              {this.props.categories.map(category => (
+                <Option key={category._id}>{category.category}</Option>
+              ))}
+            </Select>
+            <FormBtn
+              onClick={this.changeCategory}
+            >
+              Submit
+            </FormBtn>
+          </form>
+        </Fragment>
+    })
+  }
+
+  //  Submits changes made in category modal
+  changeCategory = e => {
+    e.preventDefault();
+    console.log(this.state.category);
+    const { _id } = this.state.selectedRow;
+    API.adminUpdateRental(_id, { category: this.state.category })
+      .then(res => {
+        this.adminGetAllRentals();
+        this.toggleModal();
+      });
+  }
+
+  //  IMAGE CRUD OPERATIONS FUNCTIONS
+  // Gets the modal with the image upload form
+  getUploadModal = () => {
+    this.setModal({
+      header: "Upload an image",
+      body:
+        <Fragment>
+          <h2>File Uploads</h2>
+          {/* form encType must be set this way to take in a file */}
+          <form encType="multipart/form-data">
+            <Input
+              type="file"
+              name="file"
+              label="Upload an image"
+              onChange={this.fileSelectedHandler}
+            />
+            <FormBtn
+              onClick={this.handleUpload}
+            >
+              Submit
+          </FormBtn>
+          </form>
+        </Fragment>
+    });
+  }
+
+  // the image chosen in the modal form is pushed into state (similar to handleInputChange function)
+  fileSelectedHandler = event => {
+    const newFile = event.target.files[0];
+    console.log(newFile);
+    this.setState({
+      selectedFile: newFile
+    });
   };
 
-  // editable react table
+  //  When the submit button on the image upload modal is pressed, the image is uploaded into the db
+  handleUpload = event => {
+    event.preventDefault();
+    //  the row must be selected (checkbox and highlighted) for this to work
+    const { _id } = this.state.selectedRow;
+    const fd = new FormData();
+    fd.append('file', this.state.selectedFile, this.state.selectedFile.name);
+    API.uploadImage(_id, fd).then(res => {
+      console.log(res);
+      this.toggleModal();
+      this.getUploadModal();
+    });
+  }
 
-  renderEditable = (cellInfo) => {
-    return (
-      <div
-        style={{ backgroundColor: "#fafafa" }}
-        contentEditable
-        suppressContentEditableWarning
-        onBlur={e => {
-          const rentals = [...this.state.rentals];
-          rentals[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-          this.setState({ rentals: rentals });
-        }}
-        dangerouslySetInnerHTML={{
-          __html: this.state.rentals[cellInfo.index][cellInfo.column.id]
-        }}
-      />
-    );
-  };
+  // Gets image names from the db so they can be put into 'img' elements to be streamed for display
+  getImageNames = () => {
+    const { _id } = this.state.selectedRow;
+    API.getImageNames(_id).then(res => {
+      console.log(res);
+      if (res.data.length === 0) {
+        this.setModal({
+          header: "Rental Images",
+          body: <h3>No images to display</h3>
+        });
+      } else {
+        this.getImageModal(res.data);
+      }
+    });
+  }
+
+  // Once image names have been retrieved, they are placed into img tags for display inside a modal
+  getImageModal = images => {
+    this.setImageModal({
+      header: "Rental Images",
+      body:
+        <Fragment>
+          {images.map(image => (
+            <div className="rental-img-div">
+              <img className="rental-img" src={`file/image/${image.filename}`} alt="rental condition" />
+              <button onClick={() => this.deleteImage(image._id)}>Delete</button>
+            </div>
+          ))}
+        </Fragment>
+    })
+  }
+
+  // Deletes an image, then closes the modal so when getImageNames toggles the modal, it will reopen it
+  deleteImage = image => {
+    const { _id } = this.state.selectedRow;
+    API.deleteImage(image, _id)
+      .then(res => {
+        this.toggleImageModal();
+        this.getImageNames();
+      });
+  }
+  //  END - IMAGE CRUD OPERATIONS FUNCTIONS
+
+  // See Reservations - functionality will be completed once calendar functions (Ben) are ready.
+  seeReservations = () => {
+    const { _id } = this.state.selectedRow;
+    API.adminGetRentalsById(_id)
+      .then(res =>
+        this.setModal({
+          header: "Current Reservations",
+          body:
+            <Fragment>
+              <ul>
+                {res.data.reservations.map((reservation, i) => (
+                  <li key={i}>
+                    <p>From: {reservation.from}</p>
+                    <p>To: {reservation.to}</p>
+                  </li>
+                ))}
+              </ul>
+            </Fragment>
+        }))
+      .catch(err => console.log(err));
+  }
+
+  // See Past Rentals - functionality will be completed once calendar functions (Ben) are ready.
+  seePastRentals = () => {
+    const { _id } = this.state.selectedRow;
+    API.adminGetRentalsById(_id)
+      .then(res => {
+        if (res.data.pastRentals.length > 0) {
+          this.setModal({
+            header: "Past Rentals",
+            body:
+              <Fragment>
+                <ul>
+                  {res.data.pastRentals.map((past, i) => (
+                    <li key={i}>
+                      <p>From: {past.from}</p>
+                      <p>To: {past.to}</p>
+                    </li>
+                  ))}
+                </ul>
+              </Fragment>
+          })
+        } else {
+          this.setModal({
+            header: "Past Rentals",
+            body: <h3>No past rentals to display</h3>
+          })
+        }
+      })
+      .catch(err => console.log(err));
+  }
 
 
   render() {
+    //  destructure from 'this' because the props object doesn't like 'this.anything' unless it's in a key:value pair
     const { toggleSelection, isSelected } = this;
 
     const checkboxProps = {
@@ -168,13 +400,15 @@ export class RentalsTable extends Component {
       toggleSelection,
       selectType: "checkbox",
       getTrProps: (s, r) => {
+
+        // If there are any empty rows ('r'), r.orignal will throw an error ('r' is undefined), so check for r:
         let selected;
         if (r) {
           selected = this.isSelected(r.original._id);
         }
         return {
           style: {
-            backgroundColor: selected ? "#00eef7" : "inherit",
+            backgroundColor: selected ? "yellow" : "inherit",
             color: selected ? '#000' : 'inherit',
           }
         };
@@ -190,17 +424,28 @@ export class RentalsTable extends Component {
           body={this.state.modal.body}
           footer={this.state.modal.footer}
         />
+        <ImageModal
+          show={this.state.imageModal.isOpen}
+          toggleImageModal={this.toggleImageModal}
+          header={this.state.imageModal.header}
+          body={this.state.imageModal.body}
+          footer={this.state.imageModal.footer}
+        />
 
-        <h2>Rentals</h2>
+        <h2>Rentals Table</h2>
 
-        {/* if no rows have been selected, button remains disabled
-            clicking the button without anything selected results in an error */}
-        <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
-        <button onClick={this.props.hideRentals}>Hide Table</button>
+        {/* if no rows have been selected, button remains disabled;
+        otherwise, clicking the button without anything selected results in an error */}
+        <button
+          disabled={this.state.selection.length === 0}
+          onClick={this.updateSelectedRow}>
+          Update Selected Row
+        </button>
+        <button onClick={this.props.hideTest}>Hide Table</button>
         <button onClick={this.logSelection}>Log Selection</button>
 
         <CheckboxTable
-        // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
+          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
           ref={r => (this.checkboxTable = r)}
           data={this.state.rentals}
           columns={[
@@ -215,7 +460,9 @@ export class RentalsTable extends Component {
                 {
                   Header: "Category",
                   accessor: "category",
-                  Cell: this.renderEditable
+                  Cell: row => {
+                    return <button className="table-btn-invis" onClick={this.categoryModal}>{row.value}</button>
+                  }
                 },
                 {
                   Header: "Manufacturer",
@@ -258,10 +505,27 @@ export class RentalsTable extends Component {
               Header: 'Buttons',
               columns: [
                 {
-                  Header: "Edit Buttons",
-                  id: "edit-buttons",
+                  Header: "Images",
+                  id: "image-buttons",
                   accessor: () => {
-                    return <button>Stuff</button>;
+                    return (
+                      <div className="table-btn-div">
+                        <button onClick={this.getImageNames}>Get</button>
+                        <button onClick={this.getUploadModal}>Upload</button>
+                      </div>
+                    )
+                  }
+                },
+                {
+                  Header: "Reservations",
+                  id: "reservation-buttons",
+                  accessor: () => {
+                    return (
+                      <div className="table-btn-div">
+                        <button onClick={this.seeReservations}>Current</button>
+                        <button onClick={this.seePastRentals}>Past</button>
+                      </div>
+                    )
                   }
                 }
               ]

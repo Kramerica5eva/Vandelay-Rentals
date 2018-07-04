@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import API from "../../utils/API";
 // import Modal from "../../components/Modal";
-import NavBar from "../../components/NavBar";
-import Footer from "../../components/Footer";
+import NavBar from "../../components/Elements/NavBar";
+import Footer from "../../components/Elements/Footer";
 import ParallaxHero from "../../components/ParallaxHero"
-import { Input, Label, FormBtn } from "../../components/Form";
+import { Input, Label, FormBtn } from "../../components/Elements/Form";
 import DevLinks from "../../components/DevLinks";
-import RentalCard from "../../components/RentalCard";
+import RentalCard from "../../components/Cards/RentalCard";
 import "./Waiver.css";
 
 class Waiver extends Component {

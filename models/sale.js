@@ -24,9 +24,7 @@ const saleSchema = new Schema({
     enum: ['New', 'Excellent', 'Good', 'Fair', 'Poor'],
     default: 'New'
   },
-  images: [{
-    type: Schema.Types.ObjectId
-  }],
+  images: [],
   status: {
     type: String,
     enum: ['Available', 'Sold'],

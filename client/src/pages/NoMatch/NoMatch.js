@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../../components/Header";
-import NavBar from "../../components/NavBar";
-import Footer from "../../components/Footer";
+import Header from "../../components/Elements/Header";
+import NavBar from "../../components/Elements/NavBar";
+import Footer from "../../components/Elements/Footer";
 
 
 const NoMatch = () => (

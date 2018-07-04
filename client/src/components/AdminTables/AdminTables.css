@@ -32,3 +32,19 @@
   cursor: pointer;
   font-size: 14px;
 }
+
+.rental-img {
+  width: 250px;
+  margin: auto;
+}
+
+.rental-img-div {
+  display: inline-block;
+  padding: 20px;
+  margin: auto;
+}
+
+.rental-img-div > button {
+  width: 100%;
+  display: block;
+}

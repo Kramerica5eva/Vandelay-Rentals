@@ -32,7 +32,7 @@ const rentalSchema = new Schema({
     default: 'Good'
   },
   images: [{
-    type: Schema.Types.ObjectId
+    _id: String
    }]
 });
 
