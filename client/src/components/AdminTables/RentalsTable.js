@@ -129,7 +129,7 @@ export class RentalsTable extends Component {
     }
 
     //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
-    this.setState({ selection, selectedRow: row });
+    this.setState({ selection, selectedRow: row.value });
   };
 
   // Inside the render function, isSelected returns a true or false depending on if a row is selected

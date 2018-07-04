@@ -1,19 +1,29 @@
 import React, { Component, Fragment } from "react";
+import { Input, FormBtn } from "../Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import "./AdminTables.css";
+import checkboxHOC from "react-table/lib/hoc/selectTable";
+const CheckboxTable = checkboxHOC(ReactTable);
 
 export class SalesTable extends Component {
-  state = {
-    modal: {
-      isOpen: false,
-      header: "",
-      body: "",
-      footer: ""
-    },
-    sales: []
-  };
+  constructor() {
+    super();
+    this.state = {
+      modal: {
+        isOpen: false,
+        header: "",
+        body: "",
+        footer: ""
+      },
+      categories: [],
+      rentals: [],
+      selection: [],
+      selectedRow: {}
+    };
+  }
 
   componentDidMount() {
     this.adminGetAllSaleItems();
@@ -66,6 +76,71 @@ export class SalesTable extends Component {
     });
   };
 
+  //  Select Table HOC functions
+
+  toggleSelection = (key, shift, row) => {
+    let selection = [...this.state.selection];
+    const keyIndex = selection.indexOf(key);
+
+    if (keyIndex >= 0) {
+      // it does exist so we will remove it
+      selection = [
+        ...selection.slice(0, keyIndex),
+        ...selection.slice(keyIndex + 1)
+      ];
+    } else {
+      // it does not exist so add it
+      selection = [];
+      selection.push(key);
+    }
+
+    //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
+    this.setState({ selection, selectedRow: row });
+  };
+
+  isSelected = key => {
+    return this.state.selection.includes(key);
+  };
+
+  updateSelectedRow = () => {
+    const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
+
+    let newRate;
+    if (rate)
+      if (rate.includes("$")) {
+        newRate = dailyRate.$numberDecimal;
+      } else {
+        newRate = rate;
+      }
+
+    const updateObject = {
+      category: category,
+      condition: condition,
+      dateAcquired: dateAcquired,
+      maker: maker,
+      name: name,
+      dailyRate: newRate,
+      sku: sku,
+      timesRented: timesRented
+    };
+
+    API.adminUpdateRental(_id, updateObject)
+      .then(response => {
+        if (response.status === 200) {
+
+          // Modal for feedback
+          this.setModal({
+            header: "Success!",
+            body: <h3>Database successfully updated</h3>
+          });
+
+          //  query the db and reload the table
+          this.adminGetAllRentals();
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
   logSelection = () => {
     console.log("Selection:", this.state.selection);
     console.log("Row: ", this.state.selectedRow);
@@ -93,6 +168,26 @@ export class SalesTable extends Component {
 
 
   render() {
+    const { toggleSelection, isSelected } = this;
+
+    const checkboxProps = {
+      isSelected,
+      toggleSelection,
+      selectType: "checkbox",
+      getTrProps: (s, r) => {
+        let selected;
+        if (r) {
+          selected = this.isSelected(r.original._id);
+        }
+        return {
+          style: {
+            backgroundColor: selected ? "yellow" : "inherit",
+            color: selected ? '#000' : 'inherit',
+          }
+        };
+      }
+    };
+
     return (
       <Fragment>
         <Modal
@@ -105,11 +200,13 @@ export class SalesTable extends Component {
 
         <h2>Sale Items</h2>
 
-        <button onClick={this.updateSelectedRow}>Update Selected Row</button>
+        <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
         <button onClick={this.props.hideSaleItems}>Hide Table</button>
         <button onClick={this.logSelection}>Log Selection</button>
 
-        <ReactTable
+        <CheckboxTable
+          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
+          ref={r => (this.checkboxTable = r)}
           data={this.state.sales}
           columns={[
             {
@@ -182,22 +279,11 @@ export class SalesTable extends Component {
                   Cell: this.renderEditable
                 },
               ]
-            },
-            {
-              Header: 'Buttons',
-              columns: [
-                {
-                  Header: "Edit Buttons",
-                  id: "edit-buttons",
-                  accessor: function () {
-                    return <button>Stuff</button>;
-                  }
-                }
-              ]
             }
           ]}
           defaultPageSize={10}
           className="-striped -highlight"
+          {...checkboxProps}
         />
       </Fragment>
     );
