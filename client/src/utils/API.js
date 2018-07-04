@@ -15,7 +15,7 @@ export default {
   },
 
   deleteImage: function (imageId, rentalId) {
-    return axios.delete(`/file/image/${imageId}`, rentalId);
+    return axios.delete(`/file/image/${imageId}/${rentalId}`);
   },
 
 
@@ -76,17 +76,26 @@ export default {
   getRentalsByDates: function (from, to) {
     return axios.get(`/api/rentals/date/${from}/${to}`);
   },
+
+  
+  // TEST RESERVATION SCHEMA STUFF - it works! This route creates a doc in the Reservations collection, and creates a reference in the associated User and Rental documents
   // Reserves Rental by date range - reservation data will include the item and the user.
-  reserveRental: function (from, to, id) {
-    return axios.put(`/api/rentals/date/${from}/${to}/${id}`);
+  reserveRental: function (from, to, rentalId, rentalName, rentalData) {
+    return axios.post(`/api/rentals/date/${from}/${to}/${rentalId}/${rentalName}`, rentalData);
   },
+
+
+  // Reserves Rental by date range - reservation data will include the item and the user.
+  // reserveRental: function (from, to, id) {
+  //   return axios.put(`/api/rentals/date/${from}/${to}/${id}`);
+  // },
   // Adds reservation data to user's database document
   addRentalToUser: function (from, to, id) {
     return axios.put(`/user/${from}/${to}/${id}`);
   },
   // Cancels a reservation - 'reservationData' collected by event listener and should include the item info and the user.
-  removeRentalReservation: function (from, to, reservationData) {
-    return axios.put(`/api/rentals/remove/${from}/${to}`, reservationData);
+  removeRentalReservation: function (from, to, reservationId, reservationData) {
+    return axios.put(`/api/rentals/remove/${from}/${to}/${reservationId}`, reservationData);
   },
   // Creates a new signature request using the helloSign API
   createSignatureRequest: function () {
@@ -194,6 +203,16 @@ export default {
   adminGetRentalsById: function (id) {
     return axios.get(`/admin/rentals/${id}`);
   },
+
+
+
+  //  TEST GETTING RESERVATION DATA FROM RENTAL QUERY:
+  adminGetReservationsFromRental: function (id) {
+    return axios.get(`/admin/rentals/reservations/${id}`);
+  },
+
+
+
   // Update rental item data - admin function
   adminUpdateRental: function (id, rentalData) {
     return axios.put(`/admin/rentals/${id}`, rentalData);

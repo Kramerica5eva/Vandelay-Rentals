@@ -13,6 +13,10 @@ router
   .get(isAdmin, adminRentalsController.findById)
   .put(isAdmin, adminRentalsController.update)
   .delete(isAdmin, adminRentalsController.remove);
+
+router
+  .route('/reservations/:id')
+  .get(isAdmin, adminRentalsController.getReservations);
   
   function isAdmin(req, res, next) {
     if (req.user.admin)

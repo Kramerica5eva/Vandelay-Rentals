@@ -38,7 +38,10 @@ router.route('/:filename')
 // Matches with '/file/image//:id'
 router
   .route('/:id')
-  .post(isAdmin, upload.single('file'), imageController.create)
+  .post(isAdmin, upload.single('file'), imageController.create);
+
+router
+  .route('/:id/:rental')
   .delete(isAdmin, imageController.remove);
 
 function isAdmin(req, res, next) {

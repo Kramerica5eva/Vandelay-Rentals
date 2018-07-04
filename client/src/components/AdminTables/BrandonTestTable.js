@@ -236,7 +236,7 @@ export class BrandonTestTable extends Component {
         {/* if no rows have been selected, button remains disabled
             clicking the button without anything selected results in an error */}
         <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
-        <button onClick={this.props.hideTest}>Hide Table</button>
+        <button onClick={this.props.toggleBrandonTest}>Hide Table</button>
         <button onClick={this.logSelection}>Log Selection</button>
 
         <CheckboxTable

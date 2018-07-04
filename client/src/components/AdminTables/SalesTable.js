@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn } from "../Form";
+import { Input, FormBtn } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import ReactTable from "react-table";
@@ -201,7 +201,7 @@ export class SalesTable extends Component {
         <h2>Sale Items</h2>
 
         <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
-        <button onClick={this.props.hideSaleItems}>Hide Table</button>
+        <button onClick={this.props.toggleSaleItems}>Hide Table</button>
         <button onClick={this.logSelection}>Log Selection</button>
 
         <CheckboxTable

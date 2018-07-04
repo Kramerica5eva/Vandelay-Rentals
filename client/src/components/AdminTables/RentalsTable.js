@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Select, Option } from "../Elements/Form";
+import { Input, FormBtn, Select, Label, Option } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import ImageModal from "../../components/Elements/ImageModal";
@@ -7,6 +7,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
+import Moment from 'moment';
 const CheckboxTable = checkboxHOC(ReactTable);
 
 
@@ -28,14 +29,13 @@ export class RentalsTable extends Component {
         body: "",
         footer: ""
       },
-      categories: [],
+      category: "",
       images: [],
       selectedFile: null,
       image: null,
       rentals: [],
       selection: [],
-      selectedRow: {},
-      lightboxIsOpen: false
+      selectedRow: {}
     };
   }
 
@@ -50,10 +50,11 @@ export class RentalsTable extends Component {
     });
   }
 
+  //  isOpen MUST be set to true for the setModal function, and NOT '!this.state.modal.isOpen' as in the toggleModal function, otherwise select/option tags (dropdowns) won't work properly inside the modal: the dropdown is always a step behind populating from state (the selection won't display what you've chosen until you close and reopen the modal).
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer
@@ -72,7 +73,7 @@ export class RentalsTable extends Component {
   setImageModal = (modalInput) => {
     this.setState({
       imageModal: {
-        isOpen: !this.state.imageModal.isOpen,
+        isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer
@@ -90,6 +91,9 @@ export class RentalsTable extends Component {
         res.data.map(r => {
           const rate = "$" + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
           r.rate = rate;
+          console.log(r.dateAcquired);
+          const date = Moment.unix(r.dateAcquired).format("MMMM Do YYYY");
+          r.dateAcq = date;
         });
 
         // set state for rentals, but also empty selection - selection is where the selected (highlighted) row _id is kept. This unselects the row - when a row is selected and the data is updated, it calls this function (adminGetAllRentals), and emptying this.state.selected results in unselecting the row, which works as a visual cue that an update operation is complete.
@@ -129,7 +133,7 @@ export class RentalsTable extends Component {
     }
 
     //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
-    this.setState({ selection, selectedRow: row.value });
+    this.setState({ selection, selectedRow: row });
   };
 
   // Inside the render function, isSelected returns a true or false depending on if a row is selected
@@ -206,6 +210,13 @@ export class RentalsTable extends Component {
       .catch(err => console.log(err));
   };
 
+  handleDropdownChange = event => {
+    console.log(event.target.value);
+    this.setState({ value: event.target.value });
+    this.toggleModal();
+    this.categoryModal();
+  }
+
   //  Gets modal with the change category form - category is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
   categoryModal = () => {
     this.setModal({
@@ -213,17 +224,21 @@ export class RentalsTable extends Component {
       body:
         <Fragment>
           <form>
-            <Select
-              name="category"
-              onChange={this.handleInputChange}
-              value={this.state.category}
-              label="Select a Category"
-            >
-              <Option></Option>
-              {this.props.categories.map(category => (
-                <Option key={category._id}>{category.category}</Option>
-              ))}
-            </Select>
+            {/* using the Select and Option components in a modal seems to make everything stop working... */}
+            <div className="group group-select">
+              <select
+                name="category"
+                label="Change Category:"
+                // for some reason, setting the select value to this.state.category (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
+                onChange={this.handleInputChange}
+              >
+                <option></option>
+                {this.props.categories.map(cat => (
+                  <option key={cat._id} >{cat.category}</option>
+                ))}
+              </select>
+              <Label htmlFor="category">Change Category</Label>
+            </div>
             <FormBtn
               onClick={this.changeCategory}
             >
@@ -237,7 +252,6 @@ export class RentalsTable extends Component {
   //  Submits changes made in category modal
   changeCategory = e => {
     e.preventDefault();
-    console.log(this.state.category);
     const { _id } = this.state.selectedRow;
     API.adminUpdateRental(_id, { category: this.state.category })
       .then(res => {
@@ -319,6 +333,7 @@ export class RentalsTable extends Component {
         <Fragment>
           {images.map(image => (
             <div className="rental-img-div">
+              <p>Uploaded {Moment(image.uploadDate).format("MMM Do YYYY, h:mm a")}</p>
               <img className="rental-img" src={`file/image/${image.filename}`} alt="rental condition" />
               <button onClick={() => this.deleteImage(image._id)}>Delete</button>
             </div>
@@ -350,8 +365,8 @@ export class RentalsTable extends Component {
               <ul>
                 {res.data.reservations.map((reservation, i) => (
                   <li key={i}>
-                    <p>From: {reservation.from}</p>
-                    <p>To: {reservation.to}</p>
+                    <p>From: {Moment.unix(reservation.from).format("MMM Do YYYY, h:mm a")}</p>
+                    <p>To: {Moment.unix(reservation.to).format("MMM Do YYYY, h:mm a")}</p>
                   </li>
                 ))}
               </ul>
@@ -441,8 +456,15 @@ export class RentalsTable extends Component {
           onClick={this.updateSelectedRow}>
           Update Selected Row
         </button>
-        <button onClick={this.props.hideTest}>Hide Table</button>
-        <button onClick={this.logSelection}>Log Selection</button>
+        <button onClick={this.props.toggleRentals}>Hide Table</button>
+        <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
+
+        <div className="table-btn-div">
+          <button disabled={this.state.selection.length === 0} onClick={this.seeReservations}>See Current Reservations</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.seePastRentals}>See Past Rentals</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.getImageNames}>Get Images</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.getUploadModal}>Upload an Image</button>
+        </div>
 
         <CheckboxTable
           // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
@@ -486,7 +508,7 @@ export class RentalsTable extends Component {
                 },
                 {
                   Header: "Date Acq.",
-                  accessor: "dateAcquired",
+                  accessor: "dateAcq",
                   Cell: this.renderEditable
                 },
                 {
@@ -501,35 +523,35 @@ export class RentalsTable extends Component {
                 }
               ]
             },
-            {
-              Header: 'Buttons',
-              columns: [
-                {
-                  Header: "Images",
-                  id: "image-buttons",
-                  accessor: () => {
-                    return (
-                      <div className="table-btn-div">
-                        <button onClick={this.getImageNames}>Get</button>
-                        <button onClick={this.getUploadModal}>Upload</button>
-                      </div>
-                    )
-                  }
-                },
-                {
-                  Header: "Reservations",
-                  id: "reservation-buttons",
-                  accessor: () => {
-                    return (
-                      <div className="table-btn-div">
-                        <button onClick={this.seeReservations}>Current</button>
-                        <button onClick={this.seePastRentals}>Past</button>
-                      </div>
-                    )
-                  }
-                }
-              ]
-            }
+            // {
+            //   Header: 'Buttons',
+            //   columns: [
+            //     {
+            //       Header: "Images",
+            //       id: "image-buttons",
+            //       accessor: () => {
+            //         return (
+            //           <div className="table-btn-div">
+            //             <button onClick={this.getImageNames}>Get</button>
+            //             <button onClick={this.getUploadModal}>Upload</button>
+            //           </div>
+            //         )
+            //       }
+            //     },
+            //     {
+            //       Header: "Reservations",
+            //       id: "reservation-buttons",
+            //       accessor: () => {
+            //         return (
+            //           <div className="table-btn-div">
+            //             <button onClick={this.seeReservations}>Current</button>
+            //             <button onClick={this.seePastRentals}>Past</button>
+            //           </div>
+            //         )
+            //       }
+            //     }
+            //   ]
+            // }
           ]}
           defaultPageSize={10}
           className="-striped -highlight"

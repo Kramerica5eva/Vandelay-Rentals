@@ -170,38 +170,41 @@ class Admin extends Component {
 
           {this.state.courses ? (
             <CoursesTable
-              hideCourses={this.toggleCourses}
+              toggleCourses={this.toggleCourses}
             />
           ) : null}
 
           {this.state.rentals ? (
             <RentalsTable
-              hideRentals={this.toggleRentals}
+              toggleRentals={this.toggleRentals}
+              categories={this.props.categories}
             />
           ) : null}
 
           {this.state.sales ? (
             <SalesTable
-              hideSaleItems={this.toggleSaleItems}
+              toggleSaleItems={this.toggleSaleItems}
+              categories={this.props.categories}
             />
           ) : null}
 
           {this.state.users ? (
             <UsersTable
-              hideUsers={this.toggleUsers}
+              toggleUsers={this.toggleUsers}
             />
           ) : null}
 
           {this.state.test ? (
             <TestTable
-              hideTest={this.toggleTest}
+              toggleTest={this.toggleTest}
               categories={this.props.categories}
             />
           ) : null}
 
           {this.state.brandonTest ? (
             <BrandonTestTable
-              hideBrandonTest={this.toggleBrandonTest}
+              toggleBrandonTest={this.toggleBrandonTest}
+              categories={this.props.categories}
             />
           ) : null}
 

@@ -17,6 +17,14 @@ const rentalSchema = new Schema({
       to: Number
     }
   }],
+
+  //	Remove if testing doesn't work out
+  testReservations: [{
+    type: Schema.Types.ObjectId,
+    ref: "Reservation"
+  }],
+  //	END remove if...
+
   pastRentals: [{
     customerId: String,
     date: {
@@ -25,15 +33,15 @@ const rentalSchema = new Schema({
     }
   }],
   timesRented: Number,
-  dateAcquired: Date,
+  dateAcquired: Number,
   condition: {
     type: String,
     enum: ['New', 'Good', 'Working', 'Disrepair', 'Retired'],
     default: 'Good'
   },
   images: [{
-    _id: String
-   }]
+    type: Schema.Types.ObjectId
+  }]
 });
 
 const Rental = mongoose.model('Rental', rentalSchema);

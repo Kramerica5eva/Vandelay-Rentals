@@ -31,7 +31,7 @@ mongoose.connect(
 //     reservations: [],
 //     pastRentals: [],
 //     timesRented: 22,
-//     dateAcquired: '1492257600',
+//     dateAcquired: 1492257600',
 //     condition: 'Good',
 //     images: []
 //   },
@@ -44,7 +44,7 @@ mongoose.connect(
 //     reservations: [],
 //     pastRentals: [],
 //     timesRented: 0,
-//     dateAcquired: '1525435200',
+//     dateAcquired: 1525435200',
 //     condition: 'New',
 //     images: []
 //   },
@@ -57,7 +57,7 @@ mongoose.connect(
 //     reservations: [],
 //     pastRentals: [],
 //     timesRented: 6,
-//     dateAcquired: '1492257600',
+//     dateAcquired: 1492257600',
 //     condition: 'Good',
 //     images: []
 //   },
@@ -70,7 +70,7 @@ mongoose.connect(
 //     reservations: [],
 //     pastRentals: [],
 //     timesRented: 33,
-//     dateAcquired: '1525435200',
+//     dateAcquired: 1525435200',
 //     condition: 'Working',
 //     images: []
 //   },
@@ -83,7 +83,7 @@ mongoose.connect(
 //     reservations: [],
 //     pastRentals: [],
 //     timesRented: 112,
-//     dateAcquired: '1464868800',
+//     dateAcquired: 1464868800',
 //     condition: 'Disrepair',
 //     images: []
 //   },
@@ -96,7 +96,7 @@ mongoose.connect(
 //     reservations: [],
 //     pastRentals: [],
 //     timesRented: 87,
-//     dateAcquired: '1464868800',
+//     dateAcquired: 1464868800',
 //     condition: 'Working',
 //     images: []
 //   },
@@ -109,7 +109,7 @@ mongoose.connect(
 //     reservations: [],
 //     pastRentals: [],
 //     timesRented: 24,
-//     dateAcquired: '1464868800',
+//     dateAcquired: 1464868800',
 //     condition: 'Good',
 //     images: []
 //   },
@@ -122,7 +122,7 @@ mongoose.connect(
 //     reservations: [],
 //     pastRentals: [],
 //     timesRented: 79,
-//     dateAcquired: '1464868800',
+//     dateAcquired: 1464868800',
 //     condition: 'Working',
 //     images: []
 //   }
@@ -139,9 +139,10 @@ const rentalSeed = [
       { from: 1532044800-64800, to:1532304000-64800 }, //subtracting 64800 normalizes all of the times to midnight on the morning of the desired date. 
       { from: 1532736000-64800, to:1532822400-64800 }  //it was easier to do this rather than recalculate all of the unix timestamps
     ],
+    testReservations: [],
     pastRentals: [],
     timesRented: 22,
-    dateAcquired: '1492257600',
+    dateAcquired: 1492257600,
     condition: 'Good',
     images: []
   },
@@ -157,9 +158,10 @@ const rentalSeed = [
       { from: 1533600000-64800, to:1533859200-64800 },
       { from: 1533859200-64800, to:1534032000-64800 }
     ],
+    testReservations: [],
     pastRentals: [],
     timesRented: 0,
-    dateAcquired: '1525435200',
+    dateAcquired: 1525435200,
     condition: 'New',
     images: []
   },
@@ -173,9 +175,10 @@ const rentalSeed = [
       { from: 1532736000-64800, to:1532822400-64800 },
       { from: 1533859200-64800, to:1534636800-64800 }
     ],
+    testReservations: [],
     pastRentals: [],
     timesRented: 6,
-    dateAcquired: '1492257600',
+    dateAcquired: 1492257600,
     condition: 'Good',
     images: []
   },
@@ -190,9 +193,10 @@ const rentalSeed = [
       { from: 1533254400-64800, to:1533427200-64800 },
       { from: 1534291200-64800, to:1534636800-64800 }
     ],
+    testReservations: [],
     pastRentals: [],
     timesRented: 33,
-    dateAcquired: '1525435200',
+    dateAcquired: 1525435200,
     condition: 'Working',
     images: []
   },
@@ -206,9 +210,10 @@ const rentalSeed = [
       { from: 1532736000-64800, to:1532822400-64800 },
       { from: 1533859200-64800, to:1534032000-64800 }
     ],
+    testReservations: [],
     pastRentals: [],
     timesRented: 112,
-    dateAcquired: '1464868800',
+    dateAcquired: 1464868800,
     condition: 'Disrepair',
     images: []
   },
@@ -223,9 +228,10 @@ const rentalSeed = [
       { from: 1533859200-64800, to:1534032000-64800 },
       { from: 1536278400-64800, to:1536537600-64800 }
     ],
+    testReservations: [],
     pastRentals: [],
     timesRented: 87,
-    dateAcquired: '1464868800',
+    dateAcquired: 1464868800,
     condition: 'Working',
     images: []
   },
@@ -242,9 +248,10 @@ const rentalSeed = [
       { from: 1534291200-64800, to:1534636800-64800 },
       { from: 1536278400-64800, to:1536537600-64800 }
     ],
+    testReservations: [],
     pastRentals: [],
     timesRented: 24,
-    dateAcquired: '1464868800',
+    dateAcquired: 1464868800,
     condition: 'Good',
     images: []
   },
@@ -260,9 +267,10 @@ const rentalSeed = [
       { from: 1534550400-64800, to:1534636800-64800 },
       { from: 1536278400-64800, to:1536537600-64800 }
     ],
+    testReservations: [],
     pastRentals: [],
     timesRented: 79,
-    dateAcquired: '1464868800',
+    dateAcquired: 1464868800,
     condition: 'Working',
     images: []
   }

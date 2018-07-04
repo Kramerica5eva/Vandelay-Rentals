@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Select, Option } from "../Elements/Form";
+import { Input, FormBtn, Select, Label, Option } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import ImageModal from "../../components/Elements/ImageModal";
@@ -7,6 +7,10 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
+import Moment from 'moment';
+
+import { ReservationsTable } from './ReservationsTable';
+
 const CheckboxTable = checkboxHOC(ReactTable);
 
 
@@ -28,14 +32,14 @@ export class TestTable extends Component {
         body: "",
         footer: ""
       },
-      categories: [],
+      currentReservations: null,
+      category: "",
       images: [],
       selectedFile: null,
       image: null,
       rentals: [],
       selection: [],
-      selectedRow: {},
-      lightboxIsOpen: false
+      selectedRow: {}
     };
   }
 
@@ -50,10 +54,11 @@ export class TestTable extends Component {
     });
   }
 
+  //  isOpen MUST be set to true for the setModal function, and NOT '!this.state.modal.isOpen' as in the toggleModal function, otherwise select/option tags (dropdowns) won't work properly inside the modal: the dropdown is always a step behind populating from state (the selection won't display what you've chosen until you close and reopen the modal).
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer
@@ -72,7 +77,7 @@ export class TestTable extends Component {
   setImageModal = (modalInput) => {
     this.setState({
       imageModal: {
-        isOpen: !this.state.imageModal.isOpen,
+        isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer
@@ -85,11 +90,15 @@ export class TestTable extends Component {
   adminGetAllRentals = () => {
     API.adminGetAllRentals()
       .then(res => {
+        console.log(res.data);
 
         //  loop through the response array and add a new key/value pair with the formatted rate
         res.data.map(r => {
           const rate = "$" + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
           r.rate = rate;
+          console.log(r.dateAcquired);
+          const date = Moment.unix(r.dateAcquired).format("MMMM Do YYYY");
+          r.dateAcq = date;
         });
 
         // set state for rentals, but also empty selection - selection is where the selected (highlighted) row _id is kept. This unselects the row - when a row is selected and the data is updated, it calls this function (adminGetAllRentals), and emptying this.state.selected results in unselecting the row, which works as a visual cue that an update operation is complete.
@@ -206,6 +215,13 @@ export class TestTable extends Component {
       .catch(err => console.log(err));
   };
 
+  handleDropdownChange = event => {
+    console.log(event.target.value);
+    this.setState({ value: event.target.value });
+    this.toggleModal();
+    this.categoryModal();
+  }
+
   //  Gets modal with the change category form - category is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
   categoryModal = () => {
     this.setModal({
@@ -213,17 +229,21 @@ export class TestTable extends Component {
       body:
         <Fragment>
           <form>
-            <Select
-              name="category"
-              onChange={this.handleInputChange}
-              value={this.state.category}
-              label="Select a Category"
-            >
-              <Option></Option>
-              {this.props.categories.map(category => (
-                <Option key={category._id}>{category.category}</Option>
-              ))}
-            </Select>
+            {/* using the Select and Option components in a modal seems to make everything stop working... */}
+            <div className="group group-select">
+              <select
+                name="category"
+                label="Change Category:"
+                // for some reason, setting the select value to this.state.category (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
+                onChange={this.handleInputChange}
+              >
+                <option></option>
+                {this.props.categories.map(cat => (
+                  <option key={cat._id} >{cat.category}</option>
+                ))}
+              </select>
+              <Label htmlFor="category">Change Category</Label>
+            </div>
             <FormBtn
               onClick={this.changeCategory}
             >
@@ -237,7 +257,6 @@ export class TestTable extends Component {
   //  Submits changes made in category modal
   changeCategory = e => {
     e.preventDefault();
-    console.log(this.state.category);
     const { _id } = this.state.selectedRow;
     API.adminUpdateRental(_id, { category: this.state.category })
       .then(res => {
@@ -319,6 +338,7 @@ export class TestTable extends Component {
         <Fragment>
           {images.map(image => (
             <div className="rental-img-div">
+              <p>Uploaded {Moment(image.uploadDate).format("MMM Do YYYY, h:mm a")}</p>
               <img className="rental-img" src={`file/image/${image.filename}`} alt="rental condition" />
               <button onClick={() => this.deleteImage(image._id)}>Delete</button>
             </div>
@@ -330,12 +350,7 @@ export class TestTable extends Component {
   // Deletes an image, then closes the modal so when getImageNames toggles the modal, it will reopen it
   deleteImage = image => {
     const { _id } = this.state.selectedRow;
-    const rentalObject = {
-      id: _id
-    }
-    console.log(_id);
-    console.log(image);
-    API.deleteImage(image, rentalObject)
+    API.deleteImage(image, _id)
       .then(res => {
         this.toggleImageModal();
         this.getImageNames();
@@ -346,22 +361,11 @@ export class TestTable extends Component {
   // See Reservations - functionality will be completed once calendar functions (Ben) are ready.
   seeReservations = () => {
     const { _id } = this.state.selectedRow;
-    API.adminGetRentalsById(_id)
-      .then(res =>
-        this.setModal({
-          header: "Current Reservations",
-          body:
-            <Fragment>
-              <ul>
-                {res.data.reservations.map((reservation, i) => (
-                  <li key={i}>
-                    <p>From: {reservation.from}</p>
-                    <p>To: {reservation.to}</p>
-                  </li>
-                ))}
-              </ul>
-            </Fragment>
-        }))
+    API.adminGetReservationsFromRental(_id)
+      .then(res => {
+        console.log(res);
+        this.setState({ currentReservations: res.data.testReservations });
+      })
       .catch(err => console.log(err));
   }
 
@@ -437,7 +441,7 @@ export class TestTable extends Component {
           footer={this.state.imageModal.footer}
         />
 
-        <h2>Rentals Test Table</h2>
+        <h2>Test Rentals Table</h2>
 
         {/* if no rows have been selected, button remains disabled;
         otherwise, clicking the button without anything selected results in an error */}
@@ -446,13 +450,30 @@ export class TestTable extends Component {
           onClick={this.updateSelectedRow}>
           Update Selected Row
         </button>
-        <button onClick={this.props.hideTest}>Hide Table</button>
-        <button onClick={this.logSelection}>Log Selection</button>
+        <button onClick={this.props.toggleTest}>Hide Table</button>
+        <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
+
+        <div className="table-btn-div">
+          <button disabled={this.state.selection.length === 0} onClick={this.seeReservations}>See Current Reservations</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.seePastRentals}>See Past Rentals</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.getImageNames}>Get Images</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.getUploadModal}>Upload an Image</button>
+        </div>
 
         <CheckboxTable
           // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
           ref={r => (this.checkboxTable = r)}
           data={this.state.rentals}
+          SubComponent={row => {
+            const thisReservation = this.state.rentals[row.row._index].testReservations;
+            const rentalName = this.state.rentals[row.row._index].name;
+            return (
+              <ReservationsTable
+                forName={rentalName}
+                currentReservations={thisReservation}
+              />
+            )
+          }}
           columns={[
             {
               Header: "Rental Info",
@@ -491,7 +512,7 @@ export class TestTable extends Component {
                 },
                 {
                   Header: "Date Acq.",
-                  accessor: "dateAcquired",
+                  accessor: "dateAcq",
                   Cell: this.renderEditable
                 },
                 {
@@ -506,35 +527,6 @@ export class TestTable extends Component {
                 }
               ]
             },
-            {
-              Header: 'Buttons',
-              columns: [
-                {
-                  Header: "Images",
-                  id: "image-buttons",
-                  accessor: () => {
-                    return (
-                      <div className="table-btn-div">
-                        <button onClick={this.getImageNames}>Get</button>
-                        <button onClick={this.getUploadModal}>Upload</button>
-                      </div>
-                    )
-                  }
-                },
-                {
-                  Header: "Reservations",
-                  id: "reservation-buttons",
-                  accessor: () => {
-                    return (
-                      <div className="table-btn-div">
-                        <button onClick={this.seeReservations}>Current</button>
-                        <button onClick={this.seePastRentals}>Past</button>
-                      </div>
-                    )
-                  }
-                }
-              ]
-            }
           ]}
           defaultPageSize={10}
           className="-striped -highlight"
