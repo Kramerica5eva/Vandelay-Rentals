@@ -88,7 +88,7 @@ export class RentalsTable extends Component {
     }
 
     //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
-    this.setState({ selection, selectedRow: row });
+    this.setState({ selection, selectedRow: row.value });
   };
 
   isSelected = key => {
@@ -147,7 +147,7 @@ export class RentalsTable extends Component {
         style={{ backgroundColor: "#fafafa" }}
         contentEditable
         suppressContentEditableWarning
-        onBlur={e => {
+        onChange={e => {
           const rentals = [...this.state.rentals];
           rentals[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
           this.setState({ rentals: rentals });
