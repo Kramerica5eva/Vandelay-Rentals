@@ -1,15 +1,20 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Header";
 import API from "../../utils/API";
 import Modal from "../../components/Modal";
+import NavBar from "../../components/NavBar";
+import Footer from "../../components/Footer";
+import DevLinks from "../../components/DevLinks";
 
 class Admin extends Component {
   state = {
-    isOpen: false,
-    header: "",
-    body: "",
-    footer: "",
+    modal: {
+      isOpen: false,
+      header: "",
+      body: "",
+      footer: ""
+    },
     courses: [],
     rentals: [],
     sales: [],
@@ -23,16 +28,18 @@ class Admin extends Component {
 
   toggleModal = () => {
     this.setState({
-      isOpen: !this.state.isOpen
+      modal: { isOpen: !this.state.modal.isOpen }
     });
   }
 
   setModal = (modalInput) => {
     this.setState({
-      isOpen: !this.state.isOpen,
-      header: modalInput.header,
-      body: modalInput.body,
-      footer: modalInput.footer
+      modal: {
+        isOpen: !this.state.modal.isOpen,
+        header: modalInput.header,
+        body: modalInput.body,
+        footer: modalInput.footer
+      }
     });
   }
 
@@ -111,35 +118,29 @@ class Admin extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <Fragment>
         <Modal
-          show={this.state.isOpen}
+          show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
-          header={this.state.header}
-          body={this.state.body}
-          footer={this.state.footer}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
+        />
+        <NavBar
+          loggedIn={this.props.loggedIn}
+          admin={this.props.admin}
+          logout={this.props.logout}
+          location={this.props.location}
         />
         <Header>
           <h1>Vandelay Admin Page, Nomsayn?</h1>
           <h2>Admin Page</h2>
-          <div className="nav-container">
-            <Link className="btn-link" to="/" role="button">Home</Link>
-            <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
-            <Link className="btn-link" to="/sales" role="button">Sales</Link>
-            <Link className="btn-link" to="/courses" role="button">Courses</Link>
-            {this.props.loggedIn ? (
-              <button className="btn-link" onClick={this.props.logout}>logout</button>
-            ) : (
-                <React.Fragment>
-                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
-                  <Link className="btn-link" to="/login" role="button">Login</Link>
-                </React.Fragment>
-              )}
-            <Link className="btn-link" to="/test" role="button">Test</Link>
-            <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
-            <Link className="btn-link" to="/testben" role="button">TestBen</Link>
-            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-          </div>
+          <DevLinks
+            loggedIn={this.props.loggedIn}
+            admin={this.props.admin}
+            logout={this.props.logout}
+            location={this.props.location}
+          />
         </Header>
         <div>
           <div className="admin-btn-array">
@@ -212,8 +213,9 @@ class Admin extends Component {
             )) : null}
 
           </ul>
+          <Footer />
         </div>
-      </React.Fragment >
+      </Fragment >
     );
   }
 }

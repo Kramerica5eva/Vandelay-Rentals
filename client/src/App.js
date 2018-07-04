@@ -1,15 +1,23 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import React, { Component, Fragment } from "react";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch
+} from "react-router-dom";
 import Home from "./pages/Home";
 import Rentals from "./pages/Rentals";
 import Test from "./pages/Test";
 import TestNick from "./pages/TestNick";
 import TestBen from "./pages/TestBen";
+import TestBrandon from "./pages/TestBrandon";
+import TestCorb from "./pages/TestCorb";
 import Sales from "./pages/Sales";
 import Courses from "./pages/Courses";
-import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
+import AdminKeith from "./pages/AdminKeith";
+import AdminBrandon from "./pages/AdminBrandon";
 import AddPropsToRoute from "./components/AddPropsToRoute";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
@@ -27,15 +35,18 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       isAuthenticated ? (
         <Component {...props} />
       ) : (
-          <Redirect to={{
+        //  send a state object with the redirect to inform the login page of the intended destination
+        //  'loginShow' is to make sure the login form shows instead of the signup form
+        <Redirect
+          to={{
             pathname: "/login",
-            state: { from: props.location }
+            state: { from: props.location, loginShow: true }
           }}
-          />
-        )
+        />
+      )
     }
   />
-)
+);
 
 const AdminRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -44,15 +55,18 @@ const AdminRoute = ({ component: Component, ...rest }) => (
       isAdmin ? (
         <Component {...props} />
       ) : (
-          <Redirect to={{
-            pathname: "/",
-            state: { from: props.location }
+        //  send a state object with the redirect to inform the login page of the intended destination
+        //  'loginShow' is to make sure the login form shows instead of the signup form
+        <Redirect
+          to={{
+            pathname: "/login",
+            state: { from: props.location, loginShow: true }
           }}
-          />
-        )
+        />
+      )
     }
   />
-)
+);
 
 class App extends Component {
   state = {
@@ -60,7 +74,7 @@ class App extends Component {
     username: null,
     firstName: null,
     admin: false
-  }
+  };
 
   componentDidMount() {
     this.getUser();
@@ -70,7 +84,7 @@ class App extends Component {
     isAuthenticated = userObject.auth;
     isAdmin = userObject.admin;
     this.setState(userObject.state);
-  }
+  };
 
   getUser = () => {
     API.getUser().then(res => {
@@ -97,219 +111,214 @@ class App extends Component {
         });
       }
     });
-  }
+  };
 
   logout = event => {
-    event.preventDefault()
-    console.log('logging out')
-    API.logout().then(() => {
-      this.updateUser({
-        auth: false,
-        admin: false,
-        state: {
-          loggedIn: false,
-          username: null,
+    event.preventDefault();
+    console.log("logging out");
+    API.logout()
+      .then(() => {
+        this.updateUser({
+          auth: false,
           admin: false,
-          firstName: null
-        }
-      });
-    }).catch(err => console.log(err))
-  }
+          state: {
+            loggedIn: false,
+            username: null,
+            admin: false,
+            firstName: null
+          }
+        });
+      })
+      .catch(err => console.log(err));
+  };
 
   render() {
     return (
       <Router>
         <Switch>
-          <Route exact path="/"
+          <Route
+            exact
+            path="/"
             render={routeProps => (
-              <React.Fragment>
-                <NavBar{...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
+              <Fragment>
+                <Home
+                  {...routeProps}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-                <Home {...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  logout={this.logout}
-                />
-                <Footer/>
-              </React.Fragment>
+              </Fragment>
             )}
           />
-          <Route exact path="/rentals"
+          <Route
+            exact
+            path="/rentals"
             render={routeProps => (
-              <React.Fragment>
-                <NavBar{...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
+              <Fragment>
+                <Rentals
+                  {...routeProps}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-                <Rentals {...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  logout={this.logout}
-                />
-                <Footer/>
-              </React.Fragment>
-            )} />
-          <Route exact path="/sales"
-            render={routeProps => (
-              <React.Fragment>
-              <NavBar{...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  logout={this.logout}
-                />
-                <Sales {...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  logout={this.logout}
-                />
-                <Footer/>
-              </React.Fragment>
+              </Fragment>
             )}
           />
-          <Route exact path="/courses"
+          <Route
+            exact
+            path="/sales"
             render={routeProps => (
-              <React.Fragment>
-              <NavBar{...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
+              <Fragment>
+                <Sales
+                  {...routeProps}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-                <Courses {...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  logout={this.logout}
-                />
-                <Footer/>
-              </React.Fragment>
+              </Fragment>
             )}
           />
-          <Route exact path="/signup"
+          <Route
+            exact
+            path="/courses"
             render={routeProps => (
-              <React.Fragment>
-              <NavBar{...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
+              <Fragment>
+                <Courses
+                  {...routeProps}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
                   logout={this.logout}
                 />
-                <Signup {...routeProps}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  logout={this.logout}
-                />
-                <Footer/>
-              </React.Fragment>)}
+              </Fragment>
+            )}
           />
-          <Route exact path="/login"
+          <Route
+            exact
+            path="/signup"
             render={routeProps => (
-              <React.Fragment>
-              <NavBar{...routeProps}
-                  toggleModal={this.toggleModal}
-                  setModal={this.setModal}
+              <Fragment>
+                <Login
+                  {...routeProps}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
                   logout={this.logout}
+                  loginShow={false}
                 />
-                <Login {...routeProps}
+              </Fragment>
+            )}
+          />
+          <Route
+            exact
+            path="/login"
+            render={routeProps => (
+              <Fragment>
+                <Login
+                  {...routeProps}
                   updateUser={this.updateUser}
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
                   logout={this.logout}
+                  loginShow={true}
                 />
-                <Footer/>
-              </React.Fragment>
-              )}
+              </Fragment>
+            )}
           />
-          <PrivateRoute path="/test" component={AddPropsToRoute(Test, {
-            toggleModal: this.toggleModal,
-            setModal: this.setModal,
-            updateUser: this.updateUser,
-            loggedIn: this.state.loggedIn,
-            firstName: this.state.firstName,
-            admin: this.state.admin,
-            logout: this.logout
-          })}
+          <PrivateRoute
+            path="/test"
+            component={AddPropsToRoute(Test, {
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
           />
-          <PrivateRoute path="/testnick" component={AddPropsToRoute(TestNick, {
-            toggleModal: this.toggleModal,
-            setModal: this.setModal,
-            updateUser: this.updateUser,
-            loggedIn: this.state.loggedIn,
-            firstName: this.state.firstName,
-            admin: this.state.admin,
-            logout: this.logout
-          })}
+          <PrivateRoute
+            path="/testnick"
+            component={AddPropsToRoute(TestNick, {
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
           />
-          <PrivateRoute path="/testben" component={AddPropsToRoute(TestBen, {
-            toggleModal: this.toggleModal,
-            setModal: this.setModal,
-            updateUser: this.updateUser,
-            loggedIn: this.state.loggedIn,
-            firstName: this.state.firstName,
-            admin: this.state.admin,
-            logout: this.logout
-          })}
+          <PrivateRoute
+            path="/testben"
+            component={AddPropsToRoute(TestBen, {
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
           />
-          <AdminRoute path="/admin" component={AddPropsToRoute(Admin, {
-            toggleModal: this.toggleModal,
-            setModal: this.setModal,
-            updateUser: this.updateUser,
-            loggedIn: this.state.loggedIn,
-            firstName: this.state.firstName,
-            admin: this.state.admin,
-            logout: this.logout
-          })}
+					          <PrivateRoute
+            path="/testbrandon"
+            component={AddPropsToRoute(TestBrandon, {
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
+          />
+          <PrivateRoute
+            path="/testcorb"
+            component={AddPropsToRoute(TestCorb, {
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
+          />
+          <AdminRoute
+            path="/admin"
+            component={AddPropsToRoute(Admin, {
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
+          />
+          <AdminRoute
+            path="/adminbrandon"
+            component={AddPropsToRoute(AdminBrandon, {
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
+          />
+          <AdminRoute
+            path="/adminkeith"
+            component={AddPropsToRoute(AdminKeith, {
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
           />
           <Route component={NoMatch} />
         </Switch>
       </Router>
-    )
+    );
   }
-
 }
 
 export default App;

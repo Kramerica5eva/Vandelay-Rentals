@@ -2,6 +2,24 @@ import axios from "axios";
 
 export default {
 
+  getImageNames: function (id) {
+    return axios.get(`/file/image/names/${id}`);
+  },
+
+  uploadImage: function (id, imageData) {
+    return axios.post(`/file/image/${id}`, imageData);
+  },
+
+  getImage: function () {
+    return axios.get('/file/image/:filename');
+  },
+
+  deleteImage: function (id, imageData) {
+    return axios.delete(`/file/image/${id}`, imageData);
+  },
+
+
+
   // AUTHORIZATION ROUTES
   // Get user info
   getUser: function () {
@@ -19,10 +37,9 @@ export default {
   logout: function () {
     return axios.post('/user/logout');
   },
-  // Authentication Route
-  // Checks to see if a user is logged in before seeing protected routes
-  authenticate: function () {
-    return axios.get('/user/auth');
+  //  Checks current password before changing it
+  checkPassword: function (pwData) {
+    return axios.post('/user/check', pwData);
   },
 
   // USER COURSE ROUTES
@@ -61,8 +78,12 @@ export default {
     return axios.get(`/api/rentals/date/${from}/${to}`);
   },
   // Reserves Rental by date range - reservation data will include the item and the user.
-  reserveRental: function (from, to, reservationData) {
-    return axios.put(`/api/rentals/date/${from}/${to}`, reservationData);
+  reserveRental: function (from, to, id) {
+    return axios.put(`/api/rentals/date/${from}/${to}/${id}`);
+  },
+  // Adds reservation data to user's database document
+  addRentalToUser: function (from, to, id) {
+    return axios.put(`/user/${from}/${to}/${id}`);
   },
   // Cancels a reservation - 'reservationData' collected by event listener and should include the item info and the user.
   removeRentalReservation: function (from, to, reservationData) {
@@ -82,7 +103,6 @@ export default {
   getSaleItemById: function (category, id) {
     return axios.get(`/api/sales/${category}/${id}`);
   },
-
 
   // ADMIN ROUTES
   // ADMIN USER ROUTES
@@ -104,6 +124,25 @@ export default {
   // Gets one user by id
   deleteUser: function (id) {
     return axios.delete(`/admin/users/${id}`);
+  },
+
+  //ADMIN CATEGORY ROUTES
+  // Gets all categories
+  // This route is only in admin because a single route doesn't need a new pathway and controller file
+  getAllCategories: function () {
+    return axios.get('/admin/category');
+  },
+  // Add new category
+  adminAddNewCategory: function (categoryData) {
+    return axios.post('/admin/category', categoryData);
+  },
+  // Modify category
+  adminUpdateCategory: function (id, categoryData) {
+    return axios.put(`/admin/category/${id}`, categoryData);
+  },
+  // Delete category
+  adminDeleteCategory: function (id) {
+    return axios.delete(`/admin/category/${id}`);
   },
 
   // ADMIN COURSE ROUTES

@@ -11,8 +11,8 @@ mongoose.connect(uri).then(
     },
     err => {
          /** handle initial connection error */ 
-         console.log('error connecting to Mongo: ')
-         console.log(err);         
+         console.log('error connecting to Mongo: ');
+         console.log(err);
         }
   );
 

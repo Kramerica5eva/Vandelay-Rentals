@@ -5,25 +5,23 @@ const rentalSchema = new Schema({
   name: { type: String, required: true },
   category: {
     type: String,
-    enum: ['Paddleboard', 'Kayak'],
-    default: 'Kayak',
     required: true
   },
   maker: String,
   sku: String,
   dailyRate: Schema.Types.Decimal128,
   reservations: [{
-    customerId: Number,
+    customerId: String,
     date: {
-      from: Date,
-      to: Date
+      from: Number,
+      to: Number
     }
   }],
   pastRentals: [{
-    customerId: Number,
+    customerId: String,
     date: {
-      from: Date,
-      to: Date
+      from: Number,
+      to: Number
     }
   }],
   timesRented: Number,
@@ -33,12 +31,11 @@ const rentalSchema = new Schema({
     enum: ['New', 'Good', 'Working', 'Disrepair', 'Retired'],
     default: 'Good'
   },
-  images: [{ filepath: String }]
+  images: [{
+    type: Schema.Types.ObjectId
+   }]
 });
 
 const Rental = mongoose.model('Rental', rentalSchema);
 
 module.exports = Rental;
-
-
-//  Docu-sign docs and iamges may be easier to store in a server file system and just referenced in the DB

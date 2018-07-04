@@ -3,7 +3,7 @@ const courseRoutes = require('./courses');
 const rentalRoutes = require('./rentals');
 const saleRoutes = require('./sales');
 
-// Book routes
+// api routes
 router.use('/courses', courseRoutes);
 router.use('/rentals', rentalRoutes);
 router.use('/sales', saleRoutes);

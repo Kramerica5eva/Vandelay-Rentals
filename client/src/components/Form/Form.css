@@ -1,0 +1,205 @@
+/* form starting stylings ------------------------------- */
+
+.group-select select {
+    margin-top: 25px;
+    background: transparent;
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid #757575;
+    font-size: 18px;
+    padding: 10px 10px 10px 5px;
+}
+
+.group-select label {
+    top: unset;
+    font-size: 14px;
+    color: #5264AE;
+}
+
+.group {
+    position: relative;
+    margin-bottom: 45px;
+}
+
+.group input {
+    background: transparent;
+}
+
+input, textarea {
+    font-size: 18px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid #757575;
+}
+
+textarea {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #dfe4e9;
+    min-width: 300px;
+    max-width: 300px;
+    
+}
+
+.group-textarea label {
+  margin-top: -30px;
+  font-size: 14px;
+  color: #5264AE;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: transparent;
+}
+
+/* LABEL ======================================= */
+
+label {
+    color: #999;
+    font-size: 18px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+/* active state */
+
+input:focus~label, input:valid~label {
+    top: -20px;
+    font-size: 14px;
+    color: #5264AE;
+}
+
+input:not(:focus):invalid {
+    background-color: rgba(255, 0, 0, 0.315);
+}
+
+/* BOTTOM BARS ================================= */
+
+.bar {
+    position: relative;
+    display: block;
+    width: 300px;
+}
+
+.bar:before, .bar:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: #5264AE;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.bar:before {
+    left: 50%;
+}
+
+.bar:after {
+    right: 50%;
+}
+
+/* active state */
+
+input:focus~.bar:before,
+input:focus~.bar:after,
+textarea:focus~.bar:before,
+textarea:focus~.bar:after {
+    width: 50%;
+}
+
+/* HIGHLIGHTER ================================== */
+
+.highlight {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* active state */
+
+input:focus~.highlight {
+    -webkit-animation: inputHighlighter 0.3s ease;
+    -moz-animation: inputHighlighter 0.3s ease;
+    animation: inputHighlighter 0.3s ease;
+}
+
+/* form button */
+
+.form-btn {
+    font-family: var(--font-Raleway);
+    font-size: 14px;
+    margin: 10px 0;
+    display: block;
+    background-color: #272727;
+    border: 1px solid #272727;
+    padding: 7px 10px;
+    color: #000000;
+    font-weight: bold;
+    text-decoration: none;
+    text-shadow: 0 0 2px #fff,
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 15px #fff,
+    0 0 20px #fff,
+    0 0 25px #fff;
+}
+
+.form-btn:hover {
+    color: #fff;
+    background-color: #000;
+    text-shadow: 0 0 1px #000,
+    0 0 2px #000,
+    0 0 3px #000,
+    0 0 4px #000,
+    0 0 5px #000,
+    0 0 6px #fff,
+    0 0 8px #fff,
+    0 0 10px #fff,
+    0 0 20px #fff,
+    0 0 30px #fff;
+}
+
+/* ANIMATIONS ================ */
+
+@-webkit-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@-moz-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+    to {
+        width: 0;
+        background: transparent;
+    }
+}

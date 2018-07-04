@@ -36,9 +36,39 @@ module.exports = {
   },
 
   findbyDates: function (req, res) {
+    console.log("From: " + req.params.from);
+    console.log("To: " + req.params.to);
+
+    const fromSearch = parseInt(req.params.from);
+    const toSearch = parseInt(req.params.to);
+
     db.Rental
-      .find({ /* search parameters */ })
-      .sort({ date: -1 })
+      .find({
+
+        //  Note: this worked with the seeded data, but does not work with data added via the user interface due to it being in a different format.
+
+        //  THIS ONE FINDS THE ITEMS THAT HAVE THIS RESERVATION - i.e. are not available. The opposite of what we want. But it may be a good starting point
+        reservations: {
+          $elemMatch: {
+            $or: [
+              {
+                $and: [
+                  { from: { $lte: fromSearch } },
+                  { to: { $gt: fromSearch } }
+                ]
+              },
+              {
+                $and: [
+                  { from: { $lte: toSearch } },
+                  { to: { $gt: toSearch } }
+                ]
+              }
+            ]
+          }
+        }
+
+      })
+      .sort({ date: - 1 })
       .then(dbModel => {
         const rentalArray = filterRentalItemData(dbModel);
         res.json(rentalArray);
@@ -49,9 +79,19 @@ module.exports = {
   makeReservation: function (req, res) {
     db.Rental
       .findOneAndUpdate({ _id: req.params.id },
-        /* in place of 'req.body', functionality to remove a reservation */
-        /* will also need to be removed from the user's document */
-        req.body)
+        {
+          $push: {
+            reservations: {
+              customerId: req.user._id,
+              date: {
+                from: parseInt(req.params.from),
+                to: parseInt(req.params.to)
+              }
+            }
+          }
+        },
+        { new: true }
+      )
       .then(dbModel => {
         console.log(dbModel);
 
