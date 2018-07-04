@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Header from "../../components/Header";
+import Header from "../../components/Elements/Header";
 import API from "../../utils/API";
 import ParallaxHero from "./../../components/ParallaxHero";
-import { Input, Label, FormBtn } from "./../../components/Form";
+import { Input, Label, FormBtn } from "./../../components/Elements/Form";
 import "./../../App.css";
 import DevLinks from "../../components/DevLinks";
 

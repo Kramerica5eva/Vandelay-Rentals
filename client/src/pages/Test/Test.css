@@ -13,10 +13,6 @@ body:not(ParallaxHero) {
   width: calc(100vw + 17px);
 }
 
-.rental-img {
-  width: 300px;
-}
-
 .rental-results-div {
   width: 250px;
   display: grid;

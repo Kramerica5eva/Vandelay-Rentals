@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import API from "../../utils/API";
-import Modal from "../../components/Modal";
+import Modal from "../../components/Elements/Modal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";

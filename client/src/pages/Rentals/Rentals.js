@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
-import Header from "../../components/Header";
+import Header from "../../components/Elements/Header";
 import ParallaxHero from "../../components/ParallaxHero";
-import NavBar from "../../components/NavBar";
-import Footer from "../../components/Footer";
-import RentalCard from "./../../components/RentalCard";
+import NavBar from "../../components/Elements/NavBar";
+import Footer from "../../components/Elements/Footer";
+import RentalCard from "./../../components/Cards/RentalCard";
 import DevLinks from "../../components/DevLinks";
 import API from "../../utils/API";
 import "./Rentals.css";

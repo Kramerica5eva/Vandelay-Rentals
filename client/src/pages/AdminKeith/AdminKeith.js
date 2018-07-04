@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
-import Header from "../../components/Header";
-import Modal from "../../components/Modal";
-import NavBar from "../../components/NavBar";
+import Header from "../../components/Elements/Header";
+import Modal from "../../components/Elements/Modal";
+import NavBar from "../../components/Elements/NavBar";
 import DevLinks from "../../components/DevLinks";
 import { BrandonTestTable, RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
 import { AdminForms } from "../../components/AdminForms";
@@ -195,6 +195,7 @@ class Admin extends Component {
           {this.state.test ? (
             <TestTable
               hideTest={this.toggleTest}
+              categories={this.props.categories}
             />
           ) : null}
 
@@ -207,6 +208,7 @@ class Admin extends Component {
           {this.state.showForms ? (
             <AdminForms
               updateUser={this.props.updateUser}
+              setCategories={this.props.setCategories}
             />
           ) : null}
 

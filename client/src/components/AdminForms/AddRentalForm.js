@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Select, Option } from "../Form";
-import Modal from "../../components/Modal";
+import { Input, FormBtn, Select, Option } from "../Elements/Form";
+import Modal from "../../components/Elements/Modal";
 import API from "../../utils/API";
 import './AdminForms.css';
 

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import Modal from "../../components/Modal";
+import Modal from "../../components/Elements/Modal";
 import { AddCourseForm, AddRentalForm, AddSaleItemForm, AddUserForm, AddCategoryForm } from "../../components/AdminForms";
 
 export class AdminForms extends Component {
@@ -194,7 +194,9 @@ export class AdminForms extends Component {
               </div>
               <div className="admin-form-div">
                 <h2>New Category</h2>
-                <AddCategoryForm />
+                <AddCategoryForm
+                  setCategories={this.props.setCategories}
+                />
               </div>
             </Fragment>
           ) : null}

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn } from "../Form";
-import Modal from "../../components/Modal";
+import { Input, FormBtn } from "../Elements/Form";
+import Modal from "../../components/Elements/Modal";
 import API from "../../utils/API";
 
 export class SignupForm extends Component {

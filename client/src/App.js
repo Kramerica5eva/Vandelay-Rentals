@@ -20,8 +20,8 @@ import Admin from "./pages/Admin";
 import AdminKeith from "./pages/AdminKeith";
 import AdminBrandon from "./pages/AdminBrandon";
 import AddPropsToRoute from "./components/AddPropsToRoute";
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
+import NavBar from "./components/Elements/NavBar";
+import Footer from "./components/Elements/Footer";
 import NoMatch from "./pages/NoMatch";
 import API from "./utils/API";
 import "./App.css";
@@ -36,15 +36,15 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       isAuthenticated ? (
         <Component {...props} />
       ) : (
-        //  send a state object with the redirect to inform the login page of the intended destination
-        //  'loginShow' is to make sure the login form shows instead of the signup form
-        <Redirect
-          to={{
-            pathname: "/login",
-            state: { from: props.location, loginShow: true }
-          }}
-        />
-      )
+          //  send a state object with the redirect to inform the login page of the intended destination
+          //  'loginShow' is to make sure the login form shows instead of the signup form
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location, loginShow: true }
+            }}
+          />
+        )
     }
   />
 );
@@ -56,15 +56,15 @@ const AdminRoute = ({ component: Component, ...rest }) => (
       isAdmin ? (
         <Component {...props} />
       ) : (
-        //  send a state object with the redirect to inform the login page of the intended destination
-        //  'loginShow' is to make sure the login form shows instead of the signup form
-        <Redirect
-          to={{
-            pathname: "/login",
-            state: { from: props.location, loginShow: true }
-          }}
-        />
-      )
+          //  send a state object with the redirect to inform the login page of the intended destination
+          //  'loginShow' is to make sure the login form shows instead of the signup form
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location, loginShow: true }
+            }}
+          />
+        )
     }
   />
 );
@@ -74,7 +74,8 @@ class App extends Component {
     loggedIn: false,
     username: null,
     firstName: null,
-    admin: false
+    admin: false,
+    categories: null
   };
 
   componentDidMount() {
@@ -95,12 +96,16 @@ class App extends Component {
         if (res.data.admin) {
           isAdmin = true;
         }
-        this.setState({
-          loggedIn: true,
-          username: res.data.username,
-          firstName: res.data.firstName,
-          admin: res.data.admin
-        });
+        API.getAllCategories()
+          .then(categories => {
+            this.setState({
+              loggedIn: true,
+              username: res.data.username,
+              firstName: res.data.firstName,
+              admin: res.data.admin,
+              categories: categories.data
+            });
+          })
       } else {
         isAuthenticated = false;
         isAdmin = false;
@@ -113,6 +118,13 @@ class App extends Component {
       }
     });
   };
+
+  setCategories = () => {
+    API.getAllCategories()
+      .then(categories => {
+        this.setState({ categories: categories.data });
+      })
+  }
 
   logout = event => {
     event.preventDefault();
@@ -265,7 +277,7 @@ class App extends Component {
               logout: this.logout
             })}
           />
-					          <PrivateRoute
+          <PrivateRoute
             path="/testbrandon"
             component={AddPropsToRoute(TestBrandon, {
               updateUser: this.updateUser,
@@ -324,7 +336,9 @@ class App extends Component {
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
               admin: this.state.admin,
-              logout: this.logout
+              logout: this.logout,
+              categories: this.state.categories,
+              setCategories: this.setCategories
             })}
           />
           <Route component={NoMatch} />

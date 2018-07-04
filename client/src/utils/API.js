@@ -6,18 +6,17 @@ export default {
     return axios.get(`/file/image/names/${id}`);
   },
 
-  uploadImage: function (id, imageData) {
-    return axios.post(`/file/image/${id}`, imageData);
+  uploadImage: function (rentalId, imageData) {
+    return axios.post(`/file/image/${rentalId}`, imageData);
   },
 
   getImage: function () {
     return axios.get('/file/image/:filename');
   },
 
-  deleteImage: function (id, imageData) {
-    return axios.delete(`/file/image/${id}`, imageData);
+  deleteImage: function (imageId, rentalId) {
+    return axios.delete(`/file/image/${imageId}`, rentalId);
   },
-
 
 
   // AUTHORIZATION ROUTES

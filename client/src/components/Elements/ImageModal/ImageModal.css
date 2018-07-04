@@ -1,6 +1,6 @@
 /* The Modal (background) */
 
-.my-modal {
+.image-modal {
   display: flex;
   /* this keeps the modal centered when the content (below) is set to margin: auto */
   position: fixed;
@@ -21,54 +21,55 @@
   /* Black w/ opacity */
 }
 
-.my-modal select {
+.image-modal select {
   width: 100%;
 }
 
 /* The Close Button */
 
-.my-modal-close {
+.image-modal-close {
   color: #aaa;
   float: right;
   font-size: 28px;
   font-weight: bold;
 }
 
-.my-modal-close:hover, .my-modal-close:focus {
+.image-modal-close:hover, .image-modal-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
 
-/* my-modal Header */
+/* image-modal Header */
 
-.my-modal-header {
+.image-modal-header {
   padding: 5px 16px;
   min-height: 30px;
   background-color: #5cb85c;
   color: white;
 }
 
-/* my-modal Body */
+/* image-modal Body */
 
-.my-modal-body {
-  max-width: 90%;
-  min-width: 300px;
+.image-modal-body {
+  width: 100%;
+  /* margin: auto; */
   padding: 2px 16px;
 }
 
-/* my-modal Footer */
+/* image-modal Footer */
 
-.my-modal-footer {
+.image-modal-footer {
   padding: 5px 16px;
   min-height: 30px;
   background-color: #5cb85c;
   color: white;
 }
 
-/* my-modal Content */
+/* image-modal Content */
 
-.my-modal-content {
+.image-modal-content {
+  max-width: 90%;
   position: relative;
   background-color: #fefefe;
   margin: auto;
@@ -81,13 +82,13 @@
   animation-duration: 0.4s
 }
 
-.my-modal-body>form>label, .my-modal-body>form>input {
+.image-modal-body>form>label, .image-modal-body>form>input {
   top: unset;
   font-size: 14px;
   color: #5264AE;
 }
 
-.my-modal-body>form>.form-select {
+.image-modal-body>form>.form-select {
   margin-top: 20px;
 }
 
