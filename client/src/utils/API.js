@@ -91,14 +91,14 @@ export default {
   },
   // Creates a new signature request using the helloSign API
   createSignatureRequest: function () {
-    return  axios.post('/file/waiver/create-signature-request',
-                        {
-                          clientEmail: "email@email.com",
-                          clientName: "John Smith",
-                          clientId: "aaad4deadb45633d2cc5ebe07ed2eff2",
-                          apiKey: "885fe716760ad052c0df78878bd1aeb6f09292b59d82fe035888a457cc4c133a"
-                        }
-                      )
+    return axios.post('/file/waiver/create-signature-request',
+      {
+        clientEmail: "email@email.com",
+        clientName: "John Smith",
+        clientId: "aaad4deadb45633d2cc5ebe07ed2eff2",
+        apiKey: "885fe716760ad052c0df78878bd1aeb6f09292b59d82fe035888a457cc4c133a"
+      }
+    )
   },
 
   //  USER SALE ROUTES
@@ -168,6 +168,10 @@ export default {
   // Gets one course by id
   adminGetCourseById: function (id) {
     return axios.get(`/admin/courses/${id}`);
+  },
+  // Update course information
+  adminUpdateCourse: function (id, courseData) {
+    return axios.put(`/admin/courses/${id}`, courseData);
   },
   // Change 'paid' boolean to true
   payCourseReservation: function (id, reservationData) {
