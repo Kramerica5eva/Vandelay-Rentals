@@ -48,3 +48,8 @@
   width: 100%;
   display: block;
 }
+
+.reservations-table {
+  width: 90%;
+  margin: auto;
+}

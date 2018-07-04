@@ -26,13 +26,13 @@ router
 // Matches with '/api/date/:from/:to/:id'
 // put makes a reservation
 router
-  .route('/date/:from/:to/:id')
-  .put(isLoggedIn, rentalsController.makeReservation);
+  .route('/date/:from/:to/:id/:name')
+  .post(isLoggedIn, rentalsController.makeReservation);
 
 // Matches with '/api/remove/:from/:to'
 // removes a reservation
 router
-  .route('/remove/:from/:to')
+  .route('/remove/:from/:to/:id')
   .put(isLoggedIn, rentalsController.breakReservation);
 
 function isLoggedIn(req, res, next) {

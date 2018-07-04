@@ -27,6 +27,14 @@ const userSchema = new Schema({
 			to: Number
 		}
 	}],
+
+	//	Remove if testing doesn't work out
+	testReservations: [{
+		type: Schema.Types.ObjectId,
+		ref: "Reservation"
+	}],
+//	END remove if...
+
 	pastRentals: [{
 		itemId: String,
 		date: {

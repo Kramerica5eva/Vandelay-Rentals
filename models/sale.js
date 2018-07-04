@@ -13,7 +13,7 @@ const saleSchema = new Schema({
   cost: Schema.Types.Decimal128,
   price: Schema.Types.Decimal128,
 
-  dateAcquired: Date,
+  dateAcquired: Number,
   saleType: {
     type: String,
     enum: ['New', 'Used'],

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Select, Option } from "../Form";
+import { Input, FormBtn, Select, Option } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import ReactTable from "react-table";
@@ -238,7 +238,7 @@ export class CoursesTable extends Component {
         >
           Update Selected Row
         </button>
-        <button onClick={this.props.hideCourses}>Hide Table</button>
+        <button onClick={this.props.toggleCourses}>Hide Table</button>
         <button onClick={this.logSelection}>Log Selection</button>
 
         <CheckboxTable

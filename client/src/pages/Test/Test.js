@@ -189,6 +189,17 @@ class Test extends Component {
     return true; //returns true if no matches are found
   }
 
+  makeReservation = (rental) => {
+    console.log(rental);
+    const { _id, name } = rental;
+    const from = 1533168000;
+    const to = 1537727200;
+    console.log("trigger the route");
+
+    API.reserveRental(from, to, _id, name, rental)
+    .then(response => console.log(response));
+  }
+
   render() {
     console.log(this.state.categories);
     return (
@@ -240,18 +251,31 @@ class Test extends Component {
 
             <h2>Rentals:</h2>
             <div className="rental-results-div">
+
               {this.state.rentals ? this.state.rentals.map(rental => (
-                <RentalCard
-                  key={rental._id}
-                  id={rental._id}
-                  name={rental.name}
-                  category={rental.category}
-                  maker={rental.maker}
-                  reservations={rental.reservations}
-                  availability={this.checkAvailability(rental.reservations) ? "Available" : "Unavailable"}
-                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
-                </RentalCard>
+                <div key ={rental._id} id={rental._id} className={rental.className}>
+                  <h3>{rental.name}</h3>
+                  <h4>{rental.category}</h4>
+                  <h5>Maker: {rental.maker}</h5>
+                  <p>Daily rate: ${rental.rate}</p>
+                  <h2>{rental.availability}</h2>
+                  <button onClick={() => this.makeReservation(rental)}>Reserve</button>
+                </div>
+
+
+                // <RentalCard
+                //   key={rental._id}
+                //   id={rental._id}
+                //   name={rental.name}
+                //   category={rental.category}
+                //   maker={rental.maker}
+                //   reservations={rental.reservations}
+                //   availability={this.checkAvailability(rental.reservations) ? "Available" : "Unavailable"}
+                //   rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
+                // </RentalCard>
+
               )) : null}
+
             </div>
 
           </div>
