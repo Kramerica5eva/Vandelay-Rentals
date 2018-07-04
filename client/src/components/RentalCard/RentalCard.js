@@ -5,12 +5,8 @@ let moment = require("moment");
 class RentalCard extends Component {
 
   state = {
-    class: "rentalCard",
-    availability: null
+    // availability:
   };
-  componentDidUpdate() {
-
-  }
 
   render() {
     return (
