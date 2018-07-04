@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
-import Header from "../../components/Header";
+import Header from "../../components/Elements/Header";
 import API from "../../utils/API";
-import Modal from "../../components/Modal";
-import NavBar from "../../components/NavBar";
-import Footer from "../../components/Footer";
+import Modal from "../../components/Elements/Modal";
+import NavBar from "../../components/Elements/NavBar";
+import Footer from "../../components/Elements/Footer";
 import DevLinks from "../../components/DevLinks";
 
 class Admin extends Component {

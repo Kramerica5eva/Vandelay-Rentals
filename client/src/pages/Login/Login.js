@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { Link, Redirect } from "react-router-dom";
-import Header from "../../components/Header";
+import Header from "../../components/Elements/Header";
 import DevLinks from "../../components/DevLinks";
-import NavBar from "../../components/NavBar";
-import FixedFooter from "../../components/FixedFooter";
+import NavBar from "../../components/Elements/NavBar";
+import FixedFooter from "../../components/Elements/FixedFooter";
 import { LoginForm, SignupForm } from "../../components/AuthForms";
 import "./Login.css";
 

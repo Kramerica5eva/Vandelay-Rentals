@@ -22,6 +22,7 @@ const DevLinks = props => (
       <Link className="btn-link" to="/testben" role="button">TestBen</Link>
       <Link className="btn-link" to="/testbrandon" role="button">TestBrandon</Link>
       <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
+      <Link className="btn-link" to="/waiver" role="button">Waiver</Link>
       {props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
       {props.admin ? <Link className="btn-link" to="/adminkeith" role="button">AdminKeith</Link> : null}
       {props.admin ? <Link className="btn-link" to="/adminbrandon" role="button">AdminBrandon</Link> : null}

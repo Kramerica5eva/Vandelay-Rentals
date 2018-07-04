@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
-import Header from "../../components/Header";
-import Modal from "../../components/Modal";
-import NavBar from "../../components/NavBar";
+import Header from "../../components/Elements/Header";
+import Modal from "../../components/Elements/Modal";
+import NavBar from "../../components/Elements/NavBar";
 import DevLinks from "../../components/DevLinks";
 import { BrandonTestTable, RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
 import { AdminForms } from "../../components/AdminForms";
@@ -170,43 +170,48 @@ class Admin extends Component {
 
           {this.state.courses ? (
             <CoursesTable
-              hideCourses={this.toggleCourses}
+              toggleCourses={this.toggleCourses}
             />
           ) : null}
 
           {this.state.rentals ? (
             <RentalsTable
-              hideRentals={this.toggleRentals}
+              toggleRentals={this.toggleRentals}
+              categories={this.props.categories}
             />
           ) : null}
 
           {this.state.sales ? (
             <SalesTable
-              hideSaleItems={this.toggleSaleItems}
+              toggleSaleItems={this.toggleSaleItems}
+              categories={this.props.categories}
             />
           ) : null}
 
           {this.state.users ? (
             <UsersTable
-              hideUsers={this.toggleUsers}
+              toggleUsers={this.toggleUsers}
             />
           ) : null}
 
           {this.state.test ? (
             <TestTable
-              hideTest={this.toggleTest}
+              toggleTest={this.toggleTest}
+              categories={this.props.categories}
             />
           ) : null}
 
           {this.state.brandonTest ? (
             <BrandonTestTable
-              hideBrandonTest={this.toggleBrandonTest}
+              toggleBrandonTest={this.toggleBrandonTest}
+              categories={this.props.categories}
             />
           ) : null}
 
           {this.state.showForms ? (
             <AdminForms
               updateUser={this.props.updateUser}
+              setCategories={this.props.setCategories}
             />
           ) : null}
 

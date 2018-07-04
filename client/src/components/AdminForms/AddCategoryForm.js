@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Textarea, Select, Option } from "../Form";
-import Modal from "../../components/Modal";
+import { Input, FormBtn, Textarea, Select, Option } from "../Elements/Form";
+import Modal from "../../components/Elements/Modal";
 import API from "../../utils/API";
 
 export class AddCategoryForm extends Component {
@@ -51,6 +51,7 @@ export class AddCategoryForm extends Component {
     API.adminAddNewCategory(categoryObject)
       .then(res => {
         console.log(res);
+        this.props.setCategories();
       })
       .catch(err => console.log(err));
   }

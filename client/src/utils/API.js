@@ -6,18 +6,17 @@ export default {
     return axios.get(`/file/image/names/${id}`);
   },
 
-  uploadImage: function (id, imageData) {
-    return axios.post(`/file/image/${id}`, imageData);
+  uploadImage: function (rentalId, imageData) {
+    return axios.post(`/file/image/${rentalId}`, imageData);
   },
 
   getImage: function () {
     return axios.get('/file/image/:filename');
   },
 
-  deleteImage: function (id, imageData) {
-    return axios.delete(`/file/image/${id}`, imageData);
+  deleteImage: function (imageId, rentalId) {
+    return axios.delete(`/file/image/${imageId}/${rentalId}`);
   },
-
 
 
   // AUTHORIZATION ROUTES
@@ -77,17 +76,37 @@ export default {
   getRentalsByDates: function (from, to) {
     return axios.get(`/api/rentals/date/${from}/${to}`);
   },
+
+  
+  // TEST RESERVATION SCHEMA STUFF - it works! This route creates a doc in the Reservations collection, and creates a reference in the associated User and Rental documents
   // Reserves Rental by date range - reservation data will include the item and the user.
-  reserveRental: function (from, to, id) {
-    return axios.put(`/api/rentals/date/${from}/${to}/${id}`);
+  reserveRental: function (from, to, rentalId, rentalName, rentalData) {
+    return axios.post(`/api/rentals/date/${from}/${to}/${rentalId}/${rentalName}`, rentalData);
   },
+
+
+  // Reserves Rental by date range - reservation data will include the item and the user.
+  // reserveRental: function (from, to, id) {
+  //   return axios.put(`/api/rentals/date/${from}/${to}/${id}`);
+  // },
   // Adds reservation data to user's database document
   addRentalToUser: function (from, to, id) {
     return axios.put(`/user/${from}/${to}/${id}`);
   },
   // Cancels a reservation - 'reservationData' collected by event listener and should include the item info and the user.
-  removeRentalReservation: function (from, to, reservationData) {
-    return axios.put(`/api/rentals/remove/${from}/${to}`, reservationData);
+  removeRentalReservation: function (from, to, reservationId, reservationData) {
+    return axios.put(`/api/rentals/remove/${from}/${to}/${reservationId}`, reservationData);
+  },
+  // Creates a new signature request using the helloSign API
+  createSignatureRequest: function () {
+    return axios.post('/file/waiver/create-signature-request',
+      {
+        clientEmail: "email@email.com",
+        clientName: "John Smith",
+        clientId: "aaad4deadb45633d2cc5ebe07ed2eff2",
+        apiKey: "885fe716760ad052c0df78878bd1aeb6f09292b59d82fe035888a457cc4c133a"
+      }
+    )
   },
 
   //  USER SALE ROUTES
@@ -158,6 +177,10 @@ export default {
   adminGetCourseById: function (id) {
     return axios.get(`/admin/courses/${id}`);
   },
+  // Update course information
+  adminUpdateCourse: function (id, courseData) {
+    return axios.put(`/admin/courses/${id}`, courseData);
+  },
   // Change 'paid' boolean to true
   payCourseReservation: function (id, reservationData) {
     return axios.put(`/admin/courses/${id}`, reservationData);
@@ -180,6 +203,16 @@ export default {
   adminGetRentalsById: function (id) {
     return axios.get(`/admin/rentals/${id}`);
   },
+
+
+
+  //  TEST GETTING RESERVATION DATA FROM RENTAL QUERY:
+  adminGetReservationsFromRental: function (id) {
+    return axios.get(`/admin/rentals/reservations/${id}`);
+  },
+
+
+
   // Update rental item data - admin function
   adminUpdateRental: function (id, rentalData) {
     return axios.put(`/admin/rentals/${id}`, rentalData);

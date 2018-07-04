@@ -1,0 +1,104 @@
+/* The Modal (background) */
+
+.image-modal {
+  display: flex;
+  /* this keeps the modal centered when the content (below) is set to margin: auto */
+  position: fixed;
+  /* Stay in place */
+  z-index: 99;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
+}
+
+.image-modal select {
+  width: 100%;
+}
+
+/* The Close Button */
+
+.image-modal-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.image-modal-close:hover, .image-modal-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* image-modal Header */
+
+.image-modal-header {
+  padding: 5px 16px;
+  min-height: 30px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+/* image-modal Body */
+
+.image-modal-body {
+  width: 100%;
+  /* margin: auto; */
+  padding: 2px 16px;
+}
+
+/* image-modal Footer */
+
+.image-modal-footer {
+  padding: 5px 16px;
+  min-height: 30px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+/* image-modal Content */
+
+.image-modal-content {
+  max-width: 90%;
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  box-shadow: 0 0 5px #000,
+  0 0 10px #222222,
+  0 0 20px #4e4e4e;
+  animation-name: fadein;
+  animation-duration: 0.4s
+}
+
+.image-modal-body>form>label, .image-modal-body>form>input {
+  top: unset;
+  font-size: 14px;
+  color: #5264AE;
+}
+
+.image-modal-body>form>.form-select {
+  margin-top: 20px;
+}
+
+/* Add Animation */
+
+@keyframes fadein {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}

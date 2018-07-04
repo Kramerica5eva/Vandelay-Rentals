@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
-import Header from "../../components/Header";
+import Header from "../../components/Elements/Header";
 import API from "../../utils/API";
 // import Calendar from "../../components/Calendar";
 import Calendar from "react-calendar";
 import "./../../App.css";
-import RentalCard from "../../components/RentalCard";
+import RentalCard from "../../components/Cards/RentalCard";
 let moment = require("moment");
 
 let date = new Date();

@@ -13,7 +13,7 @@ const saleSchema = new Schema({
   cost: Schema.Types.Decimal128,
   price: Schema.Types.Decimal128,
 
-  dateAcquired: Date,
+  dateAcquired: Number,
   saleType: {
     type: String,
     enum: ['New', 'Used'],
@@ -24,9 +24,7 @@ const saleSchema = new Schema({
     enum: ['New', 'Excellent', 'Good', 'Fair', 'Poor'],
     default: 'New'
   },
-  images: [{
-    type: Schema.Types.ObjectId
-  }],
+  images: [],
   status: {
     type: String,
     enum: ['Available', 'Sold'],

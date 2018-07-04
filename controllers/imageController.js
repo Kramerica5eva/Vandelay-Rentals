@@ -30,6 +30,7 @@ module.exports = {
         gfs.files.find({
           _id: { $in: rental.images }
         }).toArray((err, files) => {
+          console.log(files);
           res.send(files);
         })
       })
@@ -72,10 +73,12 @@ module.exports = {
 
   remove: function (req, res) {
     console.log("Delete route active...");
+    console.log(`Rental _id: `);
+    console.log(req.params.rental);
     gfs.remove({ _id: req.params.id, root: 'uploads' }, (err, gridStore) => {
       if (err) return res.status(404).json({ err: err });
       db.Rental.findOneAndUpdate(
-        { _id: "5b32c14ba54f7b23587cd087" },
+        { _id: req.params.rental },
         { $pull: { images: req.params.id } },
         { new: true }
       ).then(rental => {

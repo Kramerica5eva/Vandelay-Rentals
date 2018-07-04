@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import API from "../../utils/API";
-import Modal from "../../components/Modal";
+import Modal from "../../components/Elements/Modal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
@@ -160,7 +160,7 @@ export class UsersTable extends Component {
         <h2>All Users</h2>
 
         <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
-        <button onClick={this.props.hideUsers}>Hide Table</button>
+        <button onClick={this.props.toggleUsers}>Hide Table</button>
         <button onClick={this.logSelection}>Log Selection</button>
 
         <CheckboxTable
