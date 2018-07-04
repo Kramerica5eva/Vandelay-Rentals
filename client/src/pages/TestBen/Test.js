@@ -16,7 +16,7 @@ class Test extends Component {
   state = {
     rentals: [],
     // date: new Date(),
-    unix: []
+    unix: [],
   };
 
   componentDidMount() {
@@ -42,16 +42,14 @@ class Test extends Component {
   };
 
   handleFormSubmit = event => {
-    event.preventDefault(); //<-----Keith, you know what this does right? 
-    //  blah blah blah
+    event.preventDefault();
   };
 
   onChange = date => {
     this.getDays(date);
   }
 
-  getDays = date => { //date is the array that is passed from the calendar when days are selected. 
-    console.log("running getDays")
+  getDays = date => { //date is the array that is passed from the calendar when days are selected.
     let temp = [];
     let range = [];
     date.map(dates => temp.push(Date.parse(dates) / 1000)); //stores first and last day in temporary array
@@ -64,7 +62,6 @@ class Test extends Component {
   }
 
   checkAvailability = itemRes => { //passed all the reservations for a given item
-    console.log("checking availability")
     for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
       let range = []; //holds each individual day of a reservation
       let days = (itemRes[i].to - itemRes[i].from) / 86400; //determines total number of days for each reservation
@@ -125,13 +122,15 @@ class Test extends Component {
           {/* <ul> */}
           {this.state.rentals.map(rental => (
             <RentalCard
+              unix={this.state.unix}
               key={rental._id}
               id={rental._id}
               name={rental.name}
               category={rental.category}
               maker={rental.maker}
               reservations={rental.reservations}
-              className={!this.checkAvailability(rental.reservations) ? "unavailable rentalCard" : "rentalCard"}
+              // className={!this.checkAvailability(rental.reservations) ? "unavailable rentalCard" : "rentalCard"}
+              setAvailability={this.checkAvailability(rental.reservations)}
               rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
             </RentalCard>
           ))}
