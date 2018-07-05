@@ -59,6 +59,7 @@ class Calendar extends Component {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat);
         const cloneDay = day;
+        console.log(day);
         days.push(
           <div
             className={`column cell ${
