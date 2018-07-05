@@ -12,13 +12,16 @@ class Login extends Component {
 
   state = {
     redirect: false,
+    redirectLogin: false,
     loginShow: true
   }
 
   setRedirect = () => {
-    this.setState({
-      redirect: true
-    })
+    this.setState({ redirect: true });
+  }
+
+  setRedirectLogin = () => {
+    this.setState({ loginShow: true });
   }
 
   componentDidMount() {
@@ -97,7 +100,7 @@ class Login extends Component {
                   <div className="login-form-div">
                     <h2>Sign Up</h2>
                     <SignupForm
-                      setRedirect={this.setRedirect}
+                      setRedirectLogin={this.setRedirectLogin}
                       updateUser={this.props.updateUser}
                     />
                   </div>

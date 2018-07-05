@@ -41,12 +41,57 @@ export default {
     return axios.post('/user/check', pwData);
   },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // CART ROUTES
+  // Get user shopping cart  
+  getUserShoppingCart: function (id) {
+    return axios.get(`/api/cart/${id}`);
+  },
+  
+  // TEST ADD COURSE TO CART
+  addRegistrationToCart: function (id, registrationData) {
+    return axios.post(`/api/cart/courses/${id}`, registrationData);
+  },
+
+  // TEST ADD RESERVATION TO CART - cart function will make reservation permanent later with the above function (reserveRental)
+  addReservationToCart: function (from, to, rentalId, rentalName, rentalData) {
+    return axios.post(`/api/cart/rentals/date/${from}/${to}/${rentalId}/${rentalName}`, rentalData);
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // USER ROUTES
+
   // USER COURSE ROUTES
   // Gets all courses
   getAllCourses: function () {
     return axios.get('/api/courses/');
   },
-  // Gets courses by id
+  // Gets course by id
   getCourseById: function (id) {
     return axios.get(`/api/courses/${id}`);
   },
@@ -72,12 +117,8 @@ export default {
   getRentalById: function (category, id) {
     return axios.get(`/api/rentals/${category}/${id}`);
   },
-  // Gets rentals by Date range - pulls all available rentals within the dates given
-  getRentalsByDates: function (from, to) {
-    return axios.get(`/api/rentals/date/${from}/${to}`);
-  },
 
-  
+
   // TEST RESERVATION SCHEMA STUFF - it works! This route creates a doc in the Reservations collection, and creates a reference in the associated User and Rental documents
   // Reserves Rental by date range - reservation data will include the item and the user.
   reserveRental: function (from, to, rentalId, rentalName, rentalData) {

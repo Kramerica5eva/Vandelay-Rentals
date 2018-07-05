@@ -5,31 +5,25 @@ const rentalsController = require('../../controllers/rentalsController');
 router.route('/')
   .get(rentalsController.findAll);
 
-// Matches with '/api/:category'
+// Matches with '/api/rentals/:category'
 router
   .route('/:category')
   .get(rentalsController.findByCategory);
 
-// Matches with '/api/:category/:id'
+// Matches with '/api/rentals/:category/:id'
 // gets info on a single item
 // There is no reservation route based only on item - because (duh) you need dates to make a reservation
 router
   .route('/:category/:id')
   .get(rentalsController.findById);
 
-// Matches with '/api/date/:from/:to'
-// get finds items available by date
-router
-  .route('/date/:from/:to')
-  .get(rentalsController.findbyDates);
+  // Matches with '/api/rentals/date/:from/:to/:id'
+  // put makes a reservation
+  router
+    .route('/date/:from/:to/:id/:name')
+    .post(isLoggedIn, rentalsController.makeReservation);
 
-// Matches with '/api/date/:from/:to/:id'
-// put makes a reservation
-router
-  .route('/date/:from/:to/:id/:name')
-  .post(isLoggedIn, rentalsController.makeReservation);
-
-// Matches with '/api/remove/:from/:to'
+// Matches with '/api/rentals/remove/:from/:to'
 // removes a reservation
 router
   .route('/remove/:from/:to/:id')

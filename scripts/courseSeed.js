@@ -21,7 +21,7 @@ const courseSeed = [
       'Finding the right lawyer'
     ],
     level: 'Beginner',
-    date: '2018-07-14',
+    date: 1533196800,
     slots: 30,
     participants: [
       { name: 'Yakko', paid: true },
@@ -41,7 +41,7 @@ const courseSeed = [
       'Finding the right surgeon'
     ],
     level: 'Advanced',
-    date: '2018-08-22',
+    date: 1534932000,
     slots: 20,
     participants: [
       { name: 'Scooby', paid: true },
@@ -63,7 +63,7 @@ const courseSeed = [
       'How to take a joke'
     ],
     level: 'Intermediate',
-    date: '2018-07-25',
+    date: 1535810400,
     slots: 50,
     participants: [
       { name: 'Yo mama', paid: true },

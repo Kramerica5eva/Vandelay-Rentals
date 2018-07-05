@@ -28,6 +28,7 @@ module.exports = {
       })
       .catch(err => res.status(422).json(err));
   },
+
   findById: function (req, res) {
     db.Course
       .findById(req.params.id)
@@ -39,6 +40,7 @@ module.exports = {
       })
       .catch(err => res.status(422).json(err));
   },
+
   update: function (req, res) {
     db.Course
       .findOneAndUpdate({ _id: req.params.id }, req.body)

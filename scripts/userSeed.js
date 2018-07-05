@@ -30,8 +30,8 @@ const userSeed = [
     pastRentals: [],
     admin: true,
 
-	},
-	{
+  },
+  {
     username: "bmorin",
     password: pw2,
     firstName: "Brandon",
@@ -91,7 +91,7 @@ const userSeed = [
     city: "Bountiful",
     state: "UT",
     zipcode: 84010,
-    phone: 678-899-1254,
+    phone: 678 - 899 - 1254,
     waivers: [],
     reservations: [],
     testReservations: [],
@@ -104,6 +104,23 @@ db.User
   .remove({})
   .then(() => db.User.collection.insertMany(userSeed))
   .then(data => {
+    console.log(data.insertedIds[0]);
+    console.log(data.ops.length);
+    let cartArray = [];
+    for (let i = 0; i < data.ops.length; i++) {
+      const element = data.insertedIds[i];
+      console.log(element)
+      const cartObject = {
+        customerId: element,
+        tempReservations: [],
+        tempRegistrations: []
+      };
+      cartArray.push(cartObject);
+    }
+
+    return db.ShoppingCart.collection.insertMany(cartArray);
+
+
     console.log(data.insertedCount + " records inserted!");
     process.exit(0);
   })

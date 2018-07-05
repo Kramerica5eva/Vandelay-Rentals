@@ -35,47 +35,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  findbyDates: function (req, res) {
-    console.log("From: " + req.params.from);
-    console.log("To: " + req.params.to);
-
-    const fromSearch = parseInt(req.params.from);
-    const toSearch = parseInt(req.params.to);
-
-    db.Rental
-      .find({
-
-        //  Note: this worked with the seeded data, but does not work with data added via the user interface due to it being in a different format.
-
-        //  THIS ONE FINDS THE ITEMS THAT HAVE THIS RESERVATION - i.e. are not available. The opposite of what we want. But it may be a good starting point
-        reservations: {
-          $elemMatch: {
-            $or: [
-              {
-                $and: [
-                  { from: { $lte: fromSearch } },
-                  { to: { $gt: fromSearch } }
-                ]
-              },
-              {
-                $and: [
-                  { from: { $lte: toSearch } },
-                  { to: { $gt: toSearch } }
-                ]
-              }
-            ]
-          }
-        }
-
-      })
-      .sort({ date: - 1 })
-      .then(dbModel => {
-        const rentalArray = filterRentalItemData(dbModel);
-        res.json(rentalArray);
-      })
-      .catch(err => res.status(422).json(err));
-  },
-
+  //  this needs to be updated to move the reservation from temp to reservation
   makeReservation: function (req, res) {
 
     console.log("Rental req.body:")
@@ -161,18 +121,18 @@ module.exports = {
           })
       })
 
-    // db.Rental
-    //   .findOneAndUpdate({ _id: req.params.id },
-    //     /* in place of 'req.body', functionality to remove a reservation */
-    //     /* will also need to be removed from the user's document */
-    //     req.body)
-    //   .then(dbModel => {
-    //     console.log(dbModel);
+      // db.Rental
+      //   .findOneAndUpdate({ _id: req.params.id },
+      //     /* in place of 'req.body', functionality to remove a reservation */
+      //     /* will also need to be removed from the user's document */
+      //     req.body)
+      //   .then(dbModel => {
+      //     console.log(dbModel);
 
-    //     //  functionality to limit what info gets sent to users
+      //     //  functionality to limit what info gets sent to users
 
-    //     res.json(dbModel);
-    //   })
+      //     res.json(dbModel);
+      //   })
       .catch(err => res.status(422).json(err));
   },
 

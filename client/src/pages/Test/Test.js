@@ -11,6 +11,7 @@ import DevLinks from "../../components/DevLinks";
 import RentalCard from "../../components/Cards/RentalCard";
 import "./Test.css";
 import { CategoryCard } from "../../components/Cards/CategoryCard/CategoryCard";
+import Calendar from "react-calendar";
 
 class Test extends Component {
   state = {
@@ -21,6 +22,7 @@ class Test extends Component {
       footer: ""
     },
     rentals: [],
+    courses: null,
     images: [],
     rentalId: "",
     selectedFile: null,
@@ -55,6 +57,17 @@ class Test extends Component {
         footer: modalInput.footer
       }
     });
+  }
+
+  getAllCourses = () => {
+    API.getAllCourses()
+      .then(courses => {
+        this.setState({
+          courses: courses.data
+        })
+        console.log(this.state.courses);
+      })
+      .catch(err => console.log(err));
   }
 
   getAllRentals = () => {
@@ -171,8 +184,23 @@ class Test extends Component {
       });
   }
 
+  onChange = date => {
+    this.getDays(date);
+  }
+
+  getDays = date => { //date is the array that is passed from the calendar when days are selected.
+    let temp = [];
+    let range = [];
+    date.map(dates => temp.push(Date.parse(dates) / 1000)); //stores first and last day in temporary array
+    let days = Math.floor((temp[1] - temp[0]) / 86400); //seconds in day = 86400  Calculates total number of days for rental.
+    range.push(temp[0]); //store first day in range array.
+    for (let i = 0; i < days; i++) { //adds each day (including last) to range array
+      range.push(range[i] + 86400);
+    }
+    this.setState({ unix: range, date: date }); //sets state
+  }
+
   checkAvailability = itemRes => { //passed all the reservations for a given item
-    console.log("checking availability")
     for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
       let range = []; //holds each individual day of a reservation
       let days = (itemRes[i].to - itemRes[i].from) / 86400; //determines total number of days for each reservation
@@ -192,13 +220,36 @@ class Test extends Component {
   makeReservation = (rental) => {
     console.log(rental);
     const { _id, name } = rental;
+
+    // to and from will be adjusted later to match with the calendar
     const from = 1533168000;
     const to = 1537727200;
     console.log("trigger the route");
 
     API.reserveRental(from, to, _id, name, rental)
-    .then(response => console.log(response));
+      .then(response => console.log(response));
   }
+
+  addReservationToCart = rental => {
+    console.log(rental);
+    const { _id, name } = rental;
+
+    // to and from will be adjusted later to match with the calendar
+    const from = 1533168000;
+    const to = 1537727200;
+    console.log("trigger the route");
+
+    API.addReservationToCart(from, to, _id, name, rental)
+      .then(response => console.log(response));
+  }
+
+  addCourseToCart = course => {
+    console.log(course);
+    const { _id } = course;
+    API.addRegistrationToCart(_id, course)
+      .then(response => console.log(response));
+  }
+
 
   render() {
     console.log(this.state.categories);
@@ -247,35 +298,48 @@ class Test extends Component {
                 description="See all of our rentals"
                 onClick={this.getAllRentals}
               />
+
+              <button onClick={this.getAllCourses}>Get Courses</button>
             </div>
 
-            <h2>Rentals:</h2>
-            <div className="rental-results-div">
+            <Calendar
+              onChange={this.onChange}
+              // value={this.state.date}
+              calendarType={"US"}
+              selectRange={true}
+              returnValue={"range"}
+              className={"calendar"}
+            />
+            <div style={{ position: 'relative', top: 50 + 'px', left: 25 + 'px' }}>{this.state.unix.join(" ")}</div>
+            <div className='rentals'>
+              <h2>Rentals Available:</h2>
+              {/* <ul> */}
+              {this.state.rentals.map(rental => (
+                <RentalCard
+                  unix={this.state.unix}
+                  key={rental._id}
+                  id={rental._id}
+                  rental={rental}
+                  name={rental.name}
+                  category={rental.category}
+                  maker={rental.maker}
+                  reservations={rental.reservations}
+                  addReservationToCart={this.addReservationToCart}
+                  // className={!this.checkAvailability(rental.reservations) ? "unavailable rentalCard" : "rentalCard"}
+                  setAvailability={this.checkAvailability(rental.reservations)}
+                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
+                </RentalCard>
+              ))}
+              {/* </ul> */}
 
-              {this.state.rentals ? this.state.rentals.map(rental => (
-                <div key ={rental._id} id={rental._id} className={rental.className}>
-                  <h3>{rental.name}</h3>
-                  <h4>{rental.category}</h4>
-                  <h5>Maker: {rental.maker}</h5>
-                  <p>Daily rate: ${rental.rate}</p>
-                  <h2>{rental.availability}</h2>
-                  <button onClick={() => this.makeReservation(rental)}>Reserve</button>
-                </div>
-
-
-                // <RentalCard
-                //   key={rental._id}
-                //   id={rental._id}
-                //   name={rental.name}
-                //   category={rental.category}
-                //   maker={rental.maker}
-                //   reservations={rental.reservations}
-                //   availability={this.checkAvailability(rental.reservations) ? "Available" : "Unavailable"}
-                //   rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
-                // </RentalCard>
-
-              )) : null}
-
+              {this.state.courses ? (
+                this.state.courses.map(course => (
+                  <Fragment>
+                    <h3>{course.name}</h3>
+                    <button onClick={() => this.addCourseToCart(course)}>Add to Cart</button>
+                  </Fragment>
+                ))
+              ) : null}
             </div>
 
           </div>
@@ -299,89 +363,12 @@ class Test extends Component {
               Kramer!
               </button>
 
-            <div className="rentals-by-date-form-div">
-
-              <form className="see-rentals-form">
-                <h4>See Rentals Available by Date</h4>
-                <Input
-                  value={this.state.date_from}
-                  onChange={this.handleInputChange}
-                  name="date_from"
-                  type="text"
-                  label="From:"
-                />
-                <Input
-                  value={this.state.date_to}
-                  onChange={this.handleInputChange}
-                  name="date_to"
-                  type="text"
-                  label="To:"
-                />
-                <FormBtn
-                  disabled={(
-                    !this.state.date_from || !this.state.date_to
-                  )}
-                  onClick={this.handleDateSearch}
-                >
-                  Submit
-                </FormBtn>
-              </form>
-
-              <form className="reserve-rentals-form">
-                <h4>Reserve an Item</h4>
-                <Input
-                  value={this.state.rent_from}
-                  onChange={this.handleInputChange}
-                  name="rent_from"
-                  type="text"
-                  label="From:"
-                />
-                <Input
-                  value={this.state.rent_to}
-                  onChange={this.handleInputChange}
-                  name="rent_to"
-                  type="text"
-                  label="To:"
-                />
-                <Input
-                  value={this.state.rental_id}
-                  onChange={this.handleInputChange}
-                  name="rental_id"
-                  type="text"
-                  label="Item Id:"
-                />
-                <FormBtn
-                  disabled={(
-                    !this.state.rent_from || !this.state.rent_to || !this.state.rental_id
-                  )}
-                  onClick={this.handleReserveRental}
-                >
-                  Submit
-                </FormBtn>
-              </form>
-
-            </div>
-
-
-            {this.state.images ? (
-              <Fragment>
-                <h2>Rental Images</h2>
-                <ul>
-                  {this.state.images.map(image => (
-                    <li key={image._id}>
-                      <p>image here:</p>
-                      <img className="rental-img" src={`file/image/${image.filename}`} alt="rental condition" />
-                      <button onClick={() => this.deleteImage(image._id)}>Delete</button>
-                    </li>
-                  ))}
-                </ul>
-              </Fragment>
-            ) : null}
-
-
           </div>
           <Footer />
+
+
         </div>
+
       </Fragment>
     );
   }

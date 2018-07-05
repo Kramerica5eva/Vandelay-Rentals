@@ -8,7 +8,7 @@
     "start:prod": "node server.js",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
-    "seed": "node scripts/courseSeed.js && node scripts/rentalSeed.js && node scripts/saleSeed.js && node scripts/userSeed.js && node scripts/categorySeed.js",
+    "seed": "node scripts/courseSeed.js && node scripts/rentalSeed.js && node scripts/saleSeed.js && node scripts/categorySeed.js && node scripts/userSeed.js",
     "install": "cd client && yarn install",
     "build": "cd client && npm run build",
     "heroku-postbuild": "npm run build"

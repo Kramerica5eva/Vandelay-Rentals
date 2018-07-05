@@ -12,6 +12,7 @@ import TestNick from "./pages/TestNick";
 import TestBen from "./pages/TestBen";
 import TestBrandon from "./pages/TestBrandon";
 import TestCorb from "./pages/TestCorb";
+import ShoppingCart from "./pages/ShoppingCart";
 import Waiver from "./pages/Waiver";
 import Sales from "./pages/Sales";
 import Courses from "./pages/Courses";
@@ -302,6 +303,16 @@ class App extends Component {
             component={AddPropsToRoute(Waiver, {
               toggleModal: this.toggleModal,
               setModal: this.setModal,
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              logout: this.logout
+            })}
+          />
+          <PrivateRoute
+            path="/cart"
+            component={AddPropsToRoute(ShoppingCart, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
