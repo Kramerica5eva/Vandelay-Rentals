@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Elements/Header";
 import API from "../../utils/API";
-// import Calendar from "../../components/Calendar";
-import Calendar from "react-calendar";
+import Calendar from "../../components/Calendar";
+// import Calendar2 from "react-calendar";
 import "./../../App.css";
+import "./testBen.css";
 import RentalCard from "../../components/Cards/RentalCard";
 let moment = require("moment");
 
@@ -15,7 +16,6 @@ class Test extends Component {
 
   state = {
     rentals: [],
-    // date: new Date(),
     unix: [],
   };
 
@@ -78,6 +78,7 @@ class Test extends Component {
     return true; //returns true if no matches are found
   }
 
+
   render() {
     return (
       <div className="main-container">
@@ -108,14 +109,15 @@ class Test extends Component {
             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
           </div>
         </Header>
-        <Calendar
+        {/* <Calendar2
           onChange={this.onChange}
           // value={this.state.date}
           calendarType={"US"}
           selectRange={true}
           returnValue={"range"}
           className={"calendar"}
-        />
+        /> */}
+        <Calendar />
         <div style={{ position: 'relative', top: 50 + 'px', left: 25 + 'px' }}>{this.state.unix.join(" ")}</div>
         <div className='rentals'>
           <h2>Rentals Available:</h2>
