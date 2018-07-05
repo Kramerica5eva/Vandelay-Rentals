@@ -35,69 +35,36 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  //  this needs to be updated to move the reservation from temp to reservation
-  makeReservation: function (req, res) {
+  reserveRental: function (req, res) {
 
-    console.log("Rental req.body:")
+    const from = req.params.from;
+    const to = req.params.to;
+    console.log("Here's the rental req.body:")
     console.log(req.body);
 
-    const reservationObject = {
-      itemId: req.params.id,
-      itemName: req.params.name,
-      customerId: req.user._id,
-      firstName: req.user.firstName,
-      lastName: req.user.lastName,
-      dailyRate: parseFloat(req.body.dailyRate.$numberDecimal),
-      date: {
-        from: req.params.from,
-        to: req.params.to
-      }
-    }
-
-    db.Reservation.create(reservationObject)
+    db.Reservation.create(req.body)
       .then(reservation => {
 
-        Promise.all([db.Rental.findOneAndUpdate(
-          { _id: req.params.id },
-          { $push: { testReservations: reservation._id } },
-          { new: true }
-        ), db.User.findOneAndUpdate(
-          { _id: req.user._id },
-          { $push: { testReservations: reservation._id } },
-          { new: true }
-        )])
-          .then(values => {
+        Promise.all([
+          db.Rental.findOneAndUpdate(
+            { _id: req.body.itemId },
+            { $push: { testReservations: reservation._id } },
+            { new: true }
+          ), db.User.findOneAndUpdate(
+            { _id: req.user._id },
+            { $push: { testReservations: reservation._id } },
+            { new: true }
+          ),
+          db.TempReservation.deleteOne(
+            { _id: req.body._id }
+          )
+        ])
+          .then(() => {
             return res.send({ response: "Success!" })
           })
       })
       .catch(err => res.json(err));
   },
-
-  // makeReservation: function (req, res) {
-  //   db.Rental
-  //     .findOneAndUpdate({ _id: req.params.id },
-  //       {
-  //         $push: {
-  //           reservations: {
-  //             customerId: req.user._id,
-  //             date: {
-  //               from: parseInt(req.params.from),
-  //               to: parseInt(req.params.to)
-  //             }
-  //           }
-  //         }
-  //       },
-  //       { new: true }
-  //     )
-  //     .then(dbModel => {
-  //       console.log(dbModel);
-
-  //       //  functionality to limit what info gets sent to users
-
-  //       res.json(dbModel);
-  //     })
-  //     .catch(err => res.status(422).json(err));
-  // },
 
   breakReservation: function (req, res) {
 

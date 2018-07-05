@@ -15,8 +15,8 @@ const courseSchema = new Schema({
   date: Number,
   slots: Number,
   participants: [{
-    name: String,
-    paid: Boolean
+    type: Schema.Types.ObjectId,
+    ref: "User"
   }]
 });
 

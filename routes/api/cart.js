@@ -14,11 +14,16 @@ router
 
 router
   .route('/courses/:id')
-  .post(isLoggedIn, cartController.addRegistrationToCart);
+  .post(isLoggedIn, cartController.addRegistrationToCart)
+  .delete(isLoggedIn, cartController.removeRegistrationFromCart);
 
 router
-  .route('/rentals/date/:from/:to/:id/:name')
+  .route('/rentals/date/:from/:to')
   .post(isLoggedIn, cartController.addReservationToCart);
+
+router
+  .route('/rentals/:id')
+  .delete(isLoggedIn, cartController.removeReservationFromCart);
 
 router
   .route('/remove/:id')

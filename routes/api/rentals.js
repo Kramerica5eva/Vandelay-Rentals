@@ -17,11 +17,11 @@ router
   .route('/:category/:id')
   .get(rentalsController.findById);
 
-  // Matches with '/api/rentals/date/:from/:to/:id'
+  // Matches with '/api/rentals/date/:from/:to/'
   // put makes a reservation
   router
-    .route('/date/:from/:to/:id/:name')
-    .post(isLoggedIn, rentalsController.makeReservation);
+    .route('/date/:from/:to')
+    .post(isLoggedIn, rentalsController.reserveRental);
 
 // Matches with '/api/rentals/remove/:from/:to'
 // removes a reservation

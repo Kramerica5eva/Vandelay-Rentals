@@ -10,7 +10,7 @@ router.route('/')
 router
   .route('/:id')
   .get(coursesController.findById)
-  .put(isLoggedIn, coursesController.update);
+  .post(isLoggedIn, coursesController.reserveCourse);
 
 router
   .route('/remove/:id')

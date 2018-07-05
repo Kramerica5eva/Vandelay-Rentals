@@ -26,7 +26,9 @@ const userSeed = [
     phone: 8018666301,
     waivers: [],
     reservations: [],
+    registrations: [],
     testReservations: [],
+    testRegistrations: [],
     pastRentals: [],
     admin: true,
 
@@ -44,7 +46,9 @@ const userSeed = [
     phone: 8018243638,
     waivers: [],
     reservations: [],
+    registrations: [],
     testReservations: [],
+    testRegistrations: [],
     pastRentals: [],
     admin: true,
 
@@ -62,7 +66,9 @@ const userSeed = [
     phone: 8013693718,
     waivers: [],
     reservations: [],
+    registrations: [],
     testReservations: [],
+    testRegistrations: [],
     pastRentals: [],
     admin: true
   },
@@ -78,7 +84,9 @@ const userSeed = [
     phone: 1234567890,
     waivers: [],
     reservations: [],
+    registrations: [],
     testReservations: [],
+    testRegistrations: [],
     pastRentals: [],
     admin: true
   },
@@ -94,7 +102,9 @@ const userSeed = [
     phone: 678 - 899 - 1254,
     waivers: [],
     reservations: [],
+    registrations: [],
     testReservations: [],
+    testRegistrations: [],
     pastRentals: [],
     admin: true
   }

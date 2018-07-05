@@ -32,10 +32,23 @@ module.exports = {
 
     db.TempRegistration.create(registrationObject)
       .then(registration => {
-        console.log(registration)
         return db.ShoppingCart.findOneAndUpdate(
           { customerId: req.user._id },
           { $push: { tempRegistrations: registration._id } },
+          { new: true }
+        )
+      })
+      .then(cart => res.json(cart))
+      .catch(err => res.json(err));
+  },
+
+  removeRegistrationFromCart: function (req, res) {
+    db.TempRegistration
+      .deleteOne({ _id: req.params.id })
+      .then(response => {
+        return db.ShoppingCart.findOneAndUpdate(
+          { customerId: req.user._id },
+          { $pull: { tempRegistrations: req.params.id } },
           { new: true }
         )
       })
@@ -49,8 +62,8 @@ module.exports = {
     console.log(req.body);
 
     const reservationObject = {
-      itemId: req.params.id,
-      itemName: req.params.name,
+      itemId: req.body._id,
+      itemName: req.body.name,
       customerId: req.user._id,
       firstName: req.user.firstName,
       lastName: req.user.lastName,
@@ -70,6 +83,20 @@ module.exports = {
           { new: true }
         )
       })
+      .catch(err => res.json(err));
+  },
+
+  removeReservationFromCart: function (req, res) {
+    db.TempReservation
+      .deleteOne({ _id: req.params.id })
+      .then(response => {
+        return db.ShoppingCart.findOneAndUpdate(
+          { customerId: req.user._id },
+          { $pull: { tempReservations: req.params.id } },
+          { new: true }
+        )
+      })
+      .then(cart => res.json(cart))
       .catch(err => res.json(err));
   },
 

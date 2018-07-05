@@ -23,11 +23,7 @@ const courseSeed = [
     level: 'Beginner',
     date: 1533196800,
     slots: 30,
-    participants: [
-      { name: 'Yakko', paid: true },
-      { name: 'Wakko', paid: true },
-      { name: 'Dot', paid: true }
-    ]
+    participants: []
   },
   {
     name: 'Whitewater Kayaking',
@@ -43,13 +39,7 @@ const courseSeed = [
     level: 'Advanced',
     date: 1534932000,
     slots: 20,
-    participants: [
-      { name: 'Scooby', paid: true },
-      { name: 'Shaggy', paid: true },
-      { name: 'Velma', paid: true },
-      { name: 'Fred', paid: false },
-      { name: 'Daphne', paid: false }
-    ]
+    participants: []
   },
   {
     name: 'Snipe Hunting',
@@ -65,11 +55,7 @@ const courseSeed = [
     level: 'Intermediate',
     date: 1535810400,
     slots: 50,
-    participants: [
-      { name: 'Yo mama', paid: true },
-      { name: 'The Man', paid: false },
-      { name: 'Slim Shady', paid: true }
-    ]
+    participants: []
   }
 ];
 

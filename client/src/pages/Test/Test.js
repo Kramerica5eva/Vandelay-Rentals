@@ -21,15 +21,9 @@ class Test extends Component {
       body: "",
       footer: ""
     },
-    rentals: [],
+    categories: null,
+    rentals: null,
     courses: null,
-    images: [],
-    rentalId: "",
-    selectedFile: null,
-    image: null,
-    rent_from: "",
-    rent_to: "",
-    rental_id: "",
     unix: []
   };
 
@@ -51,13 +45,20 @@ class Test extends Component {
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer
       }
     });
   }
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
 
   getAllCourses = () => {
     API.getAllCourses()
@@ -81,7 +82,7 @@ class Test extends Component {
       .catch(err => console.log(err));
   }
 
-  getByCategory = category => {
+  getRentalsByCategory = category => {
     API.getRentalsByCategory(category)
       .then(res => {
         this.setState({
@@ -92,98 +93,7 @@ class Test extends Component {
       .catch(err => console.log(err));
   }
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-  };
-
-  handleDateSearch = event => {
-    event.preventDefault();
-    const from = this.state.date_from;
-    const to = this.state.date_to;
-
-    API.getAllRentals(from, to)
-      .then(results => {
-        console.log(results);
-
-        let availableArray = [];
-
-        results.data.forEach(function (model) {
-          let testingArray = [];
-
-          model.reservations.map(each => {
-
-            if (!(each.date.to < from) && !(each.date.from > to)) {
-              // if the reservation is a match (meaning it's unavailable)
-              testingArray.push("match");
-            }
-
-          })
-
-          if (testingArray.length === 0) {
-            availableArray.push(model);
-          }
-
-        })
-
-        this.setState({
-          rentals: availableArray
-        });
-
-      })
-      .catch(err => console.log(err));
-  }
-
-  handleReserveRental = event => {
-    event.preventDefault();
-    const from = this.state.rent_from;
-    const to = this.state.rent_to;
-    const id = this.state.rental_id;
-
-    API.reserveRental(from, to, id)
-      .then(response => {
-        API.addRentalToUser(from, to, id)
-          .then(result => {
-            console.log(result);
-          })
-      })
-  }
-
-  fileSelectedHandler = event => {
-    const newFile = event.target.files[0];
-    this.setState({
-      selectedFile: newFile
-    });
-  };
-
-  handleUpload = event => {
-    event.preventDefault();
-    const { name } = event.target;
-    const fd = new FormData();
-    fd.append('file', this.state.selectedFile, this.state.selectedFile.name);
-    API.uploadImage(name, fd).then(res => console.log(res));
-  }
-
-  getImages = id => {
-    API.getImageNames(id).then(res => {
-      this.setState({
-        images: res.data,
-        rentalId: id
-      })
-      console.log("Images in state:");
-      console.log(this.state.images);
-    });
-  }
-
-  deleteImage = image => {
-    API.deleteImage(image, this.state.rentalId)
-      .then(res => {
-        this.getImages(this.state.rentalId);
-      });
-  }
-
+  //  CALENDAR FUNCTIONS
   onChange = date => {
     this.getDays(date);
   }
@@ -216,35 +126,20 @@ class Test extends Component {
     }
     return true; //returns true if no matches are found
   }
+  // END CALENDAR FUNCTIONS
 
-  makeReservation = (rental) => {
-    console.log(rental);
-    const { _id, name } = rental;
-
-    // to and from will be adjusted later to match with the calendar
-    const from = 1533168000;
-    const to = 1537727200;
-    console.log("trigger the route");
-
-    API.reserveRental(from, to, _id, name, rental)
-      .then(response => console.log(response));
-  }
-
+  //  This function gets passed to the Rental Card, which then passes it to the 'Reserve' button
   addReservationToCart = rental => {
-    console.log(rental);
-    const { _id, name } = rental;
-
     // to and from will be adjusted later to match with the calendar
     const from = 1533168000;
     const to = 1537727200;
-    console.log("trigger the route");
-
-    API.addReservationToCart(from, to, _id, name, rental)
+    API.addReservationToCart(from, to, rental)
       .then(response => console.log(response));
   }
 
+  //  This function gets passed to the Course Card, which will then need to pass it to whatever button.
+  //  Right now, in this page, I'm not using a Course Card, so the function is just called here.
   addCourseToCart = course => {
-    console.log(course);
     const { _id } = course;
     API.addRegistrationToCart(_id, course)
       .then(response => console.log(response));
@@ -268,12 +163,14 @@ class Test extends Component {
           logout={this.props.logout}
           location={this.props.location}
         />
+
         <div className="main-container">
           <ParallaxHero
             image={{ backgroundImage: 'url(https://images.unsplash.com/uploads/1412701079442fffb7c1a/6b7a62a4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=63428fdde80191f1d2299d803dfe61c3&auto=format&fit=crop&w=1350&q=80)' }}
             title="Vandelay Rentals"
           />
-          <div className='body-container'>
+
+          <div className='body-container'>          
             <h1>Keith's Admin Test Page</h1>
             <DevLinks
               loggedIn={this.props.loggedIn}
@@ -283,11 +180,11 @@ class Test extends Component {
             />
 
             <div className="category-btn-container">
-
               {this.state.categories ? this.state.categories.map(category => (
                 <Fragment>
                   <CategoryCard
-                    onClick={() => this.getByCategory(category.category)}
+                    key={category._id}
+                    onClick={() => this.getRentalsByCategory(category.category)}
                     category={category.category}
                     description={category.description}
                   />
@@ -298,9 +195,9 @@ class Test extends Component {
                 description="See all of our rentals"
                 onClick={this.getAllRentals}
               />
-
-              <button onClick={this.getAllCourses}>Get Courses</button>
             </div>
+
+            <button onClick={this.getAllCourses}>Get Courses</button>
 
             <Calendar
               onChange={this.onChange}
@@ -311,10 +208,11 @@ class Test extends Component {
               className={"calendar"}
             />
             <div style={{ position: 'relative', top: 50 + 'px', left: 25 + 'px' }}>{this.state.unix.join(" ")}</div>
+
+
             <div className='rentals'>
               <h2>Rentals Available:</h2>
-              {/* <ul> */}
-              {this.state.rentals.map(rental => (
+              {this.state.rentals ? this.state.rentals.map(rental => (
                 <RentalCard
                   unix={this.state.unix}
                   key={rental._id}
@@ -329,19 +227,15 @@ class Test extends Component {
                   setAvailability={this.checkAvailability(rental.reservations)}
                   rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
                 </RentalCard>
-              ))}
-              {/* </ul> */}
+              )) : null}
 
-              {this.state.courses ? (
-                this.state.courses.map(course => (
-                  <Fragment>
-                    <h3>{course.name}</h3>
-                    <button onClick={() => this.addCourseToCart(course)}>Add to Cart</button>
-                  </Fragment>
-                ))
-              ) : null}
+              {this.state.courses ? this.state.courses.map(course => (
+                <Fragment>
+                  <h3>{course.name}</h3>
+                  <button onClick={() => this.addCourseToCart(course)}>Add to Cart</button>
+                </Fragment>
+              )) : null}
             </div>
-
           </div>
 
 
@@ -362,13 +256,10 @@ class Test extends Component {
             >
               Kramer!
               </button>
-
           </div>
           <Footer />
 
-
         </div>
-
       </Fragment>
     );
   }
