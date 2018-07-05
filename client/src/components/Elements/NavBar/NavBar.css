@@ -38,6 +38,11 @@
     width: 70%;
 }
 
+.logo-fmt {
+    height: 50px;
+    width: 50px;
+}
+
 .navbar .links a, .brand-logo a {
     color: white;
     text-decoration: none;
