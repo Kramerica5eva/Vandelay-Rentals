@@ -25,7 +25,6 @@ const storage = new GridFsStorage({
     });
   }
 });
-
 const upload = multer({ storage });
 
 // Matches with '/file/image'
@@ -36,6 +35,7 @@ router.route('/:filename')
   .get(isAdmin, imageController.findById);
 
 // Matches with '/file/image//:id'
+// Uploading images to the database
 router
   .route('/:id')
   .post(isAdmin, upload.single('file'), imageController.create);

@@ -60,6 +60,15 @@ module.exports = {
             const newUser = new db.User(req.body)
             newUser.save((err, savedUser) => {
               if (err) return res.json(err)
+              console.log("User returned from login:");
+              console.log(savedUser);
+              console.log("User from req.user");
+              console.log(req.user);
+
+              db.ShoppingCart.create({
+                customerId: savedUser._id
+              })
+
               res.json(savedUser)
             })
           }

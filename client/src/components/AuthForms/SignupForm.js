@@ -93,17 +93,9 @@ export class SignupForm extends Component {
 
           console.log("Creating user:")
           console.log(res);
-          // update App.js state
-          this.props.updateUser({
-            auth: true,
-            state: {
-              loggedIn: true,
-              username: res.data.username,
-              firstName: res.data.firstName
-            }
-          });
-          // Once signed up, set this.state.redirect to true so the component will reload and trigger the if/else to redirect elsewhere
-          this.props.setRedirect();
+
+          // Once signed up, set this.state.setRedirectLogin so the user will be redirected login (currently, signing up does not log you in...)
+          setTimeout(this.props.setRedirectLogin(), 200);
         } else {
           console.log('username already taken');
         }

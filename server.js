@@ -36,7 +36,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session()); // calls the deserializeUser
 
-// Add routes, both API and view
+// Add routes
 app.use(routes);
 
 // Start the API server

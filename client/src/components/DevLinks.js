@@ -10,7 +10,10 @@ const DevLinks = props => (
       <Link className="btn-link" to="/sales" role="button">Sales</Link>
       <Link className="btn-link" to="/courses" role="button">Courses</Link>
       {props.loggedIn ? (
-        <button className="btn-link" onClick={props.logout}>logout</button>
+        <Fragment>
+          <Link className="btn-link" to="/cart" role="button">Cart</Link>
+          <button className="btn-link" onClick={props.logout}>logout</button>
+        </Fragment>
       ) : (
           <Fragment>
             <Link className="btn-link" to={{ pathname: "/signup", state: { from: props.location.pathname } }} role="button">Signup</Link>

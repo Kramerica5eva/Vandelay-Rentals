@@ -41,23 +41,70 @@ export default {
     return axios.post('/user/check', pwData);
   },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // CART ROUTES
+  // Get user shopping cart  
+  getUserShoppingCart: function (id) {
+    return axios.get(`/api/cart/${id}`);
+  },
+
+  // TEST ADD COURSE TO CART
+  addRegistrationToCart: function (id, registrationData) {
+    return axios.post(`/api/cart/courses/${id}`, registrationData);
+  },
+
+  removeRegistrationFromCart: function (id) {
+    return axios.delete(`/api/cart/courses/${id}`);
+  },
+
+  // TEST ADD RESERVATION TO CART - cart function will make reservation permanent later with the above function (reserveRental)
+  addReservationToCart: function (from, to, rentalData) {
+    return axios.post(`/api/cart/rentals/date/${from}/${to}`, rentalData);
+  },
+
+  removeReservationFromCart: (id) => {
+    return axios.delete(`/api/cart/rentals/${id}`);
+  },
+
+
+  // USER ROUTES
+
   // USER COURSE ROUTES
   // Gets all courses
   getAllCourses: function () {
     return axios.get('/api/courses/');
   },
-  // Gets courses by id
-  getCourseById: function (id) {
-    return axios.get(`/api/courses/${id}`);
-  },
-  // Reserve a course
+
+  // Reserve a course - Changes a course from a tempRegistration in the shopping cart to an actual reservation. Creates a Registration document, and populates the registration array for the Course and User.
   reserveCourse: function (id, reservationData) {
-    return axios.put(`/api/courses/${id}`, reservationData);
+    return axios.post(`/api/courses/${id}`, reservationData);
   },
+
+  // NOT CURRENTLY BEING USED
   // Remove a reservation
   removeCourseReservation: function (id, reservationData) {
     return axios.put(`/api/courses/remove/${id}`, reservationData);
   },
+
+  // NOT CURRENTLY BEING USED
+  // Gets course by id
+  getCourseById: function (id) {
+    return axios.get(`/api/courses/${id}`);
+  },
+
+
 
   //  USER RENTAL ROUTES
   // Gets All Rentals - this one may not be necessary, depending on how we set this up
@@ -68,27 +115,20 @@ export default {
   getRentalsByCategory: function (category) {
     return axios.get(`/api/rentals/${category}`);
   },
+
+  // NOT CURRENTLY BEING USED
   // Gets Rental item by id - if the user chooses a particular item, this will pull the data for it.
   getRentalById: function (category, id) {
     return axios.get(`/api/rentals/${category}/${id}`);
   },
-  // Gets rentals by Date range - pulls all available rentals within the dates given
-  getRentalsByDates: function (from, to) {
-    return axios.get(`/api/rentals/date/${from}/${to}`);
-  },
 
-  
   // TEST RESERVATION SCHEMA STUFF - it works! This route creates a doc in the Reservations collection, and creates a reference in the associated User and Rental documents
-  // Reserves Rental by date range - reservation data will include the item and the user.
-  reserveRental: function (from, to, rentalId, rentalName, rentalData) {
-    return axios.post(`/api/rentals/date/${from}/${to}/${rentalId}/${rentalName}`, rentalData);
+  // Reserves Rental by date range
+  reserveRental: function (from, to, rentalData) {
+    return axios.post(`/api/rentals/date/${from}/${to}`, rentalData);
   },
 
 
-  // Reserves Rental by date range - reservation data will include the item and the user.
-  // reserveRental: function (from, to, id) {
-  //   return axios.put(`/api/rentals/date/${from}/${to}/${id}`);
-  // },
   // Adds reservation data to user's database document
   addRentalToUser: function (from, to, id) {
     return axios.put(`/user/${from}/${to}/${id}`);

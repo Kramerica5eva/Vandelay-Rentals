@@ -28,6 +28,7 @@ module.exports = {
       })
       .catch(err => res.status(422).json(err));
   },
+
   findById: function (req, res) {
     db.Course
       .findById(req.params.id)
@@ -39,15 +40,36 @@ module.exports = {
       })
       .catch(err => res.status(422).json(err));
   },
-  update: function (req, res) {
-    db.Course
-      .findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(dbModel => {
 
-        //  functionality to limit what info gets sent to users
-
-        res.json(dbModel)
+  reserveCourse: function (req, res) {
+    console.log(req.body);
+    db.Registration.create(req.body)
+      .then(() => {
+          Promise.all([
+            db.Course.findOneAndUpdate(
+              { _id: req.body.courseId },
+              { $push: { participants: req.user._id } },
+              { new: true }
+            ),
+            db.User.findOneAndUpdate(
+              { _id: req.user._id },
+              { $push: { testRegistrations: req.body._id } },
+              { new: true }
+            ),
+              db.TempRegistration.deleteOne(
+              { _id: req.body._id }
+            ),
+          ])
+          .then(() => {
+            return res.send({ response: "Success!" })
+          })
       })
-      .catch(err => res.status(422).json(err));
+      .catch(err => res.json(err));
   },
+
+
+
+  update: function (req, res) {
+
+  }
 };

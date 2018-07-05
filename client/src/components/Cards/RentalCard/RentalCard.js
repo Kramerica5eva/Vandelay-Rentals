@@ -15,7 +15,10 @@ class RentalCard extends Component {
         <p>Daily rate: ${this.props.rate}</p>
         {this.props.unix.length === 0 ? null
           : this.props.setAvailability
-            ? <ReserveBtn />
+            ? <ReserveBtn
+              rental={this.props.rental}
+              addReservationToCart={this.props.addReservationToCart}
+            />
             : <AvailBtn />}
         {/* </li> */}
       </div>

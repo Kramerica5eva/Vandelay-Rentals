@@ -33,7 +33,12 @@ const userSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Reservation"
 	}],
-//	END remove if...
+
+	testRegistrations: [{
+		type: Schema.Types.ObjectId,
+		ref: "Registration"
+	}],
+	//	END remove if...
 
 	pastRentals: [{
 		itemId: String,
@@ -48,10 +53,10 @@ const userSchema = new Schema({
 		price: Schema.Types.Decimal128
 	}],
 	standing: {
-    type: String,
-    enum: ['Good', 'Uncertain', 'Banned'],
-    default: 'Good'
-  },
+		type: String,
+		enum: ['Good', 'Uncertain', 'Banned'],
+		default: 'Good'
+	},
 	admin: { type: Boolean, default: false }
 });
 

@@ -35,109 +35,36 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  findbyDates: function (req, res) {
-    console.log("From: " + req.params.from);
-    console.log("To: " + req.params.to);
+  reserveRental: function (req, res) {
 
-    const fromSearch = parseInt(req.params.from);
-    const toSearch = parseInt(req.params.to);
-
-    db.Rental
-      .find({
-
-        //  Note: this worked with the seeded data, but does not work with data added via the user interface due to it being in a different format.
-
-        //  THIS ONE FINDS THE ITEMS THAT HAVE THIS RESERVATION - i.e. are not available. The opposite of what we want. But it may be a good starting point
-        reservations: {
-          $elemMatch: {
-            $or: [
-              {
-                $and: [
-                  { from: { $lte: fromSearch } },
-                  { to: { $gt: fromSearch } }
-                ]
-              },
-              {
-                $and: [
-                  { from: { $lte: toSearch } },
-                  { to: { $gt: toSearch } }
-                ]
-              }
-            ]
-          }
-        }
-
-      })
-      .sort({ date: - 1 })
-      .then(dbModel => {
-        const rentalArray = filterRentalItemData(dbModel);
-        res.json(rentalArray);
-      })
-      .catch(err => res.status(422).json(err));
-  },
-
-  makeReservation: function (req, res) {
-
-    console.log("Rental req.body:")
+    const from = req.params.from;
+    const to = req.params.to;
+    console.log("Here's the rental req.body:")
     console.log(req.body);
 
-    const reservationObject = {
-      itemId: req.params.id,
-      itemName: req.params.name,
-      customerId: req.user._id,
-      firstName: req.user.firstName,
-      lastName: req.user.lastName,
-      dailyRate: parseFloat(req.body.dailyRate.$numberDecimal),
-      date: {
-        from: req.params.from,
-        to: req.params.to
-      }
-    }
-
-    db.Reservation.create(reservationObject)
+    db.Reservation.create(req.body)
       .then(reservation => {
 
-        Promise.all([db.Rental.findOneAndUpdate(
-          { _id: req.params.id },
-          { $push: { testReservations: reservation._id } },
-          { new: true }
-        ), db.User.findOneAndUpdate(
-          { _id: req.user._id },
-          { $push: { testReservations: reservation._id } },
-          { new: true }
-        )])
-          .then(values => {
+        Promise.all([
+          db.Rental.findOneAndUpdate(
+            { _id: req.body.itemId },
+            { $push: { testReservations: reservation._id } },
+            { new: true }
+          ), db.User.findOneAndUpdate(
+            { _id: req.user._id },
+            { $push: { testReservations: reservation._id } },
+            { new: true }
+          ),
+          db.TempReservation.deleteOne(
+            { _id: req.body._id }
+          )
+        ])
+          .then(() => {
             return res.send({ response: "Success!" })
           })
       })
       .catch(err => res.json(err));
   },
-
-  // makeReservation: function (req, res) {
-  //   db.Rental
-  //     .findOneAndUpdate({ _id: req.params.id },
-  //       {
-  //         $push: {
-  //           reservations: {
-  //             customerId: req.user._id,
-  //             date: {
-  //               from: parseInt(req.params.from),
-  //               to: parseInt(req.params.to)
-  //             }
-  //           }
-  //         }
-  //       },
-  //       { new: true }
-  //     )
-  //     .then(dbModel => {
-  //       console.log(dbModel);
-
-  //       //  functionality to limit what info gets sent to users
-
-  //       res.json(dbModel);
-  //     })
-  //     .catch(err => res.status(422).json(err));
-  // },
 
   breakReservation: function (req, res) {
 
@@ -161,18 +88,18 @@ module.exports = {
           })
       })
 
-    // db.Rental
-    //   .findOneAndUpdate({ _id: req.params.id },
-    //     /* in place of 'req.body', functionality to remove a reservation */
-    //     /* will also need to be removed from the user's document */
-    //     req.body)
-    //   .then(dbModel => {
-    //     console.log(dbModel);
+      // db.Rental
+      //   .findOneAndUpdate({ _id: req.params.id },
+      //     /* in place of 'req.body', functionality to remove a reservation */
+      //     /* will also need to be removed from the user's document */
+      //     req.body)
+      //   .then(dbModel => {
+      //     console.log(dbModel);
 
-    //     //  functionality to limit what info gets sent to users
+      //     //  functionality to limit what info gets sent to users
 
-    //     res.json(dbModel);
-    //   })
+      //     res.json(dbModel);
+      //   })
       .catch(err => res.status(422).json(err));
   },
 
