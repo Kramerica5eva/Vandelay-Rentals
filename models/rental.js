@@ -10,16 +10,16 @@ const rentalSchema = new Schema({
   maker: String,
   sku: String,
   dailyRate: Schema.Types.Decimal128,
-  reservations: [{
-    customerId: String,
-    date: {
-      from: Number,
-      to: Number
-    }
-  }],
+  // reservations: [{
+  //   customerId: String,
+  //   date: {
+  //     from: Number,
+  //     to: Number
+  //   }
+  // }],
 
   //	Remove if testing doesn't work out
-  testReservations: [{
+  reservations: [{
     type: Schema.Types.ObjectId,
     ref: "Reservation"
   }],

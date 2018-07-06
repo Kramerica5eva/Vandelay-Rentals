@@ -94,7 +94,7 @@ export default {
 
   // NOT CURRENTLY BEING USED
   // Remove a reservation
-  removeCourseReservation: function (id, reservationData) {
+  removeCourseRegistration: function (id, reservationData) {
     return axios.put(`/api/courses/remove/${id}`, reservationData);
   },
 
@@ -163,6 +163,9 @@ export default {
     return axios.get(`/api/sales/${category}/${id}`);
   },
 
+
+
+
   // ADMIN ROUTES
   // ADMIN USER ROUTES
   // Gets all users
@@ -173,7 +176,7 @@ export default {
     return axios.post('/admin/users', userData);
   },
   // Gets one user by id
-  getUserById: function (id) {
+  adminGetUserById: function (id) {
     return axios.get(`/admin/users/${id}`)
   },
   // Gets one user by id

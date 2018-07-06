@@ -5,7 +5,7 @@ module.exports = {
   findAll: function (req, res) {
     db.Rental
       .find({})
-      .populate("testReservations")
+      .populate("reservations")
       .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -19,7 +19,7 @@ module.exports = {
   getReservations: function (req, res) {
     db.Rental
       .findById({ _id: req.params.id })
-      .populate("testReservations")
+      .populate("reservations")
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
