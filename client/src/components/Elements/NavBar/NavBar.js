@@ -63,8 +63,8 @@ class NavBar extends React.Component {
                     }
                 </div>
                 <div className="hamburger-btns">
-                    <button onClick={this.hamburgerClick} className="hamburger">&#9776;</button>
-                    <button onClick={this.crossClick} className="cross">&#735;</button>
+                    <button onClick={this.hamburgerClick} className="hamburger"><i className="fas fa-bars"></i></button>
+                    <button onClick={this.crossClick} className="cross"><i className="fas fa-times 2x"></i></button>
                 </div>
                 <div className="menu" id="menu">
                     <Link className="btn-link" to="/" role="button">Home</Link>
