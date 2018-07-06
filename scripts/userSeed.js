@@ -135,7 +135,7 @@ db.User
       cartArray.push(cartObject);
     }
 
-    // return db.ShoppingCart.collection.insertMany(cartArray);
+    return db.ShoppingCart.collection.insertMany(cartArray);
 
 
     console.log(data.insertedCount + " records inserted!");
