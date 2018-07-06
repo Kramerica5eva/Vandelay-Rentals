@@ -14,7 +14,7 @@ router
 
 router
   .route('/remove/:id')
-  .put(isLoggedIn, coursesController.update);
+  .put(isLoggedIn, coursesController.removeCourseRegistration);
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated())

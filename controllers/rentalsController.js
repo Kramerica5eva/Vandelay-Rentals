@@ -36,9 +36,6 @@ module.exports = {
   },
 
   reserveRental: function (req, res) {
-
-    const from = req.params.from;
-    const to = req.params.to;
     console.log("Here's the rental req.body:")
     console.log(req.body);
 
@@ -48,11 +45,16 @@ module.exports = {
         Promise.all([
           db.Rental.findOneAndUpdate(
             { _id: req.body.itemId },
-            { $push: { testReservations: reservation._id } },
+            { $push: { reservations: reservation._id } },
             { new: true }
           ), db.User.findOneAndUpdate(
             { _id: req.user._id },
-            { $push: { testReservations: reservation._id } },
+            { $push: { reservations: reservation._id } },
+            { new: true }
+          ),
+          db.ShoppingCart.findOneAndUpdate(
+            { customerId: req.user._id },
+            { $pull: { tempReservations: req.body._id } },
             { new: true }
           ),
           db.TempReservation.deleteOne(
@@ -74,17 +76,17 @@ module.exports = {
         Promise.all([
           db.Rental.findByIdAndUpdate(
             { _id: req.body.itemId },
-            { $pull: { testReservations: req.params.id } },
+            { $pull: { reservations: req.params.id } },
             { new: true }
           ),
           db.User.findByIdAndUpdate(
             { _id: req.body.customerId },
-            { $pull: { testReservations: req.params.id } },
+            { $pull: { reservations: req.params.id } },
             { new: true }
           )
         ])
-          .then(narf => {
-            res.send({ values: narf })
+          .then(values => {
+            res.send({ values: values })
           })
       })
 

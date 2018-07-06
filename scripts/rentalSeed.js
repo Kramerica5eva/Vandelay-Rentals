@@ -136,10 +136,9 @@ const rentalSeed = [
     sku: 'p-2017-66b-002',
     dailyRate: 20.00,
     reservations: [
-      { from: 1532044800-64800, to:1532304000-64800 }, //subtracting 64800 normalizes all of the times to midnight on the morning of the desired date. 
-      { from: 1532736000-64800, to:1532822400-64800 }  //it was easier to do this rather than recalculate all of the unix timestamps
+    //   { from: 1532044800-64800, to:1532304000-64800 }, //subtracting 64800 normalizes all of the times to midnight on the morning of the desired date. 
+    //   { from: 1532736000-64800, to:1532822400-64800 }  //it was easier to do this rather than recalculate all of the unix timestamps
     ],
-    testReservations: [],
     pastRentals: [],
     timesRented: 22,
     dateAcquired: 1492257600,
@@ -153,12 +152,11 @@ const rentalSeed = [
     sku: 'p-2018-89k-004',
     dailyRate: 22.00,
     reservations: [
-      { from: 1532736000-64800, to:1532822400-64800 },
-      { from: 1533254400-64800, to:1533427200-64800 },
-      { from: 1533600000-64800, to:1533859200-64800 },
-      { from: 1533859200-64800, to:1534032000-64800 }
+      // { from: 1532736000-64800, to:1532822400-64800 },
+      // { from: 1533254400-64800, to:1533427200-64800 },
+      // { from: 1533600000-64800, to:1533859200-64800 },
+      // { from: 1533859200-64800, to:1534032000-64800 }
     ],
-    testReservations: [],
     pastRentals: [],
     timesRented: 0,
     dateAcquired: 1525435200,
@@ -172,10 +170,9 @@ const rentalSeed = [
     sku: 'p-2018-79p-011',
     dailyRate: 32.00,
     reservations: [
-      { from: 1532736000-64800, to:1532822400-64800 },
-      { from: 1533859200-64800, to:1534636800-64800 }
+      // { from: 1532736000-64800, to:1532822400-64800 },
+      // { from: 1533859200-64800, to:1534636800-64800 }
     ],
-    testReservations: [],
     pastRentals: [],
     timesRented: 6,
     dateAcquired: 1492257600,
@@ -189,11 +186,10 @@ const rentalSeed = [
     sku: 'p-2018-67r-059',
     dailyRate: 29.00,
     reservations: [
-      { from: 1532044800-64800, to:1532304000-64800 },
-      { from: 1533254400-64800, to:1533427200-64800 },
-      { from: 1534291200-64800, to:1534636800-64800 }
+      // { from: 1532044800-64800, to:1532304000-64800 },
+      // { from: 1533254400-64800, to:1533427200-64800 },
+      // { from: 1534291200-64800, to:1534636800-64800 }
     ],
-    testReservations: [],
     pastRentals: [],
     timesRented: 33,
     dateAcquired: 1525435200,
@@ -207,10 +203,9 @@ const rentalSeed = [
     sku: 'k-554-urq-14',
     dailyRate: 45.00,
     reservations: [
-      { from: 1532736000-64800, to:1532822400-64800 },
-      { from: 1533859200-64800, to:1534032000-64800 }
+      // { from: 1532736000-64800, to:1532822400-64800 },
+      // { from: 1533859200-64800, to:1534032000-64800 }
     ],
-    testReservations: [],
     pastRentals: [],
     timesRented: 112,
     dateAcquired: 1464868800,
@@ -224,11 +219,10 @@ const rentalSeed = [
     sku: 'k-122-hrs-01',
     dailyRate: 38.00,
     reservations: [
-      { from: 1532044800-64800, to:1532304000-64800 },
-      { from: 1533859200-64800, to:1534032000-64800 },
-      { from: 1536278400-64800, to:1536537600-64800 }
+      // { from: 1532044800-64800, to:1532304000-64800 },
+      // { from: 1533859200-64800, to:1534032000-64800 },
+      // { from: 1536278400-64800, to:1536537600-64800 }
     ],
-    testReservations: [],
     pastRentals: [],
     timesRented: 87,
     dateAcquired: 1464868800,
@@ -242,13 +236,12 @@ const rentalSeed = [
     sku: 'k-404-kov-07',
     dailyRate: 32.00,
     reservations: [
-      { from: 1532736000-64800, to:1532822400-64800 },
-      { from: 1533254400-64800, to:1533427200-64800 },
-      { from: 1533859200-64800, to:1534118400-64800 },
-      { from: 1534291200-64800, to:1534636800-64800 },
-      { from: 1536278400-64800, to:1536537600-64800 }
+      // { from: 1532736000-64800, to:1532822400-64800 },
+      // { from: 1533254400-64800, to:1533427200-64800 },
+      // { from: 1533859200-64800, to:1534118400-64800 },
+      // { from: 1534291200-64800, to:1534636800-64800 },
+      // { from: 1536278400-64800, to:1536537600-64800 }
     ],
-    testReservations: [],
     pastRentals: [],
     timesRented: 24,
     dateAcquired: 1464868800,
@@ -262,12 +255,11 @@ const rentalSeed = [
     sku: 'k-212-aja-118',
     dailyRate: 34.00,
     reservations: [
-      { from: 1533254400-64800, to:1533427200-64800 },
-      { from: 1533859200-64800, to:1534032000-64800 },
-      { from: 1534550400-64800, to:1534636800-64800 },
-      { from: 1536278400-64800, to:1536537600-64800 }
+      // { from: 1533254400-64800, to:1533427200-64800 },
+      // { from: 1533859200-64800, to:1534032000-64800 },
+      // { from: 1534550400-64800, to:1534636800-64800 },
+      // { from: 1536278400-64800, to:1536537600-64800 }
     ],
-    testReservations: [],
     pastRentals: [],
     timesRented: 79,
     dateAcquired: 1464868800,

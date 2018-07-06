@@ -45,21 +45,26 @@ module.exports = {
     console.log(req.body);
     db.Registration.create(req.body)
       .then(() => {
-          Promise.all([
-            db.Course.findOneAndUpdate(
-              { _id: req.body.courseId },
-              { $push: { participants: req.user._id } },
-              { new: true }
-            ),
-            db.User.findOneAndUpdate(
-              { _id: req.user._id },
-              { $push: { testRegistrations: req.body._id } },
-              { new: true }
-            ),
-              db.TempRegistration.deleteOne(
-              { _id: req.body._id }
-            ),
-          ])
+        Promise.all([
+          db.Course.findOneAndUpdate(
+            { _id: req.body.courseId },
+            { $push: { participants: req.user._id } },
+            { new: true }
+          ),
+          db.User.findOneAndUpdate(
+            { _id: req.user._id },
+            { $push: { registrations: req.body._id } },
+            { new: true }
+          ),
+          db.ShoppingCart.findOneAndUpdate(
+            { customerId: req.user._id },
+            { $pull: { tempRegistrations: req.params.id } },
+            { new: true }
+          ),
+          db.TempRegistration.deleteOne(
+            { _id: req.body._id }
+          ),
+        ])
           .then(() => {
             return res.send({ response: "Success!" })
           })
@@ -69,7 +74,29 @@ module.exports = {
 
 
 
-  update: function (req, res) {
-
+  removeCourseRegistration: function (req, res) {
+    console.log("Here's the course req.body:")
+    console.log(req.body);
+    db.Registration
+      .deleteOne({ _id: req.params.id })
+      .then(() => {
+        Promise.all([
+          db.Course.findByIdAndUpdate(
+            { _id: req.body.courseId },
+            { $pull: { participants: req.body.customerId } },
+            { new: true }
+          ),
+          db.User.findByIdAndUpdate(
+            { _id: req.body.customerId },
+            { $pull: { registrations: req.params.id } },
+            { new: true }
+          )
+        ])
+          .then(values => {
+            res.send({ values: values })
+          })
+      })
+      .catch(err => res.status(422).json(err));
   }
+
 };

@@ -32,7 +32,7 @@ class Admin extends Component {
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer

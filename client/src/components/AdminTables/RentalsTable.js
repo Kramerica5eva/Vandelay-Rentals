@@ -8,6 +8,9 @@ import "react-table/react-table.css";
 import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
 import Moment from 'moment';
+
+import { ReservationsTable } from './ReservationsTable';
+
 const CheckboxTable = checkboxHOC(ReactTable);
 
 
@@ -29,6 +32,7 @@ export class RentalsTable extends Component {
         body: "",
         footer: ""
       },
+      currentReservations: null,
       category: "",
       images: [],
       selectedFile: null,
@@ -86,6 +90,7 @@ export class RentalsTable extends Component {
   adminGetAllRentals = () => {
     API.adminGetAllRentals()
       .then(res => {
+        console.log(res.data);
 
         //  loop through the response array and add a new key/value pair with the formatted rate
         res.data.map(r => {
@@ -356,22 +361,11 @@ export class RentalsTable extends Component {
   // See Reservations - functionality will be completed once calendar functions (Ben) are ready.
   seeReservations = () => {
     const { _id } = this.state.selectedRow;
-    API.adminGetRentalsById(_id)
-      .then(res =>
-        this.setModal({
-          header: "Current Reservations",
-          body:
-            <Fragment>
-              <ul>
-                {res.data.reservations.map((reservation, i) => (
-                  <li key={i}>
-                    <p>From: {Moment.unix(reservation.from).format("MMM Do YYYY, h:mm a")}</p>
-                    <p>To: {Moment.unix(reservation.to).format("MMM Do YYYY, h:mm a")}</p>
-                  </li>
-                ))}
-              </ul>
-            </Fragment>
-        }))
+    API.adminGetReservationsFromRental(_id)
+      .then(res => {
+        console.log(res);
+        this.setState({ currentReservations: res.data.reservations });
+      })
       .catch(err => console.log(err));
   }
 
@@ -470,6 +464,20 @@ export class RentalsTable extends Component {
           // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
           ref={r => (this.checkboxTable = r)}
           data={this.state.rentals}
+          filterable
+          SubComponent={row => {
+            //  thisReservation grabs the reservations from this.state.rentals that matches the row index - it grabs the reservations for this rental item.
+            const thisRow = this.state.rentals[row.row._index];
+            return (
+              <ReservationsTable
+                forName={thisRow.name}
+                filterable
+                reservations={thisRow.reservations}
+                rentals={true}
+                adminGetAllRentals={this.adminGetAllRentals}
+              />
+            )
+          }}
           columns={[
             {
               Header: "Rental Info",
@@ -523,35 +531,6 @@ export class RentalsTable extends Component {
                 }
               ]
             },
-            // {
-            //   Header: 'Buttons',
-            //   columns: [
-            //     {
-            //       Header: "Images",
-            //       id: "image-buttons",
-            //       accessor: () => {
-            //         return (
-            //           <div className="table-btn-div">
-            //             <button onClick={this.getImageNames}>Get</button>
-            //             <button onClick={this.getUploadModal}>Upload</button>
-            //           </div>
-            //         )
-            //       }
-            //     },
-            //     {
-            //       Header: "Reservations",
-            //       id: "reservation-buttons",
-            //       accessor: () => {
-            //         return (
-            //           <div className="table-btn-div">
-            //             <button onClick={this.seeReservations}>Current</button>
-            //             <button onClick={this.seePastRentals}>Past</button>
-            //           </div>
-            //         )
-            //       }
-            //     }
-            //   ]
-            // }
           ]}
           defaultPageSize={10}
           className="-striped -highlight"

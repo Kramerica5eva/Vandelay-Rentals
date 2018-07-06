@@ -6,27 +6,19 @@ import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
 const CheckboxTable = checkboxHOC(ReactTable);
 
-export class ReservationsTable extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      noWayDude: () => {
-        console.log("No way, dude!");
-      },
-      reservations: props.reservations,
-      selection: [],
-      selectedRow: {}
-    };
-  }
+export class RegistrationsTable extends Component {
+  state = {
+    registrations: this.props.registrations,
+    selection: [],
+    selectedRow: {}
+  };
+
 
   componentWillUnmount = () => {
-    this.state.noWayDude();
-    //  Why call get users on Unmount?
-    //  Clicking cancelReservation runs all the necessary database functions to delete the reservation, but in this component it only filters it from the this.state.reservations array, meaning if you close the table and reopen it, the one you just deleted will still show. So by running the get user function when the component unmounts ensures this won't happen while also avoiding an extra database query with every deletion.
-    const { reservations, rentals } = this.props;
-    if (rentals && reservations.length > this.state.reservations.length) {
-      this.props.adminGetAllRentals();
-    } else if (reservations.length > this.state.reservations.length) {
+    // the cancelRegistration method deletes the registration from the database, and it also filters the deleted data from this.props.registrations and then sets state. But without querying the database, when the component reloads this.state.registrations would still contain the ones that were deleted. So, if there has been a change (props.registrations.length is > state.registrations.length), the adminGetAllUsers() method is called on the parent component. 
+    const { registrations } = this.props;
+    if (registrations.length > this.state.registrations.length) {
+      console.log("Registrations Unmount Running!");
       this.props.adminGetAllUsers();
     }
   }
@@ -65,21 +57,20 @@ export class ReservationsTable extends Component {
   };
   //  END REACT-TABLE: SELECT TABLE HOC FUNCTIONS
 
-  //  Cancel function works - Deletes reservation and removes the reference from User and Rental
-  cancelReservation = () => {
-    const { from, to } = this.state.selectedRow.date;
+  //  Cancel function works - Deletes registration and removes the reference from User and Rental
+  cancelRegistration = () => {
     const { _id } = this.state.selectedRow;
     const row = this.state.selectedRow;
+    console.log(row);
 
-    API.removeRentalReservation(from, to, _id, row)
+    API.removeCourseRegistration(_id, row)
       .then(res => {
         console.log(res);
-        //  filter the row from the reservations array in state and then setState to the filtered data.
-        const newReservations = this.state.reservations.filter(reg => (reg._id !== _id));
-
-        //  empty selection and selectedRow so the affected buttons revert to disabled 
+        //  filter the row from the registrations array in state and then setState to the filtered data.
+        const newRegistrations = this.state.registrations.filter(reg => (reg._id !== _id));
+        //  empty selection and selectedRow so the buttons revert to disabled
         this.setState({
-          reservations: newReservations,
+          registrations: newRegistrations,
           selection: [],
           selectedRow: {}
         })
@@ -90,15 +81,14 @@ export class ReservationsTable extends Component {
   render() {
     //  destructure from 'this' because the props object doesn't like 'this.anything' unless it's in a key:value pair
     const { toggleSelection, isSelected } = this;
-    // console.log(this.state.reservations);
+    console.log(this.state.registrations);
 
-    if (this.state.reservations.length > 0) {
-      this.state.reservations.map(reservation => {
-        //  86400 = # of seconds in a day
-        const bill = ((parseInt(reservation.date.to) - parseInt(reservation.date.from)) / 86400) * reservation.dailyRate.$numberDecimal;
-        reservation.amtDue = "$" + parseFloat(bill).toFixed(2);
-        if (reservation.paid) reservation.hasPaid = "True";
-        else reservation.hasPaid = "False";
+    if (this.state.registrations.length > 0) {
+      this.state.registrations.map(registration => {
+
+        registration.amtDue = "$" + parseFloat(registration.price.$numberDecimal).toFixed(2);
+        if (registration.paid) registration.hasPaid = "True";
+        else registration.hasPaid = "False";
       })
     }
 
@@ -126,22 +116,20 @@ export class ReservationsTable extends Component {
 
       <Fragment>
 
-        <h3>Rental Reservations for {this.props.forName}</h3>
+        <h3>Class Registrations for {this.props.forName}</h3>
 
         {/* if no rows have been selected, button remains disabled;
       otherwise, clicking the button without anything selected results in an error */}
 
         <div className="table-btn-div">
           <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.payReservation}>Log Payment</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.recordRentalInUse}>Log Checkout</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.recordRentalReturn}>Log Turn-in</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.cancelReservation}>Cancel Reservation</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.payRegistration}>Log Payment</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.cancelRegistration}>Cancel Registration</button>
         </div>
         <CheckboxTable
           // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
           ref={r => (this.checkboxTable = r)}
-          data={this.state.reservations}
+          data={this.state.registrations}
           columns={[
             {
               Header: "Customer",
@@ -157,19 +145,15 @@ export class ReservationsTable extends Component {
               ]
             },
             {
-              Header: "Reservation Data",
+              Header: "Registration Data",
               columns: [
                 {
-                  Header: "Item Name",
-                  accessor: "itemName"
+                  Header: "Class Name",
+                  accessor: "courseName"
                 },
                 {
-                  Header: "Date From",
-                  accessor: "date.from"
-                },
-                {
-                  Header: "Date To",
-                  accessor: "date.to"
+                  Header: "Date",
+                  accessor: "date"
                 },
                 {
                   Header: "Paid",
