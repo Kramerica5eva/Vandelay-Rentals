@@ -97,6 +97,23 @@ const userSeed = [
     registrations: [],
     pastRentals: [],
     admin: true
+  },
+  {
+    username: "Corbster",
+    password: pw,
+    firstName: "Yo",
+    lastName: "Goofball",
+    email: "isthatyou@gmail.com",
+    street: "123 Home St",
+    city: "Nowheresville",
+    state: "UT",
+    zipcode: 84999,
+    phone: "1230987654",
+    waivers: [],
+    reservations: [],
+    registrations: [],
+    pastRentals: [],
+    admin: true
   }
 ]
 
