@@ -352,7 +352,23 @@ class App extends Component {
               setCategories: this.setCategories
             })}
           />
-          <Route component={NoMatch} />
+          <Route
+          //component={NoMatch}
+           // exact
+            //path="*"
+            render={routeProps => (
+              <Fragment>
+                <NoMatch
+                  {...routeProps}
+                  updateUser={this.updateUser}
+                  loggedIn={this.state.loggedIn}
+                  firstName={this.state.firstName}
+                  admin={this.state.admin}
+                  logout={this.logout}
+                />
+              </Fragment>
+            )}
+           />
         </Switch>
       </Router>
     );

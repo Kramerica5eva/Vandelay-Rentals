@@ -9,18 +9,23 @@ class NavBar extends React.Component {
 
     componentDidMount = () => {
         document.querySelector(".cross").style.display = 'none';
-        document.querySelector(".menu").style.display = 'none';
+        // document.querySelector(".menu").style.display = 'none';
+        document.querySelector(".menu").style.visibility = 'none';
+        document.querySelector(".menu").style.opacity = '0';
     }
 
     hamburgerClick = () => {
         document.querySelector(".cross").style.display = 'flex';
-        document.querySelector(".menu").style.display = 'flex';
+        document.querySelector(".menu").style.visibility = 'visible';
+        document.querySelector(".menu").style.opacity = '1';
         document.querySelector(".hamburger").style.display = 'none';
     }
 
     crossClick = () => {
         document.querySelector(".cross").style.display = 'none';
-        document.querySelector(".menu").style.display = 'none';
+        // document.querySelector(".menu").style.display = 'none';
+        document.querySelector(".menu").style.visibility = 'none';
+        document.querySelector(".menu").style.opacity = '0';
         document.querySelector(".hamburger").style.display = '';
     }
 

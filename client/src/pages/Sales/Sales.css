@@ -1,3 +1,24 @@
-.body-container {
+.sales {
     background-color: white;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.sales h2 {
+    text-align: center;
+}
+
+.sales ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.sales ul li {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
 }

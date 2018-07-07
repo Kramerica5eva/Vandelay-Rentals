@@ -1,16 +1,11 @@
 import React, { Component, Fragment } from "react";
 import HelloSign from 'hellosign-embedded';
-// import HelloSign from 'hellosign-sdk';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
 import API from "../../utils/API";
-// import Modal from "../../components/Modal";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import ParallaxHero from "../../components/ParallaxHero"
 import { Input, Label, FormBtn } from "../../components/Elements/Form";
 import DevLinks from "../../components/DevLinks";
-import RentalCard from "../../components/Cards/RentalCard";
 import "./Waiver.css";
 
 class Waiver extends Component {
@@ -28,30 +23,14 @@ class Waiver extends Component {
     rent_to: "",
     rental_id: "",
     unix: [],
-    userEmail:"test@email.com",
-    userName:"John Smith"
+    userEmail:"",
+    userName:"John Smith",
+    fullName: ""
   };
 
   componentDidMount() {
-    // this.loadConfig();
     this.init();
   }
-
-  // toggleModal = () => {
-  //   this.setState({
-  //     isOpen: !this.state.isOpen
-  //   });
-  // }
-
-  // setModal = (modalInput) => {
-  //   this.setState({
-  //     isOpen: !this.state.isOpen,
-  //     header: modalInput.header,
-  //     body: modalInput.body,
-  //     footer: modalInput.footer
-  //   });
-  // }
-
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -66,32 +45,21 @@ class Waiver extends Component {
       evt.preventDefault();
 
       // Disable the submit button temporarily.
-      document.querySelector("#thisIsATest").setAttribute('disabled', true);
+      document.querySelector("#waiverUpdateBtn").setAttribute('disabled', true);
 
       // Save the config and create the signature request.
-      // this.saveConfig();
       this.createRequest();
     });
   }
 
   createRequest = () => {
-    API.createSignatureRequest()
+    API.createSignatureRequest(this.state.userEmail,this.state.userName)
        .then((response) => {
         console.log("REESPONSE1 AFTER AXIOS:");
         console.log(response);
         if (response.data.success) {
-          // this.openRequest(response.data);
           this.openRequest(response.data.data.signUrl);
         }
-        // return response.json(); // rtns typeError response.json() is not a func,
-        // })
-      //   .then((response) => {
-      //   // commented out lines starting ate 82---- are following the hellosign-embeded npm pkg demo app instructions
-      // // if (response.status === 200) {
-      // if (response.success) {
-      //   // this.openRequest(response.data);
-      //   this.openRequest(response.data.signUrl);
-      // }
       else {
         alert(
           'Something went wrong. Did you enter your ' +
@@ -100,7 +68,7 @@ class Waiver extends Component {
       }
 
       // Re-enable submit button.
-      document.querySelector("#thisIsATest").removeAttribute('disabled');
+      document.querySelector("#waiverUpdateBtn").removeAttribute('disabled');
     });
   }
 
@@ -115,73 +83,18 @@ class Waiver extends Component {
       skipDomainVerification: true,
       uxVersion: 2,
       messageListener(evt) {
-        // console.log("EVNT====="+evt);
       }
+
     };
 
     console.log(signUrl);
     HelloSign.open(options);
-    // HelloSign.open({
-    // url: signUrl,
-    // uxVersion: 2,
-    // allowCancel: true,
-    // messageListener: function(eventData) {
-    //   console.log(111111111);
 
-    // }
-// });
-
-    // Set the redirect URL, if defined by the user.
-    // if (redirectUrlElement.value.length) {
-      // options.redirectUrl = redirectUrlElement.value;
-    // }
-    // console.log(options);
-
-    // HelloSign.open(options);
   }
-
-  //  saveConfig = () => {
-  //   try {
-  //     window.localStorage.setItem('config', (
-  //       JSON.stringify({
-  //         // apiKey: apiKeyElement.value,
-  //         // clientId: clientIdElement.value,
-  //         // redirectUrl: redirectUrlElement.value
-  //       })
-  //     ));
-  //   } catch (err) {
-  //     // User may have private browsing enabled.
-  //     // Fail silently.
-  //   }
-  // }
-
-  //  loadConfig = () => {
-  //   try {
-  //     const config = window.localStorage.getItem('config');
-
-  //     if (config) {
-  //       const { apiKey, clientId, redirectUrl } = JSON.parse(config);
-
-  //       // apiKeyElement.value = apiKey;
-  //       // clientIdElement.value = clientId;
-  //       // redirectUrlElement.value = redirectUrl;
-  //     }
-  //   } catch (err) {
-  //     // User may have private browsing enabled.
-  //     // Fail silently.
-  //   }
-  // }
 
   render() {
     return (
       <Fragment>
-        {/* <Modal
-          show={this.state.isOpen}
-          toggleModal={this.toggleModal}
-          header={this.state.header}
-          body={this.state.body}
-          footer={this.state.footer}
-        /> */}
         <NavBar
           loggedIn={this.props.loggedIn}
           admin={this.props.admin}
@@ -200,10 +113,26 @@ class Waiver extends Component {
               logout={this.props.logout}
               location={this.props.location}
             />
-
-            <form action="" id="formTest">
-              <button type="submit" id="thisIsATest" >test Waiver btn</button>
-            </form>
+            <div className="form-style">
+              <form action="" id="formTest">
+                <Input
+                value={this.state.fullName}
+                onChange={this.handleInputChange}
+                name="fullName"
+                type="text"
+                pattern="^[a-zA-Z0-9]"
+                label="Full Legal Name:"
+                />
+                <Input
+                value={this.state.userEmail}
+                onChange={this.handleInputChange}
+                name="email"
+                type="email"
+                label="Email:"
+              />
+                <button type="submit" id="waiverUpdateBtn" >Update Waiver</button>
+              </form>
+            </div>
 
           </div>
           <Footer />

@@ -9,6 +9,16 @@ body:not(ParallaxHero) {
   /* combined with the .main-container styling below (width: calc(100vw + 17px);), this pushes the right scrollbar off the screen without creating a new scrollbar on the bottom */
 }
 
+.form-style {
+  border: solid black 2px;
+  padding: 15px;
+  width: 300px;
+}
+.form-style form {
+
+  width: 300px;
+}
+
 .main-container {
   width: calc(100vw + 17px);
 }

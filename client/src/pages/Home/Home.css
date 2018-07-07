@@ -1,4 +1,6 @@
 
+
+
 .body-container {
     background-color: white;
     padding-bottom: 50px;
@@ -7,11 +9,198 @@
 .desc-heading {
     text-align: center;
     font-weight: bold;
-    font-size: 1.3rem;
+    /* font-size: 1.3rem; */
     margin: 2em auto;
     padding: 3% 0;
-    border-bottom: 2px solid black;
+    border-bottom: 3px solid #FFCE40;
+    /* border-bottom: 2px solid black; */
     font-style: italic;
+}
+
+/* START of black and white page card links */
+
+.desc-heading h2 {
+    font-size: 1.5rem;
+}
+
+.main-catch {
+    display: flex;
+    width: 80%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2em auto;
+
+}
+
+.icons {
+    font-size: 14em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.main-catch .black-box, .image-box {
+    border-radius: 2px;
+}
+
+.black-box {
+
+    background-color: black;
+    color: white;
+    height: 100%;
+    width: 100%;
+    font-size: 3em;
+    padding: 3% 5%;
+    text-align: center;
+
+}
+.black-box h4{
+
+   margin-bottom: 5px;
+   border-bottom: 2px solid #FFCE40;
+   /* border-bottom: 2px solid white; */
+
+}
+.black-box p{
+
+    font-size: 0.4em;
+    padding: 5%;
+    line-height: 35px;
+    /* letter-spacing: 1px; */
+    text-align: justify;
+
+}
+
+.image-box{
+
+    background-color: white;
+    color: black;
+    height: 250px;
+}
+
+.row-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.row-middle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.row-top .image-box, .row-bottom .image-box {
+    order: -1;
+}
+
+.row-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* END of black and white page card links */
+
+#about-us-para-header {
+    color: white;
+    /* position: absolute; */
+    position: relative;
+    text-align: center;
+    left: 0px;
+    right: 0px;
+    bottom: 160px;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    width: 150px;
+    line-height: 30px;
+}
+
+.about-us {
+    font-size: 2rem;
+    padding: 3% 5%;
+    text-align: center;
+    position: relative;
+    bottom: 60px;
+}
+.about-us h3{
+    font-size: 2rem;
+    margin-bottom: 5px;
+    border-bottom: 2px solid #FFCE40;
+    /* border-bottom: 2px solid black; */
+}
+.about-us p{
+    font-size: 1.0rem;
+    padding: 1%;
+    line-height: 30px;
+    letter-spacing: 0.6px;
+    text-align: justify;
+}
+
+.about-us:parent {
+    margin-bottom: 0;
+}
+
+@media (min-width: 650px) {
+
+    .black-box p{
+        font-size: 0.5em;
+        letter-spacing: 1px;
+    }
+
+    .desc-heading h2 {
+        font-size: 1.9rem;
+    }
+
+    #about-us-para-header {
+        bottom: 225px;
+        font-size: 2.5rem;
+        width: 200px;
+        line-height: 40px;
+    }
+
+    .about-us h3{
+        font-size: 3rem;
+        margin-bottom: 5px;
+        /* border-bottom: 2px solid black; */
+    }
+
+    .about-us p{
+        font-size: 1.75rem;
+        /* padding: 1%; */
+        line-height: 35px;
+        letter-spacing: 1px;
+        /* text-align: justify; */
+    }
+
+}
+
+
+@media (min-width: 750px) {
+    #parallax-container h1 {
+        font-size: 2.7em;
+        width: 350px;
+        line-height: 60px;
+    }
+    .desc-heading h2 {
+        font-size: 2.1rem;
+    }
+}
+
+
+@media (min-width: 850px) {
+    /* START of black and white page card links */
+
+.desc-heading h2 {
+    font-size: 2.3rem;
 }
 
 .main-catch {
@@ -37,20 +226,22 @@
     width: 50%;
 }
 
+
 .black-box {
 
     background-color: black;
     color: white;
-    height: 275px;
+    height: 325px;
     font-size: 3em;
     padding: 3% 5%;
     text-align: center;
+    align-items: center;
 
 }
 .black-box h4{
 
    margin-bottom: 5px;
-   border-bottom: 2px solid white;
+   /* border-bottom: 2px solid white; */
 
 }
 .black-box p{
@@ -68,6 +259,12 @@
     background-color: white;
     color: black;
     height: 250px;
+}
+
+.row-top .image-box, .row-bottom .image-box {
+    order: -1;
+}.row-middle .image-box {
+    order: 1;
 }
 
 .row-top {
@@ -94,24 +291,104 @@
     width: 100%;
 }
 
-.about-us {
-    font-size: 2rem;
+/* END of black and white page card links */
+}
+
+@media (min-width: 1000px) {
+    /* START of black and white page card links */
+
+.desc-heading h2 {
+    font-size: 2.4rem;
+}
+
+.main-catch {
+    display: flex;
+    width: 80%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2em auto;
+
+}
+
+.icons {
+    font-size: 16em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.main-catch .black-box, .image-box {
+    border-radius: 2px;
+    width: 50%;
+}
+
+
+.black-box {
+
+    background-color: black;
+    color: white;
+    height: 100%;
+    font-size: 3em;
     padding: 3% 5%;
     text-align: center;
+
 }
-.about-us h3{
-    font-size: 3rem;
-    margin-bottom: 5px;
-    border-bottom: 2px solid black;
+.black-box h4{
+
+   margin-bottom: 5px;
+   /* border-bottom: 2px solid white; */
+
 }
-.about-us p{
-    font-size: 1.75rem;
-    padding: 1%;
+.black-box p{
+
+    font-size: 0.5em;
+    padding: 5%;
     line-height: 35px;
     letter-spacing: 1px;
     text-align: justify;
+
 }
 
-.about-us:parent {
-    margin-bottom: 0;
+.image-box{
+
+    background-color: white;
+    color: black;
+    height: 250px;
+}
+
+.row-top .image-box, .row-bottom .image-box {
+    order: 1;
+}.row-middle .image-box {
+    order: -1;
+}
+
+.row-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.row-middle {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.row-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+
+/* END of black and white page card links */
 }

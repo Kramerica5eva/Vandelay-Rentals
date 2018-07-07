@@ -2,7 +2,9 @@
     border: solid black 1px;
     margin: 20px;
     text-shadow: 1px 1px 3px rgba(150, 150, 150, 1);
-    width: 250px;
+    box-shadow: 3px 3px 5px rgba(150, 150, 150, 1);
+    min-width: 250px;
+    max-width: 250px;
     height: 250px;
     text-align: center;
     display: flex;
@@ -15,5 +17,5 @@
 .saleCard h3 {
     margin-bottom: 10px;
     padding-bottom: 10px;
-    border-bottom: solid black 2px;
+    border-bottom: solid #FFCE40 3px;
 }

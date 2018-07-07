@@ -1,20 +1,36 @@
-import React from "react";
+import React, { Component, Fragment } from "react";
 import Header from "../../components/Elements/Header";
 import NavBar from "../../components/Elements/NavBar";
-import Footer from "../../components/Elements/Footer";
+import ParallaxHero from "./../../components/ParallaxHero";
+import FixedFooter from "../../components/Elements/FixedFooter";
+import API from "../../utils/API";
+import "./NoMatch.css"
 
 
-const NoMatch = () => (
-  <div>
-    <Header>
-      <h1>404 Page Not Found</h1>
+class NoMatch extends Component {
+  render() {
+    return (
+  <Fragment>
+    <NavBar
+          loggedIn={this.props.loggedIn}
+          admin={this.props.admin}
+          logout={this.props.logout}
+          location={this.props.location}
+    />
+    <div className="main-container" >
+      <div className='body-container page-not-found'>
       <h1>
-        <span role="img" aria-label="Face With Rolling Eyes Emoji">
-          🙄
-            </span>
+        404 Error: I think we are lost.
       </h1>
-    </Header>
+      <h2>
+        The page you are looking for does not exist.
+      </h2>
+    </div>
+    <FixedFooter />
   </div>
-);
+</Fragment>
+)
+  }
+};
 
 export default NoMatch;

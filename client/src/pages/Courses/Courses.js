@@ -57,7 +57,7 @@ class Courses extends Component {
         />
         <div className="main-container">
           <ParallaxHero
-            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1503477742902-923d33a4d8cc?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=62d2153b92eba59d1d60d72357929833&auto=format&fit=crop&w=1267&q=80)' }}
+            image={{ backgroundImage: 'url(./static/assets/images/group_in_kayaks.jpeg)' }}
             title="LEARN"
           />
 
@@ -70,7 +70,7 @@ class Courses extends Component {
             />
           </Header>
 
-          <div className='body-container'>
+          <div className='body-container courses'>
             <h2>Courses Available:</h2>
             <ul>
               {this.state.courses.map(course => (

@@ -9,7 +9,6 @@
   justify-content: center;
   align-items: center;
   transform: translateZ(-1px) scale(4);
-  /* background: url(https://images.unsplash.com/photo-1446629306733-3ab03a5c5b3a?ixlib=rb-0.3.5&s=0a73900e96e957a4ef0ae69f285a9fa1&auto=format&fit=crop&w=1950&q=80); */
   background-color: rgb(221, 217, 215);
   background-size: cover;
   background-repeat: no-repeat;
@@ -19,8 +18,46 @@
 
 #parallax-container h1 {
   color: white;
-  position: relative;
-  bottom: 50px;
-  font-size: 1.3rem;
+  position: absolute;
+  /* position: relative; */
+  text-align: center;
+  left: 0px;
+  right: 0px;
+  /* bottom: 50px; */
+  margin: auto;
+  font-size: 1.2rem;
+  width: 150px;
+  line-height: 25px;
 
 }
+
+@media (min-width: 650px) {
+  #parallax-container {
+    transform: translateZ(-1px) scale(3);
+  }
+}
+/* @media (min-width: 850px) {
+  #parallax-container {
+    transform: translateZ(-1px) scale(2.95);
+  }
+}
+@media (min-width: 1050px) {
+  #parallax-container {
+    transform: translateZ(-1px) scale(2.85);
+  }
+}
+@media (min-width: 1250px) {
+  #parallax-container {
+    transform: translateZ(-1px) scale(2.75);
+  }
+}
+@media (min-width: 1450px) {
+  #parallax-container {
+    transform: translateZ(-1px) scale(2.65);
+  }
+}
+@media (min-width: 1650px) {
+  #parallax-container {
+    transform: translateZ(-1px) scale(2.55);
+  }
+} */
