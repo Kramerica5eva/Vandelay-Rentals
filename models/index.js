@@ -8,5 +8,6 @@ module.exports = {
   Registration: require('./registration'),
   TempReservation: require('./tempReservation'),
   TempRegistration: require('./tempRegistration'),
-  ShoppingCart: require('./shoppingCart')
+  ShoppingCart: require('./shoppingCart'),
+  PastRental: require('./pastRental')
 };

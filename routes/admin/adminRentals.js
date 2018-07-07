@@ -16,7 +16,9 @@ router
 
 router
   .route('/reservations/:id')
-  .get(isAdmin, adminRentalsController.getReservations);
+  .get(isAdmin, adminRentalsController.getReservations)
+  .put(isAdmin, adminRentalsController.updateReservation)
+  .post(isAdmin, adminRentalsController.finishReservation);
   
   function isAdmin(req, res, next) {
     if (req.user.admin)

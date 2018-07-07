@@ -13,9 +13,10 @@ router
 // Matches with '/api/rentals/:category/:id'
 // gets info on a single item
 // There is no reservation route based only on item - because (duh) you need dates to make a reservation
-router
-  .route('/:category/:id')
-  .get(rentalsController.findById);
+//  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
+// router
+//   .route('/:category/:id')
+//   .get(rentalsController.findById);
 
   // Matches with '/api/rentals/date/:from/:to/'
   // put makes a reservation
