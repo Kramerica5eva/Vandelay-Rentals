@@ -1,10 +1,5 @@
 import React, { Component, Fragment } from "react";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch
-} from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import Rentals from "./pages/Rentals";
 import Test from "./pages/Test";
@@ -21,8 +16,6 @@ import Admin from "./pages/Admin";
 import AdminKeith from "./pages/AdminKeith";
 import AdminBrandon from "./pages/AdminBrandon";
 import AddPropsToRoute from "./components/AddPropsToRoute";
-import NavBar from "./components/Elements/NavBar";
-import Footer from "./components/Elements/Footer";
 import NoMatch from "./pages/NoMatch";
 import API from "./utils/API";
 import "./App.css";
@@ -150,9 +143,7 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route
-            exact
-            path="/"
+          <Route exact path="/"
             render={routeProps => (
               <Fragment>
                 <Home
@@ -166,9 +157,7 @@ class App extends Component {
               </Fragment>
             )}
           />
-          <Route
-            exact
-            path="/rentals"
+          <Route exact path="/rentals"
             render={routeProps => (
               <Fragment>
                 <Rentals
@@ -182,9 +171,7 @@ class App extends Component {
               </Fragment>
             )}
           />
-          <Route
-            exact
-            path="/sales"
+          <Route exact path="/sales"
             render={routeProps => (
               <Fragment>
                 <Sales
@@ -198,9 +185,7 @@ class App extends Component {
               </Fragment>
             )}
           />
-          <Route
-            exact
-            path="/courses"
+          <Route exact path="/courses"
             render={routeProps => (
               <Fragment>
                 <Courses
@@ -214,9 +199,7 @@ class App extends Component {
               </Fragment>
             )}
           />
-          <Route
-            exact
-            path="/signup"
+          <Route exact path="/signup"
             render={routeProps => (
               <Fragment>
                 <Login
@@ -231,9 +214,7 @@ class App extends Component {
               </Fragment>
             )}
           />
-          <Route
-            exact
-            path="/login"
+          <Route exact path="/login"
             render={routeProps => (
               <Fragment>
                 <Login
@@ -248,9 +229,7 @@ class App extends Component {
               </Fragment>
             )}
           />
-          <PrivateRoute
-            path="/test"
-            component={AddPropsToRoute(Test, {
+          <PrivateRoute path="/test" component={AddPropsToRoute(Test, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -258,9 +237,7 @@ class App extends Component {
               logout: this.logout
             })}
           />
-          <PrivateRoute
-            path="/testnick"
-            component={AddPropsToRoute(TestNick, {
+          <PrivateRoute path="/testnick" component={AddPropsToRoute(TestNick, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -268,9 +245,7 @@ class App extends Component {
               logout: this.logout
             })}
           />
-          <PrivateRoute
-            path="/testben"
-            component={AddPropsToRoute(TestBen, {
+          <PrivateRoute path="/testben" component={AddPropsToRoute(TestBen, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -278,9 +253,7 @@ class App extends Component {
               logout: this.logout
             })}
           />
-          <PrivateRoute
-            path="/testbrandon"
-            component={AddPropsToRoute(TestBrandon, {
+          <PrivateRoute path="/testbrandon" component={AddPropsToRoute(TestBrandon, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -288,9 +261,7 @@ class App extends Component {
               logout: this.logout
             })}
           />
-          <PrivateRoute
-            path="/testcorb"
-            component={AddPropsToRoute(TestCorb, {
+          <PrivateRoute path="/testcorb" component={AddPropsToRoute(TestCorb, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -298,9 +269,7 @@ class App extends Component {
               logout: this.logout
             })}
           />
-          <PrivateRoute
-            path="/waiver"
-            component={AddPropsToRoute(Waiver, {
+          <PrivateRoute path="/waiver" component={AddPropsToRoute(Waiver, {
               toggleModal: this.toggleModal,
               setModal: this.setModal,
               updateUser: this.updateUser,
@@ -310,9 +279,7 @@ class App extends Component {
               logout: this.logout
             })}
           />
-          <PrivateRoute
-            path="/cart"
-            component={AddPropsToRoute(ShoppingCart, {
+          <PrivateRoute path="/cart" component={AddPropsToRoute(ShoppingCart, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -320,9 +287,7 @@ class App extends Component {
               logout: this.logout
             })}
           />
-          <AdminRoute
-            path="/admin"
-            component={AddPropsToRoute(Admin, {
+          <AdminRoute path="/admin" component={AddPropsToRoute(Admin, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -330,9 +295,7 @@ class App extends Component {
               logout: this.logout
             })}
           />
-          <AdminRoute
-            path="/adminbrandon"
-            component={AddPropsToRoute(AdminBrandon, {
+          <AdminRoute path="/adminbrandon" component={AddPropsToRoute(AdminBrandon, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -340,9 +303,7 @@ class App extends Component {
               logout: this.logout
             })}
           />
-          <AdminRoute
-            path="/adminkeith"
-            component={AddPropsToRoute(AdminKeith, {
+          <AdminRoute path="/adminkeith" component={AddPropsToRoute(AdminKeith, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,

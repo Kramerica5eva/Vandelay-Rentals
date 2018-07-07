@@ -6,6 +6,8 @@ module.exports = {
   findAll: function (req, res) {
     db.User
       .find({})
+      .populate('reservations')
+      .populate('registrations')
       .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -13,6 +15,8 @@ module.exports = {
   findById: function (req, res) {
     db.User
       .findById(req.params.id)
+      .populate('reservations')
+      .populate('registrations')
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
@@ -25,8 +29,10 @@ module.exports = {
 
   //  This function gets data from admin tables and updates the db
   update: function (req, res) {
-    const pw = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null);
-    req.body.password = pw;
+    if (req.body.password) {
+      const pw = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null);
+      req.body.password = pw;
+    }
     db.User
       .findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))

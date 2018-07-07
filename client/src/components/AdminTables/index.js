@@ -5,3 +5,4 @@ export * from "./UsersTable";
 export * from "./TestTable";
 export * from "./BrandonTestTable";
 export * from "./ReservationsTable";
+export * from "./RegistrationsTable";

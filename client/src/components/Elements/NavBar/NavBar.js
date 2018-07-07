@@ -40,7 +40,7 @@ class NavBar extends React.Component {
             <nav className='navbar'>
 
                 <div className='brand-logo'>
-                    <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logo2.png"/></Link>
+                    <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logowhite3.png"/></Link>
                 </div>
                 <div className='links'>
                     <Link className="btn-link" to="/" role="button">Home</Link>

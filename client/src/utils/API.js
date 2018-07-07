@@ -94,7 +94,7 @@ export default {
 
   // NOT CURRENTLY BEING USED
   // Remove a reservation
-  removeCourseReservation: function (id, reservationData) {
+  removeCourseRegistration: function (id, reservationData) {
     return axios.put(`/api/courses/remove/${id}`, reservationData);
   },
 
@@ -163,6 +163,9 @@ export default {
     return axios.get(`/api/sales/${category}/${id}`);
   },
 
+
+
+
   // ADMIN ROUTES
   // ADMIN USER ROUTES
   // Gets all users
@@ -173,11 +176,11 @@ export default {
     return axios.post('/admin/users', userData);
   },
   // Gets one user by id
-  getUserById: function (id) {
+  adminGetUserById: function (id) {
     return axios.get(`/admin/users/${id}`)
   },
   // Gets one user by id
-  updateUser: function (id, userData) {
+  adminUpdateUser: function (id, userData) {
     return axios.put(`/admin/users/${id}`, userData);
   },
   // Gets one user by id
@@ -239,13 +242,43 @@ export default {
   adminAddNewRental: function (rentalData) {
     return axios.post('/admin/rentals', rentalData);
   },
+
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
   // Gets Rental item by id - if the user chooses a particular item, this will pull the data for it.
   adminGetRentalsById: function (id) {
     return axios.get(`/admin/rentals/${id}`);
   },
 
+  //  Updates rental reservation
+  adminUpdateReservation: function (id, rentalData) {
+    return axios.put(`/admin/rentals/reservations/${id}`, rentalData);
+  },
+
+  //  Delete Rental reservation, create PastRental, pull reservation from Rental and User, and push reservation to Rental and User pastRentals
+  adminRecordRentalReturn: function (id, reservationData) {
+    return axios.post(`/admin/rentals/reservations/${id}`, reservationData)
+  },
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
   //  TEST GETTING RESERVATION DATA FROM RENTAL QUERY:
   adminGetReservationsFromRental: function (id) {
     return axios.get(`/admin/rentals/reservations/${id}`);

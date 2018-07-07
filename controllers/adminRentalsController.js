@@ -5,7 +5,7 @@ module.exports = {
   findAll: function (req, res) {
     db.Rental
       .find({})
-      .populate("testReservations")
+      .populate("reservations")
       .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -19,10 +19,57 @@ module.exports = {
   getReservations: function (req, res) {
     db.Rental
       .findById({ _id: req.params.id })
-      .populate("testReservations")
+      .populate("reservations")
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+  updateReservation: function (req, res) {
+    db.Reservation
+      .findOneAndUpdate({ _id: req.params.id }, req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+
+  finishReservation: function (req, res) {
+    console.log("Here's the Reservation req.body:")
+    console.log(req.body);
+    db.PastRental
+      .create(req.body)
+      .then(dbModel => {
+        
+        Promise.all([
+          db.User.findOneAndUpdate(
+            { _id: req.body.customerId },
+            {
+              $pull: { reservations: req.body._id },
+              $push: { pastRentals: dbModel._id }
+            },
+            { new: true }
+          ), db.Rental.findOneAndUpdate(
+            { _id: req.body.itemId },
+            {
+              $pull: { reservations: req.body._id },
+              $push: { pastRentals: dbModel._id }
+            },
+            { new: true }
+          ), db.Reservation.deleteOne(
+            { _id: req.params.id }
+          )
+        ])
+          .then(values => {
+            return res.json({ values: values });
+          })
+          .catch(err => res.status(422).json(err));
+
+      })
+      .catch(err => res.status(422).json(err));
+  },
+
+
+
+
+
+
   create: function (req, res) {
     db.Rental
       .create(req.body)
