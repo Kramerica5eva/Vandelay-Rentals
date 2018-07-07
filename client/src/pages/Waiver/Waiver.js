@@ -23,8 +23,8 @@ class Waiver extends Component {
     rent_to: "",
     rental_id: "",
     unix: [],
-    userEmail:"",
-    userName:"John Smith",
+    userEmail: "",
+    userName: "John Smith",
     fullName: ""
   };
 
@@ -53,23 +53,23 @@ class Waiver extends Component {
   }
 
   createRequest = () => {
-    API.createSignatureRequest(this.state.userEmail,this.state.userName)
-       .then((response) => {
+    API.createSignatureRequest(this.state.userEmail, this.state.userName)
+      .then((response) => {
         console.log("REESPONSE1 AFTER AXIOS:");
         console.log(response);
         if (response.data.success) {
           this.openRequest(response.data.data.signUrl);
         }
-      else {
-        alert(
-          'Something went wrong. Did you enter your ' +
-          'API Key and Client ID correctly?'
-        );
-      }
+        else {
+          alert(
+            'Something went wrong. Did you enter your ' +
+            'API Key and Client ID correctly?'
+          );
+        }
 
-      // Re-enable submit button.
-      document.querySelector("#waiverUpdateBtn").removeAttribute('disabled');
-    });
+        // Re-enable submit button.
+        document.querySelector("#waiverUpdateBtn").removeAttribute('disabled');
+      });
   }
 
   openRequest = (signUrl) => {
@@ -110,26 +110,27 @@ class Waiver extends Component {
             <DevLinks
               loggedIn={this.props.loggedIn}
               admin={this.props.admin}
+              dev={this.props.dev}
               logout={this.props.logout}
               location={this.props.location}
             />
             <div className="form-style">
               <form action="" id="formTest">
                 <Input
-                value={this.state.fullName}
-                onChange={this.handleInputChange}
-                name="fullName"
-                type="text"
-                pattern="^[a-zA-Z0-9]"
-                label="Full Legal Name:"
+                  value={this.state.fullName}
+                  onChange={this.handleInputChange}
+                  name="fullName"
+                  type="text"
+                  pattern="^[a-zA-Z0-9]"
+                  label="Full Legal Name:"
                 />
                 <Input
-                value={this.state.userEmail}
-                onChange={this.handleInputChange}
-                name="email"
-                type="email"
-                label="Email:"
-              />
+                  value={this.state.userEmail}
+                  onChange={this.handleInputChange}
+                  name="email"
+                  type="email"
+                  label="Email:"
+                />
                 <button type="submit" id="waiverUpdateBtn" >Update Waiver</button>
               </form>
             </div>
