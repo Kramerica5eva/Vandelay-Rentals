@@ -132,6 +132,8 @@ li {
 .main-container>.body-container {
     padding: 1% 5% 5% 5%;
     min-height: 55vh;
+    width: calc(100vw + 17px);
+    overflow-x: hidden;
 }
 
 /*  USED FOR THE PARALLAXHEADER COMPONENT */
