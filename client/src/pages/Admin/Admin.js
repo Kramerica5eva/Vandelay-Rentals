@@ -138,6 +138,7 @@ class Admin extends Component {
           <DevLinks
             loggedIn={this.props.loggedIn}
             admin={this.props.admin}
+            dev={this.props.dev}
             logout={this.props.logout}
             location={this.props.location}
           />

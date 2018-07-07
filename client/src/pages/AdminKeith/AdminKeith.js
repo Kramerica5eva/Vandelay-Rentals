@@ -144,12 +144,13 @@ class Admin extends Component {
         />
         <Header>
           <h1>Vandelay Admin Page</h1>
-          <DevLinks
-            loggedIn={this.props.loggedIn}
-            admin={this.props.admin}
-            logout={this.props.logout}
-            location={this.props.location}
-          />
+            <DevLinks
+              loggedIn={this.props.loggedIn}
+              admin={this.props.admin}
+              dev={this.props.dev}
+              logout={this.props.logout}
+              location={this.props.location}
+            />
         </Header>
         <div>
 

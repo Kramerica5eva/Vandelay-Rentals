@@ -57,7 +57,8 @@ export class LoginForm extends Component {
               loggedIn: true,
               username: res.data.username,
               firstName: res.data.firstName,
-              admin: res.data.admin
+              admin: res.data.admin,
+              dev: res.data.dev
             }
           });
           // Once logged in, set this.state.redirect to true so the component will reload and trigger the if/else to redirect elsewhere

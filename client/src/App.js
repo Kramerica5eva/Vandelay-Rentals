@@ -69,6 +69,7 @@ class App extends Component {
     username: null,
     firstName: null,
     admin: false,
+    dev: false,
     categories: null
   };
 
@@ -97,6 +98,7 @@ class App extends Component {
               username: res.data.username,
               firstName: res.data.firstName,
               admin: res.data.admin,
+              dev: res.data.dev,
               categories: categories.data
             });
           })
@@ -107,7 +109,8 @@ class App extends Component {
           loggedIn: false,
           username: null,
           firstName: null,
-          admin: false
+          admin: false,
+          dev: false
         });
       }
     });
@@ -132,6 +135,7 @@ class App extends Component {
             loggedIn: false,
             username: null,
             admin: false,
+            dev: false,
             firstName: null
           }
         });
@@ -152,6 +156,7 @@ class App extends Component {
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
+                  dev={this.state.dev}
                   logout={this.logout}
                 />
               </Fragment>
@@ -166,6 +171,7 @@ class App extends Component {
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
+                  dev={this.state.dev}
                   logout={this.logout}
                 />
               </Fragment>
@@ -180,6 +186,7 @@ class App extends Component {
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
+                  dev={this.state.dev}
                   logout={this.logout}
                 />
               </Fragment>
@@ -194,6 +201,7 @@ class App extends Component {
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
+                  dev={this.state.dev}
                   logout={this.logout}
                 />
               </Fragment>
@@ -208,6 +216,7 @@ class App extends Component {
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
+                  dev={this.state.dev}
                   logout={this.logout}
                   loginShow={false}
                 />
@@ -223,6 +232,7 @@ class App extends Component {
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
+                  dev={this.state.dev}
                   logout={this.logout}
                   loginShow={true}
                 />
@@ -234,6 +244,7 @@ class App extends Component {
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
               admin: this.state.admin,
+              dev: this.state.dev,
               logout: this.logout
             })}
           />
@@ -242,6 +253,7 @@ class App extends Component {
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
               admin: this.state.admin,
+              dev: this.state.dev,
               logout: this.logout
             })}
           />
@@ -250,6 +262,7 @@ class App extends Component {
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
               admin: this.state.admin,
+              dev: this.state.dev,
               logout: this.logout
             })}
           />
@@ -258,6 +271,7 @@ class App extends Component {
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
               admin: this.state.admin,
+              dev: this.state.dev,
               logout: this.logout
             })}
           />
@@ -266,6 +280,7 @@ class App extends Component {
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
               admin: this.state.admin,
+              dev: this.state.dev,
               logout: this.logout
             })}
           />
@@ -276,6 +291,7 @@ class App extends Component {
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
               admin: this.state.admin,
+              dev: this.state.dev,
               logout: this.logout
             })}
           />
@@ -284,6 +300,7 @@ class App extends Component {
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
               admin: this.state.admin,
+              dev: this.state.dev,
               logout: this.logout
             })}
           />
@@ -292,6 +309,7 @@ class App extends Component {
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
               admin: this.state.admin,
+              dev: this.state.dev,
               logout: this.logout
             })}
           />
@@ -300,6 +318,7 @@ class App extends Component {
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
               admin: this.state.admin,
+              dev: this.state.dev,
               logout: this.logout
             })}
           />
@@ -308,6 +327,7 @@ class App extends Component {
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
               admin: this.state.admin,
+              dev: this.state.dev,
               logout: this.logout,
               categories: this.state.categories,
               setCategories: this.setCategories
@@ -325,6 +345,7 @@ class App extends Component {
                   loggedIn={this.state.loggedIn}
                   firstName={this.state.firstName}
                   admin={this.state.admin}
+                  dev={this.state.dev}
                   logout={this.logout}
                 />
               </Fragment>

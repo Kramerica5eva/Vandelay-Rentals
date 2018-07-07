@@ -42,7 +42,8 @@ const userSchema = new Schema({
 		enum: ['Good', 'Uncertain', 'Banned'],
 		default: 'Good'
 	},
-	admin: { type: Boolean, default: false }
+	admin: { type: Boolean, default: false },
+	dev: { type: Boolean, default: false }
 });
 
 // Define schema methods
