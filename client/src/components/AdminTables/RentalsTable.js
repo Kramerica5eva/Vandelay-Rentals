@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Select, Label, Option } from "../Elements/Form";
+import { Input, FormBtn, Label } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import ImageModal from "../../components/Elements/ImageModal";
@@ -13,37 +13,32 @@ import { ReservationsTable } from './ReservationsTable';
 
 const CheckboxTable = checkboxHOC(ReactTable);
 
-
-// seeReservations and seePastRentals functions (ctrl+f 'seeReservations' & 'seePastRentals') will need to be updated once Ben's calendar/Date functionality is in place
-
 export class RentalsTable extends Component {
-  constructor() {
-    super();
-    this.state = {
-      modal: {
-        isOpen: false,
-        header: "",
-        body: "",
-        footer: ""
-      },
-      imageModal: {
-        isOpen: false,
-        header: "",
-        body: "",
-        footer: ""
-      },
-      currentReservations: null,
-      category: "",
-      images: [],
-      selectedFile: null,
-      image: null,
-      rentals: [],
-      selection: [],
-      selectedRow: {}
-    };
-  }
+  state = {
+    modal: {
+      isOpen: false,
+      header: "",
+      body: "",
+      footer: ""
+    },
+    imageModal: {
+      isOpen: false,
+      header: "",
+      body: "",
+      footer: ""
+    },
+    currentReservations: null,
+    category: "",
+    condition: "",
+    images: [],
+    selectedFile: null,
+    image: null,
+    rentals: [],
+    selection: [],
+    selectedRow: {}
+  };
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.adminGetAllRentals();
   }
 
@@ -104,7 +99,8 @@ export class RentalsTable extends Component {
         // set state for rentals, but also empty selection - selection is where the selected (highlighted) row _id is kept. This unselects the row - when a row is selected and the data is updated, it calls this function (adminGetAllRentals), and emptying this.state.selected results in unselecting the row, which works as a visual cue that an update operation is complete.
         this.setState({
           rentals: res.data,
-          selection: []
+          selection: [],
+          selectedRow: {}
         });
       })
       .catch(err => console.log(err));
@@ -215,15 +211,8 @@ export class RentalsTable extends Component {
       .catch(err => console.log(err));
   };
 
-  handleDropdownChange = event => {
-    console.log(event.target.value);
-    this.setState({ value: event.target.value });
-    this.toggleModal();
-    this.categoryModal();
-  }
-
   //  Gets modal with the change category form - category is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
-  categoryModal = () => {
+  rentalCategoryModal = () => {
     this.setModal({
       header: "Change Category",
       body:
@@ -245,7 +234,7 @@ export class RentalsTable extends Component {
               <Label htmlFor="category">Change Category</Label>
             </div>
             <FormBtn
-              onClick={this.changeCategory}
+              onClick={this.changeRentalCategory}
             >
               Submit
             </FormBtn>
@@ -255,7 +244,7 @@ export class RentalsTable extends Component {
   }
 
   //  Submits changes made in category modal
-  changeCategory = e => {
+  changeRentalCategory = e => {
     e.preventDefault();
     const { _id } = this.state.selectedRow;
     API.adminUpdateRental(_id, { category: this.state.category })
@@ -265,9 +254,54 @@ export class RentalsTable extends Component {
       });
   }
 
+  //  Gets modal with the change category form - category is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
+  rentalConditionModal = () => {
+    this.setModal({
+      header: "Change Condition",
+      body:
+        <Fragment>
+          <form>
+            {/* using the Select and Option components in a modal seems to make everything stop working... */}
+            <div className="group group-select">
+              <select
+                name="condition"
+                label="Change Condition:"
+                // for some reason, setting the select value to this.state.category (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
+                onChange={this.handleInputChange}
+              >
+                <option></option>
+                <option>New</option>
+                <option>Good</option>
+                <option>Working</option>
+                <option>Disrepair</option>
+                <option>Retired</option>
+              </select>
+              <Label htmlFor="condition">Submit</Label>
+            </div>
+            <FormBtn
+              onClick={this.changeRentalCondition}
+            >
+              Submit
+            </FormBtn>
+          </form>
+        </Fragment>
+    })
+  }
+
+  //  Submits changes made in category modal
+  changeRentalCondition = e => {
+    e.preventDefault();
+    const { _id } = this.state.selectedRow;
+    API.adminUpdateRental(_id, { condition: this.state.condition })
+      .then(res => {
+        this.adminGetAllRentals();
+        this.toggleModal();
+      });
+  }
+
   //  IMAGE CRUD OPERATIONS FUNCTIONS
   // Gets the modal with the image upload form
-  getUploadModal = () => {
+  getImageUploadModal = () => {
     this.setModal({
       header: "Upload an image",
       body:
@@ -282,7 +316,7 @@ export class RentalsTable extends Component {
               onChange={this.fileSelectedHandler}
             />
             <FormBtn
-              onClick={this.handleUpload}
+              onClick={this.handleImageUpload}
             >
               Submit
           </FormBtn>
@@ -301,7 +335,7 @@ export class RentalsTable extends Component {
   };
 
   //  When the submit button on the image upload modal is pressed, the image is uploaded into the db
-  handleUpload = event => {
+  handleImageUpload = event => {
     event.preventDefault();
     //  the row must be selected (checkbox and highlighted) for this to work
     const { _id } = this.state.selectedRow;
@@ -310,7 +344,7 @@ export class RentalsTable extends Component {
     API.uploadImage(_id, fd).then(res => {
       console.log(res);
       this.toggleModal();
-      this.getUploadModal();
+      this.getImageUploadModal();
     });
   }
 
@@ -358,47 +392,6 @@ export class RentalsTable extends Component {
   }
   //  END - IMAGE CRUD OPERATIONS FUNCTIONS
 
-  // See Reservations - functionality will be completed once calendar functions (Ben) are ready.
-  seeReservations = () => {
-    const { _id } = this.state.selectedRow;
-    API.adminGetReservationsFromRental(_id)
-      .then(res => {
-        console.log(res);
-        this.setState({ currentReservations: res.data.reservations });
-      })
-      .catch(err => console.log(err));
-  }
-
-  // See Past Rentals - functionality will be completed once calendar functions (Ben) are ready.
-  seePastRentals = () => {
-    const { _id } = this.state.selectedRow;
-    API.adminGetRentalsById(_id)
-      .then(res => {
-        if (res.data.pastRentals.length > 0) {
-          this.setModal({
-            header: "Past Rentals",
-            body:
-              <Fragment>
-                <ul>
-                  {res.data.pastRentals.map((past, i) => (
-                    <li key={i}>
-                      <p>From: {past.from}</p>
-                      <p>To: {past.to}</p>
-                    </li>
-                  ))}
-                </ul>
-              </Fragment>
-          })
-        } else {
-          this.setModal({
-            header: "Past Rentals",
-            body: <h3>No past rentals to display</h3>
-          })
-        }
-      })
-      .catch(err => console.log(err));
-  }
-
 
   render() {
     //  destructure from 'this' because the props object doesn't like 'this.anything' unless it's in a key:value pair
@@ -443,21 +436,20 @@ export class RentalsTable extends Component {
 
         <h2>Rentals Table</h2>
 
-        {/* if no rows have been selected, button remains disabled;
+        {/* if no rows have been selected, buttons remain disabled;
         otherwise, clicking the button without anything selected results in an error */}
-        <button
-          disabled={this.state.selection.length === 0}
-          onClick={this.updateSelectedRow}>
-          Update Selected Row
-        </button>
-        <button onClick={this.props.toggleRentals}>Hide Table</button>
-        <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
-
         <div className="table-btn-div">
-          <button disabled={this.state.selection.length === 0} onClick={this.seeReservations}>See Current Reservations</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.seePastRentals}>See Past Rentals</button>
+          <button onClick={this.props.toggleRentals}>Hide Table</button>
+          <button
+            disabled={this.state.selection.length === 0}
+            onClick={this.updateSelectedRow}>
+            Update Selected Row
+          </button>
+          <button disabled={this.state.selection.length === 0} onClick={this.rentalCategoryModal}>Change Selected Item Category</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.rentalConditionModal}>Change Selected Item Condition</button>
           <button disabled={this.state.selection.length === 0} onClick={this.getImageNames}>Get Images</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.getUploadModal}>Upload an Image</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.getImageUploadModal}>Upload an Image</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
         </div>
 
         <CheckboxTable
@@ -489,10 +481,7 @@ export class RentalsTable extends Component {
                 },
                 {
                   Header: "Category",
-                  accessor: "category",
-                  Cell: row => {
-                    return <button className="table-btn-invis" onClick={this.categoryModal}>{row.value}</button>
-                  }
+                  accessor: "category"
                 },
                 {
                   Header: "Manufacturer",
@@ -526,8 +515,7 @@ export class RentalsTable extends Component {
                 },
                 {
                   Header: "Condition",
-                  accessor: "condition",
-                  Cell: this.renderEditable
+                  accessor: "condition"
                 }
               ]
             },

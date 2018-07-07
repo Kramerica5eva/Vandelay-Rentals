@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { Input, FormBtn, Select, Label, Option } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import ReactTable from "react-table";
@@ -21,6 +22,9 @@ export class TestTable extends Component {
         body: "",
         footer: ""
       },
+      password: "",
+      confirmPassword: "",
+      standing: "",
       users: [],
       selection: [],
       selectedRow: {}
@@ -48,19 +52,124 @@ export class TestTable extends Component {
     });
   }
 
+  // Standard input change controller
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
   adminGetAllUsers = () => {
     API.adminGetAllUsers()
       .then(res => {
         console.log(res);
         this.setState({
-          users: res.data
+          users: res.data,
+          selection: [],
+          selectedRow: {}
         });
         console.log(this.state.users);
       })
       .catch(err => console.log(err));
   };
 
-  //  Select Table HOC functions
+  changePwModal = () => {
+    this.setModal({
+      header: "Change User Password",
+      body:
+        <Fragment>
+          <form>
+            <input
+              name="password"
+              onChange={this.handleInputChange}
+              type="text"
+            />
+            <Label htmlFor="password">Password:</Label>
+            <input
+              name="confirmPassword"
+              onChange={this.handleInputChange}
+              type="text"
+            />
+            <Label htmlFor="confirmPassword">Confirm Password:</Label>
+            <FormBtn onClick={this.handlePasswordFormSubmit}>
+              Submit
+            </FormBtn>
+          </form>
+        </Fragment>
+    })
+  }
+
+  handlePasswordFormSubmit = event => {
+    console.log("Changing password...")
+    const { _id } = this.state.selectedRow;
+    event.preventDefault();
+    API.adminUpdateUser(_id, { password: this.state.password })
+      .then(res => {
+        console.log(res);
+        if (res.status === 200) {
+          this.setModal({
+            header: "Success!",
+            body: <h3>Password successfully changed</h3>
+          })
+        } else {
+          this.setModal({
+            header: "Error!",
+            body:
+              <Fragment>
+                <h3>Something went wrong</h3>
+                <h4>Please try again</h4>
+              </Fragment>
+          })
+        }
+      });
+  }
+
+  userStandingModal = () => {
+    if (Object.keys(this.state.selectedRow).length !== 0) {
+      this.setModal({
+        header: "Change Customer Standing",
+        body:
+          <Fragment>
+            <form>
+              {/* using the Select and Option components in a modal seems to make everything stop working... */}
+              <div className="group group-select">
+                <select
+                  name="standing"
+                  label="Change Category:"
+                  // for some reason, setting the select value to this.state.category (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
+                  onChange={this.handleInputChange}
+                >
+                  <option></option>
+                  <option>Good</option>
+                  <option>Uncertain</option>
+                  <option>Banned</option>
+                </select>
+                <Label htmlFor="standing">Submit</Label>
+              </div>
+              <FormBtn
+                onClick={this.handleStandingFormSubmit}
+              >
+                Submit
+              </FormBtn>
+            </form>
+          </Fragment>
+      })
+    }
+  }
+
+  handleStandingFormSubmit = e => {
+    e.preventDefault();
+    const { _id } = this.state.selectedRow;
+    API.adminUpdateUser(_id, { standing: this.state.standing })
+      .then(res => {
+        this.adminGetAllUsers();
+        this.toggleModal();
+      });
+
+  }
+
+  //  REACT-TABLE: SELECT TABLE HOC FUNCTIONS
 
   toggleSelection = (key, shift, row) => {
     let selection = [...this.state.selection];
@@ -164,10 +273,12 @@ export class TestTable extends Component {
         {/* <h2>All Users</h2> */}
         <h2>Test Users Table</h2>
 
-        <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
         {/* <button onClick={this.props.toggleUsers}>Hide Table</button> */}
         <button onClick={this.props.toggleTest}>Hide Table</button>
-        <button onClick={this.logSelection}>Log Selection</button>
+        <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
+        <button disabled={this.state.selection.length === 0} onClick={this.changePwModal}>Change Password</button>
+        <button disabled={this.state.selection.length === 0} onClick={this.userStandingModal}>Change User Standing</button>
+        <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
 
         <CheckboxTable
           ref={r => (this.checkboxTable = r)}
@@ -225,8 +336,7 @@ export class TestTable extends Component {
                 },
                 {
                   Header: "Standing",
-                  accessor: "standing",
-                  Cell: this.renderEditable
+                  accessor: "standing"
                 }
               ]
             },

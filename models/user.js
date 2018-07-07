@@ -20,33 +20,18 @@ const userSchema = new Schema({
 		filepath: String,
 		signed: Boolean
 	}],
-	// reservations: [{
-	// 	itemId: String,
-	// 	date: {
-	// 		from: Number,
-	// 		to: Number
-	// 	}
-	// }],
-
-	//	Remove if testing doesn't work out
 	reservations: [{
 		type: Schema.Types.ObjectId,
 		ref: "Reservation"
 	}],
-
 	registrations: [{
 		type: Schema.Types.ObjectId,
 		ref: "Registration"
 	}],
-	//	END remove if...
-
-	pastRentals: [{
-		itemId: String,
-		date: {
-			from: Number,
-			to: Number
-		}
-	}],
+  pastRentals: [{
+    type: Schema.Types.ObjectId,
+    ref: "PastRental"
+  }],
 	purchases: [{
 		itemId: String,
 		date: Number,

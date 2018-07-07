@@ -29,8 +29,10 @@ module.exports = {
 
   //  This function gets data from admin tables and updates the db
   update: function (req, res) {
-    const pw = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null);
-    req.body.password = pw;
+    if (req.body.password) {
+      const pw = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null);
+      req.body.password = pw;
+    }
     db.User
       .findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
