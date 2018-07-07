@@ -39,7 +39,7 @@ class Home extends Component {
         />
         <div className="main-container">
           <ParallaxHero
-            image={{ backgroundImage: 'url(https://images.unsplash.com/uploads/1412701079442fffb7c1a/6b7a62a4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=63428fdde80191f1d2299d803dfe61c3&auto=format&fit=crop&w=1350&q=80)' }}
+            image={{ backgroundImage: 'url(./static/assets/images/kayak_on_lake_mountain.jpeg)' }}
             title="Vandelay Rentals"
           />
 
@@ -89,10 +89,12 @@ class Home extends Component {
             </div>
           </div>
           <ParallaxHero
-            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1499858476316-343e284f1f67?ixlib=rb-0.3.5&s=4985c13dbbf85d7d0f5b90df50ea8695&auto=format&fit=crop&w=1350&q=80)' }}
-            title="About our Company"
+            image={{ backgroundImage: 'url(./static/assets/images/overhead_paddleboarder_zoomed_out.jpeg)' }}
+            title=""
           />
+
           <div className='body-container'>
+          <h1 id="about-us-para-header">About Our Company</h1>
             <div className='about-us'>
               <h3>Designed and Built for your Business</h3>
               <p>This website stated as a proof of concept for a local water sports rental shop. Their problem was they needed a website that allowed their users the ability to shop and rent items from home, but also provide a useful in-store interface.</p>

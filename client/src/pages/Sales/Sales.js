@@ -52,7 +52,7 @@ class Sales extends Component {
         />
         <div className="main-container">
           <ParallaxHero
-            image={{ backgroundImage: 'url(./assets/images/manAndDog.jpg)' }}
+            image={{ backgroundImage: 'url(./static/assets/images/boats_on_beach.jpeg)' }}
             //image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1499936324534-c3e0da6694eb?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c3766361d47840f16392e54c4ea7cbb2&auto=format&fit=crop&w=800&q=80)' }}
             title="PURCHASE"
           />
@@ -64,7 +64,7 @@ class Sales extends Component {
               location={this.props.location}
             />
           </Header>
-          <div className='body-container'>
+          <div className='body-container sales'>
             <h2>Purchase Items:</h2>
             <ul>
               {this.state.saleItems.filter(saleItem => saleItem.status === 'Available').map(item => (

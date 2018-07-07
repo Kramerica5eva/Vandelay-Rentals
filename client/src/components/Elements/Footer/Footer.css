@@ -1,13 +1,14 @@
 .footer {
     align-items: center;
-    background: rgba(129, 129, 129, 0.644);
+    /* background: rgba(129, 129, 129, 0.644); */
+    background: rgba(78, 80, 216, 0.788);
     /* bottom: 0px; */
     color: white;
     display: flex;
     height: 50px;
     font-weight: bold;
     font-family: 'Raleway', sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.0rem;
     justify-content: space-between;
     align-content: center;
     position: relative;
@@ -32,4 +33,20 @@
 .footer a {
     color: white;
     text-decoration: none;
+}
+
+
+/* Screens larger than 320 */
+@media (min-width: 700px) {
+    .footer {
+        font-size: 1.2rem
+    }
+}
+
+
+/* Screens larger than 320 */
+@media (min-width: 1000px) {
+    .footer {
+        font-size: 1.4rem
+    }
 }
