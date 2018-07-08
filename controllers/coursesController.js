@@ -72,8 +72,6 @@ module.exports = {
       .catch(err => res.json(err));
   },
 
-
-
   removeCourseRegistration: function (req, res) {
     console.log("Here's the course req.body:")
     console.log(req.body);

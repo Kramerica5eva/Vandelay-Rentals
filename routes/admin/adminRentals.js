@@ -10,13 +10,16 @@ router.route('/')
 // Matches with '/admin/rentals/:id'
 router
   .route('/:id')
-  .get(isAdmin, adminRentalsController.findById)
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT - 'GET'
+  // .get(isAdmin, adminRentalsController.findById)
   .put(isAdmin, adminRentalsController.update)
   .delete(isAdmin, adminRentalsController.remove);
 
+// Matches with '/admin/rentals/reservations/:id'
 router
   .route('/reservations/:id')
-  .get(isAdmin, adminRentalsController.getReservations)
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT - 'GET'
+  // .get(isAdmin, adminRentalsController.getReservations)
   .put(isAdmin, adminRentalsController.updateReservation)
   .post(isAdmin, adminRentalsController.finishReservation);
   

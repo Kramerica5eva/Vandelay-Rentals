@@ -14,29 +14,31 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  findByCategory: function (req, res) {
-    db.Sale
-      .find({ category: req.params.category })
-      .then(dbModel => {
-        console.log(dbModel);
-        const salesArray = filterSalesItemData(dbModel);
-        res.json(salesArray);
-      })
-      .catch(err => res.status(422).json(err));
-  },
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
+  // findByCategory: function (req, res) {
+  //   db.Sale
+  //     .find({ category: req.params.category })
+  //     .then(dbModel => {
+  //       console.log(dbModel);
+  //       const salesArray = filterSalesItemData(dbModel);
+  //       res.json(salesArray);
+  //     })
+  //     .catch(err => res.status(422).json(err));
+  // },
 
-  findById: function (req, res) {
-    db.Sale
-      .findById(req.params.id)
-      .then(dbModel => {
-        console.log(dbModel);
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
+  // findById: function (req, res) {
+  //   db.Sale
+  //     .findById(req.params.id)
+  //     .then(dbModel => {
+  //       console.log(dbModel);
 
-        //  functionality to limit what info gets sent to users
+  //       //  functionality to limit what info gets sent to users
 
-        res.json(dbModel);
-      })
-      .catch(err => res.status(422).json(err));
-  },
+  //       res.json(dbModel);
+  //     })
+  //     .catch(err => res.status(422).json(err));
+  // },
 
 };
 

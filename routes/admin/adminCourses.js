@@ -10,9 +10,14 @@ router.route('/')
 // Matches with '/admin/courses/:id'
 router
   .route('/:id')
-  .get(isAdmin, adminCoursesController.findById)
+  // .get(isAdmin, adminCoursesController.findById)
   .put(isAdmin, adminCoursesController.update)
   .delete(isAdmin, adminCoursesController.remove);
+  
+// Matches with '/admin/courses/registrations/:id'
+router
+.route('/registrations/:id')
+.put(isAdmin, adminCoursesController.updateRegistration);
   
   function isAdmin(req, res, next) {
     if (req.user.admin)

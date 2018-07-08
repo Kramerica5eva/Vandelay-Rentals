@@ -12,21 +12,15 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  findById: function (req, res) {
-    db.User
-      .findById(req.params.id)
-      .populate('reservations')
-      .populate('registrations')
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  create: function (req, res) {
-    db.User
-      .create(req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
+  // findById: function (req, res) {
+  //   db.User
+  //     .findById(req.params.id)
+  //     .populate('reservations')
+  //     .populate('registrations')
+  //     .then(dbModel => res.json(dbModel))
+  //     .catch(err => res.status(422).json(err));
+  // },
   //  This function gets data from admin tables and updates the db
   update: function (req, res) {
     if (req.body.password) {

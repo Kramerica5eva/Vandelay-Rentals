@@ -70,7 +70,6 @@ module.exports = {
   },
 
   breakReservation: function (req, res) {
-
     db.Reservation
       .deleteOne({ _id: req.params.id })
       .then(() => {
@@ -79,8 +78,7 @@ module.exports = {
             { _id: req.body.itemId },
             { $pull: { reservations: req.params.id } },
             { new: true }
-          ),
-          db.User.findByIdAndUpdate(
+          ), db.User.findByIdAndUpdate(
             { _id: req.body.customerId },
             { $pull: { reservations: req.params.id } },
             { new: true }
@@ -90,14 +88,6 @@ module.exports = {
             res.send({ values: values })
           })
       })
-      .catch(err => res.status(422).json(err));
-  },
-
-  remove: function (req, res) {
-    db.Rental
-      .findById({ _id: req.params.id })
-      .then(dbModel => dbModel.remove())
-      .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
 
