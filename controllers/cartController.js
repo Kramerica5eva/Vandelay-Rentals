@@ -2,9 +2,11 @@ const db = require('../models');
 
 // Defining methods for the coursesController
 module.exports = {
-  findAll: function (req, res) {
 
-  },
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
+  // findAll: function (req, res) {
+
+  // },
 
   findUserCart: function (req, res) {
     db.ShoppingCart.findOne({ customerId: req.user._id })
@@ -12,11 +14,9 @@ module.exports = {
       .populate("tempReservations")
       .then(cart => res.json(cart))
       .catch(err => res.json(err));
-
   },
 
   addRegistrationToCart: function (req, res) {
-
     console.log("Course req.body:")
     console.log(req.body);
 
@@ -57,7 +57,6 @@ module.exports = {
   },
 
   addReservationToCart: function (req, res) {
-
     console.log("Rental req.body:")
     console.log(req.body);
 

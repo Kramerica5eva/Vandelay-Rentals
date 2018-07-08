@@ -8,6 +8,13 @@ const CheckboxTable = checkboxHOC(ReactTable);
 
 export class RegistrationsTable extends Component {
   state = {
+    modal: {
+      isOpen: false,
+      header: "",
+      body: "",
+      footer: ""
+    },
+    runUnmount: false,
     registrations: this.props.registrations,
     selection: [],
     selectedRow: {}
@@ -16,12 +23,31 @@ export class RegistrationsTable extends Component {
 
   componentWillUnmount = () => {
     // the cancelRegistration method deletes the registration from the database, and it also filters the deleted data from this.props.registrations and then sets state. But without querying the database, when the component reloads this.state.registrations would still contain the ones that were deleted. So, if there has been a change (props.registrations.length is > state.registrations.length), the adminGetAllUsers() method is called on the parent component. 
-    const { registrations } = this.props;
-    if (registrations.length > this.state.registrations.length) {
+    if (this.state.runUnmount) {
       console.log("Registrations Unmount Running!");
       this.props.adminGetAllUsers();
     }
   }
+
+  // MODAL TOGGLE FUNCTIONS
+  toggleModal = () => {
+    this.setState({
+      modal: { isOpen: !this.state.modal.isOpen }
+    });
+  }
+
+  //  isOpen MUST be set to true for the setModal function, and NOT '!this.state.modal.isOpen' as in the toggleModal function, otherwise select/option tags (dropdowns) won't work properly inside the modal: the dropdown is always a step behind populating from state (the selection won't display what you've chosen until you close and reopen the modal).
+  setModal = (modalInput) => {
+    this.setState({
+      modal: {
+        isOpen: true,
+        header: modalInput.header,
+        body: modalInput.body,
+        footer: modalInput.footer
+      }
+    });
+  }
+  // END MODAL TOGGLE FUNCTIONS
 
   //  REACT-TABLE: SELECT TABLE HOC FUNCTIONS
   //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
@@ -78,6 +104,27 @@ export class RegistrationsTable extends Component {
       .catch(err => console.log(err));
   }
 
+  //  If registration is paid: false, flips it to true, and vice-versa
+  toggleRegistrationPaid = () => {
+    const { _id, paid } = this.state.selectedRow;
+    API.adminUpdateRegistration(_id, { paid: !paid })
+      .then(res => {
+        console.log(res)
+        this.state.registrations.map(reg => {
+          if (reg._id === _id) {
+            reg.paid = !paid
+          }
+          this.setState({
+            selection: [],
+            selectedRow: {},
+            runUnmount: true
+          })
+        })
+
+      })
+      .catch(err => console.log(err));
+  }
+
   render() {
     //  destructure from 'this' because the props object doesn't like 'this.anything' unless it's in a key:value pair
     const { toggleSelection, isSelected } = this;
@@ -85,10 +132,13 @@ export class RegistrationsTable extends Component {
 
     if (this.state.registrations.length > 0) {
       this.state.registrations.map(registration => {
-
-        registration.amtDue = "$" + parseFloat(registration.price.$numberDecimal).toFixed(2);
-        if (registration.paid) registration.hasPaid = "True";
-        else registration.hasPaid = "False";
+        if (registration.paid) {
+          registration.hasPaid = "True";
+          registration.amtDue = "$0.00";
+        } else {
+          registration.hasPaid = "False";
+          registration.amtDue = "$" + parseFloat(registration.price.$numberDecimal).toFixed(2);
+        }
       })
     }
 
@@ -123,7 +173,7 @@ export class RegistrationsTable extends Component {
 
         <div className="table-btn-div">
           <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.payRegistration}>Log Payment</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.toggleRegistrationPaid}>Log Payment</button>
           <button disabled={this.state.selection.length === 0} onClick={this.cancelRegistration}>Cancel Registration</button>
         </div>
         <CheckboxTable

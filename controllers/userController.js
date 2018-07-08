@@ -42,7 +42,6 @@ module.exports = {
       return res.json({ error: 'did not validate' });
     }
 
-
     // ADD VALIDATION
     db.User.findOne({ username: username }, (err, user) => {
       if (err) {
@@ -108,35 +107,5 @@ module.exports = {
         res.json(res);
       })
   },
-
-  addReservation: function (req, res) {
-    console.log("UserID: " + req.user._id);
-    console.log("ItemID: " + req.params.id);
-    console.log("From: " + req.params.from);
-    console.log("To: " + req.params.to);
-    db.User.findOneAndUpdate({ _id: req.user._id },
-      {
-        $push: {
-          reservations: {
-            itemId: req.params.id,
-            date: {
-              from: parseInt(req.params.from),
-              to: parseInt(req.params.to)
-            }
-          }
-        }
-      },
-      { new: true }
-
-    )
-      .then(dbModel => {
-        console.log(dbModel);
-
-        //  functionality to limit what info gets sent to users
-
-        res.json(dbModel);
-      })
-      .catch(err => res.status(422).json(err));
-  }
 
 }

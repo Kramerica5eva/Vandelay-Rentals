@@ -6,30 +6,32 @@ module.exports = {
     db.Rental
       .find({})
       .populate("reservations")
+      .populate("pastRentals")
       .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  findById: function (req, res) {
-    db.Rental
-      .findById(req.params.id)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  getReservations: function (req, res) {
-    db.Rental
-      .findById({ _id: req.params.id })
-      .populate("reservations")
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
+  // findById: function (req, res) {
+  //   db.Rental
+  //     .findById(req.params.id)
+  //     .then(dbModel => res.json(dbModel))
+  //     .catch(err => res.status(422).json(err));
+  // },
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
+  // getReservations: function (req, res) {
+  //   db.Rental
+  //     .findById({ _id: req.params.id })
+  //     .populate("reservations")
+  //     .then(dbModel => res.json(dbModel))
+  //     .catch(err => res.status(422).json(err));
+  // },
   updateReservation: function (req, res) {
     db.Reservation
       .findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-
   finishReservation: function (req, res) {
     console.log("Here's the Reservation req.body:")
     console.log(req.body);
@@ -65,19 +67,12 @@ module.exports = {
       })
       .catch(err => res.status(422).json(err));
   },
-
-
-
-
-
-
   create: function (req, res) {
     db.Rental
       .create(req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-
   update: function (req, res) {
     db.Rental
       .findOneAndUpdate({ _id: req.params.id }, req.body)

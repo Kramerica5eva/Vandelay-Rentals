@@ -27,10 +27,12 @@ const storage = new GridFsStorage({
 });
 const upload = multer({ storage });
 
+
 // Matches with '/file/image'
 router.route('/names/:id')
   .get(isAdmin, imageController.findAll);
 
+// This route is called in the img tag src attribute
 router.route('/:filename')
   .get(isAdmin, imageController.findById);
 
