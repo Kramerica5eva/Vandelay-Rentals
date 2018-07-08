@@ -9,9 +9,7 @@ import checkboxHOC from "react-table/lib/hoc/selectTable";
 const CheckboxTable = checkboxHOC(ReactTable);
 
 export class CoursesTable extends Component {
-  constructor() {
-    super();
-    this.state = {
+  state = {
       modal: {
         isOpen: false,
         header: "",
@@ -23,7 +21,6 @@ export class CoursesTable extends Component {
       selection: [],
       selectedRow: {}
     };
-  }
 
   componentDidMount() {
     this.adminGetAllCourses();
