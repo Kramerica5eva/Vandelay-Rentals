@@ -49,7 +49,8 @@ module.exports = {
             { _id: req.body.itemId },
             {
               $pull: { reservations: req.body._id },
-              $push: { pastRentals: dbModel._id }
+              $push: { pastRentals: dbModel._id },
+              $inc: { timesRented: 1 } /* if we add rental checkout functionality, this $inc should go there rather than here */
             },
             { new: true }
           ), db.Reservation.deleteOne(

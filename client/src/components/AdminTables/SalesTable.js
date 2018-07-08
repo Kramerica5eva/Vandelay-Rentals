@@ -198,93 +198,96 @@ export class SalesTable extends Component {
           footer={this.state.modal.footer}
         />
 
-        <h2>Sale Items</h2>
+        <div className="main-table-container">
 
-        <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
-        <button onClick={this.props.toggleSaleItems}>Hide Table</button>
-        <button onClick={this.logSelection}>Log Selection</button>
+          <h2>Sale Items</h2>
 
-        <CheckboxTable
-          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
-          ref={r => (this.checkboxTable = r)}
-          data={this.state.sales}
-          columns={[
-            {
-              Header: "Item Data",
-              columns: [
-                {
-                  Header: "Name",
-                  accessor: "name",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Category",
-                  id: "category",
-                  accessor: d => d.category,
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Brand",
-                  accessor: "maker",
-                  Cell: this.renderEditable
-                }
-              ]
-            },
-            {
-              Header: "Money Data",
-              columns: [
-                {
-                  Header: "SKU",
-                  accessor: "sku",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Cost",
-                  accessor: "parsedCost",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Price",
-                  accessor: "parsedPrice",
-                  Cell: this.renderEditable
-                }
-              ]
-            },
-            {
-              Header: 'Condition Data',
-              columns: [
-                {
-                  Header: "Date Acq.",
-                  accessor: "dateAcquired",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Sale Type",
-                  accessor: "saleType",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Condition",
-                  accessor: "condition",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Status",
-                  accessor: "status",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Sale Amt",
-                  accessor: "parsedSale",
-                  Cell: this.renderEditable
-                },
-              ]
-            }
-          ]}
-          defaultPageSize={10}
-          className="-striped -highlight"
-          {...checkboxProps}
-        />
+          <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
+          <button onClick={this.props.toggleSaleItems}>Hide Table</button>
+          <button onClick={this.logSelection}>Log Selection</button>
+
+          <CheckboxTable
+            // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
+            ref={r => (this.checkboxTable = r)}
+            data={this.state.sales}
+            columns={[
+              {
+                Header: "Item Data",
+                columns: [
+                  {
+                    Header: "Name",
+                    accessor: "name",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Category",
+                    id: "category",
+                    accessor: d => d.category,
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Brand",
+                    accessor: "maker",
+                    Cell: this.renderEditable
+                  }
+                ]
+              },
+              {
+                Header: "Money Data",
+                columns: [
+                  {
+                    Header: "SKU",
+                    accessor: "sku",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Cost",
+                    accessor: "parsedCost",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Price",
+                    accessor: "parsedPrice",
+                    Cell: this.renderEditable
+                  }
+                ]
+              },
+              {
+                Header: 'Condition Data',
+                columns: [
+                  {
+                    Header: "Date Acq.",
+                    accessor: "dateAcquired",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Sale Type",
+                    accessor: "saleType",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Condition",
+                    accessor: "condition",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Status",
+                    accessor: "status",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Sale Amt",
+                    accessor: "parsedSale",
+                    Cell: this.renderEditable
+                  },
+                ]
+              }
+            ]}
+            defaultPageSize={10}
+            className="-striped -highlight"
+            {...checkboxProps}
+          />
+        </div>
       </Fragment>
     );
   }

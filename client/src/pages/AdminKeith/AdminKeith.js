@@ -2,9 +2,11 @@ import React, { Component, Fragment } from "react";
 import Header from "../../components/Elements/Header";
 import Modal from "../../components/Elements/Modal";
 import NavBar from "../../components/Elements/NavBar";
+import Footer from "../../components/Elements/Footer";
 import DevLinks from "../../components/DevLinks";
 import { BrandonTestTable, RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
 import { AdminForms } from "../../components/AdminForms";
+import "./Admin.css";
 
 class Admin extends Component {
   state = {
@@ -128,7 +130,7 @@ class Admin extends Component {
 
   render() {
     return (
-      <Fragment>
+      <div className="tables-page-container">
         <Modal
           show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
@@ -144,13 +146,13 @@ class Admin extends Component {
         />
         <Header>
           <h1>Vandelay Admin Page</h1>
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
+          <DevLinks
+            loggedIn={this.props.loggedIn}
+            admin={this.props.admin}
+            dev={this.props.dev}
+            logout={this.props.logout}
+            location={this.props.location}
+          />
         </Header>
         <div>
 
@@ -218,7 +220,7 @@ class Admin extends Component {
 
 
         </div>
-      </Fragment>
+      </div>
     );
   }
 }
