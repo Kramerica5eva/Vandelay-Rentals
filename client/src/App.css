@@ -134,6 +134,7 @@ li {
     min-height: 55vh;
     width: calc(100vw + 17px);
     overflow-x: hidden;
+    margin-left: -8px;
 }
 
 /*  USED FOR THE PARALLAXHEADER COMPONENT */
@@ -166,3 +167,10 @@ li {
 }
 
 /* end Dev links styling */
+
+/* @media (min-width: 750px) {
+    .main-container>.body-container {
+        width: calc(100vw + 17px);
+        overflow-x: hidden;
+    }
+} */
