@@ -270,116 +270,119 @@ export class TestTable extends Component {
           footer={this.state.modal.footer}
         />
 
-        {/* <h2>All Users</h2> */}
-        <h2>Test Users Table</h2>
+        <div className="main-table-container">
 
-        {/* <button onClick={this.props.toggleUsers}>Hide Table</button> */}
-        <button onClick={this.props.toggleTest}>Hide Table</button>
-        <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
-        <button disabled={this.state.selection.length === 0} onClick={this.changePwModal}>Change Password</button>
-        <button disabled={this.state.selection.length === 0} onClick={this.userStandingModal}>Change User Standing</button>
-        <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
+          {/* <h2>All Users</h2> */}
+          <h2>Test Users Table</h2>
 
-        <CheckboxTable
-          ref={r => (this.checkboxTable = r)}
-          data={this.state.users}
-          filterable
-          SubComponent={row => {
-            console.log(row);
-            //  thisReservation grabs the reservations from this.state.rentals that matches the row index - it grabs the reservations for this rental item.
-            const thisRow = this.state.users[row.row._index];
+          {/* <button onClick={this.props.toggleUsers}>Hide Table</button> */}
+          <button onClick={this.props.toggleTest}>Hide Table</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.changePwModal}>Change Password</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.userStandingModal}>Change User Standing</button>
+          <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
 
-            return (
-              <Fragment>
-                {thisRow.reservations.length > 0 ? (
-                  <ReservationsTable
-                    forName={`${thisRow.firstName} ${thisRow.lastName}`}
-                    reservations={thisRow.reservations}
-                    adminGetAllUsers={this.adminGetAllUsers}
-                  />
-                ) : null}
+          <CheckboxTable
+            ref={r => (this.checkboxTable = r)}
+            data={this.state.users}
+            filterable
+            SubComponent={row => {
+              console.log(row);
+              //  thisReservation grabs the reservations from this.state.rentals that matches the row index - it grabs the reservations for this rental item.
+              const thisRow = this.state.users[row.row._index];
 
-                {thisRow.registrations.length > 0 ? (
-                  <RegistrationsTable
-                    forName={`${thisRow.firstName} ${thisRow.lastName}`}
-                    registrations={thisRow.registrations}
-                    users={true}
-                    adminGetAllUsers={this.adminGetAllUsers}
-                  />
-                ) : null}
-              </Fragment>
-            )
-          }}
-          columns={[
-            {
-              Header: "User",
-              columns: [
-                {
-                  Header: "Username",
-                  accessor: "username",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Admin?",
-                  accessor: "admin",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "First Name",
-                  accessor: "firstName",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Last Name",
-                  accessor: "lastName",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Standing",
-                  accessor: "standing"
-                }
-              ]
-            },
-            {
-              Header: "Contact Info",
-              columns: [
-                {
-                  Header: "Email",
-                  accessor: "email",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Street",
-                  accessor: "street",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "City",
-                  accessor: "city",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "State",
-                  accessor: "state",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Zipcode",
-                  accessor: "zipcode",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Phone",
-                  accessor: "phone",
-                  Cell: this.renderEditable
-                }
-              ]
-            }
-          ]}
-          defaultPageSize={10}
-          className="-striped -highlight"
-          {...checkboxProps}
-        />
+              return (
+                <Fragment>
+                  {thisRow.reservations.length > 0 ? (
+                    <ReservationsTable
+                      forName={`${thisRow.firstName} ${thisRow.lastName}`}
+                      reservations={thisRow.reservations}
+                      adminGetAllUsers={this.adminGetAllUsers}
+                    />
+                  ) : null}
+
+                  {thisRow.registrations.length > 0 ? (
+                    <RegistrationsTable
+                      forName={`${thisRow.firstName} ${thisRow.lastName}`}
+                      registrations={thisRow.registrations}
+                      users={true}
+                      adminGetAllUsers={this.adminGetAllUsers}
+                    />
+                  ) : null}
+                </Fragment>
+              )
+            }}
+            columns={[
+              {
+                Header: "User",
+                columns: [
+                  {
+                    Header: "Username",
+                    accessor: "username",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Admin?",
+                    accessor: "admin",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "First Name",
+                    accessor: "firstName",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Last Name",
+                    accessor: "lastName",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Standing",
+                    accessor: "standing"
+                  }
+                ]
+              },
+              {
+                Header: "Contact Info",
+                columns: [
+                  {
+                    Header: "Email",
+                    accessor: "email",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Street",
+                    accessor: "street",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "City",
+                    accessor: "city",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "State",
+                    accessor: "state",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Zipcode",
+                    accessor: "zipcode",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Phone",
+                    accessor: "phone",
+                    Cell: this.renderEditable
+                  }
+                ]
+              }
+            ]}
+            defaultPageSize={10}
+            className="-striped -highlight"
+            {...checkboxProps}
+          />
+        </div>
       </Fragment>
     );
   }

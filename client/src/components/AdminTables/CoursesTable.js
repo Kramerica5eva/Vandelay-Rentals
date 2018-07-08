@@ -229,74 +229,76 @@ export class CoursesTable extends Component {
           body={this.state.modal.body}
           footer={this.state.modal.footer}
         />
+        <div className="main-table-container">
 
-        <h2>Courses</h2>
+          <h2>Courses</h2>
 
-        <button
-          disabled={this.state.selection.length === 0}
-          onClick={this.updateSelectedRow}
-        >
-          Update Selected Row
+          <button
+            disabled={this.state.selection.length === 0}
+            onClick={this.updateSelectedRow}
+          >
+            Update Selected Row
         </button>
-        <button onClick={this.props.toggleCourses}>Hide Table</button>
-        <button onClick={this.logSelection}>Log Selection</button>
+          <button onClick={this.props.toggleCourses}>Hide Table</button>
+          <button onClick={this.logSelection}>Log Selection</button>
 
-        <CheckboxTable
-          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object
-          ref={r => (this.checkboxTable = r)}
-          data={this.state.courses}
-          columns={[
-            {
-              Header: "Name",
-              id: "name",
-              accessor: d => d.category,
-              Cell: this.renderEditable
-            },
-            {
-              Header: "Date",
-              id: "date",
-              Cell: this.renderEditable
-            },
-            {
-              Header: "Abstract",
-              id: "abstract",
-              Cell: this.renderEditable
-            },
-            {
-              Header: "Topics",
-              accessor: "topics",
-              Cell: this.renderEditable
-            },
-            {
-              Header: "Level",
-              accessor: "level",
-              Cell: row => {
-                return (
-                  <button className="table-btn-invis" onClick={this.levelModal}>
-                    {row.value}
-                  </button>
-                );
+          <CheckboxTable
+            // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object
+            ref={r => (this.checkboxTable = r)}
+            data={this.state.courses}
+            columns={[
+              {
+                Header: "Name",
+                id: "name",
+                accessor: d => d.category,
+                Cell: this.renderEditable
+              },
+              {
+                Header: "Date",
+                id: "date",
+                Cell: this.renderEditable
+              },
+              {
+                Header: "Abstract",
+                id: "abstract",
+                Cell: this.renderEditable
+              },
+              {
+                Header: "Topics",
+                accessor: "topics",
+                Cell: this.renderEditable
+              },
+              {
+                Header: "Level",
+                accessor: "level",
+                Cell: row => {
+                  return (
+                    <button className="table-btn-invis" onClick={this.levelModal}>
+                      {row.value}
+                    </button>
+                  );
+                }
+              },
+              {
+                Header: "Price",
+                accessor: "pricePer",
+                Cell: this.renderEditable
+              },
+              {
+                Header: "Sluts",
+                accessor: "slots",
+                Cell: this.renderEditable
+              },
+              {
+                Header: "Availability",
+                accessor: "openSlots"
               }
-            },
-            {
-              Header: "Price",
-              accessor: "pricePer",
-              Cell: this.renderEditable
-            },
-            {
-              Header: "Sluts",
-              accessor: "slots",
-              Cell: this.renderEditable
-            },
-            {
-              Header: "Availability",
-              accessor: "openSlots"
-            }
-          ]}
-          defaultPageSize={10}
-          className="-striped -highlight"
-          {...checkboxProps}
-        />
+            ]}
+            defaultPageSize={10}
+            className="-striped -highlight"
+            {...checkboxProps}
+          />
+        </div>
       </Fragment>
     );
   }

@@ -134,6 +134,7 @@ li {
     min-height: 55vh;
     width: calc(100vw + 17px);
     overflow-x: hidden;
+    /* added the negative margin so centered things would still appear centered */
     margin-left: -8px;
 }
 
@@ -167,10 +168,3 @@ li {
 }
 
 /* end Dev links styling */
-
-/* @media (min-width: 750px) {
-    .main-container>.body-container {
-        width: calc(100vw + 17px);
-        overflow-x: hidden;
-    }
-} */
