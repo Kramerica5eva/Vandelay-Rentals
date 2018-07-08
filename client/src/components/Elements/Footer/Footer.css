@@ -12,7 +12,9 @@
     justify-content: space-between;
     align-content: center;
     position: relative;
-    width:100%;
+    width: calc(100vw + 17px);
+    overflow-x: hidden;
+    margin-left: -8px;
     text-decoration: none;
     z-index: 999;
     padding: 0 2%;
