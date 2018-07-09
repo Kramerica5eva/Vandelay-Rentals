@@ -175,8 +175,8 @@ export class ReservationsTable extends Component {
           const bill = (((parseInt(reservation.date.to) - parseInt(reservation.date.from)) / 86400) + 1) * reservation.dailyRate.$numberDecimal;
           reservation.amtDue = "$" + parseFloat(bill).toFixed(2);
         }
-        reservation.date.to = dateFns.format(reservation.date.to * 1000, "ddd MMM Do YYYY");
-        reservation.date.from = dateFns.format(reservation.date.from * 1000, "ddd MMM Do YYYY");
+        reservation.date.formattedTo = dateFns.format(reservation.date.to * 1000, "ddd MMM Do YYYY");
+        reservation.date.formattedFrom = dateFns.format(reservation.date.from * 1000, "ddd MMM Do YYYY");
       })
     }
 
@@ -251,11 +251,11 @@ export class ReservationsTable extends Component {
                 },
                 {
                   Header: "Date From",
-                  accessor: "date.from"
+                  accessor: "date.formattedFrom"
                 },
                 {
                   Header: "Date To",
-                  accessor: "date.to"
+                  accessor: "date.formattedTo"
                 },
                 {
                   Header: "Paid",
