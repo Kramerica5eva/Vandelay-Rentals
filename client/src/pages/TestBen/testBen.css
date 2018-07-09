@@ -241,4 +241,8 @@ main {
   border-radius: 0 !important;
 }
 
+.unavailable {
+  background-color: red;
+}
+
 /*  END CALENDAR */

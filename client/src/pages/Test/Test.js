@@ -131,8 +131,8 @@ class Test extends Component {
   //  This function gets passed to the Rental Card, which then passes it to the 'Reserve' button
   addReservationToCart = rental => {
     // to and from will be adjusted later to match with the calendar
-    const from = 1533168000;
-    const to = 1537727200;
+    const from = 1532498400;
+    const to = 1532757600;
     API.addReservationToCart(from, to, rental)
       .then(response => console.log(response));
   }

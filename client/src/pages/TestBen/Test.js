@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from "../../components/Elements/Header";
 import API from "../../utils/API";
 import Calendar from "../../components/Calendar";
-import DevLinks from "../../components/DevLinks";
+import DevLinks from "../../components/DevLinks.js";
 // import Calendar2 from "react-calendar";
 import "./../../App.css";
 import "./testBen.css";
@@ -19,9 +19,10 @@ class Test extends Component {
   state = {
     rentals: [],
     unix: [],
-    from: null,
-    to: null,
-    enteredTo: null
+    // from: null,
+    // to: null,
+    // enteredTo: null,
+    unavailable: []
   };
 
   componentDidMount() {
@@ -34,7 +35,6 @@ class Test extends Component {
         this.setState({
           rentals: res.data
         });
-        console.log(this.state.rentals);
       })
       .catch(err => console.log(err));
   }
@@ -83,6 +83,21 @@ class Test extends Component {
     return true; //returns true if no matches are found
   }
 
+  markUnavailable = itemRes => {
+    let unavailable = [];
+    for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
+      let days = (itemRes[i].date.to - itemRes[i].date.from) / 86400; //determines total number of days for each reservation
+      unavailable.push(itemRes[i].date.from); //pushes the first day of the reservation
+      for (let j = 0; j < days; j++) {//
+        unavailable.push(unavailable[j] + 86400); //adds all days of a reservation to range for comparison
+      };                              //
+    }
+    this.setState({ unavailable: unavailable })
+  }
+
+  clearUnavailable = () => {
+    this.setState({ unavailable: [] })
+  }
 
   render() {
     return (
@@ -94,13 +109,26 @@ class Test extends Component {
           <h2>(CALENDAR STUFF)</h2>
 
           {/* Navigation */}
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
+          <DevLinks />
+          <div className="nav-container">
+            <Link className="btn-link" to="/" role="button">Home</Link>
+            <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
+            <Link className="btn-link" to="/sales" role="button">Sales</Link>
+            <Link className="btn-link" to="/courses" role="button">Courses</Link>
+            {this.props.loggedIn ? (
+              <button className="btn-link" onClick={this.props.logout}>logout</button>
+            ) : (
+                <React.Fragment>
+                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
+                  <Link className="btn-link" to="/login" role="button">Login</Link>
+                </React.Fragment>
+              )}
+            <Link className="btn-link" to="/test" role="button">Test</Link>
+            <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
+            <Link className="btn-link" to="/testben" role="button">TestBen</Link>
+            <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
+            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
+          </div>
         </Header>
         {/* <Calendar2
           onChange={this.onChange}
@@ -112,6 +140,8 @@ class Test extends Component {
         /> */}
         <Calendar
           updateUnix={this.getDays}
+          unavailable={this.state.unavailable}
+          clearUnavailable={this.clearUnavailable}
         />
         {/* <div style={{ position: 'relative', top: 50 + 'px', left: 25 + 'px' }}>{this.state.unix.join(" ")}</div> */}
         <div className='rentals'>
@@ -126,10 +156,10 @@ class Test extends Component {
               category={rental.category}
               maker={rental.maker}
               reservations={rental.reservations}
-              // className={!this.checkAvailability(rental.reservations) ? "unavailable rentalCard" : "rentalCard"}
               setAvailability={this.checkAvailability(rental.reservations)}
-              rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
-            </RentalCard>
+              rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
+              markUnavailable={this.markUnavailable}
+            />
           ))}
           {/* </ul> */}
         </div>

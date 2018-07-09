@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import dateFns, { getTime, isEqual, isAfter, isBefore } from "date-fns";
+import dateFns, { getTime, isEqual, isAfter, isBefore, startOfDay } from "date-fns";
 
 class Calendar extends Component {
 
@@ -10,11 +10,11 @@ class Calendar extends Component {
     this.handleDayMouseEnter = this.handleDayMouseEnter.bind(this);
     this.handleResetClick = this.handleResetClick.bind(this);
     this.state = {
-      currentMonth: new Date(),
-      // selectedDate: new Date(),
+      currentMonth: new startOfDay(Date()),
       from: null,
       to: null,
-      enteredTo: null //keep track of the last day for mouseEnter
+      enteredTo: null, //keep track of the last day for mouseEnter
+      unavailable: this.props.unavailable
     }
   }
   //  && this.isDayBefore(day, from);
@@ -34,8 +34,14 @@ class Calendar extends Component {
   //   return new Date(d.getTime());
   // }
 
+  // componentWillUpdate() {
+  //   this.props.unavailable.length > 0 ?
+  //     this.setState({ from: null, to: null, enteredTo: null }) : null
+  // }
+
   handleDayClick(day) {
     const { from, to, currentMonth } = this.state;
+    this.props.clearUnavailable();
     from && !to ? this.props.updateUnix([from, day]) : null
     isAfter(day, dateFns.endOfMonth(currentMonth))
       ? this.nextMonth()
@@ -140,7 +146,7 @@ class Calendar extends Component {
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat);
-        const cloneDay = day;
+        const cloneDay = startOfDay(day);
         days.push(
           <div
             className={`column cell ${
@@ -149,6 +155,10 @@ class Calendar extends Component {
                 : isAfter(day, from) && isBefore(day, enteredTo)
                   ? "range"
                   : ""
+              } ${
+              this.props.unavailable.includes(getTime(day) / 1000)
+                ? "unavailable"
+                : ""
               }`}
             key={day}
             onClick={() => this.handleDayClick(dateFns.parse(cloneDay))}
@@ -199,6 +209,7 @@ class Calendar extends Component {
         {this.renderDays()}
         {this.renderCells()}
       </div>
+
     );
   }
 }

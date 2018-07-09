@@ -5,9 +5,11 @@ import AvailBtn from "../../Elements/Buttons/AvailBtn/AvailBtn.js";
 
 class RentalCard extends Component {
 
+
   render() {
     return (
-      <div id={this.props.id} className="rentalCard">
+      <div id={this.props.id} className="rentalCard" onClick={this.props.markUnavailable.bind(this, this.props.reservations)}>
+        {/* // <div id={this.props.id} className="rentalCard"> */}
         {/* <li> */}
         <h3>{this.props.name}</h3>
         <h4>{this.props.category}</h4>
