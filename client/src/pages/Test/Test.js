@@ -24,7 +24,8 @@ class Test extends Component {
     categories: null,
     rentals: null,
     courses: null,
-    unix: []
+    unix: [],
+    unavailable: []
   };
 
   componentDidMount() {
@@ -126,6 +127,18 @@ class Test extends Component {
     }
     return true; //returns true if no matches are found
   }
+
+  markUnavailable = itemRes => {
+    let unavailable = [];
+    for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
+      let days = (itemRes[i].date.to - itemRes[i].date.from) / 86400; //determines total number of days for each reservation
+      unavailable.push(itemRes[i].date.from); //pushes the first day of the reservation
+      for (let j = 0; j < days; j++) {//
+        unavailable.push(unavailable[j] + 86400); //adds all days of a reservation to range for comparison
+      };                              //
+    }
+    this.setState({ unavailable: unavailable })
+  }
   // END CALENDAR FUNCTIONS
 
   //  This function gets passed to the Rental Card, which then passes it to the 'Reserve' button
@@ -226,8 +239,9 @@ class Test extends Component {
                   addReservationToCart={this.addReservationToCart}
                   // className={!this.checkAvailability(rental.reservations) ? "unavailable rentalCard" : "rentalCard"}
                   setAvailability={this.checkAvailability(rental.reservations)}
-                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
-                </RentalCard>
+                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
+                  markUnavailable={this.markUnavailable}
+                  />
               )) : null}
 
               {this.state.courses ? this.state.courses.map(course => (
