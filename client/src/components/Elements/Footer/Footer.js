@@ -9,9 +9,9 @@ class Footer extends React.Component {
     render() {
         return (
             <footer className='footer'>
-                <a href="###">GitHub</a>
-                <p>Copyright 2018</p>
-                <Link className="btn-link" to="##########" role="button">Contact</Link>
+                <a href="https://github.com/Kramerica5eva/Vandelay-Rentals" target="_blank">GitHub</a>
+                <p>&#9400;Copyright 2018 Kramerica Industries</p>
+                <Link className="btn-link" to={{pathname:"/", hash: "#about-us-para-header"}} role="button">About</Link>
             </footer>
         );
     }
