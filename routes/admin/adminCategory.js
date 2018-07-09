@@ -9,7 +9,6 @@ router.route('/')
 // Matches with '/admin/category/:id'
 router
   .route('/:id')
-  .put(isAdmin, adminCategoryController.update)
   .delete(isAdmin, adminCategoryController.remove);
 
 function isAdmin(req, res, next) {

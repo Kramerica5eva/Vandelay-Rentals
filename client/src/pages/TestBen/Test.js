@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from "../../components/Elements/Header";
 import API from "../../utils/API";
 import Calendar from "../../components/Calendar";
+import DevLinks from "../../components/DevLinks";
 // import Calendar2 from "react-calendar";
 import "./../../App.css";
 import "./testBen.css";
@@ -93,25 +94,13 @@ class Test extends Component {
           <h2>(CALENDAR STUFF)</h2>
 
           {/* Navigation */}
-          <div className="nav-container">
-            <Link className="btn-link" to="/" role="button">Home</Link>
-            <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
-            <Link className="btn-link" to="/sales" role="button">Sales</Link>
-            <Link className="btn-link" to="/courses" role="button">Courses</Link>
-            {this.props.loggedIn ? (
-              <button className="btn-link" onClick={this.props.logout}>logout</button>
-            ) : (
-                <React.Fragment>
-                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
-                  <Link className="btn-link" to="/login" role="button">Login</Link>
-                </React.Fragment>
-              )}
-            <Link className="btn-link" to="/test" role="button">Test</Link>
-            <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
-            <Link className="btn-link" to="/testben" role="button">TestBen</Link>
-            <Link className="btn-link" to="/testcorb" role="button">TestCorb</Link>
-            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-          </div>
+            <DevLinks
+              loggedIn={this.props.loggedIn}
+              admin={this.props.admin}
+              dev={this.props.dev}
+              logout={this.props.logout}
+              location={this.props.location}
+            />
         </Header>
         {/* <Calendar2
           onChange={this.onChange}

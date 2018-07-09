@@ -433,97 +433,99 @@ export class RentalsTable extends Component {
           body={this.state.imageModal.body}
           footer={this.state.imageModal.footer}
         />
+        <div className="main-table-container">
 
-        <h2>Rentals Table</h2>
+          <h2>Rentals Table</h2>
 
-        {/* if no rows have been selected, buttons remain disabled;
+          {/* if no rows have been selected, buttons remain disabled;
         otherwise, clicking the button without anything selected results in an error */}
-        <div className="table-btn-div">
-          <button onClick={this.props.toggleRentals}>Hide Table</button>
-          <button
-            disabled={this.state.selection.length === 0}
-            onClick={this.updateSelectedRow}>
-            Update Selected Row
+          <div className="table-btn-div">
+            <button onClick={this.props.toggleRentals}>Hide Table</button>
+            <button
+              disabled={this.state.selection.length === 0}
+              onClick={this.updateSelectedRow}>
+              Update Selected Row
           </button>
-          <button disabled={this.state.selection.length === 0} onClick={this.rentalCategoryModal}>Change Selected Item Category</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.rentalConditionModal}>Change Selected Item Condition</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.getImageNames}>Get Images</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.getImageUploadModal}>Upload an Image</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
-        </div>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalCategoryModal}>Change Selected Item Category</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalConditionModal}>Change Selected Item Condition</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.getImageNames}>Get Images</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.getImageUploadModal}>Upload an Image</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
+          </div>
 
-        <CheckboxTable
-          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
-          ref={r => (this.checkboxTable = r)}
-          data={this.state.rentals}
-          filterable
-          SubComponent={row => {
-            //  thisReservation grabs the reservations from this.state.rentals that matches the row index - it grabs the reservations for this rental item.
-            const thisRow = this.state.rentals[row.row._index];
-            return (
-              <ReservationsTable
-                forName={thisRow.name}
-                filterable
-                reservations={thisRow.reservations}
-                rentals={true}
-                adminGetAllRentals={this.adminGetAllRentals}
-              />
-            )
-          }}
-          columns={[
-            {
-              Header: "Rental Info",
-              columns: [
-                {
-                  Header: "Name",
-                  accessor: "name",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Category",
-                  accessor: "category"
-                },
-                {
-                  Header: "Manufacturer",
-                  accessor: "maker",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "SKU",
-                  accessor: "sku",
-                  Cell: this.renderEditable
-                },
-              ]
-            },
-            {
-              Header: "Rental Details",
-              columns: [
-                {
-                  Header: "Daily Rate",
-                  accessor: "rate",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Date Acq.",
-                  accessor: "dateAcq",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Times Rented",
-                  accessor: "timesRented",
-                  Cell: this.renderEditable
-                },
-                {
-                  Header: "Condition",
-                  accessor: "condition"
-                }
-              ]
-            },
-          ]}
-          defaultPageSize={10}
-          className="-striped -highlight"
-          {...checkboxProps}
-        />
+          <CheckboxTable
+            // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
+            ref={r => (this.checkboxTable = r)}
+            data={this.state.rentals}
+            filterable
+            SubComponent={row => {
+              //  thisReservation grabs the reservations from this.state.rentals that matches the row index - it grabs the reservations for this rental item.
+              const thisRow = this.state.rentals[row.row._index];
+              return (
+                <ReservationsTable
+                  forName={thisRow.name}
+                  filterable
+                  reservations={thisRow.reservations}
+                  rentals={true}
+                  adminGetAllRentals={this.adminGetAllRentals}
+                />
+              )
+            }}
+            columns={[
+              {
+                Header: "Rental Info",
+                columns: [
+                  {
+                    Header: "Name",
+                    accessor: "name",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Category",
+                    accessor: "category"
+                  },
+                  {
+                    Header: "Manufacturer",
+                    accessor: "maker",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "SKU",
+                    accessor: "sku",
+                    Cell: this.renderEditable
+                  },
+                ]
+              },
+              {
+                Header: "Rental Details",
+                columns: [
+                  {
+                    Header: "Daily Rate",
+                    accessor: "rate",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Date Acq.",
+                    accessor: "dateAcq",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Times Rented",
+                    accessor: "timesRented",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Condition",
+                    accessor: "condition"
+                  }
+                ]
+              },
+            ]}
+            defaultPageSize={10}
+            className="-striped -highlight"
+            {...checkboxProps}
+          />
+        </div>
       </Fragment>
     );
   }

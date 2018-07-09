@@ -47,6 +47,7 @@ class Home extends Component {
             <DevLinks
               loggedIn={this.props.loggedIn}
               admin={this.props.admin}
+              dev={this.props.dev}
               logout={this.props.logout}
               location={this.props.location}
             />
@@ -94,7 +95,7 @@ class Home extends Component {
           />
 
           <div className='body-container'>
-          <h1 id="about-us-para-header">About Our Company</h1>
+            <h1 id="about-us-para-header">About Our Company</h1>
             <div className='about-us'>
               <h3>Designed and Built for your Business</h3>
               <p>This website stated as a proof of concept for a local water sports rental shop. Their problem was they needed a website that allowed their users the ability to shop and rent items from home, but also provide a useful in-store interface.</p>

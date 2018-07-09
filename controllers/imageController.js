@@ -34,20 +34,6 @@ module.exports = {
       })
   },
 
-  create: function (req, res) {
-    console.log("Here's the uploaded image data:");
-    console.log(req.file);
-    db.Rental.findOneAndUpdate(
-      { _id: req.params.id },
-      { $push: { images: req.file.id } },
-      { new: true }
-    ).then(file => {
-      console.log(file);
-      res.json(file);
-    })
-  },
-
-
   findById: function (req, res) {
     gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
       if (!file || file.length === 0) {
@@ -67,6 +53,19 @@ module.exports = {
         });
       }
     });
+  },
+
+  create: function (req, res) {
+    console.log("Here's the uploaded image data:");
+    console.log(req.file);
+    db.Rental.findOneAndUpdate(
+      { _id: req.params.id },
+      { $push: { images: req.file.id } },
+      { new: true }
+    ).then(file => {
+      console.log(file);
+      res.json(file);
+    })
   },
 
   remove: function (req, res) {

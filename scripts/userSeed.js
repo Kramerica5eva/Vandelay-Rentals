@@ -29,6 +29,7 @@ const userSeed = [
     registrations: [],
     pastRentals: [],
     admin: true,
+    dev: true
 
   },
   {
@@ -47,7 +48,7 @@ const userSeed = [
     registrations: [],
     pastRentals: [],
     admin: true,
-
+    dev: true
   },
   {
     username: "ben",
@@ -64,7 +65,8 @@ const userSeed = [
     reservations: [],
     registrations: [],
     pastRentals: [],
-    admin: true
+    admin: true,
+    dev: true
   },
   {
     username: "Nicknard",
@@ -80,10 +82,12 @@ const userSeed = [
     reservations: [],
     registrations: [],
     pastRentals: [],
-    admin: true
+    admin: true,
+    dev: true
   },
   {
     username: "Doofy",
+    password: pw,
     firstName: "Mr",
     lastName: "Sillyface",
     email: "Why@gmail.com",
@@ -96,7 +100,8 @@ const userSeed = [
     reservations: [],
     registrations: [],
     pastRentals: [],
-    admin: true
+    admin: true,
+    dev: false
   },
   {
     username: "Corbster",
@@ -113,7 +118,8 @@ const userSeed = [
     reservations: [],
     registrations: [],
     pastRentals: [],
-    admin: true
+    admin: true,
+    dev: true
   }
 ]
 

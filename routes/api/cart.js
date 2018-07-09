@@ -3,8 +3,9 @@ const passport = require('../../passport');
 const cartController = require('../../controllers/cartController');
 
 // Matches with '/api/cart'
-router.route('/')
-  .get(cartController.findAll);
+//  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
+// router.route('/')
+//   .get(cartController.findAll);
 
 // Matches with '/api/cart/:id'
 // the id is the user's id - this gets a user's cart
@@ -24,10 +25,6 @@ router
 router
   .route('/rentals/:id')
   .delete(isLoggedIn, cartController.removeReservationFromCart);
-
-router
-  .route('/remove/:id')
-  .put(isLoggedIn, cartController.update);
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated())

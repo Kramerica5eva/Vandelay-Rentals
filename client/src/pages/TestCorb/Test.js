@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import Header from "./../../components/Elements/Header";
+import DevLinks from "../../components/DevLinks";
 import RentalCard from "./../../components/Cards/RentalCard";
 import API from "../../utils/API";
 // import ParallaxHero from "./../../components/ParallaxHero";
@@ -49,36 +50,24 @@ class Test extends Component {
           <h2>(SIGNTYPE)</h2>
 
           {/* Navigation */}
-          <div className="nav-container">
-            <Link className="btn-link" to="/" role="button">Home</Link>
-            <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
-            <Link className="btn-link" to="/sales" role="button">Sales</Link>
-            <Link className="btn-link" to="/courses" role="button">Courses</Link>
-            {this.props.loggedIn ? (
-              <button className="btn-link" onClick={this.props.logout}>logout</button>
-            ) : (
-                <React.Fragment>
-                  <Link className="btn-link" to="/signup" role="button">Signup</Link>
-                  <Link className="btn-link" to="/login" role="button">Login</Link>
-                </React.Fragment>
-              )}
-            <Link className="btn-link" to="/test" role="button">Test</Link>
-            <Link className="btn-link" to="/testnick" role="button">TestNick</Link>
-            <Link className="btn-link" to="/testben" role="button">TestBen</Link>
-            <Link className="btn-link" to="/testCorb" role="button">TestCorb</Link>
-            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-          </div>
+            <DevLinks
+              loggedIn={this.props.loggedIn}
+              admin={this.props.admin}
+              dev={this.props.dev}
+              logout={this.props.logout}
+              location={this.props.location}
+            />
         </Header>
         <div className='body-container'>
           <h2>Rentals Available:</h2>
           <ul>
             {this.state.rentals.map(rental => (
-              <RentalCard 
-              key={rental._id} 
-              name={rental.name} 
-              category={rental.category}
-              maker={rental.maker}
-              rate= {parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
+              <RentalCard
+                key={rental._id}
+                name={rental.name}
+                category={rental.category}
+                maker={rental.maker}
+                rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
               </RentalCard>
             ))}
           </ul>

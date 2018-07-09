@@ -10,7 +10,8 @@ router.route('/')
 // Matches with '/admin/sales/:id'
 router
   .route('/:id')
-  .get(isAdmin, adminSalesController.findById)
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
+  // .get(isAdmin, adminSalesController.findById)
   .put(isAdmin, adminSalesController.update)
   .delete(isAdmin, adminSalesController.remove);
   

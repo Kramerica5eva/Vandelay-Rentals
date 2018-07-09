@@ -132,6 +132,9 @@ li {
 .main-container>.body-container {
     padding: 1% 5% 5% 5%;
     min-height: 55vh;
+    width: calc(100vw + 17px);
+    /* added the negative margin so centered things would still appear centered */
+    margin-left: -8px;
 }
 
 /*  USED FOR THE PARALLAXHEADER COMPONENT */

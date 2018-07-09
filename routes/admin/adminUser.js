@@ -4,13 +4,13 @@ const adminUsersController = require('../../controllers/adminUsersController');
 
 // Matches with '/admin/users'
 router.route('/')
-  .get(isAdmin, adminUsersController.findAll)
-  .post(isAdmin, adminUsersController.create);
+  .get(isAdmin, adminUsersController.findAll);
 
 // Matches with '/admin/users/:id'
 router
   .route('/:id')
-  .get(isAdmin, adminUsersController.findById)
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
+  // .get(isAdmin, adminUsersController.findById)
   .put(isAdmin, adminUsersController.update)
   .delete(isAdmin, adminUsersController.remove);
 

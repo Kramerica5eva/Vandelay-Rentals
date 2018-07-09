@@ -47,12 +47,13 @@ class TestBrandon extends Component {
           <h2>A Page for Testing Components</h2>
           <h2>(Inventory Stuff)</h2>
 
-          <DevLinks
-            loggedIn={this.props.loggedIn}
-            admin={this.props.admin}
-            logout={this.props.logout}
-            location={this.props.location}
-          />
+            <DevLinks
+              loggedIn={this.props.loggedIn}
+              admin={this.props.admin}
+              dev={this.props.dev}
+              logout={this.props.logout}
+              location={this.props.location}
+            />
         </Header>
       </div>
     );

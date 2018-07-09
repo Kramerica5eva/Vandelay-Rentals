@@ -65,6 +65,7 @@ class Courses extends Component {
             <DevLinks
               loggedIn={this.props.loggedIn}
               admin={this.props.admin}
+              dev={this.props.dev}
               logout={this.props.logout}
               location={this.props.location}
             />
@@ -83,7 +84,7 @@ class Courses extends Component {
                   detail={course.detail}
                   slots={course.slots}>
                   {course.topics.map((topic, index) => (
-                      <li key={`${index}-${course._id}`}>{topic}</li>
+                    <li key={`${index}-${course._id}`}>{topic}</li>
                   ))}
                 </CourseCard>
               ))}

@@ -170,11 +170,12 @@ class Test extends Component {
             title="Vandelay Rentals"
           />
 
-          <div className='body-container'>          
+          <div className='body-container'>
             <h1>Keith's Admin Test Page</h1>
             <DevLinks
               loggedIn={this.props.loggedIn}
               admin={this.props.admin}
+              dev={this.props.dev}
               logout={this.props.logout}
               location={this.props.location}
             />

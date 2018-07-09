@@ -18,7 +18,7 @@ const rentalSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "PastRental"
   }],
-  timesRented: Number,
+  timesRented: { type: Number, default: 0 },
   dateAcquired: Number,
   condition: {
     type: String,
