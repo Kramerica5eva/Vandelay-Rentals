@@ -200,11 +200,15 @@ export class SalesTable extends Component {
 
         <div className="main-table-container">
 
-          <h2>Sale Items</h2>
+          <div className="table-title-div">
+            <h2>Sale Items Table <button onClick={this.props.toggleSaleItems}>hide table</button></h2>
+          </div>
 
-          <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
-          <button onClick={this.props.toggleSaleItems}>Hide Table</button>
-          <button onClick={this.logSelection}>Log Selection</button>
+          <div className="table-btn-div">
+            <h4>Sale Items Table Options</h4>
+            <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
+            <button onClick={this.logSelection}>Log Selection</button>
+          </div>
 
           <CheckboxTable
             // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 

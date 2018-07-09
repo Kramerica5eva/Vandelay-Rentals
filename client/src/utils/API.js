@@ -270,6 +270,7 @@ export default {
   adminUpdateRental: function (id, rentalData) {
     return axios.put(`/admin/rentals/${id}`, rentalData);
   },
+
   // Remove rental item - admin function
   adminDeleteRentalItem: function (id) {
     return axios.delete(`/admin/rentals/${id}`);

@@ -45,16 +45,19 @@
 .my-modal-header {
   padding: 5px 16px;
   min-height: 30px;
-  background-color: #5cb85c;
+  background-color: #4e50d8e2;
   color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 /* my-modal Body */
 
 .my-modal-body {
   max-width: 90%;
+  margin:  auto;
   min-width: 300px;
-  padding: 2px 16px;
+  padding: 5px 16px;
 }
 
 /* my-modal Footer */
@@ -62,8 +65,10 @@
 .my-modal-footer {
   padding: 5px 16px;
   min-height: 30px;
-  background-color: #5cb85c;
+  background-color: #4e50d8e2;
   color: white;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 /* my-modal Content */
@@ -73,12 +78,14 @@
   background-color: #fefefe;
   margin: auto;
   padding: 0;
-  border: 1px solid #888;
+  border: 2px solid #000;
   box-shadow: 0 0 5px #000,
   0 0 10px #222222,
-  0 0 20px #4e4e4e;
+  0 0 20px #333,
+  0 0 30px #444;
   animation-name: fadein;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
+  border-radius: 12px;
 }
 
 .my-modal-body>form>label, .my-modal-body>form>input {
@@ -95,9 +102,9 @@
 
 @keyframes fadein {
   from {
-    opacity: 0
+    opacity: 0;
   }
   to {
-    opacity: 1
+    opacity: 1;
   }
 }
