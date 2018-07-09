@@ -195,8 +195,10 @@ export class UsersTable extends Component {
   };
 
   updateSelectedRow = () => {
-    const { city, email, firstName, lastName, phone, standing, state, street, username, zipcode, _id } = this.state.selectedRow;
+    console.log(this.state.selectedRow);
+    const { city, admin, email, firstName, lastName, phone, standing, state, street, username, zipcode, _id } = this.state.selectedRow;
     const updateObject = {
+      admin: admin.toLowerCase(),
       city: city,
       email: email,
       firstName: firstName,
@@ -209,7 +211,7 @@ export class UsersTable extends Component {
       zipcode: zipcode
     }
     console.log(updateObject);
-    API.updateUser(_id, updateObject)
+    API.adminUpdateUser(_id, updateObject)
       .then(response => {
         console.log(response);
         this.adminGetAllUsers();

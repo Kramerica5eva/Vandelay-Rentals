@@ -43,6 +43,35 @@ export class CoursesTable extends Component {
     });
   };
 
+  adminGetAllCourses = () => {
+    API.adminGetAllCourses()
+      .then(res => {
+        res.data.map(r => {
+          const pricePer = "$" + parseFloat(r.price.$numberDecimal).toFixed(2);
+          r.pricePer = pricePer;
+          if (r.participants.length) {
+            r.openSlots = r.slots - r.participants.length;
+          } else {
+            r.openSlots = r.slots;
+          }
+        });
+        this.setState({
+          courses: res.data,
+          selection: []
+        });
+        console.log(this.state.courses);
+      })
+      .catch(err => console.log(err));
+  };
+
+  // Standard input change controller
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
   levelModal = () => {
     this.setModal({
       header: "Change Level",
@@ -66,6 +95,7 @@ export class CoursesTable extends Component {
       )
     });
   };
+
   changeLevel = e => {
     e.preventDefault();
     console.log(this.state.level);
@@ -76,34 +106,29 @@ export class CoursesTable extends Component {
     });
   };
 
-  adminGetAllCourses = () => {
-    API.adminGetAllCourses()
-      .then(res => {
-        res.data.map(r => {
-          const pricePer = "$" + parseFloat(r.price.$numberDecimal).toFixed(2);
-          r.pricePer = pricePer;
-          if (r.participants.length) {
-            r.openSlots = r.slots - r.participants.length;
-          } else {
-            r.openSlots = r.slots;
-          }
-        });
-        this.setState({
-          courses: res.data,
-          selection: []
-        });
-        console.log(this.state.courses);
-      })
-      .catch(err => console.log(err));
-  };
+  courseDeleteModal = () => {
+    this.setModal({
+      header: "",
+      body:
+        <Fragment>
+          <h3>Are you sure you want to delete {this.state.selectedRow.name}?</h3>
+          <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
+          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: "1.5rem" }} onClick={this.toggleModal}>
+            Nevermind.
+        </FormBtn>
+          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: ".75rem" }} onClick={this.deleteCourse}>
+            I'm sure. Delete it.
+        </FormBtn>
+        </Fragment>
+    })
+  }
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-  };
+  deleteCourse = () => {
 
+  }
+
+  //  REACT-TABLE: SELECT TABLE HOC FUNCTION
+  //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
   toggleSelection = (key, shift, row) => {
     let selection = [...this.state.selection];
     const keyIndex = selection.indexOf(key);
@@ -128,22 +153,22 @@ export class CoursesTable extends Component {
     return this.state.selection.includes(key);
   };
 
-  updateSelectedRow = () => {
-    const {
-      name,
-      pricePer,
-      price,
-      abstract,
-      topics,
-      date,
-      slots,
-      _id
-    } = this.state.selectedRow;
+  logSelection = () => {
+    console.log("Selection:", this.state.selection);
+    console.log("Row: ", this.state.selectedRow);
+  };
+  //  END REACT-TABLE: SELECT TABLE HOC FUNCTIONs
 
+  //  Update selected Row - sends current field info to db and updates that item
+  updateSelectedRow = () => {
+    const { name, pricePer, price, abstract, topics, date, slots, _id } = this.state.selectedRow;
+
+    // if pricePer exists (it should, but to avoid an error, checking first...) and hasn't been changed, it will have a dollar sign in it, a format that does not exist in the database and will throw an error if submitted to the database as-is. This replaces it with the current (unchanged) pricePer. If it has changed, it shouldn't have a $ in front of it and can be submitted as is.
     let newPrice;
     if (pricePer)
       if (pricePer.includes("$")) {
-        newPrice = price.$numberDecimal;
+        newPrice = pricePer.split("").filter(x => x !== "$").join("");
+        console.log(newPrice);
       } else {
         newPrice = pricePer;
       }
@@ -171,11 +196,6 @@ export class CoursesTable extends Component {
         }
       })
       .catch(err => console.log(err));
-  };
-
-  logSelection = () => {
-    console.log("Selection:", this.state.selection);
-    console.log("Row: ", this.state.selectedRow);
   };
 
   renderEditable = cellInfo => {
@@ -235,6 +255,7 @@ export class CoursesTable extends Component {
           <div className="table-btn-div">
             <h4>Courses Table Options</h4>
             <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.courseDeleteModal}>Delete</button>
             <button onClick={this.logSelection}>Log Selection</button>
           </div>
 
@@ -245,18 +266,17 @@ export class CoursesTable extends Component {
             columns={[
               {
                 Header: "Name",
-                id: "name",
-                accessor: d => d.category,
+                accessor: "name",
                 Cell: this.renderEditable
               },
               {
                 Header: "Date",
-                id: "date",
+                accessor: "date",
                 Cell: this.renderEditable
               },
               {
                 Header: "Abstract",
-                id: "abstract",
+                accessor: "abstract",
                 Cell: this.renderEditable
               },
               {
