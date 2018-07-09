@@ -100,7 +100,7 @@ export class ReservationsTable extends Component {
         //  filter the row from the reservations array in state and then setState to the filtered data.
         const newReservations = this.state.reservations.filter(reg => (reg._id !== _id));
 
-        //  empty selection and selectedRow so the affected buttons revert to disabled 
+        //  empty selection and selectedRow so the affected buttons revert to disabled
         this.setState({
           reservations: newReservations,
           selection: [],
@@ -141,7 +141,7 @@ export class ReservationsTable extends Component {
         //  filter the row from the reservations array in state and then setState to the filtered data.
         const newReservations = this.state.reservations.filter(reg => (reg._id !== _id));
 
-        //  empty selection and selectedRow so the affected buttons revert to disabled 
+        //  empty selection and selectedRow so the affected buttons revert to disabled
         this.setState({
           modal: {
             isOpen: true,
@@ -171,7 +171,7 @@ export class ReservationsTable extends Component {
         else {
           reservation.hasPaid = "False";
           //  86400 = # of seconds in a day
-          const bill = ((parseInt(reservation.date.to) - parseInt(reservation.date.from)) / 86400) * reservation.dailyRate.$numberDecimal;
+          const bill = (((parseInt(reservation.date.to) - parseInt(reservation.date.from)) / 86400) + 1) * reservation.dailyRate.$numberDecimal;
           reservation.amtDue = "$" + parseFloat(bill).toFixed(2);
         }
       })
@@ -222,7 +222,7 @@ export class ReservationsTable extends Component {
           <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
         </div>
         <CheckboxTable
-          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
+          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object
           ref={r => (this.checkboxTable = r)}
           data={this.state.reservations}
           columns={[
