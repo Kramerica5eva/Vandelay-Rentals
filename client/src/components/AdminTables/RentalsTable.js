@@ -299,6 +299,44 @@ export class RentalsTable extends Component {
       });
   }
 
+  retireRental = () => {
+    const { _id } = this.state.selectedRow;
+    API.adminUpdateRental(_id, { condition: 'Retired' })
+      .then(res => {
+        this.adminGetAllRentals();
+        this.toggleModal();
+      });
+  }
+
+  rentalDeleteModal = () => {
+    this.setModal({
+      header: "Warning:",
+      body:
+        <Fragment>
+          <h3>Are you sure you want to delete {this.state.selectedRow.name}?</h3>
+          <p>(this is permenent - you cannot undo it)</p>
+          <h3>Would you rather retire the item and keep the data?</h3>
+          <p>(make sure you contact customers and change any existing reservations)</p>
+          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: "1.5rem" }} onClick={this.toggleModal}>
+            Nevermind.
+          </FormBtn>
+          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: "1.2rem" }} onClick={this.retireRental}>
+            Just retire it.
+          </FormBtn>
+          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: ".75rem" }} onClick={this.deleteRental}>
+            Yes. Delete it.
+          </FormBtn>
+        </Fragment>
+    })
+  }
+
+  deleteRental = () => {
+    const { _id } = this.state.selectedRow;
+    API.adminDeleteRentalItem(_id)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+  }
+
   //  IMAGE CRUD OPERATIONS FUNCTIONS
   // Gets the modal with the image upload form
   getImageUploadModal = () => {
@@ -435,19 +473,18 @@ export class RentalsTable extends Component {
         />
         <div className="main-table-container">
 
-          <h2>Rentals Table</h2>
+          <div className="table-title-div">
+            <h2>Rentals Table <button onClick={this.props.toggleRentals}>hide table</button></h2>
+          </div>
 
           {/* if no rows have been selected, buttons remain disabled;
         otherwise, clicking the button without anything selected results in an error */}
           <div className="table-btn-div">
-            <button onClick={this.props.toggleRentals}>Hide Table</button>
-            <button
-              disabled={this.state.selection.length === 0}
-              onClick={this.updateSelectedRow}>
-              Update Selected Row
-          </button>
-            <button disabled={this.state.selection.length === 0} onClick={this.rentalCategoryModal}>Change Selected Item Category</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.rentalConditionModal}>Change Selected Item Condition</button>
+            <h4>Rentals Table Options</h4>
+            <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalCategoryModal}>Change Category</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalConditionModal}>Change Condition</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalDeleteModal}>Delete</button>
             <button disabled={this.state.selection.length === 0} onClick={this.getImageNames}>Get Images</button>
             <button disabled={this.state.selection.length === 0} onClick={this.getImageUploadModal}>Upload an Image</button>
             <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>

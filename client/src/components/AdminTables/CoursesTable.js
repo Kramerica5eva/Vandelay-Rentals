@@ -10,17 +10,17 @@ const CheckboxTable = checkboxHOC(ReactTable);
 
 export class CoursesTable extends Component {
   state = {
-      modal: {
-        isOpen: false,
-        header: "",
-        body: "",
-        footer: ""
-      },
-      level: [],
-      rentals: [],
-      selection: [],
-      selectedRow: {}
-    };
+    modal: {
+      isOpen: false,
+      header: "",
+      body: "",
+      footer: ""
+    },
+    level: [],
+    rentals: [],
+    selection: [],
+    selectedRow: {}
+  };
 
   componentDidMount() {
     this.adminGetAllCourses();
@@ -228,16 +228,15 @@ export class CoursesTable extends Component {
         />
         <div className="main-table-container">
 
-          <h2>Courses</h2>
+          <div className="table-title-div">
+            <h2>Courses Table <button onClick={this.props.toggleCourses}>hide table</button></h2>
+          </div>
 
-          <button
-            disabled={this.state.selection.length === 0}
-            onClick={this.updateSelectedRow}
-          >
-            Update Selected Row
-        </button>
-          <button onClick={this.props.toggleCourses}>Hide Table</button>
-          <button onClick={this.logSelection}>Log Selection</button>
+          <div className="table-btn-div">
+            <h4>Courses Table Options</h4>
+            <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
+            <button onClick={this.logSelection}>Log Selection</button>
+          </div>
 
           <CheckboxTable
             // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object

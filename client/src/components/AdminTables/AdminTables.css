@@ -1,3 +1,4 @@
+/* overriding input styling */
 .rt-td input {
   font-size: unset;
   padding: unset;
@@ -11,8 +12,6 @@
   outline: unset;
 }
 
-/* active state */
-
 .rt-td input:focus~label,
 .rt-td input:valid~label {
   top: unset;
@@ -23,6 +22,7 @@
 .rt-td input:not(:focus):invalid {
   background-color: unset;
 }
+/* END overriding input styling */
 
 .table-btn-invis {
   border: none;
@@ -49,7 +49,67 @@
   display: block;
 }
 
-.reservations-table {
+.sub-table {
   width: 90%;
   margin: auto;
+}
+
+.table-title-div {
+  padding: 15px 0 5px 0;
+}
+
+.table-title-div h2 {
+  display: inline-block;
+}
+
+.table-title-div button {
+  vertical-align: middle;
+  border: none;
+  outline: transparent;
+  background: transparent;
+  text-decoration: underline;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.table-btn-div {  
+  margin-left: 50px;
+  padding: 0 0 10px 0;
+}
+
+.table-btn-div h4 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.table-btn-div button {  
+  background-color: #555555;
+  color: #fff;
+  border: 1px solid #000;
+  padding: 3px 5px;
+  margin: 0 5px;
+  cursor: pointer;
+  box-shadow: 5px 5px 10px #333;
+  text-shadow: 0 0 2px #000,
+  0 0 3px #000,
+  0 0 4px #000,
+  0 0 5px #fff,
+  0 0 10px #fff;
+}
+
+.table-btn-div button:hover {  
+  background-color: #fff;
+  border: 1px solid #787878;
+  text-shadow: 0 0 2px #000,
+  0 0 3px #000,
+  0 0 5px #000,
+  0 0 10px #000,
+  0 0 15px #000,
+  0 0 20px #000;
+}
+
+.table-btn-div button:active {  
+  box-shadow: 3px 3px 10px #333;
+  transform: translateY(2px);
 }
