@@ -64,7 +64,7 @@ export default {
 
 
   // CART ROUTES
-  // Get user shopping cart  
+  // Get user shopping cart
   getUserShoppingCart: function (id) {
     return axios.get(`/api/cart/${id}`);
   },
@@ -226,7 +226,7 @@ export default {
     return axios.put(`/admin/courses/${id}`, courseData);
   },
 
-  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT  
+  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
   // Delete course from DB - admin function
   adminDeleteCourse: function (id) {
     return axios.delete(`/admin/courses/${id}`);

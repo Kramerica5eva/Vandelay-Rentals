@@ -70,17 +70,37 @@ class Rentals extends Component {
   markUnavailable = itemRes => {
     let unavailable = [];
     for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
+      let temp = [];
       let days = (itemRes[i].date.to - itemRes[i].date.from) / 86400; //determines total number of days for each reservation
-      unavailable.push(itemRes[i].date.from); //pushes the first day of the reservation
+      temp.push(itemRes[i].date.from); //pushes the first day of the reservation
       for (let j = 0; j < days; j++) {//
-        unavailable.push(unavailable[j] + 86400); //adds all days of a reservation to range for comparison
+        temp.push(temp[j] + 86400); //adds all days of a reservation to range for comparison
       };                              //
+      for (let k = 0; k < temp.length; k++) {
+        unavailable.push(temp[k]);
+      }
     }
-    this.setState({ unavailable: unavailable })
+    this.setState({ unavailable: unavailable });
   }
 
   clearUnavailable = () => {
     this.setState({ unavailable: [] })
+  }
+
+  addReservationToCart = rental => {
+    let from;
+    let to;
+
+    if (this.state.unix.length > 1) {
+      from = this.state.unix[0];
+      to = this.state.unix[this.state.unix.length - 1];
+    } else {
+      from = this.state.unix[0];
+      to = this.state.unix[0];
+    }
+
+    API.addReservationToCart(from, to, rental)
+      .then(response => console.log(response));
   }
 
   render() {
@@ -121,7 +141,9 @@ class Rentals extends Component {
                 name={rental.name}
                 category={rental.category}
                 maker={rental.maker}
+                rental={rental}
                 reservations={rental.reservations}
+                addReservationToCart={this.addReservationToCart}
                 setAvailability={this.checkAvailability(rental.reservations)}
                 rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
                 markUnavailable={this.markUnavailable}
