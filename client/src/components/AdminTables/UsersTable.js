@@ -195,8 +195,10 @@ export class UsersTable extends Component {
   };
 
   updateSelectedRow = () => {
-    const { city, email, firstName, lastName, phone, standing, state, street, username, zipcode, _id } = this.state.selectedRow;
+    console.log(this.state.selectedRow);
+    const { city, admin, email, firstName, lastName, phone, standing, state, street, username, zipcode, _id } = this.state.selectedRow;
     const updateObject = {
+      admin: admin.toLowerCase(),
       city: city,
       email: email,
       firstName: firstName,
@@ -209,7 +211,7 @@ export class UsersTable extends Component {
       zipcode: zipcode
     }
     console.log(updateObject);
-    API.updateUser(_id, updateObject)
+    API.adminUpdateUser(_id, updateObject)
       .then(response => {
         console.log(response);
         this.adminGetAllUsers();
@@ -273,12 +275,14 @@ export class UsersTable extends Component {
         <div className="main-table-container">
 
           {/* <h2>All Users</h2> */}
-          <h2>Users Table</h2>
+          <div className="table-title-div">
+            <h2>Users Table <button onClick={this.props.toggleUsers}>hide table</button></h2>
+          </div>
 
           {/* if no rows have been selected, buttons remain disabled;
         otherwise, clicking the button without anything selected results in an error */}
           <div className="table-btn-div">
-            <button onClick={this.props.toggleUsers}>Hide Table</button>
+            <h4>Users Table Options</h4>
             <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
             <button disabled={this.state.selection.length === 0} onClick={this.changePwModal}>Change Password</button>
             <button disabled={this.state.selection.length === 0} onClick={this.userStandingModal}>Change User Standing</button>

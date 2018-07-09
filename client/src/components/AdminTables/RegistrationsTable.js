@@ -172,6 +172,7 @@ export class RegistrationsTable extends Component {
       otherwise, clicking the button without anything selected results in an error */}
 
         <div className="table-btn-div">
+          <h4>Registrations Table Options</h4>
           <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
           <button disabled={this.state.selection.length === 0} onClick={this.toggleRegistrationPaid}>Log Payment</button>
           <button disabled={this.state.selection.length === 0} onClick={this.cancelRegistration}>Cancel Registration</button>
@@ -217,7 +218,7 @@ export class RegistrationsTable extends Component {
             },
           ]}
           defaultPageSize={5}
-          className="-striped -highlight reservations-table"
+          className="-striped -highlight sub-table"
           {...checkboxProps}
         />
 

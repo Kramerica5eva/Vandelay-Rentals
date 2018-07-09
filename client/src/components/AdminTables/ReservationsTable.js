@@ -214,6 +214,7 @@ export class ReservationsTable extends Component {
       otherwise, clicking the button without anything selected results in an error */}
 
         <div className="table-btn-div">
+          <h4>Reservations Table Options</h4>
           <button disabled={this.state.selection.length === 0} onClick={this.toggleReservationPaid}>Record Payment</button>
           <button disabled={this.state.selection.length === 0} onClick={this.recordRentalInUse}>Record Checkout</button>
           <button disabled={this.state.selection.length === 0} onClick={this.recordRentalReturn}>Record Turn-in</button>
@@ -265,7 +266,7 @@ export class ReservationsTable extends Component {
             },
           ]}
           defaultPageSize={5}
-          className="-striped -highlight reservations-table"
+          className="-striped -highlight sub-table"
           {...checkboxProps}
         />
 

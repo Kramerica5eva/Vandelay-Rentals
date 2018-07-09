@@ -172,19 +172,15 @@ main {
   border-right: 1px solid var(--border-color);
   overflow: hidden;
   cursor: pointer;
-  background: var(--neutral-color);
   transition: 0.25s ease-out;
 }
 
 .calendar .body .cell:hover {
-  background: var(--bg-color);
   transition: 0.5s ease-out;
 }
 
 .calendar .body .selected {
-  border-left: 10px solid transparent;
-  border-image: linear-gradient(45deg, #1a8fff 0%, #53cbf1 40%);
-  border-image-slice: 1;
+  background-color: #64c1ff;
 }
 
 .calendar .body .row {
@@ -235,6 +231,18 @@ main {
   flex-grow: 0;
   flex-basis: calc(100%/7);
   width: calc(100%/7);
+}
+
+.range {
+  background-color: #b9e3ff;
+}
+
+.Range .DayPicker-Day {
+  border-radius: 0 !important;
+}
+
+.unavailable {
+  background-color: red;
 }
 
 /*  END CALENDAR */

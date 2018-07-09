@@ -114,103 +114,6 @@ export class RentalsTable extends Component {
     });
   };
 
-  //  REACT-TABLE: SELECT TABLE HOC FUNCTION
-
-  //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
-  toggleSelection = (key, shift, row) => {
-    let selection = [...this.state.selection];
-    const keyIndex = selection.indexOf(key);
-
-    if (keyIndex >= 0) {
-      // it does exist so we will remove it
-      selection = [
-        ...selection.slice(0, keyIndex),
-        ...selection.slice(keyIndex + 1)
-      ];
-    } else {
-      // it does not exist so add it
-      selection = [];
-      selection.push(key);
-    }
-
-    //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
-    this.setState({ selection, selectedRow: row });
-  };
-
-  // Inside the render function, isSelected returns a true or false depending on if a row is selected
-  isSelected = key => {
-    return this.state.selection.includes(key);
-  };
-
-  // editable react table
-  renderEditable = (cellInfo) => {
-    return (
-      <div
-        style={{ backgroundColor: "#fafafa" }}
-        contentEditable
-        suppressContentEditableWarning
-        onBlur={e => {
-          const rentals = [...this.state.rentals];
-          rentals[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-          this.setState({ rentals: rentals });
-        }}
-        dangerouslySetInnerHTML={{
-          __html: this.state.rentals[cellInfo.index][cellInfo.column.id]
-        }}
-      />
-    );
-  };
-
-  //  logs the selected row and the selection array to the console
-  logSelection = () => {
-    console.log("Selection:", this.state.selection);
-    console.log("Row: ", this.state.selectedRow);
-  };
-
-  //  END - REACT-TABLE: SELECT TABLE HOC FUNCTION
-
-  //  Update selected Row - sends current field info to db and updates that item
-  updateSelectedRow = () => {
-    //  extract variables from the selectedRow object
-    const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
-
-    // if rate exists (it should, but to avoid an error, checking first...) and hasn't been changed, it will have a dollar sign in it, a format that does not exist in the database and will throw an error if submitted to the database as-is. This replaces it with the current (unchanged) rate. If it has changed, it shouldn't have a $ in front of it and can be submitted as is.
-    let newRate;
-    if (rate)
-      if (rate.includes("$")) {
-        newRate = dailyRate.$numberDecimal;
-      } else {
-        newRate = rate;
-      }
-
-    const updateObject = {
-      category: category,
-      condition: condition,
-      dateAcquired: dateAcquired,
-      maker: maker,
-      name: name,
-      dailyRate: newRate,
-      sku: sku,
-      timesRented: timesRented
-    };
-
-    API.adminUpdateRental(_id, updateObject)
-      .then(response => {
-        if (response.status === 200) {
-
-          // Modal for feedback
-          this.setModal({
-            header: "Success!",
-            body: <h3>Database successfully updated</h3>
-          });
-
-          //  query the db and reload the table
-          this.adminGetAllRentals();
-        }
-      })
-      .catch(err => console.log(err));
-  };
-
   //  Gets modal with the change category form - category is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
   rentalCategoryModal = () => {
     this.setModal({
@@ -254,7 +157,7 @@ export class RentalsTable extends Component {
       });
   }
 
-  //  Gets modal with the change category form - category is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
+  //  Gets modal with the change condition form - condition is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
   rentalConditionModal = () => {
     this.setModal({
       header: "Change Condition",
@@ -266,7 +169,7 @@ export class RentalsTable extends Component {
               <select
                 name="condition"
                 label="Change Condition:"
-                // for some reason, setting the select value to this.state.category (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
+                // for some reason, setting the select value to this.state.condition (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
                 onChange={this.handleInputChange}
               >
                 <option></option>
@@ -288,7 +191,7 @@ export class RentalsTable extends Component {
     })
   }
 
-  //  Submits changes made in category modal
+  //  Submits changes made in condition modal
   changeRentalCondition = e => {
     e.preventDefault();
     const { _id } = this.state.selectedRow;
@@ -297,6 +200,49 @@ export class RentalsTable extends Component {
         this.adminGetAllRentals();
         this.toggleModal();
       });
+  }
+
+  //  Changes rental condition to retire - offered as an alternative to deleting
+  retireRental = () => {
+    const { _id } = this.state.selectedRow;
+    API.adminUpdateRental(_id, { condition: 'Retired' })
+      .then(res => {
+        this.adminGetAllRentals();
+        this.toggleModal();
+      });
+  }
+
+  rentalDeleteModal = () => {
+    this.setModal({
+      header: "Warning:",
+      body:
+        <Fragment>
+          <h3>Are you sure you want to delete {this.state.selectedRow.name}?</h3>
+          <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
+          <h3>Would you rather retire the item and keep the data?</h3>
+          <p>(make sure you contact customers and change any existing reservations)</p>
+          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: "1.5rem" }} onClick={this.toggleModal}>
+            Nevermind.
+          </FormBtn>
+          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: "1.2rem" }} onClick={this.retireRental}>
+            Just retire it.
+          </FormBtn>
+          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: ".75rem" }} onClick={this.deleteRental}>
+            I'm sure. Delete it.
+          </FormBtn>
+        </Fragment>
+    })
+  }
+
+  deleteRental = () => {
+    const { _id } = this.state.selectedRow;
+    API.adminDeleteRentalItem(_id)
+      .then(res => {
+        console.log(res);
+        this.adminGetAllRentals();
+        this.toggleModal();
+      })
+      .catch(err => console.log(err));
   }
 
   //  IMAGE CRUD OPERATIONS FUNCTIONS
@@ -392,6 +338,101 @@ export class RentalsTable extends Component {
   }
   //  END - IMAGE CRUD OPERATIONS FUNCTIONS
 
+  //  Update selected Row - sends current field info to db and updates that item
+  updateSelectedRow = () => {
+    //  extract variables from the selectedRow object
+    const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
+
+    // if rate exists (it should, but to avoid an error, checking first...) and hasn't been changed, it will have a dollar sign in it, a format that does not exist in the database and will throw an error if submitted to the database as-is. This replaces it with the current (unchanged) rate. If it has changed, it shouldn't have a $ in front of it and can be submitted as is.
+    let newRate;
+    if (rate)
+      if (rate.includes("$")) {
+        newRate = dailyRate.$numberDecimal;
+      } else {
+        newRate = rate;
+      }
+
+    const updateObject = {
+      category: category,
+      condition: condition,
+      dateAcquired: dateAcquired,
+      maker: maker,
+      name: name,
+      dailyRate: newRate,
+      sku: sku,
+      timesRented: timesRented
+    };
+
+    API.adminUpdateRental(_id, updateObject)
+      .then(response => {
+        if (response.status === 200) {
+
+          // Modal for feedback
+          this.setModal({
+            header: "Success!",
+            body: <h3>Database successfully updated</h3>
+          });
+
+          //  query the db and reload the table
+          this.adminGetAllRentals();
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
+
+  //  REACT-TABLE: SELECT TABLE HOC FUNCTION
+  //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
+  toggleSelection = (key, shift, row) => {
+    let selection = [...this.state.selection];
+    const keyIndex = selection.indexOf(key);
+
+    if (keyIndex >= 0) {
+      // it does exist so we will remove it
+      selection = [
+        ...selection.slice(0, keyIndex),
+        ...selection.slice(keyIndex + 1)
+      ];
+    } else {
+      // it does not exist so add it
+      selection = [];
+      selection.push(key);
+    }
+
+    //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
+    this.setState({ selection, selectedRow: row });
+  };
+
+  // Inside the render function, isSelected returns a true or false depending on if a row is selected
+  isSelected = key => {
+    return this.state.selection.includes(key);
+  };
+
+  //  logs the selected row and the selection array to the console
+  logSelection = () => {
+    console.log("Selection:", this.state.selection);
+    console.log("Row: ", this.state.selectedRow);
+  };
+  //  END REACT-TABLE: SELECT TABLE HOC FUNCTIONs  
+
+  // editable react table
+  renderEditable = (cellInfo) => {
+    return (
+      <div
+        style={{ backgroundColor: "#fafafa" }}
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          const rentals = [...this.state.rentals];
+          rentals[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ rentals: rentals });
+        }}
+        dangerouslySetInnerHTML={{
+          __html: this.state.rentals[cellInfo.index][cellInfo.column.id]
+        }}
+      />
+    );
+  };
 
   render() {
     //  destructure from 'this' because the props object doesn't like 'this.anything' unless it's in a key:value pair
@@ -435,19 +476,18 @@ export class RentalsTable extends Component {
         />
         <div className="main-table-container">
 
-          <h2>Rentals Table</h2>
+          <div className="table-title-div">
+            <h2>Rentals Table <button onClick={this.props.toggleRentals}>hide table</button></h2>
+          </div>
 
           {/* if no rows have been selected, buttons remain disabled;
         otherwise, clicking the button without anything selected results in an error */}
           <div className="table-btn-div">
-            <button onClick={this.props.toggleRentals}>Hide Table</button>
-            <button
-              disabled={this.state.selection.length === 0}
-              onClick={this.updateSelectedRow}>
-              Update Selected Row
-          </button>
-            <button disabled={this.state.selection.length === 0} onClick={this.rentalCategoryModal}>Change Selected Item Category</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.rentalConditionModal}>Change Selected Item Condition</button>
+            <h4>Rentals Table Options</h4>
+            <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalCategoryModal}>Change Category</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalConditionModal}>Change Condition</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalDeleteModal}>Delete</button>
             <button disabled={this.state.selection.length === 0} onClick={this.getImageNames}>Get Images</button>
             <button disabled={this.state.selection.length === 0} onClick={this.getImageUploadModal}>Upload an Image</button>
             <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
