@@ -214,8 +214,8 @@ class Admin extends Component {
             )) : null}
 
           </ul>
-          <Footer />
         </div>
+        <Footer />
       </Fragment >
     );
   }

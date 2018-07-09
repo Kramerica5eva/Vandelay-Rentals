@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import Header from "../../components/Elements/Header";
 import Modal from "../../components/Elements/Modal";
 import NavBar from "../../components/Elements/NavBar";
+import Footer from "../../components/Elements/Footer";
 import DevLinks from "../../components/DevLinks";
 import { BrandonTestTable, RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
 
@@ -206,6 +207,7 @@ class Admin extends Component {
           ) : null}
 
         </div>
+        <Footer />
       </Fragment>
     );
   }
