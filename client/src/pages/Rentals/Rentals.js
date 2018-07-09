@@ -84,8 +84,8 @@ class Rentals extends Component {
   }
 
   addReservationToCart = rental => {
-    const from;
-    const to;
+    let from;
+    let to;
 
     if (this.state.unix.length > 1) {
       from = this.state.unix[0];
