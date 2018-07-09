@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import dateFns, { getTime, isEqual, isAfter, isBefore, startOfDay } from "date-fns";
+import Toggle from "react-toggle";
+import "react-toggle/style.css";
 
 class Calendar extends Component {
 
@@ -14,7 +16,8 @@ class Calendar extends Component {
       from: null,
       to: null,
       enteredTo: null, //keep track of the last day for mouseEnter
-      unavailable: this.props.unavailable
+      unavailable: this.props.unavailable,
+      range: false
     }
   }
   //  && this.isDayBefore(day, from);
@@ -42,40 +45,50 @@ class Calendar extends Component {
   handleDayClick(day) {
     const { from, to, currentMonth } = this.state;
     this.props.clearUnavailable();
-    from && !to ? this.props.updateUnix([from, day]) : null
-    isAfter(day, dateFns.endOfMonth(currentMonth))
-      ? this.nextMonth()
-      : isBefore(day, dateFns.startOfMonth(currentMonth))
-        ? this.prevMonth()
-        : null
-    // let day = this.toUnix(time);
-    if (from && to) {
-      this.setState({
-        from: day,
-        to: null,
-        enteredTo: null
-      });
-      return;
-    }
-    if (!from) {
-      this.setState({
-        from: day,
-        to: null,
-        enteredTo: null
-      });
-    } else {
-      isAfter(day, from)
-        ? this.setState({
-          to: day,
-          enteredTo: day
-        })
-        : isBefore(day, from)
-          ? this.setState({
-            from: day,
-            to: null,
-            enteredTo: null
-          })
+    if (!this.state.range) {
+      isAfter(day, dateFns.endOfMonth(currentMonth))
+        ? this.nextMonth()
+        : isBefore(day, dateFns.startOfMonth(currentMonth))
+          ? this.prevMonth()
           : null
+      this.props.updateUnix([day])
+      this.setState({ from: day })
+    } else {
+      from && !to ? this.props.updateUnix([from, day]) : null
+      isAfter(day, dateFns.endOfMonth(currentMonth))
+        ? this.nextMonth()
+        : isBefore(day, dateFns.startOfMonth(currentMonth))
+          ? this.prevMonth()
+          : null
+      // let day = this.toUnix(time);
+      if (from && to) {
+        this.setState({
+          from: day,
+          to: null,
+          enteredTo: null
+        });
+        return;
+      }
+      if (!from) {
+        this.setState({
+          from: day,
+          to: null,
+          enteredTo: null
+        });
+      } else {
+        isAfter(day, from)
+          ? this.setState({
+            to: day,
+            enteredTo: day
+          })
+          : isBefore(day, from)
+            ? this.setState({
+              from: day,
+              to: null,
+              enteredTo: null
+            })
+            : null
+      }
     }
   }
   handleDayMouseEnter(day) {
@@ -150,10 +163,14 @@ class Calendar extends Component {
         days.push(
           <div
             className={`column cell ${
-              isEqual(day, from) || isEqual(day, to) || isEqual(day, enteredTo)
-                ? "selected"
-                : isAfter(day, from) && isBefore(day, enteredTo)
-                  ? "range"
+              this.state.range
+                ? isEqual(day, from) || isEqual(day, to) || isEqual(day, enteredTo)
+                  ? "selected"
+                  : isAfter(day, from) && isBefore(day, enteredTo)
+                    ? "range"
+                    : ""
+                : isEqual(day, from)
+                  ? "selected"
                   : ""
               } ${
               this.props.unavailable.includes(getTime(day) / 1000)
@@ -197,15 +214,16 @@ class Calendar extends Component {
     });
   }
 
-
   render() {
-    const { from, to, enteredTo } = this.state;
-    const modifiers = { start: from, end: enteredTo };
-    const disabledDays = { before: this.state.from };
-    const selectedDays = [from, { from, to: enteredTo }];
     return (
       <div className="calendar">
         {this.renderHeader()}
+        <Toggle
+          id='range'
+          defaultChecked={this.state.range}
+          onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
+        />
+        <span>Date range selection</span>
         {this.renderDays()}
         {this.renderCells()}
       </div>
