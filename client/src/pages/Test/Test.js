@@ -241,7 +241,7 @@ class Test extends Component {
                   setAvailability={this.checkAvailability(rental.reservations)}
                   rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
                   markUnavailable={this.markUnavailable}
-                  />
+                />
               )) : null}
 
               {this.state.courses ? this.state.courses.map(course => (
