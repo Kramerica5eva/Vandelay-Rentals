@@ -143,7 +143,7 @@ class ShoppingCart extends Component {
                   <p>From: {res.date.from}</p>
                   <p>To: {res.date.to}</p>
                   <p>Daily Rate: ${parseFloat(res.dailyRate.$numberDecimal).toFixed(2)}</p>
-                  <h4>Total cost: ${parseFloat(((res.date.to - res.date.from) / 86400) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2)}</h4>
+                  <h4>Total cost: ${parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2))}</h4>
                   <button onClick={() => this.confirmReservation(res)}>Confirm</button>
                   <button onClick={() => this.removeReservationFromCart(res._id)}>Cancel</button>
                 </div>
