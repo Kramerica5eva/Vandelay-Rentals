@@ -1,13 +1,49 @@
+.rentals  .calendar-head-title{
+    /* position: absolute; */
+    top: -9.8em;
+    color: white;
+    /* position: absolute; */
+    position: relative;
+    text-align: center;
+    left: 0px;
+    right: 0px;
+    /* bottom: 50px; */
+    margin: auto;
+    font-size: 4.2rem;
+    /* width: 150px; */
+    line-height: 25px;
+    text-shadow: none;
+}
+
+.rentals:not(.calendar) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.rentals h2 {
+    min-width: 50%;
+    max-width: 50%;
+    text-align: center;
+}
+
 .calendar {
     margin: 15px;
 }
 
-.rentals {
+.rental-card-container {
     margin-top: 50px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-}
+    /* display: grid;
+    grid-template-columns: repeat(3, 1fr); */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 2%;
 
+
+}
 .unavailable {
     background-color: rgba(255, 0, 0, 0.25)
 }
@@ -112,8 +148,11 @@
 
 .calendar {
     display: block;
-    position: relative;
+    position: absolute;
+    top: -42em;
     width: 80%;
+    /* max-width: 1000px; */
+    /* min-width: 295px; */
     background: var(--neutral-color);
     border: 1px solid var(--border-color);
 }
