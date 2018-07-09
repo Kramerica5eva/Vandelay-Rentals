@@ -83,6 +83,22 @@ class Rentals extends Component {
     this.setState({ unavailable: [] })
   }
 
+  addReservationToCart = rental => {
+    const from;
+    const to;
+
+    if (this.state.unix.length > 1) {
+      from = this.state.unix[0];
+      to = this.state.unix[this.state.unix.length - 1];
+    } else {
+      from = this.state.unix[0];
+      to = this.state.unix[0];
+    }
+
+    API.addReservationToCart(from, to, rental)
+      .then(response => console.log(response));
+  }
+
   render() {
     return (
       <Fragment>
@@ -122,6 +138,7 @@ class Rentals extends Component {
                 category={rental.category}
                 maker={rental.maker}
                 reservations={rental.reservations}
+                addReservationToCart={this.addReservationToCart}
                 setAvailability={this.checkAvailability(rental.reservations)}
                 rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
                 markUnavailable={this.markUnavailable}
