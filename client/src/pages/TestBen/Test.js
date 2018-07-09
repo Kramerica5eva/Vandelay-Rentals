@@ -7,6 +7,7 @@ import Calendar from "../../components/Calendar";
 import "./../../App.css";
 import "./testBen.css";
 import RentalCard from "../../components/Cards/RentalCard";
+import dateFns from "date-fns";
 let moment = require("moment");
 
 let date = new Date();
@@ -17,6 +18,9 @@ class Test extends Component {
   state = {
     rentals: [],
     unix: [],
+    from: null,
+    to: null,
+    enteredTo: null
   };
 
   componentDidMount() {
@@ -64,8 +68,8 @@ class Test extends Component {
   checkAvailability = itemRes => { //passed all the reservations for a given item
     for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
       let range = []; //holds each individual day of a reservation
-      let days = (itemRes[i].to - itemRes[i].from) / 86400; //determines total number of days for each reservation
-      range.push(itemRes[i].from); //pushes the first day of the reservation
+      let days = (itemRes[i].date.to - itemRes[i].date.from) / 86400; //determines total number of days for each reservation
+      range.push(itemRes[i].date.from); //pushes the first day of the reservation
       for (let j = 0; j < days; j++) {//
         range.push(range[j] + 86400); //adds all days of a reservation to range for comparison
       };                              //
@@ -117,8 +121,10 @@ class Test extends Component {
           returnValue={"range"}
           className={"calendar"}
         /> */}
-        <Calendar />
-        <div style={{ position: 'relative', top: 50 + 'px', left: 25 + 'px' }}>{this.state.unix.join(" ")}</div>
+        <Calendar
+          updateUnix={this.getDays}
+        />
+        {/* <div style={{ position: 'relative', top: 50 + 'px', left: 25 + 'px' }}>{this.state.unix.join(" ")}</div> */}
         <div className='rentals'>
           <h2>Rentals Available:</h2>
           {/* <ul> */}
