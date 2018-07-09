@@ -5,7 +5,8 @@
   flex: 1 0 auto;
   position: relative;
   z-index: -1;
-  height: 50vh;
+  height: 70vh;
+  /* height: 50vh; */
   justify-content: center;
   align-items: center;
   transform: translateZ(-1px) scale(4);
@@ -13,7 +14,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-
+  text-shadow: none;
 }
 
 #parallax-container h1 {

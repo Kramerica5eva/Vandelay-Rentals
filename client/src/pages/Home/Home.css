@@ -175,6 +175,55 @@
     margin-bottom: 0;
 }
 
+.contact-email {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3%;
+    justify-content: center;
+    align-items: center;
+}
+.contact-email input{
+    font-size: 0.9rem;
+    margin: 0;
+    justify-content: start;
+}
+
+.clipboard-icon{
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    justify-content: start;
+}
+
+.clipboard-icon button {
+    border-radius: 5px;
+    background-color:#adaaaa;
+    text-shadow: 1px 1px 3px #666666;
+    -webkit-box-shadow: 0px 1px 3px #666666;
+    box-shadow: 1px 2px 5px #666666;
+    border: none;
+    text-decoration: none;
+    margin: 5px auto;
+    width: 70%;
+    max-height: 50px;
+    min-height: 50px;
+}
+.clipboard-icon button:hover {
+    background: #858585;
+    cursor: pointer;
+}
+
+div .clipboard-icon p {
+    font-size: 1rem;
+    margin: 0 auto;
+}
+.contact-email input, .clipboard-icon {
+    min-width: 250px;
+    max-width: 250px;
+}
+
+
+
 @media (min-width:450px) {
     .black-box {
         max-width: 80%;
@@ -187,7 +236,6 @@
 
     .black-box {
         max-width: 75%;
-
     }
 
     .black-box p{
@@ -218,6 +266,10 @@
         line-height: 35px;
         letter-spacing: 1px;
         /* text-align: justify; */
+    }
+
+    .contact-email {
+        align-items: start;
     }
 
 }

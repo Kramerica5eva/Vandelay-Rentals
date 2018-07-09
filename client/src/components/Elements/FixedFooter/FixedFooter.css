@@ -1,6 +1,7 @@
 .fixed-footer {
     align-items: center;
-    background: rgba(78, 80, 216, 0.788);
+    background-color: rgba(78, 80, 216, 0.888);
+    /* background: rgba(78, 80, 216, 0.788); */
     /* bottom: 0px; */
     color: white;
     display: flex;
