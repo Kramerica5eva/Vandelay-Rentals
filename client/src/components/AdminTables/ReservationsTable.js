@@ -5,6 +5,7 @@ import API from "../../utils/API";
 import "react-table/react-table.css";
 import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
+import dateFns from "date-fns";
 const CheckboxTable = checkboxHOC(ReactTable);
 
 export class ReservationsTable extends Component {
@@ -174,6 +175,8 @@ export class ReservationsTable extends Component {
           const bill = (((parseInt(reservation.date.to) - parseInt(reservation.date.from)) / 86400) + 1) * reservation.dailyRate.$numberDecimal;
           reservation.amtDue = "$" + parseFloat(bill).toFixed(2);
         }
+        reservation.date.to = dateFns.format(reservation.date.to * 1000, "ddd MMM Do YYYY");
+        reservation.date.from = dateFns.format(reservation.date.from * 1000, "ddd MMM Do YYYY");
       })
     }
 

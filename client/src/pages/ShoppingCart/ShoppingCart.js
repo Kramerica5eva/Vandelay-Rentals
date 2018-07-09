@@ -11,6 +11,7 @@ import DevLinks from "../../components/DevLinks";
 import RentalCard from "../../components/Cards/RentalCard";
 import "./ShoppingCart.css";
 import Calendar from "react-calendar";
+import dateFns from "date-fns"
 
 class ShoppingCart extends Component {
   state = {
@@ -140,8 +141,8 @@ class ShoppingCart extends Component {
                   <h2>Rentals</h2>
                   <h3>{res.itemName}</h3>
                   <h4>Reservation Dates:</h4>
-                  <p>From: {res.date.from}</p>
-                  <p>To: {res.date.to}</p>
+                  <p>From: {dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>
+                  <p>To: {dateFns.format(res.date.to * 1000, "ddd MMM Do YYYY")}</p>
                   <p>Daily Rate: ${parseFloat(res.dailyRate.$numberDecimal).toFixed(2)}</p>
                   <h4>Total cost: ${parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2))}</h4>
                   <button onClick={() => this.confirmReservation(res)}>Confirm</button>
