@@ -55,8 +55,33 @@
     font-size: 3em;
     padding: 3% 5%;
     text-align: center;
-
+    text-decoration: none;
 }
+
+.black-box:hover {
+
+    -moz-box-shadow: 0 0 3px #FFCE40;
+    -webkit-box-shadow: 0 0 3px #FFCE40;
+    box-shadow: 0 0 25px rgba(255, 207, 64, 0.858);
+    z-index: 999;
+    cursor: pointer;
+    transform: scale(1.03);
+
+    }
+.black-box:hover:nth-child(odd) {
+
+    position: relative;
+    /* bottom: 1%; */
+    right: 1%;
+
+    }
+.black-box:hover:nth-child(even) {
+
+    position: relative;
+    left: 1%;
+
+    }
+
 .black-box h4{
 
    margin-bottom: 5px;
@@ -354,6 +379,10 @@
         text-align: center;
 
     }
+
+
+
+
     .black-box h4{
 
     margin-bottom: 5px;

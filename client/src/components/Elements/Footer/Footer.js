@@ -11,7 +11,7 @@ class Footer extends React.Component {
             <footer className='footer'>
                 <a href="###">GitHub</a>
                 <p>Copyright 2018</p>
-                <Link className="btn-link" to="##########" role="button">Contact</Link>
+                <Link className="btn-link" to="/#about-us-para-header" role="button">About</Link>
             </footer>
         );
     }
