@@ -98,7 +98,7 @@ class Home extends Component {
             <h1 id="about-us-para-header">About Our Company</h1>
             <div className='about-us'>
               <h3>Designed and Built for your Business</h3>
-              <p>This website stated as a proof of concept for a local water sports rental shop. Their problem was they needed a website that allowed their users the ability to shop and rent items from home, but also provide a useful in-store interface.</p>
+              <p>This website started as a proof of concept for a local water sports rental shop. Their problem was they needed a website that allowed their users the ability to shop and rent items from home, but also provide a useful in-store interface.</p>
               <p>As a team of Web Developers and outdoor enthusiasts we decided to help. To do this we created a website that not only provided the user interface requested, but also has a proprietary built in inventory management interface. This allows for a seamless experience for both the users and employees that interact with the website.</p>
               <p>Our hope is to make it easier for people to get out and experience the outdoors while also helping outdoor rental companies grow their business. As a proof of concept this website is not actually active with any current companies, though it is a template that our company, Vandelay Rentals, can use to create your company's website. Are you interested? Contact US! </p>
 
