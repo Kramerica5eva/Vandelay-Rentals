@@ -93,10 +93,10 @@ class Rentals extends Component {
 
     if (this.state.unix.length > 1) {
       from = this.state.unix[0];
-      to = this.state.unix[this.state.unix.length - 1] + 86400;
+      to = this.state.unix[this.state.unix.length - 1];
     } else {
       from = this.state.unix[0];
-      to = this.state.unix[0] + 86400;
+      to = this.state.unix[0];
     }
 
     API.addReservationToCart(from, to, rental)
