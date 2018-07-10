@@ -115,7 +115,7 @@ class Rentals extends Component {
         <div className="main-container">
           <ParallaxHero
             image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)', backgroundPosition:"bottom" }}
-            title="RENT"
+            title=""
           />
           <Header>
             <DevLinks
