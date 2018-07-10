@@ -8,7 +8,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
-import Moment from 'moment';
+import dateFns from "date-fns";
 import { ReservationsTable } from './ReservationsTable';
 
 const CheckboxTable = checkboxHOC(ReactTable);
@@ -57,7 +57,6 @@ export class RentalsTable extends Component {
     });
   }
 
-  //  isOpen MUST be set to true for the setModal function, and NOT '!this.state.modal.isOpen' as in the toggleModal function, otherwise select/option tags (dropdowns) won't work properly inside the modal: the dropdown is always a step behind populating from state (the selection won't display what you've chosen until you close and reopen the modal).
   setModal = (modalInput) => {
     this.setState({
       modal: {
@@ -103,11 +102,8 @@ export class RentalsTable extends Component {
 
         //  loop through the response array and add a new key/value pair with the formatted rate
         res.data.map(r => {
-          const rate = "$" + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
-          r.rate = rate;
-          console.log(r.dateAcquired);
-          const date = Moment.unix(r.dateAcquired).format("MMMM Do YYYY");
-          r.dateAcq = date;
+          r.rate = "$" + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
+          r.dateAcq = dateFns.format(r.dateAcquired * 1000, "MMM Do YYYY");
         });
         // set state for rentals, but also empty selection - selection is where the selected (highlighted) row _id is kept. This unselects the row - when a row is selected and the data is updated, it calls this function (adminGetAllRentals), and emptying this.state.selected results in unselecting the row, which works as a visual cue that an update operation is complete.
         this.setState({
@@ -131,7 +127,7 @@ export class RentalsTable extends Component {
               <select
                 name="category"
                 label="Change Category:"
-                // for some reason, setting the select value to this.state.category (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
+                // for whatever reason, setting the select value to this.state.category (as in the React docs) does not work with select/option dropdowns...
                 onChange={this.handleInputChange}
               >
                 <option></option>
@@ -148,7 +144,7 @@ export class RentalsTable extends Component {
             </FormBtn>
           </form>
         </Fragment>
-    })
+    });
   }
 
   //  Submits changes made in category modal
@@ -245,7 +241,7 @@ export class RentalsTable extends Component {
     })
   }
 
-  deleteRental = () => {
+  deleteRental = event => {
     this.toggleModal();
     this.toggleLoadingModal();
     const { _id } = this.state.selectedRow;
@@ -348,7 +344,7 @@ export class RentalsTable extends Component {
         <Fragment>
           {images.map(image => (
             <div className="rental-img-div">
-              <p>Uploaded {Moment(image.uploadDate).format("MMM Do YYYY, h:mm a")}</p>
+              <p>Uploaded {dateFns.format(image.uploadDate, "MMM Do YYYY hh:mm a")}</p>
               <img className="rental-img" src={`file/image/${image.filename}`} alt="rental condition" />
               <button onClick={() => this.deleteImage(image._id)}>Delete</button>
             </div>
@@ -378,14 +374,9 @@ export class RentalsTable extends Component {
     //  extract variables from the selectedRow object
     const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
 
-    // if rate exists (it should, but to avoid an error, checking first...) and hasn't been changed, it will have a dollar sign in it, a format that does not exist in the database and will throw an error if submitted to the database as-is. This replaces it with the current (unchanged) rate. If it has changed, it shouldn't have a $ in front of it and can be submitted as is.
     let newRate;
     if (rate)
-      if (rate.includes("$")) {
-        newRate = dailyRate.$numberDecimal;
-      } else {
-        newRate = rate;
-      }
+      newRate = rate.split("").filter(x => x !== "$").join("");
 
     const updateObject = {
       category: category,
@@ -414,7 +405,6 @@ export class RentalsTable extends Component {
       })
       .catch(err => console.log(err));
   };
-
 
   //  REACT-TABLE: SELECT TABLE HOC FUNCTION
   //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array

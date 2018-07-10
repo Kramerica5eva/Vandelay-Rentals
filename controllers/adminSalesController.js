@@ -1,6 +1,6 @@
 const db = require('../models');
 
-// Defining methods for the rentalsController
+// Defining methods for the adminSalesController
 module.exports = {
   findAll: function(req, res) {
     db.Sale
