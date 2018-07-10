@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
+import LoadingModal from "../../components/Elements/LoadingModal";
 import Header from "../../components/Elements/Header";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
@@ -40,6 +41,12 @@ class Admin extends Component {
         body: modalInput.body,
         footer: modalInput.footer
       }
+    });
+  }
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
     });
   }
 
@@ -126,6 +133,7 @@ class Admin extends Component {
           body={this.state.modal.body}
           footer={this.state.modal.footer}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
         <NavBar
           loggedIn={this.props.loggedIn}
           admin={this.props.admin}

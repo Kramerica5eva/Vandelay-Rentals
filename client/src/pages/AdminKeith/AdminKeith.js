@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Header from "../../components/Elements/Header";
 import Modal from "../../components/Elements/Modal";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import DevLinks from "../../components/DevLinks";
@@ -16,6 +17,7 @@ class Admin extends Component {
       body: "",
       footer: ""
     },
+    loadingModalOpen: false,
     showForms: false,
     courses: false,
     rentals: true,
@@ -39,6 +41,12 @@ class Admin extends Component {
         body: modalInput.body,
         footer: modalInput.footer
       }
+    });
+  }
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
     });
   }
 
@@ -138,6 +146,7 @@ class Admin extends Component {
           body={this.state.modal.body}
           footer={this.state.modal.footer}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
         <NavBar
           loggedIn={this.props.loggedIn}
           admin={this.props.admin}

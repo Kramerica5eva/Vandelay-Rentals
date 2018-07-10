@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
 import Header from "../../components/Elements/Header";
 import ParallaxHero from "../../components/ParallaxHero";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import RentalCard from "./../../components/Cards/RentalCard";
@@ -16,7 +17,8 @@ class Rentals extends Component {
   state = {
     rentals: [],
     unix: [],
-    unavailable: []
+    unavailable: [],
+    loadingModalOpen: false,
   };
 
   componentDidMount() {
@@ -31,7 +33,12 @@ class Rentals extends Component {
         });
       })
       .catch(err => console.log(err));
+  }
 
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
+    });
   }
 
   onChange = date => {
@@ -90,6 +97,7 @@ class Rentals extends Component {
   addReservationToCart = rental => {
     let from;
     let to;
+    this.toggleLoadingModal();
 
     if (this.state.unix.length > 1) {
       from = this.state.unix[0];
@@ -100,7 +108,11 @@ class Rentals extends Component {
     }
 
     API.addReservationToCart(from, to, rental)
-      .then(response => console.log(response));
+      .then(response => {
+        console.log(response)
+        setTimeout(this.toggleLoadingModal, 1000);
+        ;
+      });
   }
 
   render() {
@@ -112,9 +124,10 @@ class Rentals extends Component {
           logout={this.props.logout}
           location={this.props.location}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
         <div className="main-container">
           <ParallaxHero
-            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)', backgroundPosition:"bottom" }}
+            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)', backgroundPosition: "bottom" }}
             title=""
           />
           <Header>

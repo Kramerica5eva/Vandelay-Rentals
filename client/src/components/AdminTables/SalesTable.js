@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Input, FormBtn } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
@@ -43,6 +44,12 @@ export class SalesTable extends Component {
         body: modalInput.body,
         footer: modalInput.footer
       }
+    });
+  }
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
     });
   }
 
@@ -197,6 +204,7 @@ export class SalesTable extends Component {
           body={this.state.modal.body}
           footer={this.state.modal.footer}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
 
         <div className="main-table-container">
 

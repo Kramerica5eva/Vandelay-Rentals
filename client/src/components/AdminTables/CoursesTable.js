@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Input, FormBtn, Select, Option } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
@@ -42,6 +43,12 @@ export class CoursesTable extends Component {
       }
     });
   };
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
+    });
+  }
 
   adminGetAllCourses = () => {
     API.adminGetAllCourses()
@@ -246,6 +253,7 @@ export class CoursesTable extends Component {
           body={this.state.modal.body}
           footer={this.state.modal.footer}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
         <div className="main-table-container">
 
           <div className="table-title-div">

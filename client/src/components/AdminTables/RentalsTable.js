@@ -2,13 +2,13 @@ import React, { Component, Fragment } from "react";
 import { Input, FormBtn, Label } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import ImageModal from "../../components/Elements/ImageModal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
 import Moment from 'moment';
-
 import { ReservationsTable } from './ReservationsTable';
 
 const CheckboxTable = checkboxHOC(ReactTable);
@@ -80,6 +80,12 @@ export class RentalsTable extends Component {
     });
   }
   // END MODAL TOGGLE FUNCTIONS
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
+    });
+  }
 
   // Get rentals and set state so the table will display
   adminGetAllRentals = () => {
@@ -474,6 +480,7 @@ export class RentalsTable extends Component {
           body={this.state.imageModal.body}
           footer={this.state.imageModal.footer}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
         <div className="main-table-container">
 
           <div className="table-title-div">
