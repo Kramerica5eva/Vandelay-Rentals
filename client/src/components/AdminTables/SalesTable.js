@@ -110,6 +110,7 @@ export class SalesTable extends Component {
   };
 
   updateSelectedRow = () => {
+    this.toggleLoadingModal();
     const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
 
     let newRate;
@@ -134,13 +135,13 @@ export class SalesTable extends Component {
     API.adminUpdateRental(_id, updateObject)
       .then(response => {
         if (response.status === 200) {
-
-          // Modal for feedback
-          this.setModal({
+          //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+          setTimeout(this.toggleLoadingModal, 500);
+          // success modal after the loading modal is gone.
+          setTimeout(this.setModal, 500, {
             header: "Success!",
             body: <h3>Database successfully updated</h3>
           });
-
           //  query the db and reload the table
           this.adminGetAllRentals();
         }

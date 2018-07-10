@@ -108,26 +108,29 @@ export class UsersTable extends Component {
   }
 
   handlePasswordFormSubmit = event => {
+    event.preventDefault();
+    this.toggleLoadingModal();
     console.log("Changing password...")
     const { _id } = this.state.selectedRow;
-    event.preventDefault();
     API.adminUpdateUser(_id, { password: this.state.password })
       .then(res => {
         console.log(res);
         if (res.status === 200) {
-          this.setModal({
+          setTimeout(this.toggleLoadingModal, 500);
+          setTimeout(this.setModal, 500, {
             header: "Success!",
             body: <h3>Password successfully changed</h3>
-          })
+          });
         } else {
-          this.setModal({
+          setTimeout(this.toggleLoadingModal, 500);
+          setTimeout(this.setModal, 500, {
             header: "Error!",
             body:
               <Fragment>
                 <h3>Something went wrong</h3>
                 <h4>Please try again</h4>
               </Fragment>
-          })
+          });
         }
       });
   }
@@ -221,7 +224,16 @@ export class UsersTable extends Component {
     API.adminUpdateUser(_id, updateObject)
       .then(response => {
         console.log(response);
-        this.adminGetAllUsers();
+        if (response.status === 200) {
+          //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+          setTimeout(this.toggleLoadingModal, 500);
+          // success modal after the loading modal is gone.
+          setTimeout(this.setModal, 500, {
+            header: "Success!",
+            body: <h3>Database successfully updated</h3>
+          });
+          this.adminGetAllUsers();
+        }
       })
   }
 

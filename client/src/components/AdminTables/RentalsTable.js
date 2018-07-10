@@ -42,6 +42,14 @@ export class RentalsTable extends Component {
     this.adminGetAllRentals();
   }
 
+  // Standard input change controller
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
   // MODAL TOGGLE FUNCTIONS
   toggleModal = () => {
     this.setState({
@@ -101,7 +109,6 @@ export class RentalsTable extends Component {
           const date = Moment.unix(r.dateAcquired).format("MMMM Do YYYY");
           r.dateAcq = date;
         });
-
         // set state for rentals, but also empty selection - selection is where the selected (highlighted) row _id is kept. This unselects the row - when a row is selected and the data is updated, it calls this function (adminGetAllRentals), and emptying this.state.selected results in unselecting the row, which works as a visual cue that an update operation is complete.
         this.setState({
           rentals: res.data,
@@ -110,14 +117,6 @@ export class RentalsTable extends Component {
         });
       })
       .catch(err => console.log(err));
-  };
-
-  // Standard input change controller
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
   };
 
   //  Gets modal with the change category form - category is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
@@ -154,12 +153,14 @@ export class RentalsTable extends Component {
 
   //  Submits changes made in category modal
   changeRentalCategory = e => {
+    this.toggleModal();
+    this.toggleLoadingModal();
     e.preventDefault();
     const { _id } = this.state.selectedRow;
     API.adminUpdateRental(_id, { category: this.state.category })
       .then(res => {
         this.adminGetAllRentals();
-        this.toggleModal();
+        this.toggleLoadingModal();
       });
   }
 
@@ -199,22 +200,26 @@ export class RentalsTable extends Component {
 
   //  Submits changes made in condition modal
   changeRentalCondition = e => {
+    this.toggleModal();
+    this.toggleLoadingModal();
     e.preventDefault();
     const { _id } = this.state.selectedRow;
     API.adminUpdateRental(_id, { condition: this.state.condition })
       .then(res => {
         this.adminGetAllRentals();
-        this.toggleModal();
+        this.toggleLoadingModal();
       });
   }
 
   //  Changes rental condition to retire - offered as an alternative to deleting
   retireRental = () => {
+    this.toggleModal();
+    this.toggleLoadingModal();
     const { _id } = this.state.selectedRow;
     API.adminUpdateRental(_id, { condition: 'Retired' })
       .then(res => {
         this.adminGetAllRentals();
-        this.toggleModal();
+        this.toggleLoadingModal();
       });
   }
 
@@ -241,12 +246,22 @@ export class RentalsTable extends Component {
   }
 
   deleteRental = () => {
+    this.toggleModal();
+    this.toggleLoadingModal();
     const { _id } = this.state.selectedRow;
     API.adminDeleteRentalItem(_id)
       .then(res => {
         console.log(res);
+        //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+        setTimeout(this.toggleLoadingModal, 500);
+        // success modal after the loading modal is gone.
+        setTimeout(this.setModal, 500, {
+          header: "Success!",
+          body: <h3>Database successfully updated</h3>
+        });
+        //  query the db and reload the table
         this.adminGetAllRentals();
-        this.toggleModal();
+        this.toggleLoadingModal();
       })
       .catch(err => console.log(err));
   }
@@ -289,6 +304,10 @@ export class RentalsTable extends Component {
   //  When the submit button on the image upload modal is pressed, the image is uploaded into the db
   handleImageUpload = event => {
     event.preventDefault();
+    this.setModal({
+      header: "Loading...",
+      body: <img style={{ width: "50px", display: "block", margin: "50px auto" }} src="./../../../loading.gif" />
+    });
     //  the row must be selected (checkbox and highlighted) for this to work
     const { _id } = this.state.selectedRow;
     const fd = new FormData();
@@ -302,15 +321,20 @@ export class RentalsTable extends Component {
 
   // Gets image names from the db so they can be put into 'img' elements to be streamed for display
   getImageNames = () => {
+    this.setModal({
+      header: "Loading...",
+      body: <img style={{ width: "50px", display: "block", margin: "50px auto" }} src="./../../../loading.gif" />
+    });
     const { _id } = this.state.selectedRow;
     API.getImageNames(_id).then(res => {
       console.log(res);
       if (res.data.length === 0) {
-        this.setModal({
+        setTimeout(this.setModal, 500, {
           header: "Rental Images",
           body: <h3>No images to display</h3>
         });
       } else {
+        this.toggleModal();
         this.getImageModal(res.data);
       }
     });
@@ -335,6 +359,10 @@ export class RentalsTable extends Component {
 
   // Deletes an image, then closes the modal so when getImageNames toggles the modal, it will reopen it
   deleteImage = image => {
+    this.setModal({
+      header: "Loading...",
+      body: <img style={{ width: "50px", display: "block", margin: "50px auto" }} src="./../../../loading.gif" />
+    });
     const { _id } = this.state.selectedRow;
     API.deleteImage(image, _id)
       .then(res => {
@@ -346,6 +374,7 @@ export class RentalsTable extends Component {
 
   //  Update selected Row - sends current field info to db and updates that item
   updateSelectedRow = () => {
+    this.toggleLoadingModal();
     //  extract variables from the selectedRow object
     const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
 
@@ -372,13 +401,13 @@ export class RentalsTable extends Component {
     API.adminUpdateRental(_id, updateObject)
       .then(response => {
         if (response.status === 200) {
-
-          // Modal for feedback
-          this.setModal({
+          //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+          setTimeout(this.toggleLoadingModal, 500);
+          // success modal after the loading modal is gone.
+          setTimeout(this.setModal, 500, {
             header: "Success!",
             body: <h3>Database successfully updated</h3>
           });
-
           //  query the db and reload the table
           this.adminGetAllRentals();
         }
