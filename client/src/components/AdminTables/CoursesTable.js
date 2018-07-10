@@ -26,37 +26,48 @@ export class CoursesTable extends Component {
 
   componentDidMount() {
     this.adminGetAllCourses();
-  }
+  };
 
+  // Standard input change controller
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  // MODAL TOGGLE FUNCTIONS
   toggleModal = () => {
     this.setState({
       modal: { isOpen: !this.state.modal.isOpen }
     });
-  };
+  }
 
-  setModal = modalInput => {
+  setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer
       }
     });
-  };
+  }
+  // END MODAL TOGGLE FUNCTIONS
 
+  //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoign
   toggleLoadingModal = () => {
     this.setState({
       loadingModalOpen: !this.state.loadingModalOpen
     });
   }
 
+  //  Get all courses from the database and set state so the table will display
   adminGetAllCourses = () => {
     API.adminGetAllCourses()
       .then(res => {
         res.data.map(r => {
-          const pricePer = "$" + parseFloat(r.price.$numberDecimal).toFixed(2);
-          r.pricePer = pricePer;
+          r.pricePer = "$" + parseFloat(r.price.$numberDecimal).toFixed(2);
           r.date = dateFns.format(r.date * 1000, "ddd MMM Do YYYY");
           if (r.participants.length) {
             r.openSlots = r.slots - r.participants.length;
@@ -73,14 +84,8 @@ export class CoursesTable extends Component {
       .catch(err => console.log(err));
   };
 
-  // Standard input change controller
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-  };
-
+  //  COURSE UPDATE MODALS W/UPDATE FUNCTIONS
+  //  Course level update modal
   levelModal = () => {
     this.setModal({
       header: "Change Level",
@@ -98,25 +103,28 @@ export class CoursesTable extends Component {
               <Option>Intermediate</Option>
               <Option>Beginner</Option>
             </Select>
-            <FormBtn onClick={this.changeLevel}>Submit</FormBtn>
+            <FormBtn onClick={this.changeCourseLevel}>Submit</FormBtn>
           </form>
         </Fragment>
       )
     });
   };
 
-  changeLevel = e => {
+  //  Course level update function
+  changeCourseLevel = event => {
+    event.preventDefault();
     this.toggleModal();
     this.toggleLoadingModal()
-    e.preventDefault();
     console.log(this.state.level);
     const { _id } = this.state.selectedRow;
-    API.adminUpdateCourse(_id, { level: this.state.level }).then(res => {
-      this.adminGetAllCourses();
-      this.toggleLoadingModal();
-    });
+    API.adminUpdateCourse(_id, { level: this.state.level })
+      .then(res => {
+        this.adminGetAllCourses();
+        this.toggleLoadingModal();
+      });
   };
 
+  //  Course delete modal
   courseDeleteModal = () => {
     this.setModal({
       header: "",
@@ -134,6 +142,7 @@ export class CoursesTable extends Component {
     })
   }
 
+  // Course delete function
   deleteCourse = () => {
 
   }
@@ -175,15 +184,11 @@ export class CoursesTable extends Component {
     this.toggleLoadingModal()
     const { name, pricePer, price, abstract, topics, date, slots, _id } = this.state.selectedRow;
 
-    // if pricePer exists (it should, but to avoid an error, checking first...) and hasn't been changed, it will have a dollar sign in it, a format that does not exist in the database and will throw an error if submitted to the database as-is. This replaces it with the current (unchanged) pricePer. If it has changed, it shouldn't have a $ in front of it and can be submitted as is.
+    // if pricePer exists (it should, but to avoid an error, checking first...) and hasn't been changed, it will have a dollar sign in it, a format that does not exist in the database and will throw an error if submitted to the database as-is. This removes the '$' before submitting.
     let newPrice;
     if (pricePer)
-      if (pricePer.includes("$")) {
-        newPrice = pricePer.split("").filter(x => x !== "$").join("");
-        console.log(newPrice);
-      } else {
-        newPrice = pricePer;
-      }
+      newPrice = pricePer.split("").filter(x => x !== "$").join("");
+    console.log(newPrice);
 
     const updateObject = {
       name: name,
@@ -211,6 +216,7 @@ export class CoursesTable extends Component {
       .catch(err => console.log(err));
   };
 
+  // editable react table function
   renderEditable = cellInfo => {
     return (
       <div

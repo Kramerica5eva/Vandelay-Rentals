@@ -16,7 +16,7 @@ const saleSeed = [
     cost: 700.00,
     price: 600.00,
     sku: 'p-2017-44b-017',
-    dateAcquired: '2017-06-15',
+    dateAcquired: 1497484800,
     saleType: 'Used',
     condition: 'Good'
   },
@@ -27,7 +27,7 @@ const saleSeed = [
     cost: 1050.00,
     price: 1599.00,
     sku: 'p-2018-12a-007',
-    dateAcquired: '2018-05-19',
+    dateAcquired: 1526688000,
     condition: 'New'
   },
   {
@@ -37,7 +37,7 @@ const saleSeed = [
     cost: 800.00,
     price: 1199.00,
     sku: 'p-2018-22o-026',
-    dateAcquired: '2018-05-19',
+    dateAcquired: 1526688000,
     condition: 'New'
   },
   {
@@ -47,7 +47,7 @@ const saleSeed = [
     cost: 925.00,
     price: 1379.00,
     sku: 'p-2018-79p-011',
-    dateAcquired: '2018-05-19',
+    dateAcquired: 1526688000,
     condition: 'New'
   },
   {
@@ -57,7 +57,7 @@ const saleSeed = [
     cost: 840.00,
     price: 850.00,
     sku: 'p-2017-67r-059',
-    dateAcquired: '2017-03-15',
+    dateAcquired: 1489536000,
     saleType: 'Used',
     condition: 'Excellent'
   },
@@ -68,7 +68,7 @@ const saleSeed = [
     cost: 540.00,
     price: 170.00,
     sku: 'p-2016-55m-028',
-    dateAcquired: '2016-04-22',
+    dateAcquired: 1461283200,
     saleType: 'Used',
     condition: 'Fair',
     status: 'Sold',
@@ -81,7 +81,7 @@ const saleSeed = [
     cost: 1100.00,
     price: 1650.00,
     sku: 'k-554-urq-14',
-    dateAcquired: '2018-05-25',
+    dateAcquired: 1527206400,
     saleType: 'New',
     condition: 'New'
   },
@@ -92,7 +92,7 @@ const saleSeed = [
     cost: 840.00,
     price: 1200.00,
     sku: 'k-122-hrs-01',
-    dateAcquired: '2018-05-25',
+    dateAcquired: 1527206400,
     saleType: 'New',
     condition: 'New'
   },
@@ -103,7 +103,7 @@ const saleSeed = [
     cost: 340.00,
     price: 350.00,
     sku: 'k-122-jor-055',
-    dateAcquired: '2016-04-22',
+    dateAcquired: 1461283200,
     saleType: 'Used',
     condition: 'Good'
   },
@@ -114,7 +114,7 @@ const saleSeed = [
     cost: 175.00,
     price: 60.00,
     sku: 'k-404-inf-04',
-    dateAcquired: '2016-04-22',
+    dateAcquired: 1461283200,
     saleType: 'Used',
     condition: 'Poor'
   },
@@ -125,7 +125,7 @@ const saleSeed = [
     cost: 1500.00,
     price: 2200.00,
     sku: 'k-909-hef-091',
-    dateAcquired: '2018-05-16',
+    dateAcquired: 1526428800,
     saleType: 'New',
     condition: 'New'
   },
