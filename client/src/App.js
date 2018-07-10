@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import ClipboardJS from "clipboard";
 import Home from "./pages/Home";
 import Rentals from "./pages/Rentals";
 import Test from "./pages/Test";
@@ -75,6 +76,7 @@ class App extends Component {
 
   componentDidMount() {
     this.getUser();
+    new ClipboardJS('.clipboard-btn');
   }
 
   updateUser = userObject => {

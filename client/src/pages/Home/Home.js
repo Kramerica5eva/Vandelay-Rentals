@@ -102,7 +102,15 @@ class Home extends Component {
               <p>As a team of Web Developers and outdoor enthusiasts we decided to help. To do this we created a website that not only provided the user interface requested, but also has a proprietary built in inventory management interface. This allows for a seamless experience for both the users and employees that interact with the website.</p>
               <p>Our hope is to make it easier for people to get out and experience the outdoors while also helping outdoor rental companies grow their business. As a proof of concept this website is not actually active with any current companies, though it is a template that our company, Vandelay Rentals, can use to create your company's website. Are you interested? Contact US! </p>
 
-              <p>---------CONTACT INFO------------</p>
+              <div className="contact-email">
+                <input id="contactEmail" value="vandelayrentals.contact@gmail.com" readOnly />
+                  <div className="clipboard-icon">
+                    <button className="clipboard-btn" data-clipboard-target="#contactEmail">
+                      <i className="fas fa-copy"></i>
+                    </button>
+                    <p>Copy to Clipboard</p>
+                  </div>
+              </div>
 
             </div>
           </div>

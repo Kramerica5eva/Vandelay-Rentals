@@ -115,7 +115,10 @@
     z-index: 99;
     font-weight: bold;
     width: 40%;
-    background-color: rgba(129, 129, 129, 0.95);
+    /* background-color:#303185ec; */
+    /* background-color: rgba(78, 80, 216, 0.888); */
+    background-color:rgba(115, 117, 216, 0.886);
+    /* background-color: rgba(129, 129, 129, 0.95); */
     position: fixed;
     top: 0px;
     /* top: 55px; */

@@ -114,8 +114,8 @@ class Rentals extends Component {
         />
         <div className="main-container">
           <ParallaxHero
-            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)' }}
-            title="RENT"
+            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)', backgroundPosition:"bottom" }}
+            title=""
           />
           <Header>
             <DevLinks
@@ -126,29 +126,32 @@ class Rentals extends Component {
               location={this.props.location}
             />
           </Header>
-          <Calendar
-            updateUnix={this.getDays}
-            unavailable={this.state.unavailable}
-            clearUnavailable={this.clearUnavailable}
-          />
-          <h2>Rentals Available:</h2>
-          <div className='rentals'>
-            {this.state.rentals.map(rental => (
-              <RentalCard
-                unix={this.state.unix}
-                key={rental._id}
-                id={rental._id}
-                name={rental.name}
-                category={rental.category}
-                maker={rental.maker}
-                rental={rental}
-                reservations={rental.reservations}
-                addReservationToCart={this.addReservationToCart}
-                setAvailability={this.checkAvailability(rental.reservations)}
-                rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
-                markUnavailable={this.markUnavailable}
-              />
-            ))}
+          <div className='body-container rentals'>
+            <h1 className="calendar-head-title">Rentals</h1>
+            <Calendar
+              updateUnix={this.getDays}
+              unavailable={this.state.unavailable}
+              clearUnavailable={this.clearUnavailable}
+            />
+            <h2>Rentals Available:</h2>
+            <div className='rental-card-container'>
+              {this.state.rentals.map(rental => (
+                <RentalCard
+                  unix={this.state.unix}
+                  key={rental._id}
+                  id={rental._id}
+                  name={rental.name}
+                  category={rental.category}
+                  maker={rental.maker}
+                  rental={rental}
+                  reservations={rental.reservations}
+                  addReservationToCart={this.addReservationToCart}
+                  setAvailability={this.checkAvailability(rental.reservations)}
+                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
+                  markUnavailable={this.markUnavailable}
+                />
+              ))}
+            </div>
           </div>
           <Footer />
         </div>
