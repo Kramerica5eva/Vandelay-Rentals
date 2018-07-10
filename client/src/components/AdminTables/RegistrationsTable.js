@@ -22,7 +22,7 @@ export class RegistrationsTable extends Component {
 
 
   componentWillUnmount = () => {
-    // the cancelRegistration method deletes the registration from the database, and it also filters the deleted data from this.props.registrations and then sets state. But without querying the database, when the component reloads this.state.registrations would still contain the ones that were deleted. So, if there has been a change (props.registrations.length is > state.registrations.length), the adminGetAllUsers() method is called on the parent component. 
+    // the cancelRegistration method deletes the registration from the database, and it also filters the deleted data from this.props.registrations and then sets state. But without querying the database, when the component reloads this.state.registrations would still contain the ones that were deleted. So, if there has been a change (props.registrations.length is > state.registrations.length), the adminGetAllUsers() method is called on the parent component.
     if (this.state.runUnmount) {
       console.log("Registrations Unmount Running!");
       this.props.adminGetAllUsers();
@@ -178,7 +178,7 @@ export class RegistrationsTable extends Component {
           <button disabled={this.state.selection.length === 0} onClick={this.cancelRegistration}>Cancel Registration</button>
         </div>
         <CheckboxTable
-          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
+          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object
           ref={r => (this.checkboxTable = r)}
           data={this.state.registrations}
           columns={[
