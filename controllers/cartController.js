@@ -82,6 +82,7 @@ module.exports = {
           { new: true }
         )
       })
+      .then(cart => res.send(cart))
       .catch(err => res.json(err));
   },
 

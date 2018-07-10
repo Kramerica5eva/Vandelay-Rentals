@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import ReactTable from "react-table";
 import Modal from "../../components/Elements/Modal";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import API from "../../utils/API";
 import "react-table/react-table.css";
 import "./AdminTables.css";
@@ -54,6 +55,12 @@ export class ReservationsTable extends Component {
     });
   }
   // END MODAL TOGGLE FUNCTIONS
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
+    });
+  }
 
   //  REACT-TABLE: SELECT TABLE HOC FUNCTIONS
   //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
@@ -210,6 +217,7 @@ export class ReservationsTable extends Component {
           body={this.state.modal.body}
           footer={this.state.modal.footer}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
 
         <h3>Rental Reservations for {this.props.forName}</h3>
 

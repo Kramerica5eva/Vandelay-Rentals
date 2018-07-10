@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Link, Redirect } from 'react-router-dom';
+import LoadingModal from "../../components/Elements/LoadingModal";
 import Header from "../../components/Elements/Header";
 import ParallaxHero from "./../../components/ParallaxHero";
 import NavBar from "../../components/Elements/NavBar";
@@ -16,6 +17,12 @@ class Courses extends Component {
 
   componentDidMount() {
     this.getAllCourses();
+  }
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
+    });
   }
 
   getAllCourses = () => {
@@ -55,6 +62,7 @@ class Courses extends Component {
           logout={this.props.logout}
           location={this.props.location}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
         <div className="main-container">
           <ParallaxHero
             image={{ backgroundImage: 'url(./static/assets/images/group_in_kayaks.jpeg)' }}

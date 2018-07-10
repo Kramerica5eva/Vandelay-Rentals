@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import ReactTable from "react-table";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import API from "../../utils/API";
 import "react-table/react-table.css";
 import "./AdminTables.css";
@@ -48,6 +49,12 @@ export class RegistrationsTable extends Component {
     });
   }
   // END MODAL TOGGLE FUNCTIONS
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
+    });
+  }
 
   //  REACT-TABLE: SELECT TABLE HOC FUNCTIONS
   //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
@@ -165,6 +172,7 @@ export class RegistrationsTable extends Component {
     return (
 
       <Fragment>
+        <LoadingModal show={this.state.loadingModalOpen} />
 
         <h3>Class Registrations for {this.props.forName}</h3>
 
