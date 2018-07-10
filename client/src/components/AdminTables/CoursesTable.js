@@ -7,6 +7,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
+import dateFns from "date-fns";
 const CheckboxTable = checkboxHOC(ReactTable);
 
 export class CoursesTable extends Component {
@@ -56,6 +57,7 @@ export class CoursesTable extends Component {
         res.data.map(r => {
           const pricePer = "$" + parseFloat(r.price.$numberDecimal).toFixed(2);
           r.pricePer = pricePer;
+          r.date = dateFns.format(r.date * 1000, "ddd MMM Do YYYY");
           if (r.participants.length) {
             r.openSlots = r.slots - r.participants.length;
           } else {
@@ -261,7 +263,7 @@ export class CoursesTable extends Component {
         <div className="main-table-container">
 
           <div className="table-title-div">
-            <h2>Courses Table <button onClick={this.props.toggleCourses}>hide table</button></h2>
+            <h2>Courses Table <button onClick={this.props.toggleCourses}>Hide Table</button></h2>
           </div>
 
           <div className="table-btn-div">
@@ -313,7 +315,7 @@ export class CoursesTable extends Component {
                 Cell: this.renderEditable
               },
               {
-                Header: "Sluts",
+                Header: "Slots",
                 accessor: "slots",
                 Cell: this.renderEditable
               },

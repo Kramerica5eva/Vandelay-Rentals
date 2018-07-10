@@ -8,7 +8,7 @@ class RentalCard extends Component {
 
   render() {
     return (
-      <div id={this.props.id} className="rentalCard" onClick={this.props.markUnavailable.bind(this, this.props.reservations)}>
+      <div id={this.props.id} className="rentalCard">
         <h3>{this.props.name}</h3>
         <h4>{this.props.category}</h4>
         <h5>Maker: {this.props.maker}</h5>
@@ -18,8 +18,11 @@ class RentalCard extends Component {
             ? <ReserveBtn
               rental={this.props.rental}
               addReservationToCart={this.props.addReservationToCart}
+              image={{ backgroundImage: 'url(./../static/assets/images/reserve.png)' }}
             />
-            : <AvailBtn />}
+            : <AvailBtn
+              onClick={this.props.markUnavailable.bind(this, this.props.reservations)}
+            />}
       </div>
     )
   }
