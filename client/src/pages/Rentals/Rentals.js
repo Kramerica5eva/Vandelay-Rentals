@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { Link } from 'react-router-dom';
+import { FormBtn } from "../../components/Elements/Form";
 import Header from "../../components/Elements/Header";
+import Modal from "../../components/Elements/Modal";
 import ParallaxHero from "../../components/ParallaxHero";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
@@ -10,11 +12,17 @@ import DevLinks from "../../components/DevLinks";
 import API from "../../utils/API";
 import Calendar from "../../components/Calendar";
 import "./Rentals.css";
-import "./../../App.css";
+// import "./../../App.css";
 
 
 class Rentals extends Component {
   state = {
+    modal: {
+      isOpen: false,
+      header: "",
+      body: "",
+      footer: ""
+    },
     rentals: [],
     unix: [],
     unavailable: [],
@@ -23,6 +31,23 @@ class Rentals extends Component {
 
   componentDidMount() {
     this.getAllRentals();
+  }
+
+  toggleModal = () => {
+    this.setState({
+      modal: { isOpen: !this.state.modal.isOpen }
+    });
+  }
+
+  setModal = (modalInput) => {
+    this.setState({
+      modal: {
+        isOpen: true,
+        header: modalInput.header,
+        body: modalInput.body,
+        footer: modalInput.footer
+      }
+    });
   }
 
   getAllRentals = () => {
@@ -95,10 +120,12 @@ class Rentals extends Component {
   }
 
   addReservationToCart = rental => {
+    // Trigger the loading modal:
+    this.toggleLoadingModal();
+    //  Initialize date variables:
     let from;
     let to;
-    this.toggleLoadingModal();
-
+    //  Set date variables:
     if (this.state.unix.length > 1) {
       from = this.state.unix[0];
       to = this.state.unix[this.state.unix.length - 1];
@@ -106,18 +133,69 @@ class Rentals extends Component {
       from = this.state.unix[0];
       to = this.state.unix[0];
     }
-
+    // Call the API function:
     API.addReservationToCart(from, to, rental)
       .then(response => {
-        console.log(response)
-        setTimeout(this.toggleLoadingModal, 1000);
-        ;
+        console.log(response);
+        // this function searches the database for existing cart items that conflict with the chosen dates
+        // if it finds such an item, it will return a message: "duplicate"
+        if (response.data.message === "duplicate") {
+          // close the loading modal:
+          this.toggleLoadingModal();
+
+          if (response.data.existingRes.length > 1) {
+            this.setModal({
+              body:
+                <Fragment>
+                  <h3>The dates you have chosen conflict with multiple reservations already in your cart. Please check your cart before proceeding.</h3>
+                </Fragment>
+            })
+          } else {
+            // assign existing cart item to a variable:
+            const existingRes = response.data.existingRes[0];
+            //  Add existing reservation dates to the rental object so they can be passed to the changeReservationInCart function if the user chooses to change dates:
+            rental.oldFrom = existingRes.date.from;
+            rental.oldTo = existingRes.date.to;
+            //  Set modal to get user input:
+            this.setModal({
+              body:
+                <Fragment>
+                  <h4>This item is already in your cart for similar dates:</h4>
+                  <p>{existingRes.date.from}</p>
+                  <p>{existingRes.date.to}</p>
+                  <h4>Would you like to keep the existing dates or change to your new selection?</h4>
+                  <FormBtn onClick={() => this.changeReservationInCart(from, to, rental)}>Change Dates</FormBtn>
+                  <FormBtn onClick={this.toggleModal}>Keep my Existing Dates</FormBtn>
+                </Fragment>
+            });
+          }
+        } else {
+          //  If the chosen rental parameters (item + dates) don't exist in the db,
+          //  the reservation is added to the cart, and the loading modal closes.
+          setTimeout(this.toggleLoadingModal, 1000);
+        }
       });
+  }
+
+  changeReservationInCart = (from, to, rental) => {
+    this.toggleModal();
+    this.toggleLoadingModal();
+    API.changeReservationInCart(from, to, rental)
+      .then(response => {
+        setTimeout(this.toggleLoadingModal, 1000);
+      })
   }
 
   render() {
     return (
       <Fragment>
+        <Modal
+          show={this.state.modal.isOpen}
+          toggleModal={this.toggleModal}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
+        />
         <NavBar
           loggedIn={this.props.loggedIn}
           admin={this.props.admin}

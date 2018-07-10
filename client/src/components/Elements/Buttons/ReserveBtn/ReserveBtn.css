@@ -26,15 +26,12 @@
   background: transparent;
   border-top: 3px solid #FFCE40;
   border-bottom: 3px solid #FFCE40;
-  padding: 5px 10px 5px 37px;
+  padding: 4px 9px 4px 36px;
   background-image: url("./reserve2.png");
   background-position: 7px;
   background-repeat: no-repeat;
   margin-top: 10px;
   outline: transparent;
-  /* text-shadow: 0 0 2px #000,
-  0 0 3px #000,
-  0 0 5px #000; */
 }
 
 .btn-reserve:hover {

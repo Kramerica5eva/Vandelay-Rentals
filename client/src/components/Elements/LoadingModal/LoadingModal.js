@@ -10,7 +10,7 @@ class LoadingModal extends Component {
     return (
       <div className="loading-modal">
         <div className="loading-modal-content">
-          <img src="./../../../../loading2.gif" alt="spinning gears" />
+          <img src="./../../../../boobs.gif" alt="spinning gears" />
         </div>
       </div>
     )

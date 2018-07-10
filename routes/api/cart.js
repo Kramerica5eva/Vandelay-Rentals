@@ -20,6 +20,7 @@ router
 
 router
   .route('/rentals/date/:from/:to')
+  .put(isLoggedIn, cartController.changeReservationInCart)
   .post(isLoggedIn, cartController.addReservationToCart);
 
 router

@@ -28,6 +28,7 @@ class ShoppingCart extends Component {
   }
 
   componentDidMount() {
+    this.toggleLoadingModal();
     // Functionality to retrieve items from tempReservations
     //  And also from tempRegistrations once that's in place
     this.getUserShoppingCart();
@@ -67,6 +68,7 @@ class ShoppingCart extends Component {
   getUserShoppingCart = () => {
     API.getUserShoppingCart()
       .then(cart => {
+        this.toggleLoadingModal();
         console.log(cart);
         this.setState({
           tempRegistrations: cart.data.tempRegistrations,
@@ -80,7 +82,7 @@ class ShoppingCart extends Component {
     API.removeRegistrationFromCart(id)
       .then(res => {
         console.log(res)
-        setTimeout(this.toggleLoadingModal, 1000);
+        this.getUserShoppingCart();
       })
       .catch(err => console.log(err));
   }
@@ -91,7 +93,7 @@ class ShoppingCart extends Component {
     API.reserveCourse(_id, course)
       .then(res => {
         console.log(res)
-        setTimeout(this.toggleLoadingModal, 1000);
+        this.getUserShoppingCart();
       })
       .catch(err => console.log(err));
   }
@@ -101,7 +103,7 @@ class ShoppingCart extends Component {
     API.removeReservationFromCart(id)
       .then(res => {
         console.log(res)
-        setTimeout(this.toggleLoadingModal, 1000);
+        this.getUserShoppingCart();
       })
       .catch(err => console.log(err));
   }
@@ -116,7 +118,7 @@ class ShoppingCart extends Component {
     API.reserveRental(from, to, rental)
       .then(response => {
         console.log(response);
-        setTimeout(this.toggleLoadingModal, 1000);
+        this.getUserShoppingCart();
       });
   }
 

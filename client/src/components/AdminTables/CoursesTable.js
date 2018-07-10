@@ -104,12 +104,14 @@ export class CoursesTable extends Component {
   };
 
   changeLevel = e => {
+    this.toggleModal();
+    this.toggleLoadingModal()
     e.preventDefault();
     console.log(this.state.level);
     const { _id } = this.state.selectedRow;
     API.adminUpdateCourse(_id, { level: this.state.level }).then(res => {
       this.adminGetAllCourses();
-      this.toggleModal();
+      this.toggleLoadingModal();
     });
   };
 
@@ -168,6 +170,7 @@ export class CoursesTable extends Component {
 
   //  Update selected Row - sends current field info to db and updates that item
   updateSelectedRow = () => {
+    this.toggleLoadingModal()
     const { name, pricePer, price, abstract, topics, date, slots, _id } = this.state.selectedRow;
 
     // if pricePer exists (it should, but to avoid an error, checking first...) and hasn't been changed, it will have a dollar sign in it, a format that does not exist in the database and will throw an error if submitted to the database as-is. This replaces it with the current (unchanged) pricePer. If it has changed, it shouldn't have a $ in front of it and can be submitted as is.
@@ -192,12 +195,13 @@ export class CoursesTable extends Component {
     API.adminUpdateCourse(_id, updateObject)
       .then(response => {
         if (response.status === 200) {
-          // Modal for feedback
-          this.setModal({
+          //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+          setTimeout(this.toggleLoadingModal, 500);
+          // success modal after the loading modal is gone.
+          setTimeout(this.setModal, 500, {
             header: "Success!",
             body: <h3>Database successfully updated</h3>
           });
-
           //  query the db and reload the table
           this.adminGetAllCourses();
         }
