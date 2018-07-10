@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import ReactTable from "react-table";
 import Modal from "../../components/Elements/Modal";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import API from "../../utils/API";
 import "react-table/react-table.css";
 import "./AdminTables.css";
@@ -55,6 +56,12 @@ export class ReservationsTable extends Component {
   }
   // END MODAL TOGGLE FUNCTIONS
 
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
+    });
+  }
+
   //  REACT-TABLE: SELECT TABLE HOC FUNCTIONS
   //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
   toggleSelection = (key, shift, row) => {
@@ -91,6 +98,7 @@ export class ReservationsTable extends Component {
 
   //  Cancel function works - Deletes reservation and removes the reference from User and Rental
   cancelReservation = () => {
+    this.toggleLoadingModal();
     const { from, to } = this.state.selectedRow.date;
     const { _id } = this.state.selectedRow;
     const row = this.state.selectedRow;
@@ -98,6 +106,7 @@ export class ReservationsTable extends Component {
     API.removeRentalReservation(from, to, _id, row)
       .then(res => {
         console.log(res);
+        this.toggleLoadingModal();
         //  filter the row from the reservations array in state and then setState to the filtered data.
         const newReservations = this.state.reservations.filter(reg => (reg._id !== _id));
 
@@ -114,9 +123,11 @@ export class ReservationsTable extends Component {
 
   //  If reservation is paid: false, flips it to true, and vice-versa
   toggleReservationPaid = () => {
+    this.toggleLoadingModal();
     const { _id, paid } = this.state.selectedRow;
     API.adminUpdateReservation(_id, { paid: !paid })
       .then(res => {
+        this.toggleLoadingModal();
         console.log(res)
         this.state.reservations.map(res => {
           if (res._id === _id) {
@@ -134,11 +145,13 @@ export class ReservationsTable extends Component {
   }
 
   recordRentalReturn = () => {
+    this.toggleLoadingModal();
     const { _id } = this.state.selectedRow;
     const row = this.state.selectedRow;
     API.adminRecordRentalReturn(_id, row)
       .then(res => {
         console.log(res);
+        this.toggleLoadingModal();
         //  filter the row from the reservations array in state and then setState to the filtered data.
         const newReservations = this.state.reservations.filter(reg => (reg._id !== _id));
 
@@ -210,6 +223,7 @@ export class ReservationsTable extends Component {
           body={this.state.modal.body}
           footer={this.state.modal.footer}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
 
         <h3>Rental Reservations for {this.props.forName}</h3>
 

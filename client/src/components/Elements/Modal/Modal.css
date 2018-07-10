@@ -56,7 +56,6 @@
 .my-modal-body {
   max-width: 90%;
   margin:  auto;
-  min-width: 300px;
   padding: 5px 16px;
 }
 
@@ -74,6 +73,8 @@
 /* my-modal Content */
 
 .my-modal-content {
+  max-width: 90%;
+  min-width: 300px;
   position: relative;
   background-color: #fefefe;
   margin: auto;

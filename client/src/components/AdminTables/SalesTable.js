@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Input, FormBtn } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
@@ -43,6 +44,12 @@ export class SalesTable extends Component {
         body: modalInput.body,
         footer: modalInput.footer
       }
+    });
+  }
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
     });
   }
 
@@ -103,6 +110,7 @@ export class SalesTable extends Component {
   };
 
   updateSelectedRow = () => {
+    this.toggleLoadingModal();
     const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
 
     let newRate;
@@ -127,13 +135,13 @@ export class SalesTable extends Component {
     API.adminUpdateRental(_id, updateObject)
       .then(response => {
         if (response.status === 200) {
-
-          // Modal for feedback
-          this.setModal({
+          //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+          setTimeout(this.toggleLoadingModal, 500);
+          // success modal after the loading modal is gone.
+          setTimeout(this.setModal, 500, {
             header: "Success!",
             body: <h3>Database successfully updated</h3>
           });
-
           //  query the db and reload the table
           this.adminGetAllRentals();
         }
@@ -197,6 +205,7 @@ export class SalesTable extends Component {
           body={this.state.modal.body}
           footer={this.state.modal.footer}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
 
         <div className="main-table-container">
 

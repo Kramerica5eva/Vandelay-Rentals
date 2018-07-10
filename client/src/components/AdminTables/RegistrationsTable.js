@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import ReactTable from "react-table";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import API from "../../utils/API";
 import "react-table/react-table.css";
 import "./AdminTables.css";
@@ -49,6 +50,12 @@ export class RegistrationsTable extends Component {
   }
   // END MODAL TOGGLE FUNCTIONS
 
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
+    });
+  }
+
   //  REACT-TABLE: SELECT TABLE HOC FUNCTIONS
   //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
   toggleSelection = (key, shift, row) => {
@@ -83,14 +90,16 @@ export class RegistrationsTable extends Component {
   };
   //  END REACT-TABLE: SELECT TABLE HOC FUNCTIONS
 
-  //  Cancel function works - Deletes registration and removes the reference from User and Rental
+  //  Cancel function works - Deletes registration and removes the reference from User and Course
   cancelRegistration = () => {
+    this.toggleLoadingModal();
     const { _id } = this.state.selectedRow;
     const row = this.state.selectedRow;
     console.log(row);
 
     API.removeCourseRegistration(_id, row)
       .then(res => {
+        this.toggleLoadingModal();
         console.log(res);
         //  filter the row from the registrations array in state and then setState to the filtered data.
         const newRegistrations = this.state.registrations.filter(reg => (reg._id !== _id));
@@ -106,9 +115,11 @@ export class RegistrationsTable extends Component {
 
   //  If registration is paid: false, flips it to true, and vice-versa
   toggleRegistrationPaid = () => {
+    this.toggleLoadingModal();
     const { _id, paid } = this.state.selectedRow;
     API.adminUpdateRegistration(_id, { paid: !paid })
       .then(res => {
+        this.toggleLoadingModal();
         console.log(res)
         this.state.registrations.map(reg => {
           if (reg._id === _id) {
@@ -165,6 +176,7 @@ export class RegistrationsTable extends Component {
     return (
 
       <Fragment>
+        <LoadingModal show={this.state.loadingModalOpen} />
 
         <h3>Class Registrations for {this.props.forName}</h3>
 

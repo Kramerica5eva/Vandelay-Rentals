@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import ParallaxHero from "../../components/ParallaxHero"
@@ -21,11 +22,13 @@ class ShoppingCart extends Component {
       body: "",
       footer: ""
     },
+    loadingModalOpen: false,
     tempRegistrations: [],
     tempReservations: []
   }
 
   componentDidMount() {
+    this.toggleLoadingModal();
     // Functionality to retrieve items from tempReservations
     //  And also from tempRegistrations once that's in place
     this.getUserShoppingCart();
@@ -34,6 +37,12 @@ class ShoppingCart extends Component {
   toggleModal = () => {
     this.setState({
       modal: { isOpen: !this.state.modal.isOpen }
+    });
+  }
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
     });
   }
 
@@ -59,6 +68,7 @@ class ShoppingCart extends Component {
   getUserShoppingCart = () => {
     API.getUserShoppingCart()
       .then(cart => {
+        this.toggleLoadingModal();
         console.log(cart);
         this.setState({
           tempRegistrations: cart.data.tempRegistrations,
@@ -68,36 +78,49 @@ class ShoppingCart extends Component {
   }
 
   removeRegistrationFromCart = id => {
+    this.toggleLoadingModal();
     API.removeRegistrationFromCart(id)
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res)
+        this.getUserShoppingCart();
+      })
       .catch(err => console.log(err));
   }
 
   confirmRegistration = course => {
+    this.toggleLoadingModal();
     const { _id } = course;
     API.reserveCourse(_id, course)
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res)
+        this.getUserShoppingCart();
+      })
       .catch(err => console.log(err));
   }
 
   removeReservationFromCart = id => {
+    this.toggleLoadingModal();
     API.removeReservationFromCart(id)
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res)
+        this.getUserShoppingCart();
+      })
       .catch(err => console.log(err));
   }
 
   confirmReservation = rental => {
-    console.log(rental);
+    this.toggleLoadingModal();
 
     // to and from will be adjusted later to match with the calendar
     const from = 1533168000;
     const to = 1537727200;
 
     API.reserveRental(from, to, rental)
-      .then(response => console.log(response));
+      .then(response => {
+        console.log(response);
+        this.getUserShoppingCart();
+      });
   }
-
-
 
   render() {
     console.log(this.state.tempRegistrations);
@@ -111,6 +134,7 @@ class ShoppingCart extends Component {
           body={this.state.modal.body}
           footer={this.state.modal.footer}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
         <NavBar
           loggedIn={this.props.loggedIn}
           admin={this.props.admin}
@@ -165,14 +189,12 @@ class ShoppingCart extends Component {
             ) : null}
           </div>
 
-
           <ParallaxHero
             image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1499858476316-343e284f1f67?ixlib=rb-0.3.5&s=4985c13dbbf85d7d0f5b90df50ea8695&auto=format&fit=crop&w=1350&q=80)' }}
             title="About our Company"
           />
 
           <div className='body-container'>
-
 
             <button
               onClick={() => this.setModal({
@@ -188,43 +210,10 @@ class ShoppingCart extends Component {
           </div>
           <Footer />
 
-
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       </Fragment>
     )
   }
-
-
-
-
-
-
-
-
-
 }
 
 export default ShoppingCart;

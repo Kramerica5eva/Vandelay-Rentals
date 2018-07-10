@@ -84,6 +84,11 @@ export default {
     return axios.post(`/api/cart/rentals/date/${from}/${to}`, rentalData);
   },
 
+  // After checking for duplicates, finding one, and then asking if the user would like to change, updates the existing temporary reservation
+  changeReservationInCart: function (from, to, rentalData) {
+    return axios.put(`/api/cart/rentals/date/${from}/${to}`, rentalData);
+  },
+
   // Removes reservation from cart and deletes document from tempReservation
   removeReservationFromCart: (id) => {
     return axios.delete(`/api/cart/rentals/${id}`);
