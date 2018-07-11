@@ -7,24 +7,29 @@ class CourseCard extends Component {
   render() {
     return (
       <div id="courseCard" className="courseCard">
-        <li key={this.props.id}>
-          <h3>{this.props.name}</h3>
-          <h4>{this.props.abstract}</h4>
-          <h5>Level: {this.props.level}</h5>
-          <p>${this.props.price} per person</p>
-          <p>"{this.props.detail}"</p>
-          <h4>Topics covered:</h4>
-            <ul>
-              {this.props.children}
-            </ul>
-          <p>Spaces left: {this.props.slots}</p>
-          <br/>
-          <div className="CourseBtn">
-          <button onClick={() => this.props.addCourseToCart(this.props.course)}>
-            Reserve Course Spot
-          </button>
-          </div>
-        </li>
+        <div className="coursecard-display-img-container">
+          <img src={this.props.displayImageUrl} alt="" className="rentalcard-display-image"/>
+        </div>
+        <div className="coursecard-content-container">
+          <li key={this.props.id}>
+            <h3>{this.props.name}</h3>
+            <h4>{this.props.abstract}</h4>
+            <h5>Level: {this.props.level}</h5>
+            <p>${this.props.price} per person</p>
+            <p>"{this.props.detail}"</p>
+            <h4>Topics covered:</h4>
+              <ul>
+                {this.props.children}
+              </ul>
+            <p>Spaces left: {this.props.slots}</p>
+            <br/>
+            <div className="CourseBtn">
+            <button onClick={() => this.props.addCourseToCart(this.props.course)}>
+              Reserve Course Spot
+            </button>
+            </div>
+          </li>
+        </div>
       </div>
     )
   }

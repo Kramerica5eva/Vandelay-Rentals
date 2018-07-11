@@ -1,0 +1,41 @@
+.form-style {
+    background: white;
+    height: 500px;
+    border: solid black 3px;
+    margin: 5px;
+    padding: 15px;
+    max-width: 500px;
+    min-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+#formTest {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+#waiverUpdateBtn {
+    background-color: grey;
+}
+
+
+.waiver-input-container {
+    position: relative;
+
+}
+
+/* Screens larger than 320 */
+@media (min-width: 700px) {
+
+}
+
+
+/* Screens larger than 320 */
+@media (min-width: 1000px) {
+
+}

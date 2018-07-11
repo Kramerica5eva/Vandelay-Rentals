@@ -20,7 +20,8 @@ module.exports = {
             topics: element.topics,
             level: element.level,
             date: element.date,
-            slots: element.slots - element.registrations.length
+            slots: element.slots - element.registrations.length,
+            displayImageUrl: element.displayImageUrl
           }
           coursesArray.push(courseObject);
         };

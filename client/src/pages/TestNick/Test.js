@@ -4,6 +4,7 @@ import Header from "../../components/Elements/Header";
 import DevLinks from "../../components/DevLinks";
 import API from "../../utils/API";
 import ParallaxHero from "./../../components/ParallaxHero";
+import HelloSignForm from "./../../components/Elements/HelloSignForm";
 import { Input, Label, FormBtn } from "./../../components/Elements/Form";
 import "./../../App.css";
 
@@ -68,7 +69,7 @@ class Test extends Component {
         <Input />
         <FormBtn>THis is aTESt</FormBtn>
         <Label />
-
+        <HelloSignForm/>
         {/* Component Testing Section End  */}
         <div>
           <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>

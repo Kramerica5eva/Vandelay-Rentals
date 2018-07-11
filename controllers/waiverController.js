@@ -51,8 +51,8 @@ module.exports = {
       message: 'Please sign and read this waiver in order to continue with the rental process.',
       signers: [
         {
-          email_address: "vandelayrentals.contact@gmail.com",//clientEmail, // passed from the deconstructed req.bode
-          name: "john smith",//clientName, // passed from the deconstructed req.bode
+          email_address: clientEmail, // passed from the deconstructed req.bode
+          name: clientName, // passed from the deconstructed req.bode
           role: "client",
           order: 0
         }
