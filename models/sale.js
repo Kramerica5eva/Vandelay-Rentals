@@ -25,6 +25,7 @@ const saleSchema = new Schema({
     default: 'New'
   },
   images: [],
+  displayImageUrl: String,
   status: {
     type: String,
     enum: ['Available', 'Sold'],

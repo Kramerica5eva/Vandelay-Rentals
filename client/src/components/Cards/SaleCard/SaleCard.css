@@ -8,8 +8,9 @@
     height: 250px;
     text-align: center;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
+    flex-direction: row;
     /* border-radius: 15px; */
     padding: 10px;
 }
@@ -18,4 +19,14 @@
     margin-bottom: 10px;
     padding-bottom: 10px;
     border-bottom: solid #FFCE40 3px;
+}
+
+.salecard-display-img-container  {
+    margin: 0 5px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+.salecard-display-img-container img {
+    height: 235px;
 }

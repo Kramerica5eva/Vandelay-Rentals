@@ -57,7 +57,8 @@ function filterSalesItemData(dbModel) {
       maker: element.maker,
       price: element.price,
       saleType: element.saleType,
-      status: element.status
+      status: element.status,
+      displayImageUrl:element.displayImageUrl
     }
     salesArray.push(saleObject);
   }

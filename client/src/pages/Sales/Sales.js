@@ -75,7 +75,8 @@ class Sales extends Component {
                   category={item.category}
                   maker={item.maker}
                   saleType={item.saleType}
-                  price={parseFloat(item.price.$numberDecimal).toFixed(2)}>
+                  price={parseFloat(item.price.$numberDecimal).toFixed(2)}
+                  displayImageUrl={item.displayImageUrl}>
                 </SaleCard>
               ))}
             </ul>

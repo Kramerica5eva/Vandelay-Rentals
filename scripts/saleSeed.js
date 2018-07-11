@@ -18,7 +18,8 @@ const saleSeed = [
     sku: 'p-2017-44b-017',
     dateAcquired: 1497484800,
     saleType: 'Used',
-    condition: 'Good'
+    condition: 'Good',
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/Pau_Hana_Malibu_Classic_10-6_cut_zps65tjiw3v.png"
   },
   {
     name: 'HD Gatorshell',
@@ -28,17 +29,18 @@ const saleSeed = [
     price: 1599.00,
     sku: 'p-2018-12a-007',
     dateAcquired: 1526688000,
-    condition: 'New'
+    condition: 'New',
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/BOTE_HD_Gatorshell_10-6_cut_zpstvtr6wkp.png"
   },
   {
     name: 'Flood Gatorshell',
     category: 'Paddleboard',
     maker: 'Bote',
-    cost: 800.00,
     price: 1199.00,
     sku: 'p-2018-22o-026',
     dateAcquired: 1526688000,
-    condition: 'New'
+    condition: 'New',
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/BOTE_Flood_Gatorshell_10-6_cut_zpshpdtrp7t.png"
   },
   {
     name: 'HD Aero',
@@ -48,7 +50,8 @@ const saleSeed = [
     price: 1379.00,
     sku: 'p-2018-79p-011',
     dateAcquired: 1526688000,
-    condition: 'New'
+    condition: 'New',
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/BOT_HD_AERO_11-6_cut_zpsdt4xf4iv.png"
   },
   {
     name: 'Bark + prAna Aleka',
@@ -59,7 +62,8 @@ const saleSeed = [
     sku: 'p-2017-67r-059',
     dateAcquired: 1489536000,
     saleType: 'Used',
-    condition: 'Excellent'
+    condition: 'Excellent',
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/Surftech_Bark_prAna_Aleka_11-2_cut_zpsp39detpm.png"
   },
   {
     name: 'Alta Air-Travel',
@@ -71,6 +75,7 @@ const saleSeed = [
     dateAcquired: 1461283200,
     saleType: 'Used',
     condition: 'Fair',
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/Surftech_Alta_Air-Travel_10_cut_zpswxqrx90t.png",
     status: 'Sold',
     finalPrice: 150.00
   },
@@ -83,7 +88,8 @@ const saleSeed = [
     sku: 'k-554-urq-14',
     dateAcquired: 1527206400,
     saleType: 'New',
-    condition: 'New'
+    condition: 'New',
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/Oru_Kayak_Bay_ST_Folding_cut_zpsojlgvlbi.png"
   },
   {
     name: 'Beach LT Folding Kayak',
@@ -94,7 +100,8 @@ const saleSeed = [
     sku: 'k-122-hrs-01',
     dateAcquired: 1527206400,
     saleType: 'New',
-    condition: 'New'
+    condition: 'New',
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/Oru_Kayak_Beach_LT_Folding_Kayak_cut_zpszznkhest.png"
   },
   {
     name: 'Columbia XP Two Tandem',
@@ -105,7 +112,8 @@ const saleSeed = [
     sku: 'k-122-jor-055',
     dateAcquired: 1461283200,
     saleType: 'Used',
-    condition: 'Good'
+    condition: 'Good',
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/Aquaglide_Columbia_XP_Two_Tandem_Inflatable_cut_zps2wokuaot.png"
   },
   {
     name: 'Chinook XP One Inflatable',
@@ -116,7 +124,8 @@ const saleSeed = [
     sku: 'k-404-inf-04',
     dateAcquired: 1461283200,
     saleType: 'Used',
-    condition: 'Poor'
+    condition: 'Poor',
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/Aquaglide_Columbia_XP_One_Inflatable_cut_zpsnzeuyvez.png"
   },
   {
     name: 'Delta 14',
@@ -127,7 +136,8 @@ const saleSeed = [
     sku: 'k-909-hef-091',
     dateAcquired: 1526428800,
     saleType: 'New',
-    condition: 'New'
+    condition: 'New',
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/Delta_Delta_14_Kayak_cut_zpsesbi1wjs.png"
   },
 ];
 
