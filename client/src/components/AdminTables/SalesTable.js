@@ -31,7 +31,7 @@ export class SalesTable extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.adminGetAllSaleItems();
   }
 
@@ -74,11 +74,12 @@ export class SalesTable extends Component {
     API.adminGetAllSaleItems()
       .then(res => {
 
+        console.log(res.data);
         //  loop through the response and add a new key/value pair with the formatted price
         res.data.map(r => {
-          r.parsedCost = "$" + parseFloat(r.cost.$numberDecimal).toFixed(2);
-          r.parsedPrice = "$" + parseFloat(r.price.$numberDecimal).toFixed(2);
-          r.acquired = dateFns.format(r.dateAcquired * 1000, "MMM Do YYYY");
+          if (r.cost) r.parsedCost = "$" + parseFloat(r.cost.$numberDecimal).toFixed(2);
+          if (r.price) r.parsedPrice = "$" + parseFloat(r.price.$numberDecimal).toFixed(2);
+          if (r.dateAcquired) r.acquired = dateFns.format(r.dateAcquired * 1000, "MMM Do YYYY");
           if (r.finalSale && r.finalSale !== 'n/a') {
             const sale = "$" + parseFloat(r.finalSale.$numberDecimal).toFixed(2) || null;
             r.parsedSale = sale;
