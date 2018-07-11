@@ -100,7 +100,6 @@ export class ReservationsTable extends Component {
   //  Cancel function works - Deletes reservation and removes the reference from User and Rental
   cancelReservation = () => {
     this.toggleLoadingModal();
-    const { from, to } = this.state.selectedRow.date;
     const { _id } = this.state.selectedRow;
     const row = this.state.selectedRow;
 
