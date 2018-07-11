@@ -240,6 +240,7 @@ class Rentals extends Component {
                   setAvailability={this.checkAvailability(rental.reservations)}
                   rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
                   markUnavailable={this.markUnavailable}
+                  displayImageUrl={rental.displayImageUrl}
                 />
               ))}
             </div>

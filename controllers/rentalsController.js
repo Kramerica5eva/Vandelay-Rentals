@@ -105,7 +105,8 @@ function filterRentalItemData(dbModel) {
       category: element.category,
       maker: element.maker,
       dailyRate: element.dailyRate,
-      reservations: element.reservations
+      reservations: element.reservations,
+      displayImageUrl:element.displayImageUrl
     }
     rentalArray.push(rentalObject);
   }

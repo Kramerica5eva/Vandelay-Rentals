@@ -18,11 +18,11 @@
     height: 250px;
     text-align: center;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
-    border-radius: 15px;
+    /* border-radius: 15px; */
     padding: 10px;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .rentalCard h3 {
@@ -38,4 +38,14 @@
     margin-top: 20px;
     border-top: 3px solid #FFCE40;
     border-bottom: 3px solid #FFCE40;
+}
+
+.rentalcard-display-img-container  {
+    margin: 0 5px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+.rentalcard-display-img-container img {
+    height: 235px;
 }

@@ -160,7 +160,8 @@ const rentalSeed = [
     timesRented: 22,
     dateAcquired: 1492257600,
     condition: 'Good',
-    images: []
+    images: [],
+    displayImageUrl: "http://i1174.photobucket.com/albums/r619/vandelay-rentals/BIC_Sport_Tough_Tec_11_cut_zpsd4zs2729.png"
   },
   {
     name: 'Malibu Classic',
@@ -173,7 +174,8 @@ const rentalSeed = [
     timesRented: 0,
     dateAcquired: 1525435200,
     condition: 'New',
-    images: []
+    images: [],
+    displayImageUrl: "http://i1174.photobucket.com/albums/r619/vandelay-rentals/Pau_Hana_Malibu_Classic_10-6_cut_zps65tjiw3v.png"
   },
   {
     name: 'HD Aero',
@@ -186,7 +188,8 @@ const rentalSeed = [
     timesRented: 6,
     dateAcquired: 1492257600,
     condition: 'Good',
-    images: []
+    images: [],
+    displayImageUrl: "http://i1174.photobucket.com/albums/r619/vandelay-rentals/BOT_HD_AERO_11-6_cut_zpsdt4xf4iv.png"
   },
   {
     name: 'Bark + prAna Aleka',
@@ -199,7 +202,8 @@ const rentalSeed = [
     timesRented: 33,
     dateAcquired: 1525435200,
     condition: 'Working',
-    images: []
+    images: [],
+    displayImageUrl: "http://i1174.photobucket.com/albums/r619/vandelay-rentals/Surftech_Bark_prAna_Aleka_11-2_cut_zpsp39detpm.png"
   },
   {
     name: 'Bay ST Folding Kayak',
@@ -212,7 +216,8 @@ const rentalSeed = [
     timesRented: 112,
     dateAcquired: 1464868800,
     condition: 'Disrepair',
-    images: []
+    images: [],
+    displayImageUrl: "http://i1174.photobucket.com/albums/r619/vandelay-rentals/Oru_Kayak_Bay_ST_Folding_cut_zpsojlgvlbi.png"
   },
   {
     name: 'Beach LT Folding Kayak',
@@ -225,7 +230,8 @@ const rentalSeed = [
     timesRented: 87,
     dateAcquired: 1464868800,
     condition: 'Working',
-    images: []
+    images: [],
+    displayImageUrl: "http://i1174.photobucket.com/albums/r619/vandelay-rentals/Oru_Kayak_Beach_LT_Folding_Kayak_cut_zpszznkhest.png"
   },
   {
     name: 'Unison 136T Tandem',
@@ -238,7 +244,8 @@ const rentalSeed = [
     timesRented: 24,
     dateAcquired: 1464868800,
     condition: 'Good',
-    images: []
+    images: [],
+    displayImageUrl: "http://i1174.photobucket.com/albums/r619/vandelay-rentals/Pelican_Premium_Unison_136T_Tandem_Kayak_cut_zpsm5w6gdb5.png"
   },
   {
     name: 'Catch 120',
@@ -251,7 +258,8 @@ const rentalSeed = [
     timesRented: 79,
     dateAcquired: 1464868800,
     condition: 'Working',
-    images: []
+    images: [],
+    displayImageUrl: "http://i1174.photobucket.com/albums/r619/vandelay-rentals/Pelican_Premium_Catch_120_Kayak_cut_zpsxxlozrzl.png"
   }
 ];
 
