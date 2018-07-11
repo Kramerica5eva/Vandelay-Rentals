@@ -36,6 +36,7 @@ const saleSeed = [
     name: 'Flood Gatorshell',
     category: 'Paddleboard',
     maker: 'Bote',
+    cost: 750.00,
     price: 1199.00,
     sku: 'p-2018-22o-026',
     dateAcquired: 1526688000,
