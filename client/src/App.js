@@ -11,6 +11,7 @@ import TestCorb from "./pages/TestCorb";
 import ShoppingCart from "./pages/ShoppingCart";
 import Waiver from "./pages/Waiver";
 import Sales from "./pages/Sales";
+import Profile from "./pages/Profile";
 import Courses from "./pages/Courses";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
@@ -241,6 +242,46 @@ class App extends Component {
               </Fragment>
             )}
           />
+          <PrivateRoute path="/waiver" component={AddPropsToRoute(Waiver, {
+              toggleModal: this.toggleModal,
+              setModal: this.setModal,
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              dev: this.state.dev,
+              logout: this.logout
+            })}
+          />
+          <PrivateRoute path="/profile" component={AddPropsToRoute(Profile, {
+              toggleModal: this.toggleModal,
+              setModal: this.setModal,
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              dev: this.state.dev,
+              logout: this.logout
+            })}
+          />
+          <PrivateRoute path="/cart" component={AddPropsToRoute(ShoppingCart, {
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              dev: this.state.dev,
+              logout: this.logout
+            })}
+          />
+          <AdminRoute path="/admin" component={AddPropsToRoute(Admin, {
+              updateUser: this.updateUser,
+              loggedIn: this.state.loggedIn,
+              firstName: this.state.firstName,
+              admin: this.state.admin,
+              dev: this.state.dev,
+              logout: this.logout
+            })}
+          />
           <PrivateRoute path="/test" component={AddPropsToRoute(Test, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
@@ -278,35 +319,6 @@ class App extends Component {
             })}
           />
           <PrivateRoute path="/testcorb" component={AddPropsToRoute(TestCorb, {
-              updateUser: this.updateUser,
-              loggedIn: this.state.loggedIn,
-              firstName: this.state.firstName,
-              admin: this.state.admin,
-              dev: this.state.dev,
-              logout: this.logout
-            })}
-          />
-          <PrivateRoute path="/waiver" component={AddPropsToRoute(Waiver, {
-              toggleModal: this.toggleModal,
-              setModal: this.setModal,
-              updateUser: this.updateUser,
-              loggedIn: this.state.loggedIn,
-              firstName: this.state.firstName,
-              admin: this.state.admin,
-              dev: this.state.dev,
-              logout: this.logout
-            })}
-          />
-          <PrivateRoute path="/cart" component={AddPropsToRoute(ShoppingCart, {
-              updateUser: this.updateUser,
-              loggedIn: this.state.loggedIn,
-              firstName: this.state.firstName,
-              admin: this.state.admin,
-              dev: this.state.dev,
-              logout: this.logout
-            })}
-          />
-          <AdminRoute path="/admin" component={AddPropsToRoute(Admin, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,

@@ -1,17 +1,12 @@
 import React, { Component, Fragment } from "react";
-import { Link } from 'react-router-dom';
-import axios from 'axios';
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import ParallaxHero from "../../components/ParallaxHero"
-import { Input, FormBtn } from "../../components/Elements/Form";
 import DevLinks from "../../components/DevLinks";
-import RentalCard from "../../components/Cards/RentalCard";
 import "./ShoppingCart.css";
-import Calendar from "react-calendar";
 import dateFns from "date-fns"
 
 class ShoppingCart extends Component {
@@ -27,10 +22,7 @@ class ShoppingCart extends Component {
     tempReservations: []
   }
 
-  componentDidMount() {
-    this.toggleLoadingModal();
-    // Functionality to retrieve items from tempReservations
-    //  And also from tempRegistrations once that's in place
+  componentWillMount() {
     this.getUserShoppingCart();
   }
 
@@ -40,20 +32,20 @@ class ShoppingCart extends Component {
     });
   }
 
-  toggleLoadingModal = () => {
-    this.setState({
-      loadingModalOpen: !this.state.loadingModalOpen
-    });
-  }
-
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer
       }
+    });
+  }
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
     });
   }
 
@@ -64,11 +56,9 @@ class ShoppingCart extends Component {
     });
   };
 
-
   getUserShoppingCart = () => {
     API.getUserShoppingCart()
       .then(cart => {
-        this.toggleLoadingModal();
         console.log(cart);
         this.setState({
           tempRegistrations: cart.data.tempRegistrations,
@@ -83,6 +73,7 @@ class ShoppingCart extends Component {
       .then(res => {
         console.log(res)
         this.getUserShoppingCart();
+        this.toggleLoadingModal();
       })
       .catch(err => console.log(err));
   }
@@ -94,6 +85,7 @@ class ShoppingCart extends Component {
       .then(res => {
         console.log(res)
         this.getUserShoppingCart();
+        this.toggleLoadingModal();
       })
       .catch(err => console.log(err));
   }
@@ -104,6 +96,7 @@ class ShoppingCart extends Component {
       .then(res => {
         console.log(res)
         this.getUserShoppingCart();
+        this.toggleLoadingModal();
       })
       .catch(err => console.log(err));
   }
@@ -115,10 +108,11 @@ class ShoppingCart extends Component {
     const from = 1533168000;
     const to = 1537727200;
 
-    API.reserveRental(from, to, rental)
+    API.reserveRental(rental)
       .then(response => {
         console.log(response);
         this.getUserShoppingCart();
+        this.toggleLoadingModal();
       });
   }
 

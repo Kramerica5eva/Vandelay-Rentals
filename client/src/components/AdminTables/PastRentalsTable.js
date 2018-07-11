@@ -38,7 +38,6 @@ export class PastRentalsTable extends Component {
     });
   };
 
-  //  isOpen MUST be set to true for the setModal function, and NOT '!this.state.modal.isOpen' as in the toggleModal function, otherwise select/option tags (dropdowns) won't work properly inside the modal: the dropdown is always a step behind populating from state (the selection won't display what you've chosen until you close and reopen the modal).
   setModal = modalInput => {
     this.setState({
       modal: {
@@ -51,6 +50,7 @@ export class PastRentalsTable extends Component {
   };
   // END MODAL TOGGLE FUNCTIONS
 
+  //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoing
   toggleLoadingModal = () => {
     this.setState({
       loadingModalOpen: !this.state.loadingModalOpen

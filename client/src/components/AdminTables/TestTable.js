@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Select, Label, Option } from "../Elements/Form";
+import { FormBtn, Label } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
@@ -53,6 +53,7 @@ export class TestTable extends Component {
     });
   }
 
+  //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoing
   toggleLoadingModal = () => {
     this.setState({
       loadingModalOpen: !this.state.loadingModalOpen

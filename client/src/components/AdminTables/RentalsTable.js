@@ -28,9 +28,11 @@ export class RentalsTable extends Component {
       body: '',
       footer: ''
     },
+    loadingModalOpen: false,
     currentReservations: null,
     category: '',
     condition: '',
+    date: "",
     images: [],
     selectedFile: null,
     image: null,
@@ -87,8 +89,9 @@ export class RentalsTable extends Component {
       }
     });
   };
-  // END MODAL TOGGLE FUNCTIONS
+  // END IMAGEMODAL TOGGLE FUNCTIONS
 
+  //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoing
   toggleLoadingModal = () => {
     this.setState({
       loadingModalOpen: !this.state.loadingModalOpen
@@ -104,7 +107,6 @@ export class RentalsTable extends Component {
         //  loop through the response array and add a new key/value pair with the formatted rate
         res.data.map(r => {
           r.rate = '$' + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
-          r.dateAcq = dateFns.format(r.dateAcquired * 1000, 'MMM Do YYYY');
         });
         // set state for rentals, but also empty selection - selection is where the selected (highlighted) row _id is kept. This unselects the row - when a row is selected and the data is updated, it calls this function (adminGetAllRentals), and emptying this.state.selected results in unselecting the row, which works as a visual cue that an update operation is complete.
         this.setState({
@@ -157,6 +159,47 @@ export class RentalsTable extends Component {
     });
   };
 
+  //  RENTAL UPDATE MODALS W/UPDATE FUNCTIONS
+  //  Rental Date update modal
+  //  Changing Rental date in a modal because:
+  //  a) If the date is formatted before going into the table, then the table sort functions end up sorting the date alphabetically, which of course isn't useful.
+  //  b) To format the date in the table cell prevents passing in the renderEditable function
+  rentalDateModal = () => {
+    this.setModal({
+      header: "Change Date:",
+      body: (
+        <Fragment>
+          <form>
+            <Input
+              onChange={this.handleInputChange}
+              name="date"
+              type="text"
+              label="Change Date"
+              placeholder="e.g. Dec 20th 2018"
+            />
+            <FormBtn onClick={this.changeRentalDate}>Submit</FormBtn>
+          </form>
+        </Fragment>
+      )
+    });
+  }
+
+  // Rental date update function
+  changeRentalDate = event => {
+    event.preventDefault();
+    this.toggleModal();
+    this.toggleLoadingModal();
+    const { _id } = this.state.selectedRow;
+    console.log(this.state.date);
+    const unixDate = dateFns.format(this.state.date, "X");
+    API.adminUpdateRental(_id, { dateAcquired: unixDate })
+      .then(res => {
+        this.adminGetAllRentals();
+        this.toggleLoadingModal();
+      })
+      .catch(err => console.log(err));
+  }
+
   //  Gets modal with the change condition form - condition is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
   rentalConditionModal = () => {
     this.setModal({
@@ -168,8 +211,7 @@ export class RentalsTable extends Component {
             <div className="group group-select">
               <select
                 name="condition"
-                label="Change Condition:"
-                // for some reason, setting the select value to this.state.condition (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
+                // for some reason, setting the value={this.state.whatever} in a modal doesn't work. The onChange still updates state, but the input (dropdown) is uncontrolled.
                 onChange={this.handleInputChange}
               >
                 <option />
@@ -179,7 +221,7 @@ export class RentalsTable extends Component {
                 <option>Disrepair</option>
                 <option>Retired</option>
               </select>
-              <Label htmlFor="condition">Submit</Label>
+              <Label htmlFor="condition">Change Condition:</Label>
             </div>
             <FormBtn onClick={this.changeRentalCondition}>Submit</FormBtn>
           </form>
@@ -218,17 +260,10 @@ export class RentalsTable extends Component {
       header: 'Warning:',
       body: (
         <Fragment>
-          <h3>
-            Are you sure you want to delete {this.state.selectedRow.name}?
-          </h3>
-          <p>
-            (this is permenent - you cannot undo it, and you will lose all data)
-          </p>
+          <h3>Are you sure you want to delete {this.state.selectedRow.name}?</h3>
+          <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
           <h3>Would you rather retire the item and keep the data?</h3>
-          <p>
-            (make sure you contact customers and change any existing
-            reservations)
-          </p>
+          <p>(make sure you contact customers and change any existing reservations)</p>
           <FormBtn
             style={{ width: '100%', borderRadius: '5px', fontSize: '1.5rem' }}
             onClick={this.toggleModal}
@@ -332,12 +367,7 @@ export class RentalsTable extends Component {
   getImageNames = () => {
     this.setModal({
       header: 'Loading...',
-      body: (
-        <img
-          style={{ width: '50px', display: 'block', margin: '50px auto' }}
-          src="./../../../loading.gif"
-        />
-      )
+      body: <img style={{ width: '50px', display: 'block', margin: '50px auto' }} src="./../../../loading.gif" />
     });
     const { _id } = this.state.selectedRow;
     API.getImageNames(_id).then(res => {
@@ -362,18 +392,9 @@ export class RentalsTable extends Component {
         <Fragment>
           {images.map(image => (
             <div className="rental-img-div">
-              <p>
-                Uploaded{' '}
-                {dateFns.format(image.uploadDate, 'MMM Do YYYY hh:mm a')}
-              </p>
-              <img
-                className="rental-img"
-                src={`file/image/${image.filename}`}
-                alt="rental condition"
-              />
-              <button onClick={() => this.deleteImage(image._id)}>
-                Delete
-              </button>
+              <p>Uploaded {dateFns.format(image.uploadDate, 'MMM Do YYYY hh:mm a')} </p>
+              <img className="rental-img" src={`file/image/${image.filename}`} alt="rental condition" />
+              <button onClick={() => this.deleteImage(image._id)}>Delete</button>
             </div>
           ))}
         </Fragment>
@@ -385,12 +406,7 @@ export class RentalsTable extends Component {
   deleteImage = image => {
     this.setModal({
       header: 'Loading...',
-      body: (
-        <img
-          style={{ width: '50px', display: 'block', margin: '50px auto' }}
-          src="./../../../loading.gif"
-        />
-      )
+      body: <img style={{ width: '50px', display: 'block', margin: '50px auto' }} src="./../../../loading.gif" />
     });
     const { _id } = this.state.selectedRow;
     API.deleteImage(image, _id).then(res => {
@@ -404,25 +420,11 @@ export class RentalsTable extends Component {
   updateSelectedRow = () => {
     this.toggleLoadingModal();
     //  extract variables from the selectedRow object
-    const {
-      category,
-      condition,
-      dailyRate,
-      dateAcquired,
-      maker,
-      name,
-      rate,
-      sku,
-      timesRented,
-      _id
-    } = this.state.selectedRow;
+    const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
 
     let newRate;
     if (rate)
-      newRate = rate
-        .split('')
-        .filter(x => x !== '$')
-        .join('');
+      newRate = rate.split('').filter(x => x !== '$').join('');
 
     const updateObject = {
       category: category,
@@ -516,9 +518,7 @@ export class RentalsTable extends Component {
       getTrProps: (s, r) => {
         // If there are any empty rows ('r'), r.orignal will throw an error ('r' is undefined), so check for r:
         let selected;
-        if (r) {
-          selected = this.isSelected(r.original._id);
-        }
+        if (r) selected = this.isSelected(r.original._id);
         return {
           style: {
             backgroundColor: selected ? 'yellow' : 'inherit',
@@ -554,51 +554,17 @@ export class RentalsTable extends Component {
           </div>
 
           {/* if no rows have been selected, buttons remain disabled;
-        otherwise, clicking the button without anything selected results in an error */}
+            else clicking the button without anything selected would result in an error */}
           <div className="table-btn-div">
             <h4>Rentals Table Options</h4>
-            <button
-              disabled={this.state.selection.length === 0}
-              onClick={this.updateSelectedRow}
-            >
-              Update Selected
-            </button>
-            <button
-              disabled={this.state.selection.length === 0}
-              onClick={this.rentalCategoryModal}
-            >
-              Change Category
-            </button>
-            <button
-              disabled={this.state.selection.length === 0}
-              onClick={this.rentalConditionModal}
-            >
-              Change Condition
-            </button>
-            <button
-              disabled={this.state.selection.length === 0}
-              onClick={this.rentalDeleteModal}
-            >
-              Delete
-            </button>
-            <button
-              disabled={this.state.selection.length === 0}
-              onClick={this.getImageNames}
-            >
-              Get Images
-            </button>
-            <button
-              disabled={this.state.selection.length === 0}
-              onClick={this.getImageUploadModal}
-            >
-              Upload an Image
-            </button>
-            <button
-              disabled={this.state.selection.length === 0}
-              onClick={this.logSelection}
-            >
-              Log Selection
-            </button>
+            <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalDateModal}>Change Date</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalCategoryModal}>Change Category</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalConditionModal}>Change Condition</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.rentalDeleteModal}>Delete</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.getImageNames}>Get Images</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.getImageUploadModal}>Upload an Image</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
           </div>
 
           <CheckboxTable
@@ -620,12 +586,13 @@ export class RentalsTable extends Component {
                       adminGetAllRentals={this.adminGetAllRentals}
                     />
                   ) : null}
+
                   {thisRow.pastRentals.length > 0 ? (
                     <PastRentalsTable
                       forName={thisRow.name}
                       filterable
                       pastRentals={thisRow.pastRentals}
-                      // rentals={true}
+                      rentals={true}
                       adminGetAllRentals={this.adminGetAllRentals}
                     />
                   ) : null}
@@ -667,8 +634,10 @@ export class RentalsTable extends Component {
                   },
                   {
                     Header: 'Date Acq.',
-                    accessor: 'dateAcq',
-                    Cell: this.renderEditable
+                    accessor: 'dateAcquired',
+                    Cell: row => {
+                      return dateFns.format(row.row.dateAcquired * 1000, 'MMM Do YYYY')
+                    }
                   },
                   {
                     Header: 'Times Rented',

@@ -53,6 +53,7 @@ export class UsersTable extends Component {
     });
   }
 
+  //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoing
   toggleLoadingModal = () => {
     this.setState({
       loadingModalOpen: !this.state.loadingModalOpen
@@ -324,6 +325,7 @@ export class UsersTable extends Component {
                     <ReservationsTable
                       forName={`${thisRow.firstName} ${thisRow.lastName}`}
                       reservations={thisRow.reservations}
+                      fromUsers={true}
                       adminGetAllUsers={this.adminGetAllUsers}
                     />
                   ) : null}
@@ -332,7 +334,7 @@ export class UsersTable extends Component {
                     <RegistrationsTable
                       forName={`${thisRow.firstName} ${thisRow.lastName}`}
                       registrations={thisRow.registrations}
-                      users={true}
+                      fromUsers={true}
                       adminGetAllUsers={this.adminGetAllUsers}
                     />
                   ) : null}

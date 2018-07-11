@@ -8,7 +8,7 @@ module.exports = {
       .sort({ date: -1 })
       .then(dbModel => {
         let coursesArray = [];
-        //  removing participants names from public routes
+        //  removing registrations names from public routes
         for (let i = 0; i < dbModel.length; i++) {
           const element = dbModel[i];
           const courseObject = {
@@ -20,7 +20,7 @@ module.exports = {
             topics: element.topics,
             level: element.level,
             date: element.date,
-            slots: element.slots - element.participants.length
+            slots: element.slots - element.registrations.length
           }
           coursesArray.push(courseObject);
         };
@@ -44,16 +44,16 @@ module.exports = {
   reserveCourse: function (req, res) {
     console.log(req.body);
     db.Registration.create(req.body)
-      .then(() => {
+      .then(registration => {
         Promise.all([
           db.Course.findOneAndUpdate(
             { _id: req.body.courseId },
-            { $push: { participants: req.user._id } },
+            { $push: { registrations: registration._id } },
             { new: true }
           ),
           db.User.findOneAndUpdate(
             { _id: req.user._id },
-            { $push: { registrations: req.body._id } },
+            { $push: { registrations: registration._id } },
             { new: true }
           ),
           db.ShoppingCart.findOneAndUpdate(
@@ -62,7 +62,7 @@ module.exports = {
             { new: true }
           ),
           db.TempRegistration.deleteOne(
-            { _id: req.body._id }
+            { _id: req.params.id }
           ),
         ])
           .then(() => {
@@ -81,7 +81,7 @@ module.exports = {
         Promise.all([
           db.Course.findByIdAndUpdate(
             { _id: req.body.courseId },
-            { $pull: { participants: req.body.customerId } },
+            { $pull: { registrations: req.body.customerId } },
             { new: true }
           ),
           db.User.findByIdAndUpdate(

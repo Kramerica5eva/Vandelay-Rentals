@@ -62,7 +62,7 @@ export class SalesTable extends Component {
   }
   // END MODAL TOGGLE FUNCTIONS
 
-  //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoign
+  //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoing
   toggleLoadingModal = () => {
     this.setState({
       loadingModalOpen: !this.state.loadingModalOpen
@@ -146,7 +146,6 @@ export class SalesTable extends Component {
       body:
         <Fragment>
           <form>
-            {/* using the Select and Option components in a modal seems to make everything stop working... */}
             <div className="group group-select">
               <select
                 name="saleType"
@@ -195,7 +194,7 @@ export class SalesTable extends Component {
               <select
                 name="condition"
                 label="Change Condition:"
-                // for some reason, setting the select value to this.state.condition (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
+                // Setting the select value to this.state.condition (as per usual input control) in a modal doesn't work. I'm sure it could be made to work with a different method of managing state, but that's for another time. For now, handleInputChange *is* putting the changes into state, so it works, it's just uncontrolled.
                 onChange={this.handleInputChange}
               >
                 <option></option>
@@ -456,7 +455,7 @@ export class SalesTable extends Component {
             <button disabled={this.state.selection.length === 0} onClick={this.saleItemConditionModal}>Change Condition</button>
             <button disabled={this.state.selection.length === 0} onClick={this.saleItemStatusModal}>Change Status</button>
             <button disabled={this.state.selection.length === 0} onClick={this.saleItemDeleteModal}>Delete</button>
-            <button onClick={this.logSelection}>Log Selection</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
           </div>
 
           <CheckboxTable

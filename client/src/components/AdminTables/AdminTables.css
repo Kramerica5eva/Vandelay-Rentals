@@ -113,3 +113,23 @@
   box-shadow: 3px 3px 10px #333;
   transform: translateY(2px);
 }
+
+.table-btn-div button:disabled,
+.table-btn-div button[disabled]{
+  opacity: 0.6;
+}
+
+.table-btn-div button:disabled:hover,
+.table-btn-div button[disabled]:hover{
+  background-color: #555555;
+  color: #fff;
+  border: 1px solid #000;
+  cursor: default;
+  box-shadow: 5px 5px 10px #333;
+  text-shadow: 0 0 2px #000,
+  0 0 3px #000,
+  0 0 4px #000,
+  0 0 5px #fff,
+  0 0 10px #fff;
+  opacity: 0.6;
+}

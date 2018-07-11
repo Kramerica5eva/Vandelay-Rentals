@@ -23,7 +23,7 @@ const courseSeed = [
     level: 'Beginner',
     date: 1533196800,
     slots: 30,
-    participants: []
+    registrations: []
   },
   {
     name: 'Whitewater Kayaking',
@@ -39,7 +39,7 @@ const courseSeed = [
     level: 'Advanced',
     date: 1534932000,
     slots: 20,
-    participants: []
+    registrations: []
   },
   {
     name: 'Snipe Hunting',
@@ -55,7 +55,7 @@ const courseSeed = [
     level: 'Intermediate',
     date: 1535810400,
     slots: 50,
-    participants: []
+    registrations: []
   }
 ];
 
