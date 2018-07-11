@@ -26,6 +26,7 @@ class Rentals extends Component {
     rentals: [],
     unix: [],
     unavailable: [],
+    name: "",
     loadingModalOpen: false,
   };
 
@@ -99,7 +100,7 @@ class Rentals extends Component {
     return true; //returns true if no matches are found
   }
 
-  markUnavailable = itemRes => {
+  markUnavailable = (itemRes, name) => {
     let unavailable = [];
     for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
       let temp = [];
@@ -112,11 +113,11 @@ class Rentals extends Component {
         unavailable.push(temp[k]);
       }
     }
-    this.setState({ unavailable: unavailable });
+    this.setState({ unavailable: unavailable, name: name });
   }
 
   clearUnavailable = () => {
-    this.setState({ unavailable: [] })
+    this.setState({ unavailable: [], name: "" })
   }
 
   addReservationToCart = rental => {
@@ -222,25 +223,27 @@ class Rentals extends Component {
             <Calendar
               updateUnix={this.getDays}
               unavailable={this.state.unavailable}
+              unavailableName={this.state.name}
               clearUnavailable={this.clearUnavailable}
             />
             <h2>Rentals Available:</h2>
             <div className='rental-card-container'>
               {this.state.rentals.map(rental => (
                 <RentalCard
-                  unix={this.state.unix}
-                  key={rental._id}
-                  id={rental._id}
-                  name={rental.name}
+                  addReservationToCart={this.addReservationToCart}
                   category={rental.category}
+                  clear={this.clearUnavailable}
+                  displayImageUrl={rental.displayImageUrl}
+                  id={rental._id}
+                  key={rental._id}
                   maker={rental.maker}
+                  markUnavailable={this.markUnavailable}
+                  name={rental.name}
+                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
                   rental={rental}
                   reservations={rental.reservations}
-                  addReservationToCart={this.addReservationToCart}
                   setAvailability={this.checkAvailability(rental.reservations)}
-                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
-                  markUnavailable={this.markUnavailable}
-                  displayImageUrl={rental.displayImageUrl}
+                  unix={this.state.unix}
                 />
               ))}
             </div>

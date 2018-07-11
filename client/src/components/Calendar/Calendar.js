@@ -44,7 +44,7 @@ class Calendar extends Component {
 
   handleDayClick(day) {
     const { from, to, currentMonth } = this.state;
-    this.props.clearUnavailable();
+    // this.props.clearUnavailable();
     if (!this.state.range) {
       isAfter(day, dateFns.endOfMonth(currentMonth))
         ? this.nextMonth()
@@ -224,6 +224,7 @@ class Calendar extends Component {
           onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
         />
         <span>Date range selection</span>
+        {this.props.unavailable.length > 0 ? <span>Showing unavailability of {this.props.unavailableName}.</span> : null}
         {this.renderDays()}
         {this.renderCells()}
       </div>
