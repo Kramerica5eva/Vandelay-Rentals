@@ -132,7 +132,7 @@ class Calendar extends Component {
 
   renderInfo() {
     return (
-      <div className="calHeader row flex-middle">
+      <div className="row flex-middle">
         <div className="column column-start">
           <Toggle
             id='range'
