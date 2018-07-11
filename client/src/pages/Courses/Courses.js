@@ -142,7 +142,8 @@ class Courses extends Component {
                   level={course.level}
                   price={parseFloat(course.price.$numberDecimal).toFixed(2)}
                   detail={course.detail}
-                  slots={course.slots}>
+                  slots={course.slots}
+                  displayImageUrl={course.displayImageUrl}>
                   {course.topics.map((topic, index) => (
                     <li key={`${index}-${course._id}`}>{topic}</li>
                   ))}

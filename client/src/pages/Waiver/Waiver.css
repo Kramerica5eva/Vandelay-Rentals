@@ -1,57 +1,57 @@
-.body-container {
+/* .body-container {
   background-color: white;
   padding: 300px 20px;
-}
+} */
 
-body:not(ParallaxHero) {
+/* body:not(ParallaxHero) {
   background-color: var(--page-color-whitecap);
   overflow-x: hidden;
-  /* combined with the .main-container styling below (width: calc(100vw + 17px);), this pushes the right scrollbar off the screen without creating a new scrollbar on the bottom */
-}
 
-.form-style {
+} */
+
+/* .form-style {
   border: solid black 2px;
   padding: 15px;
   width: 300px;
-}
-.form-style form {
+} */
+/* .form-style form {
 
   width: 300px;
-}
+} */
 
-.main-container {
+/* .main-container {
   width: calc(100vw + 17px);
-}
+} */
 
-.rental-results-div {
+/* .rental-results-div {
   width: 250px;
   display: grid;
   margin: auto;
   grid-gap: 30px;
   grid-template-columns: 250px;
-}
+} */
 
-.category-btn-container {
+/* .category-btn-container {
   width: 300px;
   margin: 50px auto;
-}
+} */
 
-.rentals-by-date-form-div {
+/* .rentals-by-date-form-div {
   border: 1px solid #000;
   display: flex;
   width: 750px;
   margin: 50px auto;
   padding: 15px;
-}
-
+} */
+/*
 .rentals-by-date-form-div h4 {
   margin-bottom: 50px;
-}
+} */
 
-.see-rentals-form {
+/* .see-rentals-form {
   width: 50%;
-}
-
+} */
+/*
 @media (min-width: 600px) {
   .rental-results-div {
     width: 530px;
@@ -59,12 +59,12 @@ body:not(ParallaxHero) {
     grid-gap: 30px;
     grid-template-columns: 250px 250px;
   }
-}
+} */
 
-@media (min-width: 860px) {
+/* @media (min-width: 860px) {
   .rental-results-div {
     width: 810px;
     margin: auto;
     grid-template-columns: 250px 250px 250px;
   }
-}
+} */

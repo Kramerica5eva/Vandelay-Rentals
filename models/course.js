@@ -17,7 +17,8 @@ const courseSchema = new Schema({
   registrations: [{
     type: Schema.Types.ObjectId,
     ref: "Registration"
-  }]
+  }],
+  displayImageUrl:String
 });
 
 const Course = mongoose.model('Course', courseSchema);

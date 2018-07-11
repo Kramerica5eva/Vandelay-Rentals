@@ -10,7 +10,7 @@ class RentalCard extends Component {
     return (
       <div id={this.props.id} className="rentalCard">
         <div className="rentalcard-display-img-container">
-          <img src={this.props.displayImageUrl} alt="" className="rentalcard-display-image"/>
+          <img src={this.props.displayImageUrl} alt="" className="rentalcard-display-image" />
         </div>
         <div className="rentalcard-content-container">
           <h3>{this.props.name}</h3>
@@ -24,7 +24,8 @@ class RentalCard extends Component {
               availability={this.props.setAvailability}
             />
             <AvailBtn
-              click={this.props.markUnavailable.bind(this, this.props.reservations)}
+              click={this.props.markUnavailable.bind(this, this.props.reservations, this.props.name)}
+              clear={this.props.clear}
             />
           </div>
         </div>

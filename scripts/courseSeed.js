@@ -23,7 +23,8 @@ const courseSeed = [
     level: 'Beginner',
     date: 1533196800,
     slots: 30,
-    registrations: []
+    registrations: [],
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/paddleboard_choir_zpsk6ilp5ha.jpg"
   },
   {
     name: 'Whitewater Kayaking',
@@ -39,10 +40,11 @@ const courseSeed = [
     level: 'Advanced',
     date: 1534932000,
     slots: 20,
-    registrations: []
+    registrations: [],
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/essential_whitewater_kayaking_class_zpsj3flgx4v.jpg"
   },
   {
-    name: 'Snipe Hunting',
+    name: 'Water Snipe Hunting',
     price: 135.00,
     abstract: 'Catch your very first snipe!',
     detail: 'Come on a snipe hunt with us. Learn the basics like how not to freeze to death by yourself in the wilderness when you get left behind as the last one to figure it out. Bring lots of money and a big box of tissues.',
@@ -55,7 +57,8 @@ const courseSeed = [
     level: 'Intermediate',
     date: 1535810400,
     slots: 50,
-    registrations: []
+    registrations: [],
+    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/water_snipe_hunt_zpsjr0tn1nu.jpg"
   }
 ];
 

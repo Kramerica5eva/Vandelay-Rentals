@@ -44,7 +44,7 @@ class Calendar extends Component {
 
   handleDayClick(day) {
     const { from, to, currentMonth } = this.state;
-    this.props.clearUnavailable();
+    // this.props.clearUnavailable();
     if (!this.state.range) {
       isAfter(day, dateFns.endOfMonth(currentMonth))
         ? this.nextMonth()
@@ -125,6 +125,24 @@ class Calendar extends Component {
         </div>
         <div className="column column-end" onClick={this.nextMonth}>
           <div className="icon">Next</div>
+        </div>
+      </div>
+    );
+  }
+
+  renderInfo() {
+    return (
+      <div className="row flex-middle">
+        <div className="column column-start">
+          <Toggle
+            id='range'
+            defaultChecked={this.state.range}
+            onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
+          />
+          <span>Date range selection</span>
+        </div>
+        <div className="column column-center">
+          {this.props.unavailableName ? <span>Showing unavailability of <text style={{ fontWeight: "bold" }}>{this.props.unavailableName}</text>.</span> : null}
         </div>
       </div>
     );
@@ -218,12 +236,7 @@ class Calendar extends Component {
     return (
       <div className="calendar">
         {this.renderHeader()}
-        <Toggle
-          id='range'
-          defaultChecked={this.state.range}
-          onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
-        />
-        <span>Date range selection</span>
+        {this.renderInfo()}
         {this.renderDays()}
         {this.renderCells()}
       </div>

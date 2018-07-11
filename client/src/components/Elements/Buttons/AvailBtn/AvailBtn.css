@@ -14,32 +14,11 @@
   background-image: url("./cal.png");
   background-position: 7px;
   background-repeat: no-repeat;
+  margin-left: 10px;
   outline: transparent;
   position: relative;
 }
 
 .btn-avail:hover {
   text-decoration: none;
-}
-
-.btn-avail .tooltiptext {
-  visibility: hidden;
-  width: auto;
-  background-color: rgba(78, 80, 216, 0.888);
-  color: whitesmoke;
-  text-align: center;
-  padding: 5px 10px;
-  border-radius: 3px;
-  /* Position the tooltip text - see examples below! */
-  position: absolute;
-  z-index: 1;
-  top: 115%;
-  margin-left: -60px;
-  /* Use half of the width (120/2 = 60), to center the tooltip */
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-
-.btn-avail:hover .tooltiptext {
-  visibility: visible;
 }
