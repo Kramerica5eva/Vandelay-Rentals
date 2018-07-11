@@ -6,7 +6,11 @@ class ReserveBtn extends React.Component {
 
   render() {
     return (
-      <button className={`btn-reserve ${this.props.availability ? "available" : "unavailable"}`} onClick={this.props.availability ? () => this.props.addReservationToCart(this.props.rental) : null}><span className={"tooltiptext"}>Reserve</span></button>
+      <div className={"buttonblock"}>
+        <button className={`btn-reserve ${this.props.availability ? "btn-available" : "btn-unavailable"}`} onClick={this.props.availability ? () => this.props.addReservationToCart(this.props.rental) : null} />
+        {this.props.availability ? <span className={"mobiletext"}>Reserve</span> : <span className={"mobiletextNA"}>Not available</span>}
+        {this.props.availability ? <span className={"tooltiptext"}>Reserve</span> : <span className={"tooltiptextNA"}>Not available</span>}
+      </div>
     );
   }
 }
