@@ -224,7 +224,7 @@ class Calendar extends Component {
           onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
         />
         <span>Date range selection</span>
-        {this.props.unavailable.length > 0 ? <span>Showing unavailability of {this.props.unavailableName}.</span> : null}
+        {this.props.unavailableName ? <span>Showing unavailability of <text style={{ fontWeight: "bold" }}>{this.props.unavailableName}</text>.</span> : null}
         {this.renderDays()}
         {this.renderCells()}
       </div>
