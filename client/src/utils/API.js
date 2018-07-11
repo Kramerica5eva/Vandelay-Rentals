@@ -44,6 +44,10 @@ export default {
   getUser: function () {
     return axios.get('/user');
   },
+  // Get user info for profile (excludes some data)
+  getUserProfileData: function () {
+    return axios.get('/user/data');
+  },
   // New user signup
   signup: function (signupData) {
     return axios.post('/user', signupData);

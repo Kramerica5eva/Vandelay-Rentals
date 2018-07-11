@@ -49,7 +49,13 @@ class Rentals extends Component {
         footer: modalInput.footer
       }
     });
-  }
+  };
+
+  toggleLoadingModal = () => {
+    this.setState({
+      loadingModalOpen: !this.state.loadingModalOpen
+    });
+  };
 
   getAllRentals = () => {
     API.getAllRentals()
@@ -59,12 +65,6 @@ class Rentals extends Component {
         });
       })
       .catch(err => console.log(err));
-  }
-
-  toggleLoadingModal = () => {
-    this.setState({
-      loadingModalOpen: !this.state.loadingModalOpen
-    });
   }
 
   onChange = date => {

@@ -6,6 +6,10 @@ router.route('/')
   .get(userController.getUser)
   .post(userController.signup);
 
+router
+  .route('/data')
+  .get(isLoggedIn, userController.getUserProfileData);
+
 router.post('/login', passport.authenticate('local'), userController.login);
 
 router.post('/logout', userController.logout);
@@ -18,5 +22,11 @@ router.get('/auth', function (req, res) {
     return res.send(true);
   res.send(false);
 });
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated())
+    return next();
+  res.json({ isAuthenticated: false });
+}
 
 module.exports = router;

@@ -1,0 +1,70 @@
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-container {
+  flex: 1 0 auto;
+  margin-top: 100px;
+}
+
+.content-container h1 {
+  text-align: center;
+}
+
+.user-info-div {
+  position: relative;
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px 20px 30px 20px;
+  border: 2px solid #FFCE40;
+  border-radius: 10px;
+  box-shadow: 0 0 1px #fff,
+  0 0 2px #fff,
+  0 0 20px #333;
+}
+
+.user-info-div h3 {
+  line-height: 1.2;
+}
+
+.user-info-div h3:nth-child(2) {
+  font-size: 1.1rem;
+}
+
+.user-info-div h4 {
+  line-height: 1.5;
+  text-indent: 30px;
+}
+
+.user-info-div h4:nth-child(3) {
+  margin-top: 10px;
+}
+
+.user-info-btn-div {
+  width: 300px;
+  margin: auto;
+  text-align: center;
+}
+
+.user-info-btn-div button {
+  background: transparent;
+  border: none;
+  padding: 5px 10px 50px 10px;
+  outline: transparent;
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}
+
+.user-info-btn-div button:hover {
+  color: yellow;
+  text-shadow: 0 0 5px #000;
+}
+
+.user-data-table {
+  width: 80%;
+  margin: auto;
+}
