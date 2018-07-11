@@ -130,6 +130,24 @@ class Calendar extends Component {
     );
   }
 
+  renderInfo() {
+    return (
+      <div className="row flex-middle">
+        <div className="column column-start">
+          <Toggle
+            id='range'
+            defaultChecked={this.state.range}
+            onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
+          />
+          <span>Date range selection</span>
+        </div>
+        <div className="column column-center">
+          {this.props.unavailableName ? <span>Showing unavailability of <text style={{ fontWeight: "bold" }}>{this.props.unavailableName}</text>.</span> : null}
+        </div>
+      </div>
+    );
+  }
+
   renderDays() {
     const dateFormat = "dddd";
     const days = [];
@@ -218,13 +236,7 @@ class Calendar extends Component {
     return (
       <div className="calendar">
         {this.renderHeader()}
-        <Toggle
-          id='range'
-          defaultChecked={this.state.range}
-          onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
-        />
-        <span>Date range selection</span>
-        {this.props.unavailableName ? <span>Showing unavailability of <text style={{ fontWeight: "bold" }}>{this.props.unavailableName}</text>.</span> : null}
+        {this.renderInfo()}
         {this.renderDays()}
         {this.renderCells()}
       </div>
