@@ -1,12 +1,12 @@
-import React, { Component, Fragment } from "react";
-import { Link } from 'react-router-dom';
-import LoadingModal from "../../components/Elements/LoadingModal";
+import React, { Component } from "react";
 import Header from "../../components/Elements/Header";
-import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
+import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
-import Footer from "../../components/Elements/Footer";
 import DevLinks from "../../components/DevLinks";
+import { RentalsTable, CoursesTable, SalesTable, UsersTable } from "../../components/AdminTables";
+import { AdminForms } from "../../components/AdminForms";
+import "./Admin.css";
 
 class Admin extends Component {
   state = {
@@ -16,16 +16,15 @@ class Admin extends Component {
       body: "",
       footer: ""
     },
-    courses: [],
-    rentals: [],
-    sales: [],
-    users: [],
-    title: ''
+    loadingModalOpen: false,
+    showForms: false,
+    courses: false,
+    rentals: true,
+    sales: false,
+    users: false,
+    test: false,
+    brandonTest: false
   };
-
-  componentDidMount() {
-    this.adminGetAllRentals();
-  }
 
   toggleModal = () => {
     this.setState({
@@ -36,7 +35,7 @@ class Admin extends Component {
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer
@@ -49,66 +48,70 @@ class Admin extends Component {
       loadingModalOpen: !this.state.loadingModalOpen
     });
   }
+  // END Test Pages
 
-  adminGetAllCourses = () => {
-    API.adminGetAllCourses()
-      .then(res => {
-        this.setState({
-          courses: res.data,
-          rentals: [],
-          sales: [],
-          users: [],
-          title: "All Courses"
-        });
-        console.log(this.state.courses);
-      })
-      .catch(err => console.log(err));
+  toggleForms = () => {
+    this.setState({
+      showForms: true,
+      courses: false,
+      rentals: false,
+      sales: false,
+      users: false,
+      test: false,
+      brandonTest: false
+    });
   }
 
-  adminGetAllRentals = () => {
-    API.adminGetAllRentals()
-      .then(res => {
-        this.setState({
-          courses: [],
-          rentals: res.data,
-          sales: [],
-          users: [],
-          title: "All Rentals"
-        });
-        console.log(this.state.rentals);
-      })
-      .catch(err => console.log(err));
+  toggleTables = () => {
+    this.setState({
+      showForms: false,
+      courses: false,
+      rentals: true,
+      sales: false,
+      users: false,
+      test: false,
+      brandonTest: false
+    });
   }
 
-  adminGetAllSaleItems = () => {
-    API.adminGetAllSaleItems()
-      .then(res => {
-        this.setState({
-          courses: [],
-          rentals: [],
-          sales: res.data,
-          users: [],
-          title: "All Sales"
-        });
-        console.log(this.state.sales);
-      })
-      .catch(err => console.log(err));
-  }
+  toggleCourses = () => {
+    this.setState({
+      courses: !this.state.courses,
+      showForms: false
+    });
+  };
 
-  adminGetAllUsers = () => {
-    API.adminGetAllUsers()
-      .then(res => {
-        this.setState({
-          courses: [],
-          rentals: [],
-          sales: [],
-          users: res.data,
-          title: "All Users"
-        });
-        console.log(this.state.users);
-      })
-      .catch(err => console.log(err));
-  }
+  toggleRentals = () => {
+    this.setState({
+      rentals: !this.state.rentals,
+      showForms: false
+    });
+  };
+
+  toggleSaleItems = () => {
+    this.setState({
+      sales: !this.state.sales,
+      showForms: false
+    });
+  };
+
+  toggleUsers = () => {
+    this.setState({
+      users: !this.state.users,
+      showForms: false
+    });
+  };
+
+  hideAllTables = () => {
+    this.setState({
+      courses: false,
+      rentals: false,
+      sales: false,
+      users: false,
+      test: false,
+      brandonTest: false
+    });
+  };
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -117,15 +120,9 @@ class Admin extends Component {
     });
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-    //  blah blah blah
-  };
-
-
   render() {
     return (
-      <Fragment>
+      <div className="tables-page-container">
         <Modal
           show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
@@ -141,8 +138,7 @@ class Admin extends Component {
           location={this.props.location}
         />
         <Header>
-          <h1>Vandelay Admin Page, Nomsayn?</h1>
-          <h2>Admin Page</h2>
+          <h1>Vandelay Admin Page</h1>
           <DevLinks
             loggedIn={this.props.loggedIn}
             admin={this.props.admin}
@@ -152,79 +148,57 @@ class Admin extends Component {
           />
         </Header>
         <div>
+
           <div className="admin-btn-array">
-            <button onClick={this.adminGetAllUsers}>See All Users</button>
-            <button onClick={this.adminGetAllRentals}>See All Rentals</button>
-            <button onClick={this.adminGetAllSaleItems}>See All Items For Sale</button>
-            <button onClick={this.adminGetAllCourses}>See All Courses</button>
+            <h2>Admin Options</h2>
+            <button onClick={this.toggleCourses}>See Courses</button>
+            <button onClick={this.toggleRentals}>See Rentals</button>
+            <button onClick={this.toggleSaleItems}>See Sale Items</button>
+            <button onClick={this.toggleUsers}>See Users</button>
+            <button onClick={this.hideAllTables}>Clear Tables</button>
+            {this.state.showForms ? (
+              <button onClick={this.toggleTables}>Show Tables</button>
+            ) : (
+                <button onClick={this.toggleForms}>Show Forms</button>
+              )}
           </div>
 
+          {this.state.courses ? (
+            <CoursesTable
+              toggleCourses={this.toggleCourses}
+            />
+          ) : null}
 
-          <h2>{this.state.title}</h2>
-          <ul>
+          {this.state.rentals ? (
+            <RentalsTable
+              toggleRentals={this.toggleRentals}
+              categories={this.props.categories}
+            />
+          ) : null}
 
-            {this.state.courses ? this.state.courses.map(course => (
-              <li key={course._id}>
-                <h3>{course.name}</h3>
-                <button onClick={() => this.setModal({
-                  header: course.name,
-                  body:
-                    <div>
-                      <h3>{course.name}</h3>
-                      <h4>"{course.abstract}"</h4>
-                      <h5>Level: {course.level}</h5>
-                      <p>${parseFloat(course.price.$numberDecimal).toFixed(2)} per person</p>
-                      <p>"{course.detail}"</p>
-                      <h4>Topics covered:</h4>
-                      <ul>
-                        {course.topics.map((topic, index) => (
-                          <li key={`${index}-${course._id}`}>{topic}</li>
-                        ))}
-                      </ul>
-                      <p>spaces left: {course.slots}</p>
-                    </div>,
-                  footer: course.name
-                })}>
-                  see details
-                    </button>
+          {this.state.sales ? (
+            <SalesTable
+              toggleSaleItems={this.toggleSaleItems}
+              categories={this.props.categories}
+            />
+          ) : null}
 
-              </li>
-            )) : null}
+          {this.state.users ? (
+            <UsersTable
+              toggleUsers={this.toggleUsers}
+            />
+          ) : null}
 
-            {this.state.rentals ? this.state.rentals.map(rental => (
-              <li key={rental._id}>
-                <h3>{rental.name}</h3>
-                <button onClick={() => this.setModal({
-                  header: rental.name,
-                  body:
-                    <div>
-                      <h4>{rental.category}</h4>
-                      <h5>Maker: {rental.maker}</h5>
-                      <p>Daily rate: ${parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}</p>
-                    </div>,
-                  footer: rental.name
-                })}>
-                  see details
-                    </button>
-              </li>
-            )) : null}
+          {this.state.showForms ? (
+            <AdminForms
+              updateUser={this.props.updateUser}
+              setCategories={this.props.setCategories}
+            />
+          ) : null}
 
-            {this.state.sales ? this.state.sales.map(sale => (
-              <li key={sale._id}>
-                <h3>{sale.name}</h3>
-              </li>
-            )) : null}
 
-            {this.state.users ? this.state.users.map(user => (
-              <li key={user._id}>
-                <h3>{user.username}</h3>
-              </li>
-            )) : null}
-
-          </ul>
         </div>
-        <Footer />
-      </Fragment >
+      </div>
     );
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Link, Redirect } from 'react-router-dom';
+import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import Header from "../../components/Elements/Header";
 import ParallaxHero from "./../../components/ParallaxHero";
@@ -12,11 +12,35 @@ import "./Courses.css";
 
 class Courses extends Component {
   state = {
+    modal: {
+      isOpen: false,
+      header: "",
+      body: "",
+      footer: ""
+    },
+    loadingModalOpen: false,
     courses: []
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.getAllCourses();
+  }
+
+  toggleModal = () => {
+    this.setState({
+      modal: { isOpen: !this.state.modal.isOpen }
+    });
+  }
+
+  setModal = (modalInput) => {
+    this.setState({
+      modal: {
+        isOpen: true,
+        header: modalInput.header,
+        body: modalInput.body,
+        footer: modalInput.footer
+      }
+    });
   }
 
   toggleLoadingModal = () => {
@@ -28,6 +52,7 @@ class Courses extends Component {
   getAllCourses = () => {
     API.getAllCourses()
       .then(res => {
+        console.log(res);
         this.setState({
           courses: res.data
         });
@@ -48,21 +73,46 @@ class Courses extends Component {
     //  blah blah blah
   };
 
+  // Creates document in tempRegistrations and adds the tempRegistration to the user's shopping cart
+  addCourseToCart = course => {
+    this.toggleLoadingModal();
+    const { _id } = course;
+    API.addRegistrationToCart(_id, course)
+      .then(response => {
+        console.log(response);
+        if (response.data.message === "duplicate") {
+          console.log("Duplicate")
+          this.toggleLoadingModal();
+          this.setModal({
+            body: <h3>That Course is already in your cart.</h3>
+          })
+        } else {
+          this.setModal({
+            body: <h3>{course.name} has been added to your cart.</h3>
+          })
+          this.getAllCourses();
+          this.toggleLoadingModal();
+        }
+      });
+  }
+
   render() {
-    if (this.state.redirect) {
-      return <Redirect to={{
-        pathname: "/login"
-      }} />
-    }
     return (
       <Fragment>
+        <Modal
+          show={this.state.modal.isOpen}
+          toggleModal={this.toggleModal}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
+        />
+        <LoadingModal show={this.state.loadingModalOpen} />
         <NavBar
           loggedIn={this.props.loggedIn}
           admin={this.props.admin}
           logout={this.props.logout}
           location={this.props.location}
         />
-        <LoadingModal show={this.state.loadingModalOpen} />
         <div className="main-container">
           <ParallaxHero
             image={{ backgroundImage: 'url(./static/assets/images/group_in_kayaks.jpeg)' }}
@@ -85,8 +135,10 @@ class Courses extends Component {
               {this.state.courses.map(course => (
                 <CourseCard
                   id={course._id}
+                  course={course}
                   name={course.name}
                   abstract={course.abstract}
+                  addCourseToCart={this.addCourseToCart}
                   level={course.level}
                   price={parseFloat(course.price.$numberDecimal).toFixed(2)}
                   detail={course.detail}

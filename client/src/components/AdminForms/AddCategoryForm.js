@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Textarea, Select, Option } from "../Elements/Form";
+import { Input, FormBtn, Textarea } from "../Elements/Form";
 import Modal from "../../components/Elements/Modal";
 import API from "../../utils/API";
 
@@ -24,7 +24,7 @@ export class AddCategoryForm extends Component {
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer

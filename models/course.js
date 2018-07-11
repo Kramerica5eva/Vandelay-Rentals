@@ -6,7 +6,7 @@ const courseSchema = new Schema({
   price: Schema.Types.Decimal128,
   abstract: String,
   detail: String,
-  topics: [{ type: String }],
+  topics: [],
   level: {
     type: String,
     enum: ['Advanced', 'Intermediate', 'Beginner'],
@@ -14,9 +14,9 @@ const courseSchema = new Schema({
   },
   date: Number,
   slots: Number,
-  participants: [{
+  registrations: [{
     type: Schema.Types.ObjectId,
-    ref: "User"
+    ref: "Registration"
   }]
 });
 

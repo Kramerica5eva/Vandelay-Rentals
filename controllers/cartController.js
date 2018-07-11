@@ -20,26 +20,40 @@ module.exports = {
     console.log("Course req.body:")
     console.log(req.body);
 
-    const registrationObject = {
-      courseId: req.params.id,
-      courseName: req.body.name,
-      customerId: req.user._id,
-      firstName: req.user.firstName,
-      lastName: req.user.lastName,
-      price: req.body.price,
-      date: req.body.date
-    }
+    db.TempRegistration.find(
+      {
+        courseId: req.params.id,
+        customerId: req.user._id
+      }
+    )
+      .then(tempRes => {
+        console.log(tempRes);
+        if (tempRes.length > 0) {
+          return res.send({ message: "duplicate" });
+        } else {
+          const registrationObject = {
+            courseId: req.params.id,
+            courseName: req.body.name,
+            customerId: req.user._id,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            price: req.body.price,
+            date: req.body.date
+          }
 
-    db.TempRegistration.create(registrationObject)
-      .then(registration => {
-        return db.ShoppingCart.findOneAndUpdate(
-          { customerId: req.user._id },
-          { $push: { tempRegistrations: registration._id } },
-          { new: true }
-        )
-      })
-      .then(cart => res.json(cart))
-      .catch(err => res.json(err));
+          db.TempRegistration.create(registrationObject)
+            .then(registration => {
+              return db.ShoppingCart.findOneAndUpdate(
+                { customerId: req.user._id },
+                { $push: { tempRegistrations: registration._id } },
+                { new: true }
+              )
+            })
+            .then(cart => res.json(cart))
+            .catch(err => res.json(err));
+        }
+      }).catch(err => res.send(err));
+
   },
 
   removeRegistrationFromCart: function (req, res) {

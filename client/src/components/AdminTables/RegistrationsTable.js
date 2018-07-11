@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import ReactTable from "react-table";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import API from "../../utils/API";
+import dateFns from 'date-fns';
 import "react-table/react-table.css";
 import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
@@ -15,18 +16,22 @@ export class RegistrationsTable extends Component {
       body: "",
       footer: ""
     },
+    fromUsers: this.props.fromUsers,
     runUnmount: false,
     registrations: this.props.registrations,
     selection: [],
     selectedRow: {}
   };
 
-
   componentWillUnmount = () => {
     // the cancelRegistration method deletes the registration from the database, and it also filters the deleted data from this.props.registrations and then sets state. But without querying the database, when the component reloads this.state.registrations would still contain the ones that were deleted. So, if there has been a change (props.registrations.length is > state.registrations.length), the adminGetAllUsers() method is called on the parent component.
     if (this.state.runUnmount) {
       console.log("Registrations Unmount Running!");
-      this.props.adminGetAllUsers();
+      if (this.state.fromUsers) {
+        this.props.adminGetAllUsers();
+      } else {
+        this.props.adminGetAllCourses();
+      }
     }
   }
 
@@ -37,7 +42,6 @@ export class RegistrationsTable extends Component {
     });
   }
 
-  //  isOpen MUST be set to true for the setModal function, and NOT '!this.state.modal.isOpen' as in the toggleModal function, otherwise select/option tags (dropdowns) won't work properly inside the modal: the dropdown is always a step behind populating from state (the selection won't display what you've chosen until you close and reopen the modal).
   setModal = (modalInput) => {
     this.setState({
       modal: {
@@ -50,6 +54,7 @@ export class RegistrationsTable extends Component {
   }
   // END MODAL TOGGLE FUNCTIONS
 
+  //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoing
   toggleLoadingModal = () => {
     this.setState({
       loadingModalOpen: !this.state.loadingModalOpen
@@ -107,7 +112,8 @@ export class RegistrationsTable extends Component {
         this.setState({
           registrations: newRegistrations,
           selection: [],
-          selectedRow: {}
+          selectedRow: {},
+          runUnmount: true
         })
       })
       .catch(err => console.log(err));
@@ -213,10 +219,6 @@ export class RegistrationsTable extends Component {
                 {
                   Header: "Class Name",
                   accessor: "courseName"
-                },
-                {
-                  Header: "Date",
-                  accessor: "date"
                 },
                 {
                   Header: "Paid",

@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Select, Option } from "../Elements/Form";
+import { Input, FormBtn, Label, } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import ReactTable from "react-table";
+import { RegistrationsTable } from "./RegistrationsTable";
 import "react-table/react-table.css";
 import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
@@ -18,7 +19,9 @@ export class CoursesTable extends Component {
       body: "",
       footer: ""
     },
-    level: [],
+    courses: [],
+    level: "",
+    date: "",
     rentals: [],
     selection: [],
     selectedRow: {}
@@ -68,9 +71,9 @@ export class CoursesTable extends Component {
       .then(res => {
         res.data.map(r => {
           r.pricePer = "$" + parseFloat(r.price.$numberDecimal).toFixed(2);
-          r.date = dateFns.format(r.date * 1000, "ddd MMM Do YYYY");
-          if (r.participants.length) {
-            r.openSlots = r.slots - r.participants.length;
+          // r.date = dateFns.format(r.date * 1000, "MMM Do YYYY");
+          if (r.registrations.length) {
+            r.openSlots = r.slots - r.registrations.length;
           } else {
             r.openSlots = r.slots;
           }
@@ -79,30 +82,69 @@ export class CoursesTable extends Component {
           courses: res.data,
           selection: []
         });
-        console.log(this.state.courses);
       })
       .catch(err => console.log(err));
   };
 
   //  COURSE UPDATE MODALS W/UPDATE FUNCTIONS
+  //  Course Date update modal
+  //  Changing course date in a modal because:
+  //  a) If the date is formatted before going into the table, then the table sort functions end up sorting the date alphabetically, which of course isn't useful.
+  //  b) To format the date in the table cell prevents passing in the renderEditable function
+  courseDateModal = () => {
+    this.setModal({
+      header: "Change Date",
+      body: (
+        <Fragment>
+          <form>
+            <Input
+              onChange={this.handleInputChange}
+              name="date"
+              type="text"
+              label="Change Date"
+              placeholder="e.g. Dec 20th 2018"
+            />
+            <FormBtn onClick={this.changeCourseDate}>Submit</FormBtn>
+          </form>
+        </Fragment>
+      )
+    });
+  }
+
+  // Course date update function
+  changeCourseDate = event => {
+    event.preventDefault();
+    this.toggleModal();
+    this.toggleLoadingModal();
+    const { _id } = this.state.selectedRow;
+    const unixDate = dateFns.format(this.state.date, "X");
+    API.adminUpdateCourse(_id, { date: unixDate })
+      .then(res => {
+        this.adminGetAllCourses();
+        this.toggleLoadingModal();
+      })
+      .catch(err => console.log(err));
+  }
+
   //  Course level update modal
-  levelModal = () => {
+  courseLevelModal = () => {
     this.setModal({
       header: "Change Level",
       body: (
         <Fragment>
           <form>
-            <Select
-              name="level"
-              label="Update level:"
-              onChange={this.handleInputChange}
-              value={this.state.level}
-            >
-              <Option />
-              <Option>Advanced</Option>
-              <Option>Intermediate</Option>
-              <Option>Beginner</Option>
-            </Select>
+            <div className="group group-select">
+              <select
+                name="level"
+                onChange={this.handleInputChange}
+              >
+                <option></option>
+                <option>Advanced</option>
+                <option>Intermediate</option>
+                <option>Beginner</option>
+              </select>
+              <Label htmlFor="level">Update Level</Label>
+            </div>
             <FormBtn onClick={this.changeCourseLevel}>Submit</FormBtn>
           </form>
         </Fragment>
@@ -115,13 +157,13 @@ export class CoursesTable extends Component {
     event.preventDefault();
     this.toggleModal();
     this.toggleLoadingModal()
-    console.log(this.state.level);
     const { _id } = this.state.selectedRow;
     API.adminUpdateCourse(_id, { level: this.state.level })
       .then(res => {
         this.adminGetAllCourses();
         this.toggleLoadingModal();
-      });
+      })
+      .catch(err => console.log(err));
   };
 
   //  Course delete modal
@@ -134,10 +176,10 @@ export class CoursesTable extends Component {
           <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
           <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: "1.5rem" }} onClick={this.toggleModal}>
             Nevermind.
-        </FormBtn>
+          </FormBtn>
           <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: ".75rem" }} onClick={this.deleteCourse}>
             I'm sure. Delete it.
-        </FormBtn>
+          </FormBtn>
         </Fragment>
     })
   }
@@ -188,7 +230,6 @@ export class CoursesTable extends Component {
     let newPrice;
     if (pricePer)
       newPrice = pricePer.split("").filter(x => x !== "$").join("");
-    console.log(newPrice);
 
     const updateObject = {
       name: name,
@@ -274,15 +315,36 @@ export class CoursesTable extends Component {
 
           <div className="table-btn-div">
             <h4>Courses Table Options</h4>
-            <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.courseDateModal}>Change Date</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.courseLevelModal}>Change Difficulty</button>
             <button disabled={this.state.selection.length === 0} onClick={this.courseDeleteModal}>Delete</button>
-            <button onClick={this.logSelection}>Log Selection</button>
+            <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
           </div>
+
+
 
           <CheckboxTable
             // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object
             ref={r => (this.checkboxTable = r)}
             data={this.state.courses}
+            SubComponent={row => {
+              //  thisReservation grabs the reservations from this.state.rentals that matches the row index - it grabs the reservations for this rental item.
+              const thisRow = this.state.courses[row.row._index];
+              return (
+                <Fragment>
+                  {thisRow.registrations.length > 0 ? (
+                    <RegistrationsTable
+                      forName={thisRow.name}
+                      filterable
+                      fromUsers={false}
+                      registrations={thisRow.registrations}
+                      adminGetAllCourses={this.adminGetAllCourses}
+                    />
+                  ) : null}
+                </Fragment>
+              )
+            }}
             columns={[
               {
                 Header: "Name",
@@ -292,7 +354,12 @@ export class CoursesTable extends Component {
               {
                 Header: "Date",
                 accessor: "date",
-                Cell: this.renderEditable
+                Cell: this.renderEditable,
+                Cell: row => {
+                  return (
+                    dateFns.format(row.row.date * 1000, "MMM Do YYYY")
+                  )
+                }
               },
               {
                 Header: "Abstract",
@@ -305,15 +372,8 @@ export class CoursesTable extends Component {
                 Cell: this.renderEditable
               },
               {
-                Header: "Level",
-                accessor: "level",
-                Cell: row => {
-                  return (
-                    <button className="table-btn-invis" onClick={this.levelModal}>
-                      {row.value}
-                    </button>
-                  );
-                }
+                Header: "Difficulty",
+                accessor: "level"
               },
               {
                 Header: "Price",

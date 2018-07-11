@@ -126,6 +126,14 @@ export default {
   getAllRentals: function () {
     return axios.get('/api/rentals/');
   },
+
+  // This route creates a doc in the Reservations collection,
+  // and creates a reference in the associated User and Rental documents
+  // Reserves Rental by date range
+  reserveRental: function (rentalData) {
+    return axios.post(`/api/rentals`, rentalData);
+  },
+
   // Gets Rental item by category - if the user chooses Paddleboard or Kayak without first entering dates, this will pull all rentals.
   getRentalsByCategory: function (category) {
     return axios.get(`/api/rentals/${category}`);
@@ -135,16 +143,9 @@ export default {
   // getRentalById: function (category, id) {
   //   return axios.get(`/api/rentals/${category}/${id}`);
   // },
-
-  // This route creates a doc in the Reservations collection,
-  // and creates a reference in the associated User and Rental documents
-  // Reserves Rental by date range
-  reserveRental: function (from, to, rentalData) {
-    return axios.post(`/api/rentals/date/${from}/${to}`, rentalData);
-  },
   // Cancels a reservation - 'reservationData' collected by event listener and should include the item info and the user.
-  removeRentalReservation: function (from, to, reservationId, reservationData) {
-    return axios.put(`/api/rentals/remove/${from}/${to}/${reservationId}`, reservationData);
+  removeRentalReservation: function (reservationId, reservationData) {
+    return axios.put(`/api/rentals/remove/${reservationId}`, reservationData);
   },
 
 

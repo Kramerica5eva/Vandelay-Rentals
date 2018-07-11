@@ -20,9 +20,9 @@ class CourseCard extends Component {
           <p>Spaces left: {this.props.slots}</p>
           <br/>
           <div className="CourseBtn">
-          <GreyBtn>
+          <button onClick={() => this.props.addCourseToCart(this.props.course)}>
             Reserve Course Spot
-          </GreyBtn>
+          </button>
           </div>
         </li>
       </div>

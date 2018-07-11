@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Textarea, Select, Option } from "../Elements/Form";
+import { Input, FormBtn, Textarea, Label } from "../Elements/Form";
 import Modal from "../../components/Elements/Modal";
 import API from "../../utils/API";
+import dateFns from 'date-fns';
 
 export class AddCourseForm extends Component {
   state = {
@@ -49,6 +50,7 @@ export class AddCourseForm extends Component {
     event.preventDefault();
     const { name, price, abstract, detail, topics, level, date, slots } = this.state;
     const topicsArray = topics.split(',').map(topic => topic.trim());
+    const unixDate = dateFns.format(date, "X");
 
     const courseObject = {
       name: name,
@@ -57,9 +59,9 @@ export class AddCourseForm extends Component {
       detail: detail,
       topics: topicsArray,
       level: level,
-      date: date,
+      date: unixDate,
       slots: slots,
-      participants: []
+      registrations: []
     }
 
     API.adminAddNewCourse(courseObject)
@@ -113,18 +115,19 @@ export class AddCourseForm extends Component {
             label="Topics Covered:"
             placeholder="Separate topics with a comma"
           />
-          <Select
-            value={this.state.level}
-            onChange={this.handleInputChange}
-            name="level"
-            className="form-select"
-            label="Level:"
-          >
-            <Option></Option>
-            <Option>Beginner</Option>
-            <Option>Intermediate</Option>
-            <Option>Advanced</Option>
-          </Select>
+          <div className="group group-select">
+            <select
+              value={this.state.level}
+              onChange={this.handleInputChange}
+              name="level"
+            >
+              <option></option>
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Advanced</option>
+            </select>
+            <Label htmlFor="level">Difficulty:</Label>
+          </div>
           <Input
             value={this.state.date}
             onChange={this.handleInputChange}

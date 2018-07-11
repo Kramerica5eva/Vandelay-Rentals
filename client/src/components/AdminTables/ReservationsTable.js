@@ -17,22 +17,23 @@ export class ReservationsTable extends Component {
       body: "",
       footer: ""
     },
-    noWayDude: () => {
-      console.log("No way, dude!");
-    },
+    fromUsers: this.props.fromUsers,
     runUnmount: false,
     reservations: this.props.reservations,
     selection: [],
     selectedRow: {}
   };
 
-
   componentWillUnmount = () => {
-    this.state.noWayDude();
-    //  Why call get users on Unmount?
+    //  Why call get Users or get Rentals on Unmount?
     //  Clicking cancelReservation runs all the necessary database functions to delete the reservation, but in this component it only filters it from the this.state.reservations array, meaning if you close the table and reopen it, the one you just deleted will still show. So by running the get user function when the component unmounts ensures this won't happen while also avoiding an extra database query with every deletion.
     if (this.state.runUnmount) {
-      this.props.adminGetAllRentals();
+      console.log("Registrations Unmount Running!");
+      if (this.state.fromUsers) {
+        this.props.adminGetAllUsers();
+      } else {
+        this.props.adminGetAllRentals();
+      }
     }
   }
 
@@ -43,8 +44,7 @@ export class ReservationsTable extends Component {
     });
   }
 
-  //  isOpen MUST be set to true for the setModal function, and NOT '!this.state.modal.isOpen' as in the toggleModal function, otherwise select/option tags (dropdowns) won't work properly inside the modal: the dropdown is always a step behind populating from state (the selection won't display what you've chosen until you close and reopen the modal).
-  setModal = (modalInput) => {
+  setModal = modalInput => {
     this.setState({
       modal: {
         isOpen: true,
@@ -56,6 +56,7 @@ export class ReservationsTable extends Component {
   }
   // END MODAL TOGGLE FUNCTIONS
 
+  //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoing
   toggleLoadingModal = () => {
     this.setState({
       loadingModalOpen: !this.state.loadingModalOpen
@@ -103,7 +104,7 @@ export class ReservationsTable extends Component {
     const { _id } = this.state.selectedRow;
     const row = this.state.selectedRow;
 
-    API.removeRentalReservation(from, to, _id, row)
+    API.removeRentalReservation(_id, row)
       .then(res => {
         console.log(res);
         this.toggleLoadingModal();
@@ -188,8 +189,8 @@ export class ReservationsTable extends Component {
           const bill = (((parseInt(reservation.date.to) - parseInt(reservation.date.from)) / 86400) + 1) * reservation.dailyRate.$numberDecimal;
           reservation.amtDue = "$" + parseFloat(bill).toFixed(2);
         }
-        reservation.date.formattedTo = dateFns.format(reservation.date.to * 1000, "ddd MMM Do YYYY");
-        reservation.date.formattedFrom = dateFns.format(reservation.date.from * 1000, "ddd MMM Do YYYY");
+        reservation.date.formattedTo = dateFns.format(reservation.date.to * 1000, "MMM Do YYYY");
+        reservation.date.formattedFrom = dateFns.format(reservation.date.from * 1000, "MMM Do YYYY");
       })
     }
 
@@ -233,7 +234,7 @@ export class ReservationsTable extends Component {
         <div className="table-btn-div">
           <h4>Reservations Table Options</h4>
           <button disabled={this.state.selection.length === 0} onClick={this.toggleReservationPaid}>Record Payment</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.recordRentalInUse}>Record Checkout</button>
+          {/* <button disabled={this.state.selection.length === 0} onClick={this.recordRentalInUse}>Record Checkout</button> */}
           <button disabled={this.state.selection.length === 0} onClick={this.recordRentalReturn}>Record Turn-in</button>
           <button disabled={this.state.selection.length === 0} onClick={this.cancelReservation}>Cancel Reservation</button>
           <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
