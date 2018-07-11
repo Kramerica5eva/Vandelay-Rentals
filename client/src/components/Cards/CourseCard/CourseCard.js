@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import GreyBtn from "../../Elements/Buttons/GreyBtn"
 import "./CourseCard.css"
 
 class CourseCard extends Component {
@@ -14,9 +15,15 @@ class CourseCard extends Component {
           <p>"{this.props.detail}"</p>
           <h4>Topics covered:</h4>
             <ul>
-                {this.props.children}
+              {this.props.children}
             </ul>
           <p>Spaces left: {this.props.slots}</p>
+          <br/>
+          <div className="CourseBtn">
+          <GreyBtn>
+            Reserve Course Spot
+          </GreyBtn>
+          </div>
         </li>
       </div>
     )
