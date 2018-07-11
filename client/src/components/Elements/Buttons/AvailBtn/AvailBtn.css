@@ -1,34 +1,45 @@
 .btn-avail {
-  background: #d64f4f;
-  background-image: -webkit-linear-gradient(top, #d64f4f, #c25555);
-  background-image: -moz-linear-gradient(top, #d64f4f, #c25555);
-  background-image: -ms-linear-gradient(top, #d64f4f, #c25555);
-  background-image: -o-linear-gradient(top, #d64f4f, #c25555);
-  background-image: linear-gradient(to bottom, #d64f4f, #c25555);
-  -webkit-border-radius: 4;
-  -moz-border-radius: 4;
-  border-radius: 4px;
-  text-shadow: 1px 1px 3px #666666;
-  -webkit-box-shadow: 0px 1px 3px #666666;
-  -moz-box-shadow: 0px 1px 3px #666666;
-  box-shadow: 0px 1px 3px #666666;
+  height: 28px;
   font-family: Arial;
-  color: #ffffff;
+  color: #fff;
   font-size: 20px;
-  padding: 10px 20px 10px 20px;
   text-decoration: none;
   font-size: 1rem;
-  padding: 8px 16px 8px 16px;
   border: none;
   cursor: pointer;
+  color: #454545;
+  font-weight: bold;
+  background: transparent;
+  padding: 4px 9px 4px 36px;
+  background-image: url("./cal.png");
+  background-position: 7px;
+  background-repeat: no-repeat;
+  outline: transparent;
+  position: relative;
 }
 
 .btn-avail:hover {
-  background: #54cc64;
-  background-image: -webkit-linear-gradient(top, #cc5454, #b85c5c);
-  background-image: -moz-linear-gradient(top, #cc5454, #b85c5c);
-  background-image: -ms-linear-gradient(top, #cc5454, #b85c5c);
-  background-image: -o-linear-gradient(top, #cc5454, #b85c5c);
-  background-image: linear-gradient(to bottom, #cc5454, #b85c5c);
   text-decoration: none;
+}
+
+.btn-avail .tooltiptext {
+  visibility: hidden;
+  width: auto;
+  background-color: rgba(78, 80, 216, 0.888);
+  color: whitesmoke;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 3px;
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  top: 115%;
+  margin-left: -60px;
+  /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+
+.btn-avail:hover .tooltiptext {
+  visibility: visible;
 }
