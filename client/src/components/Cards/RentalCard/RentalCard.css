@@ -33,3 +33,9 @@
     padding-bottom: 10px;
     border-bottom: solid #FFCE40 3px;
 }
+
+.buttons {
+    margin-top: 20px;
+    border-top: 3px solid #FFCE40;
+    border-bottom: 3px solid #FFCE40;
+}

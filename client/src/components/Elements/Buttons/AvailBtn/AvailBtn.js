@@ -6,7 +6,7 @@ class AvailBtn extends React.Component {
 
     render() {
         return (
-            <button className="btn-avail">Check Availability</button>
+            <button className="btn-avail" onClick={this.props.click}><span className={"tooltiptext"}>Check availability</span></button>
         );
     }
 }
