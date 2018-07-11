@@ -208,7 +208,19 @@ class Rentals extends Component {
           <ParallaxHero
             image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)', backgroundPosition: "bottom" }}
             title=""
+            pageClass={"rentalPage"}
           />
+          <div className="calendar-container">
+            <h1 className="calendar-head-title">Rentals</h1>
+            <Calendar
+              updateUnix={this.getDays}
+              unavailable={this.state.unavailable}
+              unavailableName={this.state.name}
+              clearUnavailable={this.clearUnavailable}
+            />
+          </div>
+
+          <div className='body-container rentals'>
           <Header>
             <DevLinks
               loggedIn={this.props.loggedIn}
@@ -218,14 +230,7 @@ class Rentals extends Component {
               location={this.props.location}
             />
           </Header>
-          <div className='body-container rentals'>
-            <h1 className="calendar-head-title">Rentals</h1>
-            <Calendar
-              updateUnix={this.getDays}
-              unavailable={this.state.unavailable}
-              unavailableName={this.state.name}
-              clearUnavailable={this.clearUnavailable}
-            />
+
             <h2>Rentals Available:</h2>
             <div className='rental-card-container'>
               {this.state.rentals.map(rental => (
