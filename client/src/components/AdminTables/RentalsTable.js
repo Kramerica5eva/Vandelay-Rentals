@@ -1,15 +1,16 @@
-import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Label } from "../Elements/Form";
-import API from "../../utils/API";
-import Modal from "../../components/Elements/Modal";
-import LoadingModal from "../../components/Elements/LoadingModal";
-import ImageModal from "../../components/Elements/ImageModal";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
-import "./AdminTables.css";
-import checkboxHOC from "react-table/lib/hoc/selectTable";
-import dateFns from "date-fns";
+import React, { Component, Fragment } from 'react';
+import { Input, FormBtn, Label } from '../Elements/Form';
+import API from '../../utils/API';
+import Modal from '../../components/Elements/Modal';
+import LoadingModal from '../../components/Elements/LoadingModal';
+import ImageModal from '../../components/Elements/ImageModal';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
+import './AdminTables.css';
+import checkboxHOC from 'react-table/lib/hoc/selectTable';
+import dateFns from 'date-fns';
 import { ReservationsTable } from './ReservationsTable';
+import { PastRentalsTable } from './PastRentalsTable';
 
 const CheckboxTable = checkboxHOC(ReactTable);
 
@@ -17,19 +18,19 @@ export class RentalsTable extends Component {
   state = {
     modal: {
       isOpen: false,
-      header: "",
-      body: "",
-      footer: ""
+      header: '',
+      body: '',
+      footer: ''
     },
     imageModal: {
       isOpen: false,
-      header: "",
-      body: "",
-      footer: ""
+      header: '',
+      body: '',
+      footer: ''
     },
     currentReservations: null,
-    category: "",
-    condition: "",
+    category: '',
+    condition: '',
     images: [],
     selectedFile: null,
     image: null,
@@ -40,7 +41,7 @@ export class RentalsTable extends Component {
 
   componentDidMount = () => {
     this.adminGetAllRentals();
-  }
+  };
 
   // Standard input change controller
   handleInputChange = event => {
@@ -55,9 +56,9 @@ export class RentalsTable extends Component {
     this.setState({
       modal: { isOpen: !this.state.modal.isOpen }
     });
-  }
+  };
 
-  setModal = (modalInput) => {
+  setModal = modalInput => {
     this.setState({
       modal: {
         isOpen: true,
@@ -66,7 +67,7 @@ export class RentalsTable extends Component {
         footer: modalInput.footer
       }
     });
-  }
+  };
   // END MODAL TOGGLE FUNCTIONS
 
   // IMAGEMODAL TOGGLE FUNCTIONS
@@ -74,9 +75,9 @@ export class RentalsTable extends Component {
     this.setState({
       imageModal: { isOpen: !this.state.imageModal.isOpen }
     });
-  }
+  };
 
-  setImageModal = (modalInput) => {
+  setImageModal = modalInput => {
     this.setState({
       imageModal: {
         isOpen: true,
@@ -85,14 +86,14 @@ export class RentalsTable extends Component {
         footer: modalInput.footer
       }
     });
-  }
+  };
   // END MODAL TOGGLE FUNCTIONS
 
   toggleLoadingModal = () => {
     this.setState({
       loadingModalOpen: !this.state.loadingModalOpen
     });
-  }
+  };
 
   // Get rentals and set state so the table will display
   adminGetAllRentals = () => {
@@ -102,8 +103,8 @@ export class RentalsTable extends Component {
 
         //  loop through the response array and add a new key/value pair with the formatted rate
         res.data.map(r => {
-          r.rate = "$" + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
-          r.dateAcq = dateFns.format(r.dateAcquired * 1000, "MMM Do YYYY");
+          r.rate = '$' + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
+          r.dateAcq = dateFns.format(r.dateAcquired * 1000, 'MMM Do YYYY');
         });
         // set state for rentals, but also empty selection - selection is where the selected (highlighted) row _id is kept. This unselects the row - when a row is selected and the data is updated, it calls this function (adminGetAllRentals), and emptying this.state.selected results in unselecting the row, which works as a visual cue that an update operation is complete.
         this.setState({
@@ -118,8 +119,8 @@ export class RentalsTable extends Component {
   //  Gets modal with the change category form - category is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
   rentalCategoryModal = () => {
     this.setModal({
-      header: "Change Category",
-      body:
+      header: 'Change Category',
+      body: (
         <Fragment>
           <form>
             {/* using the Select and Option components in a modal seems to make everything stop working... */}
@@ -130,22 +131,19 @@ export class RentalsTable extends Component {
                 // for whatever reason, setting the select value to this.state.category (as in the React docs) does not work with select/option dropdowns...
                 onChange={this.handleInputChange}
               >
-                <option></option>
+                <option />
                 {this.props.categories.map(cat => (
-                  <option key={cat._id} >{cat.category}</option>
+                  <option key={cat._id}>{cat.category}</option>
                 ))}
               </select>
               <Label htmlFor="category">Change Category</Label>
             </div>
-            <FormBtn
-              onClick={this.changeRentalCategory}
-            >
-              Submit
-            </FormBtn>
+            <FormBtn onClick={this.changeRentalCategory}>Submit</FormBtn>
           </form>
         </Fragment>
+      )
     });
-  }
+  };
 
   //  Submits changes made in category modal
   changeRentalCategory = e => {
@@ -153,18 +151,17 @@ export class RentalsTable extends Component {
     this.toggleLoadingModal();
     e.preventDefault();
     const { _id } = this.state.selectedRow;
-    API.adminUpdateRental(_id, { category: this.state.category })
-      .then(res => {
-        this.adminGetAllRentals();
-        this.toggleLoadingModal();
-      });
-  }
+    API.adminUpdateRental(_id, { category: this.state.category }).then(res => {
+      this.adminGetAllRentals();
+      this.toggleLoadingModal();
+    });
+  };
 
   //  Gets modal with the change condition form - condition is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
   rentalConditionModal = () => {
     this.setModal({
-      header: "Change Condition",
-      body:
+      header: 'Change Condition',
+      body: (
         <Fragment>
           <form>
             {/* using the Select and Option components in a modal seems to make everything stop working... */}
@@ -175,7 +172,7 @@ export class RentalsTable extends Component {
                 // for some reason, setting the select value to this.state.condition (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
                 onChange={this.handleInputChange}
               >
-                <option></option>
+                <option />
                 <option>New</option>
                 <option>Good</option>
                 <option>Working</option>
@@ -184,15 +181,12 @@ export class RentalsTable extends Component {
               </select>
               <Label htmlFor="condition">Submit</Label>
             </div>
-            <FormBtn
-              onClick={this.changeRentalCondition}
-            >
-              Submit
-            </FormBtn>
+            <FormBtn onClick={this.changeRentalCondition}>Submit</FormBtn>
           </form>
         </Fragment>
-    })
-  }
+      )
+    });
+  };
 
   //  Submits changes made in condition modal
   changeRentalCondition = e => {
@@ -200,46 +194,63 @@ export class RentalsTable extends Component {
     this.toggleLoadingModal();
     e.preventDefault();
     const { _id } = this.state.selectedRow;
-    API.adminUpdateRental(_id, { condition: this.state.condition })
-      .then(res => {
+    API.adminUpdateRental(_id, { condition: this.state.condition }).then(
+      res => {
         this.adminGetAllRentals();
         this.toggleLoadingModal();
-      });
-  }
+      }
+    );
+  };
 
   //  Changes rental condition to retire - offered as an alternative to deleting
   retireRental = () => {
     this.toggleModal();
     this.toggleLoadingModal();
     const { _id } = this.state.selectedRow;
-    API.adminUpdateRental(_id, { condition: 'Retired' })
-      .then(res => {
-        this.adminGetAllRentals();
-        this.toggleLoadingModal();
-      });
-  }
+    API.adminUpdateRental(_id, { condition: 'Retired' }).then(res => {
+      this.adminGetAllRentals();
+      this.toggleLoadingModal();
+    });
+  };
 
   rentalDeleteModal = () => {
     this.setModal({
-      header: "Warning:",
-      body:
+      header: 'Warning:',
+      body: (
         <Fragment>
-          <h3>Are you sure you want to delete {this.state.selectedRow.name}?</h3>
-          <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
+          <h3>
+            Are you sure you want to delete {this.state.selectedRow.name}?
+          </h3>
+          <p>
+            (this is permenent - you cannot undo it, and you will lose all data)
+          </p>
           <h3>Would you rather retire the item and keep the data?</h3>
-          <p>(make sure you contact customers and change any existing reservations)</p>
-          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: "1.5rem" }} onClick={this.toggleModal}>
+          <p>
+            (make sure you contact customers and change any existing
+            reservations)
+          </p>
+          <FormBtn
+            style={{ width: '100%', borderRadius: '5px', fontSize: '1.5rem' }}
+            onClick={this.toggleModal}
+          >
             Nevermind.
           </FormBtn>
-          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: "1.2rem" }} onClick={this.retireRental}>
+          <FormBtn
+            style={{ width: '100%', borderRadius: '5px', fontSize: '1.2rem' }}
+            onClick={this.retireRental}
+          >
             Just retire it.
           </FormBtn>
-          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: ".75rem" }} onClick={this.deleteRental}>
+          <FormBtn
+            style={{ width: '100%', borderRadius: '5px', fontSize: '.75rem' }}
+            onClick={this.deleteRental}
+          >
             I'm sure. Delete it.
           </FormBtn>
         </Fragment>
-    })
-  }
+      )
+    });
+  };
 
   deleteRental = event => {
     this.toggleModal();
@@ -252,7 +263,7 @@ export class RentalsTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          header: "Success!",
+          header: 'Success!',
           body: <h3>Database successfully updated</h3>
         });
         //  query the db and reload the table
@@ -260,14 +271,14 @@ export class RentalsTable extends Component {
         this.toggleLoadingModal();
       })
       .catch(err => console.log(err));
-  }
+  };
 
   //  IMAGE CRUD OPERATIONS FUNCTIONS
   // Gets the modal with the image upload form
   getImageUploadModal = () => {
     this.setModal({
-      header: "Upload an image",
-      body:
+      header: 'Upload an image',
+      body: (
         <Fragment>
           <h2>File Uploads</h2>
           {/* form encType must be set this way to take in a file */}
@@ -278,15 +289,12 @@ export class RentalsTable extends Component {
               label="Upload an image"
               onChange={this.fileSelectedHandler}
             />
-            <FormBtn
-              onClick={this.handleImageUpload}
-            >
-              Submit
-          </FormBtn>
+            <FormBtn onClick={this.handleImageUpload}>Submit</FormBtn>
           </form>
         </Fragment>
+      )
     });
-  }
+  };
 
   // the image chosen in the modal form is pushed into state (similar to handleInputChange function)
   fileSelectedHandler = event => {
@@ -301,8 +309,13 @@ export class RentalsTable extends Component {
   handleImageUpload = event => {
     event.preventDefault();
     this.setModal({
-      header: "Loading...",
-      body: <img style={{ width: "50px", display: "block", margin: "50px auto" }} src="./../../../loading.gif" />
+      header: 'Loading...',
+      body: (
+        <img
+          style={{ width: '50px', display: 'block', margin: '50px auto' }}
+          src="./../../../loading.gif"
+        />
+      )
     });
     //  the row must be selected (checkbox and highlighted) for this to work
     const { _id } = this.state.selectedRow;
@@ -313,20 +326,25 @@ export class RentalsTable extends Component {
       this.toggleModal();
       this.getImageUploadModal();
     });
-  }
+  };
 
   // Gets image names from the db so they can be put into 'img' elements to be streamed for display
   getImageNames = () => {
     this.setModal({
-      header: "Loading...",
-      body: <img style={{ width: "50px", display: "block", margin: "50px auto" }} src="./../../../loading.gif" />
+      header: 'Loading...',
+      body: (
+        <img
+          style={{ width: '50px', display: 'block', margin: '50px auto' }}
+          src="./../../../loading.gif"
+        />
+      )
     });
     const { _id } = this.state.selectedRow;
     API.getImageNames(_id).then(res => {
       console.log(res);
       if (res.data.length === 0) {
         setTimeout(this.setModal, 500, {
-          header: "Rental Images",
+          header: 'Rental Images',
           body: <h3>No images to display</h3>
         });
       } else {
@@ -334,49 +352,77 @@ export class RentalsTable extends Component {
         this.getImageModal(res.data);
       }
     });
-  }
+  };
 
   // Once image names have been retrieved, they are placed into img tags for display inside a modal
   getImageModal = images => {
     this.setImageModal({
-      header: "Rental Images",
-      body:
+      header: 'Rental Images',
+      body: (
         <Fragment>
           {images.map(image => (
             <div className="rental-img-div">
-              <p>Uploaded {dateFns.format(image.uploadDate, "MMM Do YYYY hh:mm a")}</p>
-              <img className="rental-img" src={`file/image/${image.filename}`} alt="rental condition" />
-              <button onClick={() => this.deleteImage(image._id)}>Delete</button>
+              <p>
+                Uploaded{' '}
+                {dateFns.format(image.uploadDate, 'MMM Do YYYY hh:mm a')}
+              </p>
+              <img
+                className="rental-img"
+                src={`file/image/${image.filename}`}
+                alt="rental condition"
+              />
+              <button onClick={() => this.deleteImage(image._id)}>
+                Delete
+              </button>
             </div>
           ))}
         </Fragment>
-    })
-  }
+      )
+    });
+  };
 
   // Deletes an image, then closes the modal so when getImageNames toggles the modal, it will reopen it
   deleteImage = image => {
     this.setModal({
-      header: "Loading...",
-      body: <img style={{ width: "50px", display: "block", margin: "50px auto" }} src="./../../../loading.gif" />
+      header: 'Loading...',
+      body: (
+        <img
+          style={{ width: '50px', display: 'block', margin: '50px auto' }}
+          src="./../../../loading.gif"
+        />
+      )
     });
     const { _id } = this.state.selectedRow;
-    API.deleteImage(image, _id)
-      .then(res => {
-        this.toggleImageModal();
-        this.getImageNames();
-      });
-  }
+    API.deleteImage(image, _id).then(res => {
+      this.toggleImageModal();
+      this.getImageNames();
+    });
+  };
   //  END - IMAGE CRUD OPERATIONS FUNCTIONS
 
   //  Update selected Row - sends current field info to db and updates that item
   updateSelectedRow = () => {
     this.toggleLoadingModal();
     //  extract variables from the selectedRow object
-    const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
+    const {
+      category,
+      condition,
+      dailyRate,
+      dateAcquired,
+      maker,
+      name,
+      rate,
+      sku,
+      timesRented,
+      _id
+    } = this.state.selectedRow;
 
     let newRate;
     if (rate)
-      newRate = rate.split("").filter(x => x !== "$").join("");
+      newRate = rate
+        .split('')
+        .filter(x => x !== '$')
+        .join('');
 
     const updateObject = {
       category: category,
@@ -396,7 +442,7 @@ export class RentalsTable extends Component {
           setTimeout(this.toggleLoadingModal, 500);
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
-            header: "Success!",
+            header: 'Success!',
             body: <h3>Database successfully updated</h3>
           });
           //  query the db and reload the table
@@ -435,16 +481,16 @@ export class RentalsTable extends Component {
 
   //  logs the selected row and the selection array to the console
   logSelection = () => {
-    console.log("Selection:", this.state.selection);
-    console.log("Row: ", this.state.selectedRow);
+    console.log('Selection:', this.state.selection);
+    console.log('Row: ', this.state.selectedRow);
   };
-  //  END REACT-TABLE: SELECT TABLE HOC FUNCTIONs  
+  //  END REACT-TABLE: SELECT TABLE HOC FUNCTIONs
 
   // editable react table
-  renderEditable = (cellInfo) => {
+  renderEditable = cellInfo => {
     return (
       <div
-        style={{ backgroundColor: "#fafafa" }}
+        style={{ backgroundColor: '#fafafa' }}
         contentEditable
         suppressContentEditableWarning
         onBlur={e => {
@@ -466,9 +512,8 @@ export class RentalsTable extends Component {
     const checkboxProps = {
       isSelected,
       toggleSelection,
-      selectType: "checkbox",
+      selectType: 'checkbox',
       getTrProps: (s, r) => {
-
         // If there are any empty rows ('r'), r.orignal will throw an error ('r' is undefined), so check for r:
         let selected;
         if (r) {
@@ -476,8 +521,8 @@ export class RentalsTable extends Component {
         }
         return {
           style: {
-            backgroundColor: selected ? "yellow" : "inherit",
-            color: selected ? '#000' : 'inherit',
+            backgroundColor: selected ? 'yellow' : 'inherit',
+            color: selected ? '#000' : 'inherit'
           }
         };
       }
@@ -501,26 +546,63 @@ export class RentalsTable extends Component {
         />
         <LoadingModal show={this.state.loadingModalOpen} />
         <div className="main-table-container">
-
           <div className="table-title-div">
-            <h2>Rentals Table <button onClick={this.props.toggleRentals}>hide table</button></h2>
+            <h2>
+              Rentals Table{' '}
+              <button onClick={this.props.toggleRentals}>hide table</button>
+            </h2>
           </div>
 
           {/* if no rows have been selected, buttons remain disabled;
         otherwise, clicking the button without anything selected results in an error */}
           <div className="table-btn-div">
             <h4>Rentals Table Options</h4>
-            <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.rentalCategoryModal}>Change Category</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.rentalConditionModal}>Change Condition</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.rentalDeleteModal}>Delete</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.getImageNames}>Get Images</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.getImageUploadModal}>Upload an Image</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
+            <button
+              disabled={this.state.selection.length === 0}
+              onClick={this.updateSelectedRow}
+            >
+              Update Selected
+            </button>
+            <button
+              disabled={this.state.selection.length === 0}
+              onClick={this.rentalCategoryModal}
+            >
+              Change Category
+            </button>
+            <button
+              disabled={this.state.selection.length === 0}
+              onClick={this.rentalConditionModal}
+            >
+              Change Condition
+            </button>
+            <button
+              disabled={this.state.selection.length === 0}
+              onClick={this.rentalDeleteModal}
+            >
+              Delete
+            </button>
+            <button
+              disabled={this.state.selection.length === 0}
+              onClick={this.getImageNames}
+            >
+              Get Images
+            </button>
+            <button
+              disabled={this.state.selection.length === 0}
+              onClick={this.getImageUploadModal}
+            >
+              Upload an Image
+            </button>
+            <button
+              disabled={this.state.selection.length === 0}
+              onClick={this.logSelection}
+            >
+              Log Selection
+            </button>
           </div>
 
           <CheckboxTable
-            // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object 
+            // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object
             ref={r => (this.checkboxTable = r)}
             data={this.state.rentals}
             filterable
@@ -528,64 +610,77 @@ export class RentalsTable extends Component {
               //  thisReservation grabs the reservations from this.state.rentals that matches the row index - it grabs the reservations for this rental item.
               const thisRow = this.state.rentals[row.row._index];
               return (
-                <ReservationsTable
-                  forName={thisRow.name}
-                  filterable
-                  reservations={thisRow.reservations}
-                  rentals={true}
-                  adminGetAllRentals={this.adminGetAllRentals}
-                />
-              )
+                <Fragment>
+                  {thisRow.reservations.length > 0 ? (
+                    <ReservationsTable
+                      forName={thisRow.name}
+                      filterable
+                      reservations={thisRow.reservations}
+                      rentals={true}
+                      adminGetAllRentals={this.adminGetAllRentals}
+                    />
+                  ) : null}
+                  {thisRow.pastRentals.length > 0 ? (
+                    <PastRentalsTable
+                      forName={thisRow.name}
+                      filterable
+                      pastRentals={thisRow.pastRentals}
+                      // rentals={true}
+                      adminGetAllRentals={this.adminGetAllRentals}
+                    />
+                  ) : null}
+                </Fragment>
+              );
             }}
             columns={[
               {
-                Header: "Rental Info",
+                Header: 'Rental Info',
                 columns: [
                   {
-                    Header: "Name",
-                    accessor: "name",
+                    Header: 'Name',
+                    accessor: 'name',
                     Cell: this.renderEditable
                   },
                   {
-                    Header: "Category",
-                    accessor: "category"
+                    Header: 'Category',
+                    accessor: 'category'
                   },
                   {
-                    Header: "Manufacturer",
-                    accessor: "maker",
+                    Header: 'Manufacturer',
+                    accessor: 'maker',
                     Cell: this.renderEditable
                   },
                   {
-                    Header: "SKU",
-                    accessor: "sku",
+                    Header: 'SKU',
+                    accessor: 'sku',
                     Cell: this.renderEditable
-                  },
-                ]
-              },
-              {
-                Header: "Rental Details",
-                columns: [
-                  {
-                    Header: "Daily Rate",
-                    accessor: "rate",
-                    Cell: this.renderEditable
-                  },
-                  {
-                    Header: "Date Acq.",
-                    accessor: "dateAcq",
-                    Cell: this.renderEditable
-                  },
-                  {
-                    Header: "Times Rented",
-                    accessor: "timesRented",
-                    Cell: this.renderEditable
-                  },
-                  {
-                    Header: "Condition",
-                    accessor: "condition"
                   }
                 ]
               },
+              {
+                Header: 'Rental Details',
+                columns: [
+                  {
+                    Header: 'Daily Rate',
+                    accessor: 'rate',
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: 'Date Acq.',
+                    accessor: 'dateAcq',
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: 'Times Rented',
+                    accessor: 'timesRented',
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: 'Condition',
+                    accessor: 'condition'
+                  }
+                ]
+              }
             ]}
             defaultPageSize={10}
             className="-striped -highlight"
