@@ -10,7 +10,7 @@ class FixedFooter extends React.Component {
         return (
             <footer className='fixed-footer'>
                 <a href="https://github.com/Kramerica5eva/Vandelay-Rentals" target="_blank">GitHub</a>
-                <p>&#9400;Copyright 2018 Kramerica Industries</p>
+                <p>&#9400;2018 Kramerica Industries</p>
                 <Link className="btn-link" to={{pathname:"/", hash: "#about-us-para-header"}} role="button">Contact</Link>
             </footer>
         );

@@ -282,7 +282,8 @@ class Profile extends Component {
                   <h3>{res.category}</h3>
                   <p>Amt due at pick up: {res.amtDue}</p>
                   <i onClick={() => this.cancelReservation(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
-                  <i onClick={() => this.getRentalDetails(res)} className="fas fa-info-circle fa-2x" aria-hidden="true"></i>
+                  <i onClick={() => this.getRentalDetails(res)} className="far fa-images fa-2x" aria-hidden="true"></i>
+                  {/* <i onClick={() => this.getRentalDetails(res)} className="fas fa-info-circle fa-2x" aria-hidden="true"></i> */}
                 </div>
               )) : null}
             </div>

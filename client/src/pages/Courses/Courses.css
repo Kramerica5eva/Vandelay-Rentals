@@ -1,4 +1,4 @@
-
+/* Courses.css File */
 .courses {
     background-color: white;
     display: flex;
@@ -16,7 +16,6 @@
     flex-wrap: wrap;
     justify-content: center;
 }
-
 .courses ul li {
     display: flex;
     flex-direction: column;

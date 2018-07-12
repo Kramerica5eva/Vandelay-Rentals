@@ -1,7 +1,9 @@
+    /* CourseCard.css File */
+
 .courseCard {
-    border: solid black 1px;
+    border: solid rgba(143, 142, 142, 0.726) 1px;
     text-shadow: 1px 1px 3px rgba(150, 150, 150, 1);
-    box-shadow: 3px 3px 5px rgba(150, 150, 150, 1);
+    box-shadow: 2px 2px 6px rgba(150, 150, 150, 1);
     max-width: 1000px;
     min-width: 300px;
     /* height: 300px; */
@@ -53,5 +55,6 @@
 .coursecard-display-img-container img {
     height: 235px;
     width: 250px;
-    border: solid black 1px;
+    /* border: solid black 1px; */
+    border-radius: 50%;
 }

@@ -1,3 +1,5 @@
+/* Profile.css File */
+
 
 .page-container {
   display: flex;
@@ -118,12 +120,12 @@
   cursor: pointer;
 }
 
-.reservation-card .fa-info-circle,
-.course-card .fa-info-circle {
+.reservation-card  .fa-images,
+.course-card  .fa-images {
   position: absolute;
-  color: #ffce40;
-  background: radial-gradient(#000, #fff, #fff);
-  text-shadow: 2px 2px 8px #222;
+  /* color: #ffce40; */
+  /* background: radial-gradient(#000, #fff, #fff); */
+  /* text-shadow: 2px 2px 8px #222; */
   border-radius: 50%;
   right: 10px;
   top: 10px;
