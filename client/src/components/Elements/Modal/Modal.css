@@ -28,8 +28,11 @@
 /* The Close Button */
 
 .my-modal-close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
   color: #aaa;
-  float: right;
+  float: right;  
   font-size: 28px;
   font-weight: bold;
 }
@@ -43,9 +46,8 @@
 /* my-modal Header */
 
 .my-modal-header {
-  padding: 5px 16px;
-  min-height: 30px;
-  /* background-color: #4e50d8e2; */
+  position: relative;
+  height: 30px;
   background-color: transparent;
   color: #000;
   border-top-left-radius: 10px;
@@ -63,11 +65,9 @@
 /* my-modal Footer */
 
 .my-modal-footer {
-  padding: 5px 16px;
-  min-height: 30px;
-  /* background-color: #4e50d8e2; */
+  height: 30px;
   background-color: transparent;
-  color: white;
+  color: #000;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -96,6 +96,7 @@
 
 .my-modal-body>form>.form-select {
   margin-top: 20px;
+
 }
 
 .my-modal h4 {
@@ -115,6 +116,11 @@
 
 .my-modal p {
   font-size: .9rem;
+  margin: 5px 0;
+}
+
+.my-modal .group-select {
+  margin-bottom: 10px;
 }
 
 .modal-btn-div {
@@ -132,11 +138,14 @@
   box-shadow: 0 0 20px 20px #4e50d8e2 inset, 0 0 0 0 #4e50d8e2;
   transition: all 150ms ease-in-out;
 }
+
 .modal-btn-div button:hover {
   background-color: #fff;
   box-shadow: 0 0 5px #4e50d8e2 inset, 0 0 5px #4e50d8e2;
   color: #4e50d8e2;
 }
+
+
 
 @media (min-width: 650px) {
   .my-modal h4 {

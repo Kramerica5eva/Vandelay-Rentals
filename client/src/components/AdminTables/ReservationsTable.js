@@ -15,7 +15,8 @@ export class ReservationsTable extends Component {
       isOpen: false,
       header: "",
       body: "",
-      footer: ""
+      footer: "",
+      buttons: ""
     },
     fromUsers: this.props.fromUsers,
     runUnmount: false,
@@ -50,7 +51,8 @@ export class ReservationsTable extends Component {
         isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }
@@ -222,6 +224,7 @@ export class ReservationsTable extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <LoadingModal show={this.state.loadingModalOpen} />
 

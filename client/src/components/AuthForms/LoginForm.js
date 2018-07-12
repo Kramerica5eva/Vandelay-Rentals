@@ -9,7 +9,8 @@ export class LoginForm extends Component {
       isOpen: false,
       header: "",
       body: "",
-      footer: ""
+      footer: "",
+      buttons: ""
     },
     username: "",
     password: ""
@@ -27,7 +28,8 @@ export class LoginForm extends Component {
         isOpen: !this.state.modal.isOpen,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }
@@ -66,7 +68,6 @@ export class LoginForm extends Component {
         }
       }).catch(err => {
         this.setModal({
-          header: "Error",
           body: <h4>Username and/or password do not match anything in our database</h4>
         })
       });
@@ -81,6 +82,7 @@ export class LoginForm extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <form>
           <Input
