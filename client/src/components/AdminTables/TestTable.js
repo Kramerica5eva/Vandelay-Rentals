@@ -118,15 +118,15 @@ export class TestTable extends Component {
         if (res.status === 200) {
           this.setModal({
             header: "Success!",
-            body: <h3>Password successfully changed</h3>
+            body: <h4>Password successfully changed</h4>
           })
         } else {
           this.setModal({
             header: "Error!",
             body:
               <Fragment>
-                <h3>Something went wrong</h3>
-                <h4>Please try again</h4>
+                <h4>Something went wrong</h4>
+                <h5>Please try again</h5>
               </Fragment>
           })
         }

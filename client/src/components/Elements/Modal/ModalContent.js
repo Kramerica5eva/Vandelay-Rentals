@@ -17,6 +17,9 @@ class ModalContent extends Component {
         </div>
         <div className="my-modal-body">
           {this.props.body}
+          <div className="modal-btn-div">
+            {this.props.buttons}
+          </div>
         </div>
         <div className="my-modal-footer">
           <h3>{this.props.footer}</h3>

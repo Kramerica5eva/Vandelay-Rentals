@@ -21,7 +21,7 @@
   margin: 50px auto;
   padding: 20px 20px 20px 30px;
   border: 1px solid #ffce40;
-  /* border: 1px solid #c5c5c5; */
+  border: 1px solid #c5c5c5;
   border-radius: 10px;
 }
 
@@ -41,7 +41,7 @@
   margin-top: 10px;
 }
 
-.user-info-btn-div {
+/* .user-info-btn-div {
   width: 300px;
   margin: auto;
   text-align: center;
@@ -60,7 +60,7 @@
 .user-info-btn-div button:hover {
   color: yellow;
   text-shadow: 0 0 5px #000;
-}
+} */
 
 .reservations-container,
 .registrations-container {
@@ -118,13 +118,10 @@
   cursor: pointer;
 }
 
-.reservation-card .fa-info-circle,
-.course-card .fa-info-circle {
+.reservation-card .fa-images,
+.course-card .fa-images {
   position: absolute;
-  color: #ffce40;
-  background: radial-gradient(#000, #fff, #fff);
-  text-shadow: 2px 2px 8px #222;
-  border-radius: 50%;
+  color: #4e50d8e2;
   right: 10px;
   top: 10px;
   cursor: pointer;
