@@ -37,7 +37,7 @@ module.exports = {
 
         //  functionality to limit what info gets sent to users
 
-        res.json(dbModel)
+        res.json(dbModel);
       })
       .catch(err => res.status(422).json(err));
   },

@@ -33,26 +33,13 @@ class Profile extends Component {
     loadingModalOpen: false,
     userData: [],
     reservations: [],
-    reservationsShow: false,
     registrations: [],
-    registrationsShow: false,
     pastRentals: [],
     pastRentalsShow: false,
-    waiversShow: false,
-    formsShow: false,
-    selection: [],
-    selectedRow: {},
-    runUnmount: false
   };
 
   componentWillMount() {
     this.getUserProfileData();
-  }
-
-  componentWillUnmount() {
-    if (this.state.runUnmount) {
-      this.getUserProfileData();
-    }
   }
 
   handleInputChange = event => {
@@ -85,40 +72,6 @@ class Profile extends Component {
     });
   };
 
-  //  REACT-TABLE: SELECT TABLE HOC FUNCTIONS
-  //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
-  toggleSelection = (key, shift, row) => {
-    let selection = [...this.state.selection];
-    const keyIndex = selection.indexOf(key);
-
-    if (keyIndex >= 0) {
-      // it does exist so we will remove it
-      selection = [
-        ...selection.slice(0, keyIndex),
-        ...selection.slice(keyIndex + 1)
-      ];
-    } else {
-      // it does not exist so add it
-      selection = [];
-      selection.push(key);
-    }
-
-    //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
-    this.setState({ selection, selectedRow: row });
-  };
-
-  // Inside the render function, isSelected returns a true or false depending on if a row is selected
-  isSelected = key => {
-    return this.state.selection.includes(key);
-  };
-
-  //  logs the selected row and the selection array to the console
-  logSelection = () => {
-    console.log("Selection:", this.state.selection);
-    console.log("Row: ", this.state.selectedRow);
-  };
-  //  END REACT-TABLE: SELECT TABLE HOC FUNCTIONS
-
   getUserProfileData = () => {
     API.getUserProfileData()
       .then(user => {
@@ -138,18 +91,6 @@ class Profile extends Component {
 
   changePassword = () => {
 
-  }
-
-  toggleReservations = () => {
-    this.setState({
-      reservationsShow: !this.state.reservationsShow,
-    });
-  }
-
-  toggleRegistrations = () => {
-    this.setState({
-      registrationsShow: !this.state.registrationsShow,
-    });
   }
 
   togglePastRentals = () => {
@@ -177,12 +118,11 @@ class Profile extends Component {
     });
   }
 
-  cancelReservation = () => {
+  cancelReservation = reservation => {
     this.toggleLoadingModal();
-    const { _id } = this.state.selectedRow;
-    const row = this.state.selectedRow;
+    const { _id } = reservation;
     console.log(_id);
-    API.removeRentalReservation(_id, row)
+    API.removeRentalReservation(_id, reservation)
       .then(res => {
         console.log(res);
         this.toggleLoadingModal();
@@ -191,41 +131,90 @@ class Profile extends Component {
 
         //  empty selection and selectedRow so the affected buttons revert to disabled
         this.setState({
-          reservations: newReservations,
-          selection: [],
-          selectedRow: {},
-          runUnmount: true
+          reservations: newReservations
         })
       })
       .catch(err => console.log(err));
   }
 
-  render() {
-    const { toggleSelection, isSelected } = this;
+  getRentalDetails = reservation => {
+    const { category, itemId } = reservation;
+    // console.log(reservation);
+    API.getRentalById(category, itemId)
+      .then(res => {
+        console.log(res);
+        this.setModal({
+          body:
+            <div className="reservation-modal-div">
+              <div className="reservation-modal-data">
+                <h2>{res.data.name}</h2>
+                <h4>by {res.data.maker}</h4>
+                <h5>Daily Rate: {`$${parseFloat(res.data.dailyRate.$numberDecimal).toFixed(2)}`}</h5>
+              </div>
+              <div className="reservation-modal-image">
+                <img src={res.data.displayImageUrl} alt={`${res.data.category} photo`} />
+              </div>
+            </div>
+        })
+      })
+  }
 
-    const { city, email, firstName, lastName, pastRentals, phone, registrations, reservations, state, street, username, zipcode } = this.state.userData;
+  cancelRegistration = registration => {
+    this.toggleLoadingModal();
+    const { _id } = registration;
+    console.log(_id);
+    API.removeCourseRegistration(_id, registration)
+      .then(res => {
+        console.log(res);
+        this.toggleLoadingModal();
+        //  filter the row from the registrations array in state and then setState to the filtered data.
+        const newRegistrations = this.state.registrations.filter(registration => (registration._id !== _id));
+
+        //  empty selection and selectedRow so the affected buttons revert to disabled
+        this.setState({
+          registrations: newRegistrations
+        })
+      })
+      .catch(err => console.log(err));
+  }
+
+  getCourseDetails = registration => {
+    const { courseId } = registration;
+    console.log(registration);
+    API.getCourseById(courseId)
+      .then(reg => {
+        console.log(reg);
+        this.setModal({
+          body:
+            <div className="registration-modal-div">
+              <div className="registration-modal-data">
+                <div className="registration-modal-image">
+                  <img src={reg.data.displayImageUrl} alt={`${reg.data.name} photo`} />
+                </div>
+                <h2>{reg.data.name}</h2>
+                <h4>{reg.data.abstract}</h4>
+                <h4>Difficulty: {reg.data.level}</h4>
+                <h5>Price per person: {`$${parseFloat(reg.data.price.$numberDecimal).toFixed(2)}`}</h5>
+                <p>{reg.data.detail}</p>
+                <p>Topics include:</p>
+                <ul>
+                  {reg.data.topics ? reg.data.topics.map((topic, i) => (
+                    <li key={i}>{topic}</li>
+                  )) : null}
+                </ul>
+                <p>Spaces left: {reg.data.slots - reg.data.registrations.length}</p>
+              </div>
+            </div>
+        })
+      })
+  }
+
+  render() {
+
+    const { city, email, firstName, lastName, phone, state, street, username, zipcode } = this.state.userData;
 
     let telephone;
     if (phone) telephone = `${phone.slice(0, 3)}-${phone.slice(3, 6)}-${phone.slice(6, 10)}`;
-
-    const checkboxProps = {
-      isSelected,
-      toggleSelection,
-      selectType: "checkbox",
-      getTrProps: (s, r) => {
-        // If there are any empty rows ('r'), r.orignal will throw an error ('r' is undefined), so check for r:
-        let selected;
-        if (r) {
-          selected = this.isSelected(r.original._id);
-        }
-        return {
-          style: {
-            backgroundColor: selected ? "yellow" : "inherit",
-            color: selected ? '#000' : 'inherit',
-          }
-        };
-      }
-    };
 
     if (this.state.reservations.length > 0) {
       this.state.reservations.map(reservation => {
@@ -278,57 +267,38 @@ class Profile extends Component {
               <h4>{telephone}</h4>
             </div>
 
-            <div className="admin-btn-array">
-              <button onClick={this.toggleReservations}>My Reservations</button>
-              <button onClick={this.toggleRegistrations}>My Classes</button>
-              <button onClick={this.togglePastRentals}>Past Rentals</button>
-              <button onClick={this.toggleWaiver}>Waiver Stuff</button>
-              <button onClick={this.toggleForms}>Edit My Info</button>
+            {/* itemName, date.from, date.to, hasPaid, amtDue */}
+            <div className="reservations-container">
+              <h2>My Reservations</h2>
+              {this.state.reservations ? this.state.reservations.map(res => (
+                <div key={res._id} className="reservation-card">
+                  {res.date.from === res.date.to ? (
+                    <h5>{dateFns.format(res.date.from * 1000, "MMM Do YYYY")}</h5>
+                  ) : (
+                      <h5>{dateFns.format(res.date.from * 1000, "MMM Do YYYY")} - {dateFns.format(res.date.to * 1000, "MMM Do YYYY")}</h5>
+                    )
+                  }
+                  <h4>{res.itemName}</h4>
+                  <h3>{res.category}</h3>
+                  <p>Amt due at pick up: {res.amtDue}</p>
+                  <i onClick={() => this.cancelReservation(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                  <i onClick={() => this.getRentalDetails(res)} className="fas fa-info-circle fa-2x" aria-hidden="true"></i>
+                </div>
+              )) : null}
             </div>
 
-            {this.state.reservationsShow ?
-              <Fragment>
-                <div className="table-btn-div">
-                  <button disabled={this.state.selection.length === 0} onClick={this.cancelReservation}>Cancel Reservation</button>
+            <div className="registrations-container">
+              <h2>My Classes</h2>
+              {this.state.registrations ? this.state.registrations.map(reg => (
+                <div key={reg._id} className="course-card">
+                  <h5>Date {dateFns.format(reg.date * 1000, "MMM Do YYYY")}</h5>
+                  <h4>{reg.courseName}</h4>
+                  <p>Amount due: {parseFloat(reg.price.$numberDecimal).toFixed(2)}</p>
+                  <i onClick={() => this.cancelRegistration(reg)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                  <i onClick={() => this.getCourseDetails(reg)} className="fas fa-info-circle fa-2x" aria-hidden="true"></i>
                 </div>
-                <CheckboxTable
-                  ref={r => (this.checkboxTable = r)}
-                  data={this.state.reservations}
-                  columns={[
-                    {
-                      Header: "Item Name",
-                      accessor: "itemName"
-                    },
-                    {
-                      Header: "Date From",
-                      accessor: "date.from",
-                      Cell: row => {
-                        return dateFns.format(row.row["date.from"] * 1000, "MMM Do YYYY")
-                      }
-                    },
-                    {
-                      Header: "Date To",
-                      accessor: "date.to",
-                      Cell: row => {
-                        return dateFns.format(row.row["date.to"] * 1000, "MMM Do YYYY")
-                      }
-                    },
-                    {
-                      Header: "Paid",
-                      accessor: "hasPaid"
-                    },
-                    {
-                      Header: "Amt Due",
-                      accessor: "amtDue"
-                    }
-
-                  ]}
-                  defaultPageSize={5}
-                  className="-striped -highlight user-data-table"
-                  {...checkboxProps}
-                />
-              </Fragment>
-              : null}
+              )) : null}
+            </div>
 
             {this.state.registrationsShow ?
               <Fragment>
