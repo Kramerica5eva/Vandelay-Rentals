@@ -283,7 +283,6 @@ class Profile extends Component {
                   <p>Amt due at pick up: {res.amtDue}</p>
                   <i onClick={() => this.cancelReservation(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
                   <i onClick={() => this.getRentalDetails(res)} className="far fa-images fa-2x" aria-hidden="true"></i>
-                  {/* <i onClick={() => this.getRentalDetails(res)} className="fas fa-info-circle fa-2x" aria-hidden="true"></i> */}
                 </div>
               )) : null}
             </div>
@@ -296,7 +295,7 @@ class Profile extends Component {
                   <h4>{reg.courseName}</h4>
                   <p>Amount due: {parseFloat(reg.price.$numberDecimal).toFixed(2)}</p>
                   <i onClick={() => this.cancelRegistration(reg)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
-                  <i onClick={() => this.getCourseDetails(reg)} className="fas fa-info-circle fa-2x" aria-hidden="true"></i>
+                  <i onClick={() => this.getCourseDetails(reg)} className="far fa-images fa-2x" aria-hidden="true"></i>
                 </div>
               )) : null}
             </div>

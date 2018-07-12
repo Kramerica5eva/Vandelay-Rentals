@@ -14,6 +14,7 @@ class Modal extends Component {
           header={this.props.header}
           body={this.props.body}
           footer={this.props.footer}
+          buttons={this.props.buttons}
           toggleModal={this.props.toggleModal}
         />
       </div>

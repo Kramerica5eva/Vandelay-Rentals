@@ -5,7 +5,7 @@
 .navbar {
     align-items: center;
     /* background-color: rgba(129, 129, 129, 0.75); */
-    background-color: rgba(78, 80, 216, 0.888);
+    background-color: #4e50d8e2;
     color: white;
     display: flex;
     height: 55px;
@@ -41,18 +41,8 @@
     width: 70%;
 }
 
-@font-face {
-    font-family: script;
-    src: url(./Script12BTRoman.ttf);
-}
-
 .logo-fmt {
     height: 45px;
-    width: 50px;
-}
-
-.logofont {
-    font-family: script;
 }
 
 .navbar .links a, .brand-logo a {
