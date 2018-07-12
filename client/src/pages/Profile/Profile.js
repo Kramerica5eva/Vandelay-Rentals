@@ -20,7 +20,8 @@ class Profile extends Component {
       isOpen: false,
       header: "",
       body: "",
-      footer: ""
+      footer: "",
+      buttons: ""
     },
     userChanges: {
 
@@ -61,7 +62,8 @@ class Profile extends Component {
         isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   };
@@ -239,6 +241,7 @@ class Profile extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <LoadingModal show={this.state.loadingModalOpen} />
         <NavBar

@@ -9,7 +9,8 @@ export class SignupForm extends Component {
       isOpen: false,
       header: "",
       body: "",
-      footer: ""
+      footer: "",
+      buttons: ""
     },
     username: "",
     password: "",
@@ -36,7 +37,8 @@ export class SignupForm extends Component {
         isOpen: !this.state.modal.isOpen,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }
@@ -70,19 +72,16 @@ export class SignupForm extends Component {
           switch (res.data.error) {
             case "username taken":
               this.setModal({
-                header: "Error",
                 body: <h4>That username is already taken</h4>
               });
               break;
             case "email taken":
               this.setModal({
-                header: "Error",
                 body: <h4>That email already exists in our database</h4>
               });
               break;
             case "did not validate":
               this.setModal({
-                header: "Error",
                 body: <h4>Please correct highlighted items</h4>
               });
               break;
@@ -114,6 +113,7 @@ export class SignupForm extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <form>
           <Input

@@ -18,7 +18,8 @@ export class SalesTable extends Component {
         isOpen: false,
         header: "",
         body: "",
-        footer: ""
+        footer: "",
+        buttons: ""
       },
       category: "",
       saleType: "",
@@ -56,7 +57,8 @@ export class SalesTable extends Component {
         isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }
@@ -98,15 +100,14 @@ export class SalesTable extends Component {
   //  Category update modal
   saleItemCategoryModal = () => {
     this.setModal({
-      header: "Change Category",
       body:
         <Fragment>
           <form>
+            <h3>Change Category</h3>
             {/* using the Select and Option components in a modal seems to make everything stop working... */}
             <div className="group group-select">
               <select
                 name="category"
-                label="Change Category:"
                 // for some reason, setting the select value to this.state.category (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
                 onChange={this.handleInputChange}
               >
@@ -115,15 +116,10 @@ export class SalesTable extends Component {
                   <option key={cat._id} >{cat.category}</option>
                 ))}
               </select>
-              <Label htmlFor="category">Change Category</Label>
             </div>
-            <FormBtn
-              onClick={this.changeSaleItemCategory}
-            >
-              Submit
-            </FormBtn>
           </form>
-        </Fragment>
+        </Fragment>,
+      buttons: <button onClick={this.changeSaleItemCategory}>Submit</button>
     });
   }
 
@@ -143,14 +139,13 @@ export class SalesTable extends Component {
   //  Sale type update modal
   saleItemSaleTypeModal = () => {
     this.setModal({
-      header: "Change Sale Type",
       body:
         <Fragment>
           <form>
+            <h3>Change New/Used</h3>
             <div className="group group-select">
               <select
                 name="saleType"
-                label="Change Sale Type:"
                 // for whatever reason, setting the select value to this.state.category (as in the React docs) does not work with select/option dropdowns...
                 onChange={this.handleInputChange}
               >
@@ -158,15 +153,10 @@ export class SalesTable extends Component {
                 <option>New</option>
                 <option>Used</option>
               </select>
-              <Label htmlFor="saleType">Change Type</Label>
             </div>
-            <FormBtn
-              onClick={this.changeSaleItemSaleType}
-            >
-              Submit
-            </FormBtn>
           </form>
-        </Fragment>
+        </Fragment>,
+      buttons: <button onClick={this.changeSaleItemSaleType}>Submit</button>
     });
   }
 
@@ -186,15 +176,14 @@ export class SalesTable extends Component {
   //  Sale Item condition update modal
   saleItemConditionModal = () => {
     this.setModal({
-      header: "Change Condition",
       body:
         <Fragment>
           <form>
+            <h3>Change Condition</h3>
             {/* using the Select and Option components in a modal seems to make everything stop working... */}
             <div className="group group-select">
               <select
                 name="condition"
-                label="Change Condition:"
                 // Setting the select value to this.state.condition (as per usual input control) in a modal doesn't work. I'm sure it could be made to work with a different method of managing state, but that's for another time. For now, handleInputChange *is* putting the changes into state, so it works, it's just uncontrolled.
                 onChange={this.handleInputChange}
               >
@@ -205,15 +194,10 @@ export class SalesTable extends Component {
                 <option>Fair</option>
                 <option>Poor</option>
               </select>
-              <Label htmlFor="condition">Submit</Label>
             </div>
-            <FormBtn
-              onClick={this.changeSaleItemCondition}
-            >
-              Submit
-            </FormBtn>
           </form>
-        </Fragment>
+        </Fragment>,
+      buttons: <button onClick={this.changeSaleItemCondition}>Submit</button>
     })
   }
 
@@ -235,15 +219,14 @@ export class SalesTable extends Component {
   //  Sale Item status update modal
   saleItemStatusModal = () => {
     this.setModal({
-      header: "Change Status",
       body:
         <Fragment>
           <form>
+            <h3>Change Status</h3>
             {/* using the Select and Option components in a modal seems to make everything stop working... */}
             <div className="group group-select">
               <select
                 name="status"
-                label="Change Status:"
                 // for some reason, setting the select value to this.state.condition (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
                 onChange={this.handleInputChange}
               >
@@ -251,15 +234,10 @@ export class SalesTable extends Component {
                 <option>Available</option>
                 <option>Sold</option>
               </select>
-              <Label htmlFor="status">Submit</Label>
             </div>
-            <FormBtn
-              onClick={this.changeSaleItemStatus}
-            >
-              Submit
-            </FormBtn>
           </form>
-        </Fragment>
+        </Fragment>,
+      buttons: <button onClick={this.changeSaleItemStatus}>Submit</button>
     });
   }
 
@@ -279,17 +257,16 @@ export class SalesTable extends Component {
   //  Sale Item Delete modal
   saleItemDeleteModal = () => {
     this.setModal({
-      header: "Warning:",
       body:
         <Fragment>
+          <h3>Warning!</h3>
           <h4>Are you sure you want to delete {this.state.selectedRow.name}?</h4>
           <p>(this is permenent - you cannot undo it)</p>
-          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: "1.5rem" }} onClick={this.toggleModal}>
-            Nevermind.
-          </FormBtn>
-          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: ".75rem" }} onClick={this.deleteSaleItem}>
-            I'm sure. Delete it.
-          </FormBtn>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={this.toggleModal}>Nevermind</button>
+          <button onClick={this.deleteSaleItem}>Delete it</button>
         </Fragment>
     })
   }
@@ -306,7 +283,6 @@ export class SalesTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          header: "Success!",
           body: <h4>Database successfully updated</h4>
         });
         //  query the db and reload the table
@@ -380,7 +356,6 @@ export class SalesTable extends Component {
           setTimeout(this.toggleLoadingModal, 500);
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
-            header: "Success!",
             body: <h4>Database successfully updated</h4>
           });
           //  query the db and reload the table
@@ -439,6 +414,7 @@ export class SalesTable extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <LoadingModal show={this.state.loadingModalOpen} />
 

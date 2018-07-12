@@ -127,10 +127,7 @@ db.User
   .remove({})
   .then(() => db.User.collection.insertMany(userSeed))
   .then(data => {
-    console.log(data.insertedIds[0]);
-    console.log(data.ops.length);
     let cartArray = [];
-    // let promiseArray = [];
     for (let i = 0; i < data.ops.length; i++) {
       const element = data.insertedIds[i];
       const cartObject = {
@@ -140,7 +137,6 @@ db.User
       };
       cartArray.push(cartObject);
     }
-
     db.ShoppingCart.collection.insertMany(cartArray)
       .then(() => {
         console.log(data.insertedCount + " records inserted!");
