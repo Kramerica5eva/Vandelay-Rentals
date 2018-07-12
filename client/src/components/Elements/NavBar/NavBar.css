@@ -37,18 +37,8 @@
     width: 70%;
 }
 
-@font-face {
-    font-family: script;
-    src: url(./Script12BTRoman.ttf);
-}
-
 .logo-fmt {
     height: 45px;
-    width: 50px;
-}
-
-.logofont {
-    font-family: script;
 }
 
 .navbar .links a, .brand-logo a {

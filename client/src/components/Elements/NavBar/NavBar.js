@@ -39,8 +39,14 @@ class NavBar extends React.Component {
     return (
       <nav className='navbar'>
 
+        {/* <div className='brand-logo'>
+          <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logosolid.png" /></Link>
+        </div> */}
         <div className='brand-logo'>
-          <Link className="btn-link logofont" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logosolid.png" />andelay</Link>
+          <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logoWordScript.png" /></Link>
+        </div>
+        <div className='brand-logo'>
+          <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logoWordHand.png" /></Link>
         </div>
         <div className='links'>
           <Link className="btn-link" to="/" role="button">Home</Link>
