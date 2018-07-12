@@ -7,108 +7,108 @@ import "./NavBar.css"
 
 class NavBar extends React.Component {
 
-    componentDidMount = () => {
-        document.querySelector(".cross").style.display = 'none';
-        // document.querySelector(".menu").style.display = 'none';
-        document.querySelector(".menu").style.visibility = 'none';
-        document.querySelector(".menu").style.opacity = '0';
-    }
+  componentDidMount = () => {
+    document.querySelector(".cross").style.display = 'none';
+    // document.querySelector(".menu").style.display = 'none';
+    document.querySelector(".menu").style.visibility = 'none';
+    document.querySelector(".menu").style.opacity = '0';
+  }
 
-    hamburgerClick = () => {
-        document.querySelector(".cross").style.display = 'flex';
-        document.querySelector(".menu").style.visibility = 'visible';
-        document.querySelector(".menu").style.opacity = '1';
-        document.querySelector(".hamburger").style.display = 'none';
-    }
+  hamburgerClick = () => {
+    document.querySelector(".cross").style.display = 'flex';
+    document.querySelector(".menu").style.visibility = 'visible';
+    document.querySelector(".menu").style.opacity = '1';
+    document.querySelector(".hamburger").style.display = 'none';
+  }
 
-    crossClick = () => {
-        document.querySelector(".cross").style.display = 'none';
-        // document.querySelector(".menu").style.display = 'none';
-        document.querySelector(".menu").style.visibility = 'none';
-        document.querySelector(".menu").style.opacity = '0';
-        document.querySelector(".hamburger").style.display = '';
-    }
+  crossClick = () => {
+    document.querySelector(".cross").style.display = 'none';
+    // document.querySelector(".menu").style.display = 'none';
+    document.querySelector(".menu").style.visibility = 'none';
+    document.querySelector(".menu").style.opacity = '0';
+    document.querySelector(".hamburger").style.display = '';
+  }
 
-    //  wanted to call both functions from an onClick event, so this function calls them both
-    multiClick = () => {
-        this.props.toggleForm();
-        this.crossClick();
-    }
+  //  wanted to call both functions from an onClick event, so this function calls them both
+  multiClick = () => {
+    this.props.toggleForm();
+    this.crossClick();
+  }
 
-    render() {
-        return (
-            <nav className='navbar'>
+  render() {
+    return (
+      <nav className='navbar'>
 
-                <div className='brand-logo'>
-                    <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logosolid.png"/></Link>
-                </div>
-                <div className='links'>
-                    <Link className="btn-link" to="/" role="button">Home</Link>
-                    <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
-                    <Link className="btn-link" to="/sales" role="button">Sales</Link>
-                    <Link className="btn-link" to="/courses" role="button">Courses</Link>
-                    {this.props.loggedIn ? (
-                        <Fragment>
-                            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-                            <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
-                            <Link className="btn-link" to="/cart" role="button"><i className="fas fa-shopping-cart"></i></Link>
-                            <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
-                        </Fragment>
-                    ) : (
-                            <Fragment>
-                                {this.props.loginShow ? (
-                                    <Fragment>
-                                        <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Signup</Link>
-                                        <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login</Link>
-                                    </Fragment>
-                                ) : (
-                                        <Fragment>
-                                            <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup</Link>
-                                            <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Login</Link>
-                                        </Fragment>
-                                    )
-                                }
-                            </Fragment>
-                        )
-                    }
-                </div>
-                <div className="hamburger-btns">
-                    <button onClick={this.hamburgerClick} className="hamburger"><i className="fas fa-bars"></i></button>
-                    <button onClick={this.crossClick} className="cross"><i className="fas fa-times 2x"></i></button>
-                </div>
-                <div className="menu" id="menu">
-                    <Link className="btn-link" to="/" role="button">Home</Link>
-                    <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
-                    <Link className="btn-link" to="/sales" role="button">Sales</Link>
-                    <Link className="btn-link" to="/courses" role="button">Courses</Link>
-                    {this.props.loggedIn ? (
-                        <Fragment>
-                            {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-                            <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
-                            <Link className="btn-link" to="/cart" role="button"><i className="fas fa-shopping-cart"></i></Link>
-                            <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
-                        </Fragment>
-                    ) : (
-                            <Fragment>
-                                {this.props.loginShow ? (
-                                    <Fragment>
-                                        <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button">Signup</Link>
-                                        <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login</Link>
-                                    </Fragment>
-                                ) : (
-                                        <Fragment>
-                                            <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup</Link>
-                                            <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button">Login</Link>
-                                        </Fragment>
-                                    )
-                                }
-                            </Fragment>
-                        )
-                    }
-                </div>
-            </nav>
-        );
-    }
+        <div className='brand-logo'>
+          <Link className="btn-link logofont" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logosolid.png" />andelay</Link>
+        </div>
+        <div className='links'>
+          <Link className="btn-link" to="/" role="button">Home</Link>
+          <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
+          <Link className="btn-link" to="/sales" role="button">Sales</Link>
+          <Link className="btn-link" to="/courses" role="button">Courses</Link>
+          {this.props.loggedIn ? (
+            <Fragment>
+              {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
+              <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
+              <Link className="btn-link" to="/cart" role="button"><i class="fas fa-shopping-cart"></i></Link>
+              <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
+            </Fragment>
+          ) : (
+              <Fragment>
+                {this.props.loginShow ? (
+                  <Fragment>
+                    <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Signup</Link>
+                    <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login</Link>
+                  </Fragment>
+                ) : (
+                    <Fragment>
+                      <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup</Link>
+                      <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Login</Link>
+                    </Fragment>
+                  )
+                }
+              </Fragment>
+            )
+          }
+        </div>
+        <div className="hamburger-btns">
+          <button onClick={this.hamburgerClick} className="hamburger"><i className="fas fa-bars"></i></button>
+          <button onClick={this.crossClick} className="cross"><i className="fas fa-times 2x"></i></button>
+        </div>
+        <div className="menu" id="menu">
+          <Link className="btn-link" to="/" role="button">Home</Link>
+          <Link className="btn-link" to="/rentals" role="button">Rentals</Link>
+          <Link className="btn-link" to="/sales" role="button">Sales</Link>
+          <Link className="btn-link" to="/courses" role="button">Courses</Link>
+          {this.props.loggedIn ? (
+            <Fragment>
+              {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
+              <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
+              <Link className="btn-link" to="/cart" role="button"><i class="fas fa-shopping-cart"></i></Link>
+              <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
+            </Fragment>
+          ) : (
+              <Fragment>
+                {this.props.loginShow ? (
+                  <Fragment>
+                    <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button"><i className="fas fa-user-plus"></i>Sign-up</Link>
+                    <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button"><i className="fas fa-sign-in-alt"></i>Login</Link>
+                  </Fragment>
+                ) : (
+                    <Fragment>
+                      <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button"><i className="fas fa-user-plus"></i>Signup</Link>
+                      <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button"><i className="fas fa-sign-in-alt"></i>Login</Link>
+                    </Fragment>
+                  )
+                }
+              </Fragment>
+            )
+          }
+        </div>
+      </nav>
+    );
+  }
 }
 
 
