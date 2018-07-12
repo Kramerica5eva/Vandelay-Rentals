@@ -14,7 +14,8 @@ export class RegistrationsTable extends Component {
       isOpen: false,
       header: "",
       body: "",
-      footer: ""
+      footer: "",
+      buttons: ""
     },
     fromUsers: this.props.fromUsers,
     runUnmount: false,
@@ -48,7 +49,8 @@ export class RegistrationsTable extends Component {
         isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }

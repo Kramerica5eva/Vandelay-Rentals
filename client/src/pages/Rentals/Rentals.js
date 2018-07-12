@@ -230,8 +230,8 @@ class Rentals extends Component {
           toggleModal={this.toggleModal}
           header={this.state.modal.header}
           body={this.state.modal.body}
-          buttons={this.state.modal.buttons}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <NavBar
           loggedIn={this.props.loggedIn}

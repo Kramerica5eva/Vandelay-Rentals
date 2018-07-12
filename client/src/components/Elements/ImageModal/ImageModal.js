@@ -14,6 +14,7 @@ class ImageModal extends Component {
           header={this.props.header}
           body={this.props.body}
           footer={this.props.footer}
+          buttons={this.state.modal.buttons}
           toggleImageModal={this.props.toggleImageModal}
         />
       </div>

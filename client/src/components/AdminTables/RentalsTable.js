@@ -20,7 +20,8 @@ export class RentalsTable extends Component {
       isOpen: false,
       header: '',
       body: '',
-      footer: ''
+      footer: '',
+      buttons: ''
     },
     imageModal: {
       isOpen: false,
@@ -30,6 +31,7 @@ export class RentalsTable extends Component {
     },
     loadingModalOpen: false,
     currentReservations: null,
+    categories: this.props.categories,
     category: '',
     condition: '',
     date: "",
@@ -66,7 +68,8 @@ export class RentalsTable extends Component {
         isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   };
@@ -121,29 +124,27 @@ export class RentalsTable extends Component {
   //  Gets modal with the change category form - category is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
   rentalCategoryModal = () => {
     this.setModal({
-      header: 'Change Category',
-      body: (
+      body:
         <Fragment>
           <form>
+            <h3>Change Category</h3>
             {/* using the Select and Option components in a modal seems to make everything stop working... */}
             <div className="group group-select">
               <select
                 name="category"
-                label="Change Category:"
                 // for whatever reason, setting the select value to this.state.category (as in the React docs) does not work with select/option dropdowns...
                 onChange={this.handleInputChange}
               >
                 <option />
-                {this.props.categories.map(cat => (
+                {this.state.categories ? this.state.categories.map(cat => (
                   <option key={cat._id}>{cat.category}</option>
-                ))}
+                )) : null}
               </select>
-              <Label htmlFor="category">Change Category</Label>
             </div>
-            <FormBtn onClick={this.changeRentalCategory}>Submit</FormBtn>
           </form>
-        </Fragment>
-      )
+        </Fragment>,
+      buttons: <button onClick={this.changeRentalCategory}>Submit</button>
+
     });
   };
 
@@ -166,10 +167,10 @@ export class RentalsTable extends Component {
   //  b) To format the date in the table cell prevents passing in the renderEditable function
   rentalDateModal = () => {
     this.setModal({
-      header: "Change Date:",
-      body: (
+      body:
         <Fragment>
           <form>
+            <h3>Change Date</h3>
             <Input
               onChange={this.handleInputChange}
               name="date"
@@ -177,10 +178,9 @@ export class RentalsTable extends Component {
               label="Change Date"
               placeholder="e.g. Dec 20th 2018"
             />
-            <FormBtn onClick={this.changeRentalDate}>Submit</FormBtn>
           </form>
-        </Fragment>
-      )
+        </Fragment>,
+      buttons: <button onClick={this.changeRentalDate}>Submit</button>
     });
   }
 
@@ -203,10 +203,10 @@ export class RentalsTable extends Component {
   //  Gets modal with the change condition form - condition is a limited set of options and can only be changed via dropdown, which doesn't seem to work in normal Select Table mode.
   rentalConditionModal = () => {
     this.setModal({
-      header: 'Change Condition',
-      body: (
+      body:
         <Fragment>
           <form>
+            <h3>Change Condition</h3>
             {/* using the Select and Option components in a modal seems to make everything stop working... */}
             <div className="group group-select">
               <select
@@ -221,12 +221,11 @@ export class RentalsTable extends Component {
                 <option>Disrepair</option>
                 <option>Retired</option>
               </select>
-              <Label htmlFor="condition">Change Condition:</Label>
             </div>
-            <FormBtn onClick={this.changeRentalCondition}>Submit</FormBtn>
           </form>
-        </Fragment>
-      )
+        </Fragment>,
+      buttons: <button onClick={this.changeRentalCondition}>Submit</button>
+
     });
   };
 
@@ -257,33 +256,20 @@ export class RentalsTable extends Component {
 
   rentalDeleteModal = () => {
     this.setModal({
-      header: 'Warning:',
-      body: (
+      body:
         <Fragment>
+          <h3>Warning!</h3>
           <h4>Are you sure you want to delete {this.state.selectedRow.name}?</h4>
           <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
           <h4>Would you rather retire the item and keep the data?</h4>
           <p>(make sure you contact customers and change any existing reservations)</p>
-          <FormBtn
-            style={{ width: '100%', borderRadius: '5px', fontSize: '1.5rem' }}
-            onClick={this.toggleModal}
-          >
-            Nevermind.
-          </FormBtn>
-          <FormBtn
-            style={{ width: '100%', borderRadius: '5px', fontSize: '1.2rem' }}
-            onClick={this.retireRental}
-          >
-            Just retire it.
-          </FormBtn>
-          <FormBtn
-            style={{ width: '100%', borderRadius: '5px', fontSize: '.75rem' }}
-            onClick={this.deleteRental}
-          >
-            I'm sure. Delete it.
-          </FormBtn>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={this.toggleModal}>Nevermind</button>
+          <button onClick={this.retireRental}>Retire it</button>
+          <button onClick={this.deleteRental}>Delete it</button>
         </Fragment>
-      )
     });
   };
 
@@ -298,7 +284,6 @@ export class RentalsTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          header: 'Success!',
           body: <h3>Database successfully updated</h3>
         });
         //  query the db and reload the table
@@ -312,10 +297,9 @@ export class RentalsTable extends Component {
   // Gets the modal with the image upload form
   getImageUploadModal = () => {
     this.setModal({
-      header: 'Upload an image',
-      body: (
+      body:
         <Fragment>
-          <h3>File Uploads</h3>
+          <h3>Upload An Image</h3>
           {/* form encType must be set this way to take in a file */}
           <form encType="multipart/form-data">
             <Input
@@ -324,10 +308,10 @@ export class RentalsTable extends Component {
               label="Upload an image"
               onChange={this.fileSelectedHandler}
             />
-            <FormBtn onClick={this.handleImageUpload}>Submit</FormBtn>
           </form>
-        </Fragment>
-      )
+        </Fragment>,
+      buttons: <button onClick={this.handleImageUpload}>Submit</button>
+
     });
   };
 
@@ -344,13 +328,14 @@ export class RentalsTable extends Component {
   handleImageUpload = event => {
     event.preventDefault();
     this.setModal({
-      header: 'Loading...',
-      body: (
-        <img
-          style={{ width: '50px', display: 'block', margin: '50px auto' }}
-          src="./../../../loading.gif"
-        />
-      )
+      body:
+        <Fragment>
+          <h3>Loading...</h3>
+          <img
+            style={{ width: '50px', display: 'block', margin: '50px auto' }}
+            src="./../../../loading.gif"
+          />
+        </Fragment>
     });
     //  the row must be selected (checkbox and highlighted) for this to work
     const { _id } = this.state.selectedRow;
@@ -366,15 +351,20 @@ export class RentalsTable extends Component {
   // Gets image names from the db so they can be put into 'img' elements to be streamed for display
   getImageNames = () => {
     this.setModal({
-      header: 'Loading...',
-      body: <img style={{ width: '50px', display: 'block', margin: '50px auto' }} src="./../../../loading.gif" />
+      body:
+        <Fragment>
+          <h3>Loading...</h3>
+          <img
+            style={{ width: '50px', display: 'block', margin: '50px auto' }}
+            src="./../../../loading.gif"
+          />
+        </Fragment>
     });
     const { _id } = this.state.selectedRow;
     API.getImageNames(_id).then(res => {
       console.log(res);
       if (res.data.length === 0) {
         setTimeout(this.setModal, 500, {
-          header: 'Rental Images',
           body: <h4>No images to display</h4>
         });
       } else {
@@ -405,8 +395,14 @@ export class RentalsTable extends Component {
   // Deletes an image, then closes the modal so when getImageNames toggles the modal, it will reopen it
   deleteImage = image => {
     this.setModal({
-      header: 'Loading...',
-      body: <img style={{ width: '50px', display: 'block', margin: '50px auto' }} src="./../../../loading.gif" />
+      body:
+        <Fragment>
+          <h3>Loading...</h3>
+          <img
+            style={{ width: '50px', display: 'block', margin: '50px auto' }}
+            src="./../../../loading.gif"
+          />
+        </Fragment>
     });
     const { _id } = this.state.selectedRow;
     API.deleteImage(image, _id).then(res => {
@@ -444,7 +440,6 @@ export class RentalsTable extends Component {
           setTimeout(this.toggleLoadingModal, 500);
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
-            header: 'Success!',
             body: <h4>Database successfully updated</h4>
           });
           //  query the db and reload the table
@@ -536,6 +531,7 @@ export class RentalsTable extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <ImageModal
           show={this.state.imageModal.isOpen}

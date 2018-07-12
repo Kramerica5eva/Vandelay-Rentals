@@ -17,7 +17,8 @@ export class CoursesTable extends Component {
       isOpen: false,
       header: "",
       body: "",
-      footer: ""
+      footer: "",
+      buttons: ""
     },
     courses: [],
     level: "",
@@ -52,7 +53,8 @@ export class CoursesTable extends Component {
         isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }
@@ -93,21 +95,19 @@ export class CoursesTable extends Component {
   //  b) To format the date in the table cell prevents passing in the renderEditable function
   courseDateModal = () => {
     this.setModal({
-      header: "Change Date",
-      body: (
+      body:
         <Fragment>
           <form>
+            <h3>Change Course Date</h3>
             <Input
               onChange={this.handleInputChange}
               name="date"
               type="text"
-              label="Change Date"
               placeholder="e.g. Dec 20th 2018"
             />
-            <FormBtn onClick={this.changeCourseDate}>Submit</FormBtn>
           </form>
-        </Fragment>
-      )
+        </Fragment>,
+      buttons: <button onClick={this.changeCourseDate}>Submit</button>
     });
   }
 
@@ -129,10 +129,10 @@ export class CoursesTable extends Component {
   //  Course level update modal
   courseLevelModal = () => {
     this.setModal({
-      header: "Change Level",
-      body: (
+      body:
         <Fragment>
           <form>
+            <h3>Change Difficulty</h3>
             <div className="group group-select">
               <select
                 name="level"
@@ -143,12 +143,10 @@ export class CoursesTable extends Component {
                 <option>Intermediate</option>
                 <option>Beginner</option>
               </select>
-              <Label htmlFor="level">Update Level</Label>
             </div>
-            <FormBtn onClick={this.changeCourseLevel}>Submit</FormBtn>
           </form>
-        </Fragment>
-      )
+        </Fragment>,
+      buttons: <button onClick={this.changeCourseLevel}>Submit</button>
     });
   };
 
@@ -169,17 +167,15 @@ export class CoursesTable extends Component {
   //  Course delete modal
   courseDeleteModal = () => {
     this.setModal({
-      header: "",
       body:
         <Fragment>
           <h4>Are you sure you want to delete {this.state.selectedRow.name}?</h4>
           <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
-          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: "1.5rem" }} onClick={this.toggleModal}>
-            Nevermind.
-          </FormBtn>
-          <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: ".75rem" }} onClick={this.deleteCourse}>
-            I'm sure. Delete it.
-          </FormBtn>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={this.toggleModal}>Nevermind</button>
+          <button onClick={this.deleteCourse}>Delete it</button>
         </Fragment>
     })
   }
@@ -247,7 +243,6 @@ export class CoursesTable extends Component {
           setTimeout(this.toggleLoadingModal, 500);
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
-            header: "Success!",
             body: <h4>Database successfully updated</h4>
           });
           //  query the db and reload the table
@@ -305,6 +300,7 @@ export class CoursesTable extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <LoadingModal show={this.state.loadingModalOpen} />
         <div className="main-table-container">

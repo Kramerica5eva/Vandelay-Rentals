@@ -101,6 +101,18 @@ class Calendar extends Component {
     return (
       <div className="calHeader row flex-middle">
         <div className="column column-start">
+          <Toggle
+            id='range'
+            icons={false}
+            defaultChecked={this.state.range}
+            onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
+          />
+          <div>
+            {this.state.range ? <img className="dateSingle" src="./static/assets/images/dateSingle.png" /> : <img className="dateSingle" src="./static/assets/images/dateSingleActive.png" />}
+            {this.state.range ? <img className="dateRange" src="./static/assets/images/dateRangeActive.png" /> : <img className="dateRange" src="./static/assets/images/dateRange.png" />}
+          </div>
+        </div>
+        <div className="column column-center">
           <div className="icon" onClick={this.prevMonth}>
             <i className="fas fa-angle-double-left"></i>
           </div>
@@ -110,36 +122,27 @@ class Calendar extends Component {
             {dateFns.format(this.state.currentMonth, dateFormat)}
           </span>
         </div>
-        <div className="column column-end">
+        <div className="column column-center">
           <div className="icon" onClick={this.nextMonth}>
             <i className="fas fa-angle-double-right"></i>
           </div>
         </div>
-      </div>
+        <div className="column column-end">
+          <i class="fas fa-eraser fa-2x" onClick={this.handleResetClick}></i>
+          <div className="clearTag">clear</div>
+        </div>
+      </div >
     );
   }
 
   renderInfo() {
     return (
       <div className="row flex-middle">
-        <div className="column column-start">
-          <Toggle
-            id='range'
-            defaultChecked={this.state.range}
-            onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
-          />
-          <span>Date range selection</span>
-        </div>
         <div className="column column-center">
           {this.props.unavailableName ? <span>Showing unavailability of <text style={{ fontWeight: "bold" }}>{this.props.unavailableName}</text>.</span> : null}
         </div>
         <div className="column column-center reset" onClick={this.today}>
           Today
-        </div>
-        <div className="column column-end">
-          <div className="reset" onClick={this.handleResetClick}>
-            <i className="fas fa-sync"></i>
-          </div>
         </div>
       </div>
     );
@@ -245,6 +248,3 @@ class Calendar extends Component {
 }
 
 export default Calendar;
-
-
-//TODO deactivate dates prior to "today"

@@ -14,6 +14,7 @@ class Waiver extends Component {
     header: "",
     body: "",
     footer: "",
+    buttons: "",
     rentals: [],
     images: [],
     rentalId: "",
