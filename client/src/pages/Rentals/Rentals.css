@@ -163,20 +163,20 @@
 }
 
 .calendar-head-title {
-        /* position: absolute; */
-        /* top: -9.8em; */
-        color: white;
-        /* position: absolute; */
-        /* position: relative; */
-        text-align: center;
-        /* left: 0px; */
-        /* right: 0px; */
-        /* bottom: 50px; */
-        margin: 8% auto;
-        font-size: 2.2rem;
-        /* width: 150px; */
-        line-height: 25px;
-        text-shadow: none;
+    /* position: absolute; */
+    /* top: -9.8em; */
+    color: white;
+    /* position: absolute; */
+    /* position: relative; */
+    text-align: center;
+    /* left: 0px; */
+    /* right: 0px; */
+    /* bottom: 50px; */
+    margin: 8% auto;
+    font-size: 2.2rem;
+    /* width: 150px; */
+    line-height: 25px;
+    text-shadow: none;
 }
 
 .calendar {
@@ -275,6 +275,11 @@
     width: calc(100%/7);
 }
 
+.calendar .body .disabled {
+    color: var(--text-color-light);
+    pointer-events: none;
+}
+
 .range {
     border: #b9e3ff 6px solid;
 }
@@ -283,19 +288,25 @@
     border-radius: 0 !important;
 }
 
+.reset {
+    cursor: pointer;
+}
+
+.today {
+    color: #1a8fff;
+}
+
 /*  END CALENDAR */
 
 @media (min-width: 550) {
-
     .calendar .body .cell {
         height: 4em;
     }
-
     #parallax-container, .rentalPage {
         height: 65vh;
     }
-
 }
+
 @media (min-width: 1000px) {
     .calendar-head-title {
         /* position: absolute; */
@@ -308,19 +319,16 @@
         /* right: 0px; */
         /* bottom: 50px; */
         margin: 1% auto;
-        margin-top:2%;
+        margin-top: 2%;
         font-size: 2.2rem;
         /* width: 150px; */
         line-height: 25px;
         text-shadow: none;
     }
-
     .calendar .body .cell {
         height: 5em;
     }
-
-   #parallax-container, .rentalPage {
+    #parallax-container, .rentalPage {
         height: 75vh;
     }
-
-  }
+}

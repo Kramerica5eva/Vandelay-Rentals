@@ -11,6 +11,7 @@ import RentalCard from "./../../components/Cards/RentalCard";
 import DevLinks from "../../components/DevLinks";
 import API from "../../utils/API";
 import Calendar from "../../components/Calendar";
+import dateFns from "date-fns";
 import "./Rentals.css";
 // import "./../../App.css";
 
@@ -162,8 +163,10 @@ class Rentals extends Component {
               body:
                 <Fragment>
                   <h4>This item is already in your cart for similar dates:</h4>
-                  <p>{existingRes.date.from}</p>
-                  <p>{existingRes.date.to}</p>
+                  {this.state.unix.length > 1
+                    ? <div><p>{dateFns.format(existingRes.date.from * 1000, "dddd, MMMM Do YYYY")}</p>
+                      <p>{dateFns.format(existingRes.date.to * 1000, "dddd MMMM Do YYYY")}</p></div>
+                    : <p>{dateFns.format(existingRes.date.from * 1000, "dddd, MMMM Do YYYY")}</p>}
                   <h4>Would you like to keep the existing dates or change to your new selection?</h4>
                   <FormBtn onClick={() => this.changeReservationInCart(from, to, rental)}>Change Dates</FormBtn>
                   <FormBtn onClick={this.toggleModal}>Keep my Existing Dates</FormBtn>
@@ -221,15 +224,15 @@ class Rentals extends Component {
           </div>
 
           <div className='body-container rentals'>
-          <Header>
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
-          </Header>
+            <Header>
+              <DevLinks
+                loggedIn={this.props.loggedIn}
+                admin={this.props.admin}
+                dev={this.props.dev}
+                logout={this.props.logout}
+                location={this.props.location}
+              />
+            </Header>
 
             <h2>Rentals Available:</h2>
             <div className='rental-card-container'>

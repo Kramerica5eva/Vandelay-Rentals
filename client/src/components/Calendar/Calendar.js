@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import dateFns, { getTime, isEqual, isAfter, isBefore, startOfDay } from "date-fns";
+import dateFns, { getTime, isEqual, isAfter, isBefore, startOfDay, startOfToday } from "date-fns";
 import Toggle from "react-toggle";
 import "react-toggle/style.css";
 
 class Calendar extends Component {
 
-  //calendar functions
   constructor(props) {
     super(props);
     this.handleDayClick = this.handleDayClick.bind(this);
@@ -15,36 +14,15 @@ class Calendar extends Component {
       currentMonth: new startOfDay(Date()),
       from: null,
       to: null,
-      enteredTo: null, //keep track of the last day for mouseEnter
+      enteredTo: null,
       unavailable: this.props.unavailable,
       range: false
     }
   }
-  //  && this.isDayBefore(day, from);
-  // isSelectingFirstDay(from, to, day) {
-  //   const isBeforeFirstDay = from;
-  //   const isRangeSelected = from && to;
-  //   return !from || isBeforeFirstDay || isRangeSelected;
-  // }
-
-  // isDayBefore(d1, d2) {
-  //   var day1 = clone(d1).setHours(0, 0, 0, 0);
-  //   var day2 = clone(d2).setHours(0, 0, 0, 0);
-  //   return day1 < day2;
-  // }
-
-  // clone(d) {
-  //   return new Date(d.getTime());
-  // }
-
-  // componentWillUpdate() {
-  //   this.props.unavailable.length > 0 ?
-  //     this.setState({ from: null, to: null, enteredTo: null }) : null
-  // }
 
   handleDayClick(day) {
     const { from, to, currentMonth } = this.state;
-    // this.props.clearUnavailable();
+
     if (!this.state.range) {
       isAfter(day, dateFns.endOfMonth(currentMonth))
         ? this.nextMonth()
@@ -60,7 +38,6 @@ class Calendar extends Component {
         : isBefore(day, dateFns.startOfMonth(currentMonth))
           ? this.prevMonth()
           : null
-      // let day = this.toUnix(time);
       if (from && to) {
         this.setState({
           from: day,
@@ -105,7 +82,17 @@ class Calendar extends Component {
   }
 
   handleResetClick() {
-    this.setState(this.getInitialState());
+    this.setState({
+      from: null,
+      to: null,
+      enteredTo: null
+    });
+  }
+
+  today = () => {
+    this.setState({
+      currentMonth: new startOfDay(Date())
+    });
   }
 
   renderHeader() {
@@ -115,16 +102,18 @@ class Calendar extends Component {
       <div className="calHeader row flex-middle">
         <div className="column column-start">
           <div className="icon" onClick={this.prevMonth}>
-            Previous
-        </div>
+            <i className="fas fa-angle-double-left"></i>
+          </div>
         </div>
         <div className="column column-center">
           <span>
             {dateFns.format(this.state.currentMonth, dateFormat)}
           </span>
         </div>
-        <div className="column column-end" onClick={this.nextMonth}>
-          <div className="icon">Next</div>
+        <div className="column column-end">
+          <div className="icon" onClick={this.nextMonth}>
+            <i className="fas fa-angle-double-right"></i>
+          </div>
         </div>
       </div>
     );
@@ -143,6 +132,14 @@ class Calendar extends Component {
         </div>
         <div className="column column-center">
           {this.props.unavailableName ? <span>Showing unavailability of <text style={{ fontWeight: "bold" }}>{this.props.unavailableName}</text>.</span> : null}
+        </div>
+        <div className="column column-center reset" onClick={this.today}>
+          Today
+        </div>
+        <div className="column column-end">
+          <div className="reset" onClick={this.handleResetClick}>
+            <i className="fas fa-sync"></i>
+          </div>
         </div>
       </div>
     );
@@ -181,6 +178,14 @@ class Calendar extends Component {
         days.push(
           <div
             className={`column cell ${
+              isEqual(day, startOfToday())
+                ? "today"
+                : null
+              } ${
+              isBefore(day, startOfToday())
+                ? "disabled"
+                : null
+              } ${
               this.state.range
                 ? isEqual(day, from) || isEqual(day, to) || isEqual(day, enteredTo)
                   ? "selected"
@@ -214,12 +219,6 @@ class Calendar extends Component {
     return <div className="body">{rows}</div>;
   }
 
-  // onDateClick = day => {
-  //   this.setState({
-  //     selectedDate: day
-  //   });
-  // }
-
   nextMonth = () => {
     this.setState({
       currentMonth: dateFns.addMonths(this.state.currentMonth, 1)
@@ -246,3 +245,6 @@ class Calendar extends Component {
 }
 
 export default Calendar;
+
+
+//TODO deactivate dates prior to "today"
