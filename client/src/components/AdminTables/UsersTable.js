@@ -120,7 +120,7 @@ export class UsersTable extends Component {
           setTimeout(this.toggleLoadingModal, 500);
           setTimeout(this.setModal, 500, {
             header: "Success!",
-            body: <h3>Password successfully changed</h3>
+            body: <h4>Password successfully changed</h4>
           });
         } else {
           setTimeout(this.toggleLoadingModal, 500);
@@ -128,8 +128,8 @@ export class UsersTable extends Component {
             header: "Error!",
             body:
               <Fragment>
-                <h3>Something went wrong</h3>
-                <h4>Please try again</h4>
+                <h4>Something went wrong</h4>
+                <h5>Please try again</h5>
               </Fragment>
           });
         }
@@ -231,7 +231,7 @@ export class UsersTable extends Component {
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
             header: "Success!",
-            body: <h3>Database successfully updated</h3>
+            body: <h4>Database successfully updated</h4>
           });
           this.adminGetAllUsers();
         }

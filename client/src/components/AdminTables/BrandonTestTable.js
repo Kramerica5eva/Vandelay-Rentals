@@ -126,7 +126,7 @@ export class BrandonTestTable extends Component {
           // Modal for feedback
           this.setModal({
             header: "Success!",
-            body: <h3>Database successfully updated</h3>
+            body: <h4>Database successfully updated</h4>
           });
 
           //  query the db and reload the table

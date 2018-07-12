@@ -282,7 +282,7 @@ export class SalesTable extends Component {
       header: "Warning:",
       body:
         <Fragment>
-          <h3>Are you sure you want to delete {this.state.selectedRow.name}?</h3>
+          <h4>Are you sure you want to delete {this.state.selectedRow.name}?</h4>
           <p>(this is permenent - you cannot undo it)</p>
           <FormBtn style={{ width: "100%", borderRadius: "5px", fontSize: "1.5rem" }} onClick={this.toggleModal}>
             Nevermind.
@@ -307,7 +307,7 @@ export class SalesTable extends Component {
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
           header: "Success!",
-          body: <h3>Database successfully updated</h3>
+          body: <h4>Database successfully updated</h4>
         });
         //  query the db and reload the table
         this.adminGetAllSaleItems();
@@ -381,7 +381,7 @@ export class SalesTable extends Component {
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
             header: "Success!",
-            body: <h3>Database successfully updated</h3>
+            body: <h4>Database successfully updated</h4>
           });
           //  query the db and reload the table
           this.adminGetAllSaleItems();

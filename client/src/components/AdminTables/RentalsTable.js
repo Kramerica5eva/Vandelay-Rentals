@@ -260,9 +260,9 @@ export class RentalsTable extends Component {
       header: 'Warning:',
       body: (
         <Fragment>
-          <h3>Are you sure you want to delete {this.state.selectedRow.name}?</h3>
+          <h4>Are you sure you want to delete {this.state.selectedRow.name}?</h4>
           <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
-          <h3>Would you rather retire the item and keep the data?</h3>
+          <h4>Would you rather retire the item and keep the data?</h4>
           <p>(make sure you contact customers and change any existing reservations)</p>
           <FormBtn
             style={{ width: '100%', borderRadius: '5px', fontSize: '1.5rem' }}
@@ -315,7 +315,7 @@ export class RentalsTable extends Component {
       header: 'Upload an image',
       body: (
         <Fragment>
-          <h2>File Uploads</h2>
+          <h3>File Uploads</h3>
           {/* form encType must be set this way to take in a file */}
           <form encType="multipart/form-data">
             <Input
@@ -375,7 +375,7 @@ export class RentalsTable extends Component {
       if (res.data.length === 0) {
         setTimeout(this.setModal, 500, {
           header: 'Rental Images',
-          body: <h3>No images to display</h3>
+          body: <h4>No images to display</h4>
         });
       } else {
         this.toggleModal();
@@ -445,7 +445,7 @@ export class RentalsTable extends Component {
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
             header: 'Success!',
-            body: <h3>Database successfully updated</h3>
+            body: <h4>Database successfully updated</h4>
           });
           //  query the db and reload the table
           this.adminGetAllRentals();

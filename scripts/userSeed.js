@@ -133,7 +133,6 @@ db.User
     // let promiseArray = [];
     for (let i = 0; i < data.ops.length; i++) {
       const element = data.insertedIds[i];
-      console.log(element)
       const cartObject = {
         customerId: element,
         tempReservations: [],
@@ -144,8 +143,8 @@ db.User
 
     db.ShoppingCart.collection.insertMany(cartArray)
       .then(() => {
-        process.exit(0);
         console.log(data.insertedCount + " records inserted!");
+        process.exit(0);
       });
   })
   .catch(err => {
