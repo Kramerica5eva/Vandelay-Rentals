@@ -6,6 +6,7 @@ const RegistrationSchema = new Schema({
     type: Schema.Types.ObjectId
   },
   price: Schema.Types.Decimal128,
+  date: Number,
   courseName: String,
   customerId: {
     type: Schema.Types.ObjectId
