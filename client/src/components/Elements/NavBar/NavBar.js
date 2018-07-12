@@ -50,8 +50,8 @@ class NavBar extends React.Component {
                     {this.props.loggedIn ? (
                         <Fragment>
                             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-                            <Link className="btn-link" to="/profile" role="button">My Info</Link>
-                            <Link className="btn-link" to="/cart" role="button">Cart</Link>
+                            <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
+                            <Link className="btn-link" to="/cart" role="button"><i className="fas fa-shopping-cart"></i></Link>
                             <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
                         </Fragment>
                     ) : (
@@ -84,8 +84,8 @@ class NavBar extends React.Component {
                     {this.props.loggedIn ? (
                         <Fragment>
                             {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-                            <Link className="btn-link" to="/profile" role="button">My Info</Link>
-                            <Link className="btn-link" to="/cart" role="button">Cart</Link>
+                            <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
+                            <Link className="btn-link" to="/cart" role="button"><i className="fas fa-shopping-cart"></i></Link>
                             <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
                         </Fragment>
                     ) : (
