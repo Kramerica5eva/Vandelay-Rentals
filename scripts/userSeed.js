@@ -130,6 +130,7 @@ db.User
     console.log(data.insertedIds[0]);
     console.log(data.ops.length);
     let cartArray = [];
+    // let promiseArray = [];
     for (let i = 0; i < data.ops.length; i++) {
       const element = data.insertedIds[i];
       console.log(element)
@@ -141,11 +142,11 @@ db.User
       cartArray.push(cartObject);
     }
 
-    return db.ShoppingCart.collection.insertMany(cartArray);
-
-
-    console.log(data.insertedCount + " records inserted!");
-    process.exit(0);
+    db.ShoppingCart.collection.insertMany(cartArray)
+      .then(() => {
+        process.exit(0);
+        console.log(data.insertedCount + " records inserted!");
+      });
   })
   .catch(err => {
     console.error(err);
