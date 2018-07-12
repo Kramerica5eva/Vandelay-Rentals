@@ -1,16 +1,14 @@
+    /* Renals.css File */
+
 .rentals .calendar-head-title {
-    /* position: absolute; */
     top: -9.8em;
     color: white;
-    /* position: absolute; */
     position: relative;
     text-align: center;
     left: 0px;
     right: 0px;
-    /* bottom: 50px; */
     margin: auto;
     font-size: 4.2rem;
-    /* width: 150px; */
     line-height: 25px;
     text-shadow: none;
 }
@@ -157,37 +155,22 @@
 
 .main-container .calendar {
     margin: 2% auto;
-    /* max-width: 100%; */
-    /* display: flex; */
-    /* justify-content: center; */
 }
 
 .calendar-head-title {
-    /* position: absolute; */
-    /* top: -9.8em; */
     color: white;
-    /* position: absolute; */
-    /* position: relative; */
     text-align: center;
-    /* left: 0px; */
-    /* right: 0px; */
-    /* bottom: 50px; */
     margin: 8% auto;
     font-size: 2.2rem;
-    /* width: 150px; */
     line-height: 25px;
     text-shadow: none;
+    letter-spacing: 10px;
+    font-family: var(--just-another-hand);
 }
 
 .calendar {
     display: block;
-    /* position: absolute; */
-    /* top: 2em; */
-    /* left: 0vw; */
-    /* right: 0vw; */
-    /* width: 80%; */
     max-width: 1000px;
-    /* min-width: 295px; */
     background: var(--neutral-color);
     border: 1px solid var(--border-color);
     z-index: -1;
@@ -309,19 +292,11 @@
 
 @media (min-width: 1000px) {
     .calendar-head-title {
-        /* position: absolute; */
-        /* top: -9.8em; */
         color: white;
-        /* position: absolute; */
-        /* position: relative; */
         text-align: center;
-        /* left: 0px; */
-        /* right: 0px; */
-        /* bottom: 50px; */
         margin: 1% auto;
         margin-top: 2%;
         font-size: 2.2rem;
-        /* width: 150px; */
         line-height: 25px;
         text-shadow: none;
     }

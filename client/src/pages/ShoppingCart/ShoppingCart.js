@@ -141,7 +141,11 @@ class ShoppingCart extends Component {
             title="Shopping Cart"
           />
           <div className='body-container'>
-            <h2>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</h2>
+            <div className="shopping-cart-header">
+              <h2>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</h2>
+              <h3>This is the final step.</h3>
+            </div>
+
             <DevLinks
               loggedIn={this.props.loggedIn}
               admin={this.props.admin}

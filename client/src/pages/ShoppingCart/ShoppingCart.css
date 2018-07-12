@@ -1,1 +1,8 @@
 /* ShoppingCart.css File */
+
+/* general styling */
+
+.body-container .shopping-cart-header{
+  text-align: center;
+  margin: 0 auto;
+}

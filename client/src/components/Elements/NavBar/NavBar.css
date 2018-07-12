@@ -48,6 +48,7 @@
 .navbar .links a, .brand-logo a {
     color: white;
     text-decoration: none;
+    font-family: var(--font-Montserrat);
 }
 
 .links>.btn-link .brand-logo>.btn-link:hover {
