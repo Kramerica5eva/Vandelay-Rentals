@@ -119,7 +119,16 @@
   margin: 5px 0;
 }
 
-.my-modal .group-select {
+.my-modal label {
+  margin-top: 10px;
+}
+
+.my-modal input {
+  margin-top: 40px;
+}
+
+.my-modal .group-select,
+.my-modal .group {
   margin-bottom: 10px;
 }
 

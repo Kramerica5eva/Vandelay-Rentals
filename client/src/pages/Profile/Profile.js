@@ -1,18 +1,15 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
-import ParallaxHero from "./../../components/ParallaxHero";
+import { ChangePwForm } from "./../../components/AuthForms";
+import { UserUpdateForm } from "./../../components/AuthForms";
+import HelloSignForm from "./../../components//Elements/HelloSignForm";
 import Footer from "../../components/Elements/Footer";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
 import dateFns from "date-fns";
 import DevLinks from "../../components/DevLinks";
 import "./Profile.css"
-import checkboxHOC from "react-table/lib/hoc/selectTable";
-const CheckboxTable = checkboxHOC(ReactTable);
 
 class Profile extends Component {
   state = {
@@ -23,20 +20,16 @@ class Profile extends Component {
       footer: "",
       buttons: ""
     },
-    userChanges: {
-
-    },
-    pwData: {
-      ogPw: "",
-      newPw: "",
-      confirmPw: ""
-    },
     loadingModalOpen: false,
     userData: [],
     reservations: [],
     registrations: [],
     pastRentals: [],
+    formsShow: false,
     pastRentalsShow: false,
+    userPwForm: false,
+    userDataForm: false,
+    userWaiverForm: false
   };
 
   componentWillMount() {
@@ -87,36 +80,46 @@ class Profile extends Component {
       });
   }
 
-  editUserInfo = () => {
+  toggleFormsShow = () => {
+    this.setState({
+      formsShow: false,
+      userPwForm: false,
+      userDataForm: false,
+      userWaiverForm: false
 
+    })
   }
 
-  changePassword = () => {
+  toggleEditUserInfoForm = () => {
+    this.setState({
+      formsShow: true,
+      userPwForm: false,
+      userDataForm: true,
+      userWaiverForm: false
+    });
+  }
 
+  toggleChangePwForm = () => {
+    this.setState({
+      formsShow: true,
+      userPwForm: true,
+      userDataForm: false,
+      userWaiverForm: false
+    });
+  }
+
+  toggleWaiverForm = () => {
+    this.setState({
+      formsShow: true,
+      userPwForm: false,
+      userDataForm: false,
+      userWaiverForm: true
+    });
   }
 
   togglePastRentals = () => {
     this.setState({
       pastRentalsShow: !this.state.pastRentalsShow,
-    });
-  }
-
-  toggleWaiver = () => {
-    this.setState({
-      reservationsShow: false,
-      registrationsShow: false,
-      pastRentalsShow: false,
-      waiversShow: !this.state.waiversShow,
-    });
-  }
-
-  toggleForms = () => {
-    this.setState({
-      reservationsShow: false,
-      registrationsShow: false,
-      pastRentalsShow: false,
-      waiversShow: false,
-      formsShow: !this.state.formsShow
     });
   }
 
@@ -193,13 +196,13 @@ class Profile extends Component {
                 <div className="registration-modal-image">
                   <img src={reg.data.displayImageUrl} alt={`${reg.data.name} photo`} />
                 </div>
-                <h2>{reg.data.name}</h2>
+                <h3>{reg.data.name}</h3>
                 <h4>{reg.data.abstract}</h4>
                 <h4>Difficulty: {reg.data.level}</h4>
                 <h5>Price per person: {`$${parseFloat(reg.data.price.$numberDecimal).toFixed(2)}`}</h5>
                 <p>{reg.data.detail}</p>
-                <p>Topics include:</p>
                 <ul>
+                  <p>Topics include:</p>
                   {reg.data.topics ? reg.data.topics.map((topic, i) => (
                     <li key={i}>{topic}</li>
                   )) : null}
@@ -269,58 +272,126 @@ class Profile extends Component {
               <h4>{email}</h4>
               <h4>{telephone}</h4>
             </div>
-
-            {/* itemName, date.from, date.to, hasPaid, amtDue */}
-            <div className="reservations-container">
-              <h2>My Reservations</h2>
-              {this.state.reservations ? this.state.reservations.map(res => (
-                <div key={res._id} className="reservation-card">
-                  {res.date.from === res.date.to ? (
-                    <h5>{dateFns.format(res.date.from * 1000, "MMM Do YYYY")}</h5>
-                  ) : (
-                      <h5>{dateFns.format(res.date.from * 1000, "MMM Do YYYY")} - {dateFns.format(res.date.to * 1000, "MMM Do YYYY")}</h5>
-                    )
-                  }
-                  <h4>{res.itemName}</h4>
-                  <h3>{res.category}</h3>
-                  <p>Amt due at pick up: {res.amtDue}</p>
-                  <i onClick={() => this.cancelReservation(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
-                  <i onClick={() => this.getRentalDetails(res)} className="far fa-images fa-2x" aria-hidden="true"></i>
+            {this.state.formsShow ? (
+              <div className="user-info-btn-div">
+                <button onClick={this.toggleFormsShow}>Show Reservations</button>
+              </div>
+            ) : (
+                <div className="user-info-btn-div">
+                  <button onClick={this.toggleEditUserInfoForm}>edit info</button>
+                  <button onClick={this.toggleChangePwForm}>change pw</button>
+                  <button onClick={this.toggleWaiverForm}>update waiver</button>
                 </div>
-              )) : null}
-            </div>
+              )
+            }
 
-            <div className="registrations-container">
-              <h2>My Classes</h2>
-              {this.state.registrations ? this.state.registrations.map(reg => (
-                <div key={reg._id} className="course-card">
-                  <h5>Date {dateFns.format(reg.date * 1000, "MMM Do YYYY")}</h5>
-                  <h4>{reg.courseName}</h4>
-                  <p>Amount due: {parseFloat(reg.price.$numberDecimal).toFixed(2)}</p>
-                  <i onClick={() => this.cancelRegistration(reg)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
-                  <i onClick={() => this.getCourseDetails(reg)} className="far fa-images fa-2x" aria-hidden="true"></i>
-                </div>
-              )) : null}
-            </div>
 
-            {this.state.registrationsShow ?
-              <Fragment>
-              </Fragment>
-              : null}
+            {this.state.formsShow ? null : (
+              <div className="reservations-container">
+                {this.state.reservations ?
+                  <Fragment>
+                    <h2>My Reservations</h2>
+                    {this.state.reservations.map(res => (
+                      <div key={res._id} className="reservation-card">
+                        {res.date.from === res.date.to ? (
+                          <h5>{dateFns.format(res.date.from * 1000, "MMM Do YYYY")}</h5>
+                        ) : (
+                            <h5>{dateFns.format(res.date.from * 1000, "MMM Do YYYY")} - {dateFns.format(res.date.to * 1000, "MMM Do YYYY")}</h5>
+                          )
+                        }
+                        <h4>{res.itemName}</h4>
+                        <h3>{res.category}</h3>
+                        <p>Amt due at pick up: {res.amtDue}</p>
+                        <i onClick={() => this.cancelReservation(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        <i onClick={() => this.getRentalDetails(res)} className="far fa-images fa-2x" aria-hidden="true"></i>
+                      </div>
+                    ))}
+                  </Fragment>
+                  : null}
+              </div>
+            )}
+
+            {this.state.formsShow ? null : (
+              <div className="registrations-container">
+                {this.state.registrations ?
+                  <Fragment>
+                    <h2>My Classes</h2>
+                    {this.state.registrations.map(reg => (
+                      <div key={reg._id} className="course-card">
+                        <h5>Date {dateFns.format(reg.date * 1000, "MMM Do YYYY")}</h5>
+                        <h4>{reg.courseName}</h4>
+                        <p>Amount due: {parseFloat(reg.price.$numberDecimal).toFixed(2)}</p>
+                        <i onClick={() => this.cancelRegistration(reg)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        <i onClick={() => this.getCourseDetails(reg)} className="far fa-images fa-2x" aria-hidden="true"></i>
+                      </div>
+                    ))}
+                  </Fragment>
+                  : null}
+              </div>
+            )}
 
             {this.state.pastRentalsShow ?
-              <Fragment>
-              </Fragment>
+              <div className="reservations-container past-reservations">
+                <h2>My Reservations</h2>
+                {this.state.pastRentals ? this.state.pastRentals.map(res => (
+                  <div key={res._id} className="reservation-card">
+                    {res.date.from === res.date.to ? (
+                      <h5>{dateFns.format(res.date.from * 1000, "MMM Do YYYY")}</h5>
+                    ) : (
+                        <h5>{dateFns.format(res.date.from * 1000, "MMM Do YYYY")} - {dateFns.format(res.date.to * 1000, "MMM Do YYYY")}</h5>
+                      )
+                    }
+                    <h4>{res.itemName}</h4>
+                    <h3>{res.category}</h3>
+                    <p>Amt due at pick up: {res.amtDue}</p>
+                    <i onClick={() => this.cancelReservation(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                    <i onClick={() => this.getRentalDetails(res)} className="far fa-images fa-2x" aria-hidden="true"></i>
+                  </div>
+                )) : null}
+              </div>
               : null}
 
-            {this.state.waiversShow ?
-              <Fragment>
-              </Fragment>
+            {this.state.userPwForm ?
+              <div className="user-forms-container">
+                <div className="user-forms-toggle-div">
+                  <button className="user-toggle-btn user-toggle-btn-light" onClick={this.toggleEditUserInfoForm}>Edit Info</button>
+                  <button className="user-toggle-btn">Change PW</button>
+                  <button className="user-toggle-btn user-toggle-btn-light" onClick={this.toggleWaiverForm}>Update Waiver</button>
+                </div>
+                <div className="user-form-div">
+                  <ChangePwForm
+                    getUserProfileData={this.getUserProfileData}
+                  />
+                </div>
+              </div>
               : null}
-
-            {this.state.formsShow ?
-              <Fragment>
-              </Fragment>
+            {this.state.userDataForm ?
+              <div className="user-forms-container">
+                <div className="user-forms-toggle-div">
+                  <button className="user-toggle-btn">Edit Info</button>
+                  <button className="user-toggle-btn user-toggle-btn-light" onClick={this.toggleChangePwForm}>Change PW</button>
+                  <button className="user-toggle-btn user-toggle-btn-light" onClick={this.toggleWaiverForm}>Update Waiver</button>
+                </div>
+                <div className="user-form-div">
+                  <UserUpdateForm
+                    getUserProfileData={this.getUserProfileData}
+                  />
+                </div>
+              </div>
+              : null}
+            {this.state.userWaiverForm ?
+              <div className="user-forms-container">
+                <div className="user-forms-toggle-div">
+                  <button className="user-toggle-btn user-toggle-btn-light" onClick={this.toggleEditUserInfoForm}>Edit Info</button>
+                  <button className="user-toggle-btn user-toggle-btn-light" onClick={this.toggleChangePwForm}>Change PW</button>
+                  <button className="user-toggle-btn">Update Waiver</button>
+                </div>
+                <div className="user-form-div">
+                  <HelloSignForm
+                    getUserProfileData={this.getUserProfileData}
+                  />
+                </div>
+              </div>
               : null}
 
 

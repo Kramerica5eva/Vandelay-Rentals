@@ -1,6 +1,3 @@
-/* Profile.css File */
-
-
 .page-container {
   display: flex;
   flex-direction: column;
@@ -20,7 +17,7 @@
 .user-info-div {
   position: relative;
   width: 300px;
-  margin: 50px auto;
+  margin: 50px auto 5px auto;
   padding: 20px 20px 20px 30px;
   border: 1px solid #ffce40;
   border: 1px solid #c5c5c5;
@@ -43,7 +40,7 @@
   margin-top: 10px;
 }
 
-/* .user-info-btn-div {
+.user-info-btn-div {
   width: 300px;
   margin: auto;
   text-align: center;
@@ -52,28 +49,25 @@
 .user-info-btn-div button {
   background: transparent;
   border: none;
-  padding: 5px 10px 50px 10px;
+  font-weight: bold;
   outline: transparent;
   text-decoration: underline;
-  color: blue;
+  color: #4e50d8;
   cursor: pointer;
 }
 
 .user-info-btn-div button:hover {
-  color: yellow;
-  text-shadow: 0 0 5px #000;
-} */
+  color: #ffce40;
+}
 
-.reservations-container,
-.registrations-container {
+.reservations-container, .registrations-container {
   display: flex;
   flex-wrap: wrap;
   width: 300px;
   margin: 30px auto;
 }
 
-.reservations-container h2,
-.registrations-container h2 {
+.reservations-container h2, .registrations-container h2 {
   width: 100%;
 }
 
@@ -89,20 +83,17 @@
   font-size: 1.2rem;
 }
 
-.reservations-container h5,
-.registrations-container h5 {
+.reservations-container h5, .registrations-container h5 {
   font-size: 0.95rem;
   padding-bottom: 15px;
 }
 
-.reservations-container p,
-.registrations-container p {
+.reservations-container p, .registrations-container p {
   font-size: .8rem;
   padding-top: 15px;
 }
 
-.reservation-card,
-.course-card {
+.reservation-card, .course-card {
   position: relative;
   width: 300px;
   margin: 5px;
@@ -111,8 +102,7 @@
   border-radius: 5px;
 }
 
-.reservation-card .fa-trash-alt,
-.course-card .fa-trash-alt {
+.reservation-card .fa-trash-alt, .course-card .fa-trash-alt {
   position: absolute;
   color: #555;
   right: 16px;
@@ -120,8 +110,7 @@
   cursor: pointer;
 }
 
-.reservation-card .fa-images,
-.course-card .fa-images {
+.reservation-card .fa-images, .course-card .fa-images {
   position: absolute;
   color: #4e50d8e2;
   right: 10px;
@@ -156,20 +145,96 @@
 }
 
 .registration-modal-div {
-  width: 400px;
+  width: 100%;
 }
 
 .registration-modal-image img {
-  width: 200px;
-  /* padding: 5px 5px 15px 5px; */
+  display: none;
+}
+
+.registration-modal-data h3 {
+  text-align: center;
+}
+
+.registration-modal-data h4 {
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.registration-modal-data h5 {
+  font-size: 1rem;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.registration-modal-data p:nth-child(6) {
+  line-height: 1.3;
+  display: none;
+}
+
+.registration-modal-data p:nth-child(8) {
+  padding-top: 10px;
+}
+
+.registration-modal-data ul {
+  padding-top: 5px;
+  width: 90%;
   margin: auto;
-  display: block;
-  box-shadow: 4px 4px 6px #666;
+}
+
+.registration-modal-data ul>p {
+  text-decoration: underline;
+}
+
+.registration-modal-data li {
+  padding: 5px;
+  list-style-type: disc;
+  margin-left: 30px;
+}
+
+.user-forms-container {
+  width: 300px;
+  margin: 30px auto;
+  border: 1px solid #666;
+}
+
+.user-form-div {
+  padding: 20px 10px 10px 10px;
+}
+
+.user-form-div div:nth-child(2) {
+  margin-top: 50px;
+}
+
+.user-form-div input {
+  width: 260px;
+  margin: auto;
+}
+
+.user-form-div button {
+  margin: -20px 0 10px 10px;
+}
+
+.user-forms-toggle-div {
+  display: flex;
+}
+
+.user-toggle-btn {
+  width: 33.34%;
+  background: #4e50d8;
+  border: none;
+  padding: 10px 0;
+  color: #fff;
+}
+
+.user-toggle-btn-light {
+  opacity: .7;
 }
 
 @media (min-width: 650px) {
-  .reservations-container,
-  .registrations-container {
+  .reservations-container, .registrations-container {
     width: 620px;
   }
   .reservation-modal-image img {
@@ -185,11 +250,20 @@
   .reservation-modal-data h4 {
     font-size: 1rem;
   }
+  .registration-modal-image img {
+    display: block;
+    width: 300px;
+    margin: 0 auto 5px auto;
+  }
+  .registration-modal-data p:nth-child(6) {
+    line-height: 1.3;
+    display: block;
+    width: 400px;
+  }
 }
 
 @media (min-width: 950px) {
-  .reservations-container,
-  .registrations-container {
+  .reservations-container, .registrations-container {
     width: 930px;
   }
   .reservation-modal-image img {

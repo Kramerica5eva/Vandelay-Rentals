@@ -62,6 +62,7 @@ export class ChangePwForm extends Component {
           buttons={this.state.modal.buttons}
         />
         <form>
+          <h3>Change Password</h3>
           <Input
             value={this.state.currentPassword}
             onChange={this.handleInputChange}
