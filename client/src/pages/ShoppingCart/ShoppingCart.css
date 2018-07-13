@@ -2,7 +2,12 @@
 
 /* general styling */
 
-.body-container .shopping-cart-header{
+.body-container .shopping-cart-header {
   text-align: center;
   margin: 0 auto;
+}
+
+.chkoutDisabled {
+  /* pointer-events: none; */
+  cursor: not-allowed;
 }
