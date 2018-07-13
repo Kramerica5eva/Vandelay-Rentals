@@ -123,6 +123,11 @@ class Rentals extends Component {
     this.setState({ unavailable: [], name: "" })
   }
 
+  setView = (name) => {
+    this.state.name == name ? true : false;
+    console.log(this.state.name == name, this.state.name, name);
+  }
+
   addReservationToCart = rental => {
     // Trigger the loading modal:
     this.toggleLoadingModal();
@@ -289,6 +294,7 @@ class Rentals extends Component {
                   reservations={rental.reservations}
                   setAvailability={this.checkAvailability(rental.reservations)}
                   unix={this.state.unix}
+                  view={this.setView}
                 />
               ))}
             </div>

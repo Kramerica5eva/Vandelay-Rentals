@@ -23,7 +23,6 @@ class Calendar extends Component {
 
   handleDayClick(day) {
     const { from, to, currentMonth } = this.state;
-
     if (!this.state.range) {
       isAfter(day, dateFns.endOfMonth(currentMonth))
         ? this.nextMonth()
@@ -90,11 +89,11 @@ class Calendar extends Component {
     });
   }
 
-  today = () => {
-    this.setState({
-      currentMonth: new startOfDay(Date())
-    });
-  }
+  // today = () => {
+  //   this.setState({
+  //     currentMonth: new startOfDay(Date())
+  //   });
+  // }
 
   renderHeader() {
     const dateFormat = "MMMM YYYY";
@@ -137,6 +136,7 @@ class Calendar extends Component {
             <i className="fas fa-angle-double-right"></i>
           </div>
         </div>
+
         <div className="column column-center reset-button" onClick={this.handleResetClick}>
           <i class="fas fa-undo fa-2x"></i>
           {/* <i class="fas fa-eraser fa-2x" onClick={this.handleResetClick}></i> */}
@@ -149,11 +149,8 @@ class Calendar extends Component {
   renderInfo() {
     return (
       <div className="row flex-middle">
-        <div className="column column-center">
-          {this.props.unavailableName ? <span>Showing unavailability of <text style={{ fontWeight: "bold" }}>{this.props.unavailableName}</text>.</span> : null}
-        </div>
-        <div className="column column-center reset" onClick={this.today}>
-          Today
+        <div className="column column-center viewing">
+          {this.props.unavailableName ? <span>Showing unavailability for <text style={{ fontWeight: "bold" }}>{this.props.unavailableName}</text>.</span> : null}
         </div>
       </div>
     );
@@ -194,11 +191,11 @@ class Calendar extends Component {
             className={`column cell ${
               isEqual(day, startOfToday())
                 ? "today"
-                : null
+                : ""
               } ${
               isBefore(day, startOfToday())
                 ? "disabled"
-                : null
+                : ""
               } ${
               this.state.range
                 ? isEqual(day, from) || isEqual(day, to) || isEqual(day, enteredTo)
@@ -249,9 +246,9 @@ class Calendar extends Component {
     return (
       <div className="calendar">
         {this.renderHeader()}
-        {this.renderInfo()}
         {this.renderDays()}
         {this.renderCells()}
+        {this.renderInfo()}
       </div>
 
     );
