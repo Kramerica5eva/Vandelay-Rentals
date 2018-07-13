@@ -66,6 +66,7 @@ class Login extends Component {
             toggleForm={this.toggleForm}
             loginShow={this.state.loginShow}
           />
+          <div className="login-content-container" style={{ backgroundImage: 'url(./static/assets/images/swimming_in_the_water.jpeg)' }}>
           <Header>
             <DevLinks
               loggedIn={this.props.loggedIn}
@@ -75,8 +76,7 @@ class Login extends Component {
               location={this.props.location}
             />
           </Header>
-
-          <div id="login-forms-container">
+            <div id="login-forms-container">
 
             {this.state.loginShow ? (
               <Fragment>
@@ -108,7 +108,9 @@ class Login extends Component {
                 </Fragment>
               )}
 
+            </div>
           </div>
+
         </div>
 
         {/* <footer className='footer'> */}

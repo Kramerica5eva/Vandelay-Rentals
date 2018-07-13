@@ -1,3 +1,5 @@
+    /* Form.css File */
+
 /* form starting stylings ------------------------------- */
 
 .group-select select {
@@ -30,6 +32,7 @@ input, textarea {
     padding: 10px 10px 10px 5px;
     display: block;
     width: 300px;
+    max-width: 100%;
     border: none;
     border-bottom: 1px solid #757575;
 }
@@ -39,7 +42,7 @@ textarea {
     background-color: #dfe4e9;
     min-width: 300px;
     max-width: 300px;
-    
+
 }
 
 .group-textarea label {
@@ -85,6 +88,7 @@ input:not(:focus):invalid {
     position: relative;
     display: block;
     width: 300px;
+    max-width: 100%;
 }
 
 .bar:before, .bar:after {
