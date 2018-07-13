@@ -83,6 +83,7 @@ module.exports = {
         .populate("registrations")
         .populate("pastRentals")
         .populate("purchases")
+        .sort({ "date.from": -1 })
         .then(response => {
           const userObject = {
             reservations: response.reservations,

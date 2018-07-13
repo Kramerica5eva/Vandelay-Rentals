@@ -140,19 +140,19 @@ input:focus~.highlight {
 
 .form-btn {
   margin-top: 15px;
-  border: 1px solid #4e50d8e2;
+  border: 1px solid #407ea8;
   padding: 7px 14px;
   border-radius: 5px;
   color: #fff;
   cursor: pointer;
-  box-shadow: 0 0 20px 20px #4e50d8e2 inset, 0 0 0 0 #4e50d8e2;
+  box-shadow: 0 0 20px 20px #407ea8 inset, 0 0 0 0 #407ea8;
   transition: all 150ms ease-in-out;
 }
 
 .form-btn:hover {
   background-color: #fff;
-  box-shadow: 0 0 5px #4e50d8e2 inset, 0 0 5px #4e50d8e2;
-  color: #4e50d8e2;
+  box-shadow: 0 0 5px #407ea8 inset, 0 0 5px #407ea8;
+  color: #407ea8;
 }
 
 /* ANIMATIONS ================ */
