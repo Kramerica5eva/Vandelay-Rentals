@@ -173,8 +173,8 @@
     font-size: 2.2rem;
     line-height: 25px;
     text-shadow: none;
-    letter-spacing: 10px;
-    font-family: var(--just-another-hand);
+    letter-spacing: 6px;
+    font-family: var(--font-Raleway);
 }
 
 .calendar {
@@ -274,18 +274,18 @@
 
 .dateSingle {
   height: 15px;
-  margin-right: 10px;
-  position: absolute;
-  top: 30px;
-  left: -10px;
+  margin-bottom: 5px;
+  /* position: absolute; */
+  /* top: 30px; */
+  /* left: -10px; */
 }
 
 .dateRange {
   height: 15px;
-  margin-left: 10px;
-  position: absolute;
-  top: 30px;
-  left: 20px;
+  margin-bottom: 5px;
+  /* position: absolute; */
+  /* top: 30px; */
+  /* left: 20px; */
 }
 
 .range {
@@ -309,12 +309,12 @@
   cursor: pointer;
   font-size: 17px;
   font-weight: 100;
-  left: 100px;
-  margin-right: 10px;
-  position: absolute;
+  /* left: 100px; */
+  margin-top: 10px;
+  /* position: absolute; */
   text-align: center;
-  text-transform: none;
-  top: 13px;
+  /* text-transform: none; */
+  /* top: 13px; */
 }
 
 #range {

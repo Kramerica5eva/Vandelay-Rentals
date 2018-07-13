@@ -1,3 +1,5 @@
+    /* App.css File */
+
 /* MEYERWEB CSS RESET */
 
 /* http://meyerweb.com/eric/tools/css/reset/
@@ -60,7 +62,6 @@ table {
     --page-color-royal-blue: #026A86;
     --page-color-ruby: #A52026;
     --page-color-marmalade: #F15722;
-    --just-another-hand: 'Just Another Hand', cursive;
     --font-Raleway: 'Raleway', sans-serif;
     --font-Montserrat: 'Montserrat', sans-serif;
 }
@@ -111,9 +112,7 @@ h3 {
     font-weight: bold;
 }
 
-li {
-    padding: 30px 0;
-}
+
 
 /* END ADDED STYLING */
 

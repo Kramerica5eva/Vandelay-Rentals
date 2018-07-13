@@ -189,28 +189,6 @@ class ShoppingCart extends Component {
               ))
             ) : null}
           </div>
-<<<<<<< HEAD
-=======
-
-          <ParallaxHero
-            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1499858476316-343e284f1f67?ixlib=rb-0.3.5&s=4985c13dbbf85d7d0f5b90df50ea8695&auto=format&fit=crop&w=1350&q=80)' }}
-            title="About our Company"
-          />
-
-          <div className='body-container'>
-
-            <button
-              onClick={() => this.setModal({
-                body:
-                  <img src="https://pbs.twimg.com/profile_images/966923121482645507/qtpVrqVn_400x400.jpg" alt="Kramer" />,
-                footer: "Kramer's Modal Footer"
-              })}
-            >
-              Kramer!
-              </button>
-
-          </div>
->>>>>>> master
           <Footer />
 
         </div>

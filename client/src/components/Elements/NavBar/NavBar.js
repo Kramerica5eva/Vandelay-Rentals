@@ -42,9 +42,9 @@ class NavBar extends React.Component {
         {/* <div className='brand-logo'>
           <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logosolid.png" /></Link>
         </div> */}
-        <div className='brand-logo'>
+        {/* <div className='brand-logo'>
           <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logoWordScript.png" /></Link>
-        </div>
+        </div> */}
         <div className='brand-logo'>
           <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logoWordHand.png" /></Link>
         </div>

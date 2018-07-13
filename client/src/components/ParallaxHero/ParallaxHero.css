@@ -29,8 +29,7 @@
   font-size: 1.2rem;
   width: 150px;
   line-height: 25px;
-  letter-spacing: 10px;
-  font-family: var(--just-another-hand);
+  letter-spacing: 6px;
 }
 
 @media (min-width: 650px) {
