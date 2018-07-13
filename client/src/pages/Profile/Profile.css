@@ -19,8 +19,7 @@
   width: 300px;
   margin: 50px auto 5px auto;
   padding: 20px 20px 20px 30px;
-  border: 1px solid #ffce40;
-  border: 1px solid #c5c5c5;
+  border: 1px solid #649ec6;
   border-radius: 10px;
 }
 
@@ -52,12 +51,12 @@
   font-weight: bold;
   outline: transparent;
   text-decoration: underline;
-  color: #4e50d8;
+  color: #4e50d8e2;
   cursor: pointer;
 }
 
 .user-info-btn-div button:hover {
-  color: #ffce40;
+  color: #649ec6;
 }
 
 .reservations-container, .registrations-container {
@@ -198,6 +197,7 @@
   width: 300px;
   margin: 30px auto;
   border: 1px solid #666;
+  border-radius: 10px;
 }
 
 .user-form-div {
@@ -219,18 +219,28 @@
 
 .user-forms-toggle-div {
   display: flex;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
 }
 
 .user-toggle-btn {
   width: 33.34%;
-  background: #4e50d8;
+  background: #407ea8;
   border: none;
   padding: 10px 0;
   color: #fff;
 }
 
+.user-toggle-btn:nth-child(1) {
+  border-top-left-radius: 8px;
+}
+
+.user-toggle-btn:nth-child(3) {
+  border-top-right-radius: 8px;
+}
+
 .user-toggle-btn-light {
-  opacity: .7;
+  opacity: .75;
 }
 
 @media (min-width: 650px) {

@@ -123,7 +123,22 @@ class Profile extends Component {
     });
   }
 
+  cancelReservationModal = reservation => {
+    this.setModal({
+      body:
+        <Fragment>
+          <h4>Are you sure?</h4>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={() => this.cancelReservation(reservation)}>Yes. Delete it.</button>
+          <button onClick={this.toggleModal}>No. Keep it.</button>
+        </Fragment>
+    })
+  }
+
   cancelReservation = reservation => {
+    this.toggleModal();
     this.toggleLoadingModal();
     const { _id } = reservation;
     console.log(_id);
@@ -164,7 +179,22 @@ class Profile extends Component {
       })
   }
 
+  cancelRegistrationModal = registration => {
+    this.setModal({
+      body:
+        <Fragment>
+          <h4>Are you sure?</h4>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={() => this.cancelRegistration(registration)}>Yes. Delete it.</button>
+          <button onClick={this.toggleModal}>No. Keep it.</button>
+        </Fragment>
+    })
+  }
+
   cancelRegistration = registration => {
+    this.toggleModal();
     this.toggleLoadingModal();
     const { _id } = registration;
     console.log(_id);
@@ -288,10 +318,16 @@ class Profile extends Component {
 
             {this.state.formsShow ? null : (
               <div className="reservations-container">
-                {this.state.reservations ?
+                <h2>My Reservations</h2>
+                {this.state.reservations.length > 0 ?
                   <Fragment>
-                    <h2>My Reservations</h2>
-                    {this.state.reservations.map(res => (
+                    {this.state.reservations.sort((a, b) => {
+                      let keyA = new Date(a.date.from);
+                      let keyB = new Date(b.date.from);
+                      if (keyA < keyB) return -1;
+                      if (keyA > keyB) return 1;
+                      return 0;
+                    }).map(res => (
                       <div key={res._id} className="reservation-card">
                         {res.date.from === res.date.to ? (
                           <h5>{dateFns.format(res.date.from * 1000, "MMM Do YYYY")}</h5>
@@ -302,31 +338,37 @@ class Profile extends Component {
                         <h4>{res.itemName}</h4>
                         <h3>{res.category}</h3>
                         <p>Amt due at pick up: {res.amtDue}</p>
-                        <i onClick={() => this.cancelReservation(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        <i onClick={() => this.cancelReservationModal(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
                         <i onClick={() => this.getRentalDetails(res)} className="far fa-images fa-2x" aria-hidden="true"></i>
                       </div>
                     ))}
                   </Fragment>
-                  : null}
+                  : <h4>You have no rentals reserved.</h4>}
               </div>
             )}
 
             {this.state.formsShow ? null : (
               <div className="registrations-container">
-                {this.state.registrations ?
+                <h2>My Classes</h2>
+                {this.state.registrations.length > 0 ?
                   <Fragment>
-                    <h2>My Classes</h2>
-                    {this.state.registrations.map(reg => (
+                    {this.state.registrations.sort((a, b) => {
+                      let keyA = new Date(a.date.from);
+                      let keyB = new Date(b.date.from);
+                      if (keyA < keyB) return -1;
+                      if (keyA > keyB) return 1;
+                      return 0;
+                    }).map(reg => (
                       <div key={reg._id} className="course-card">
                         <h5>Date {dateFns.format(reg.date * 1000, "MMM Do YYYY")}</h5>
                         <h4>{reg.courseName}</h4>
                         <p>Amount due: {parseFloat(reg.price.$numberDecimal).toFixed(2)}</p>
-                        <i onClick={() => this.cancelRegistration(reg)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        <i onClick={() => this.cancelRegistrationModal(reg)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
                         <i onClick={() => this.getCourseDetails(reg)} className="far fa-images fa-2x" aria-hidden="true"></i>
                       </div>
                     ))}
                   </Fragment>
-                  : null}
+                  : <h4>You are not signed up for any classes.</h4>}
               </div>
             )}
 
