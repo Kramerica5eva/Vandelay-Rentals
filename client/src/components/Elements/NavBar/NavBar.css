@@ -33,7 +33,7 @@
 .navbar .brand-logo {
     justify-content: center;
     width: 25%;
-    margin: 3px 0;
+    margin: 3px 5px;
 }
 
 .navbar .links {
@@ -43,6 +43,8 @@
 
 .logo-fmt {
     height: 45px;
+    max-width: 80px;
+
 }
 
 .navbar .links a, .brand-logo a {
@@ -112,7 +114,7 @@
     visibility: hidden;
     z-index: 99;
     font-weight: bold;
-    width: 40%;
+    width: 45%;
     /* background-color:#303185ec; */
     /* background-color: rgba(78, 80, 216, 0.888); */
     background-color: rgba(115, 117, 216, 0.886);
@@ -166,3 +168,12 @@
         display: none;
     }
 }
+
+/* Screens larger than 31400 */
+
+@media (min-width: 1400px) {
+    .logo-fmt {
+        max-width: 115px;
+    }
+}
+

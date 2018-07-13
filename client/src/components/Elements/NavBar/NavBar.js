@@ -56,21 +56,21 @@ class NavBar extends React.Component {
           {this.props.loggedIn ? (
             <Fragment>
               {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-              <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
               <Link className="btn-link" to="/cart" role="button"><i className="fas fa-shopping-cart"></i></Link>
+              <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
               <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
             </Fragment>
           ) : (
               <Fragment>
                 {this.props.loginShow ? (
                   <Fragment>
-                    <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Signup</Link>
-                    <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login</Link>
+                    <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Signup <i className="fas fa-user-plus"></i></Link>
+                    <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login <i className="fas fa-sign-in-alt"></i></Link>
                   </Fragment>
                 ) : (
                     <Fragment>
-                      <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup</Link>
-                      <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Login</Link>
+                      <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup <i className="fas fa-user-plus"></i></Link>
+                      <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.props.toggleForm} role="button">Login <i className="fas fa-sign-in-alt"></i></Link>
                     </Fragment>
                   )
                 }
@@ -98,13 +98,13 @@ class NavBar extends React.Component {
               <Fragment>
                 {this.props.loginShow ? (
                   <Fragment>
-                    <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button"><i className="fas fa-user-plus"></i>Sign-up</Link>
-                    <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button"><i className="fas fa-sign-in-alt"></i>Login</Link>
+                    <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button">Signup <i className="fas fa-user-plus"></i></Link>
+                    <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login <i className="fas fa-sign-in-alt"></i></Link>
                   </Fragment>
                 ) : (
                     <Fragment>
-                      <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button"><i className="fas fa-user-plus"></i>Signup</Link>
-                      <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button"><i className="fas fa-sign-in-alt"></i>Login</Link>
+                      <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup <i className="fas fa-user-plus"></i></Link>
+                      <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button">Login <i className="fas fa-sign-in-alt"></i></Link>
                     </Fragment>
                   )
                 }
