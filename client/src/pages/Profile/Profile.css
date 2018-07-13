@@ -1,0 +1,205 @@
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #fff;
+}
+
+.content-container {
+  flex: 1 0 auto;
+  margin-top: 100px;
+}
+
+.content-container h1 {
+  text-align: center;
+}
+
+.user-info-div {
+  position: relative;
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px 20px 20px 30px;
+  border: 1px solid #ffce40;
+  border: 1px solid #c5c5c5;
+  border-radius: 10px;
+}
+
+.user-info-div h3 {
+  line-height: 1.2;
+}
+
+.user-info-div h3:nth-child(2) {
+  font-size: 1.1rem;
+}
+
+.user-info-div h4 {
+  line-height: 1.5;
+}
+
+.user-info-div h4:nth-child(3) {
+  margin-top: 10px;
+}
+
+/* .user-info-btn-div {
+  width: 300px;
+  margin: auto;
+  text-align: center;
+}
+
+.user-info-btn-div button {
+  background: transparent;
+  border: none;
+  padding: 5px 10px 50px 10px;
+  outline: transparent;
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}
+
+.user-info-btn-div button:hover {
+  color: yellow;
+  text-shadow: 0 0 5px #000;
+} */
+
+.reservations-container,
+.registrations-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  margin: 30px auto;
+}
+
+.reservations-container h2,
+.registrations-container h2 {
+  width: 100%;
+}
+
+.reservations-container h3 {
+  font-size: 1.05rem;
+}
+
+.reservations-container h4 {
+  font-size: 1.4rem;
+}
+
+.registrations-container h4 {
+  font-size: 1.2rem;
+}
+
+.reservations-container h5,
+.registrations-container h5 {
+  font-size: 0.95rem;
+  padding-bottom: 15px;
+}
+
+.reservations-container p,
+.registrations-container p {
+  font-size: .8rem;
+  padding-top: 15px;
+}
+
+.reservation-card,
+.course-card {
+  position: relative;
+  width: 300px;
+  margin: 5px;
+  padding: 10px;
+  border: 1px solid #c5c5c5;
+  border-radius: 5px;
+}
+
+.reservation-card .fa-trash-alt,
+.course-card .fa-trash-alt {
+  position: absolute;
+  color: #555;
+  right: 16px;
+  bottom: 13px;
+  cursor: pointer;
+}
+
+.reservation-card .fa-images,
+.course-card .fa-images {
+  position: absolute;
+  color: #4e50d8e2;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.reservation-modal-div {
+  text-align: center;
+}
+
+.reservation-modal-data h2 {
+  font-size: 1.2rem;
+  padding-top: 10px;
+}
+
+.reservation-modal-data h5 {
+  font-size: .8rem;
+  padding-top: 10px;
+}
+
+.reservation-modal-data h4 {
+  font-size: .9rem;
+}
+
+.reservation-modal-image img {
+  height: 200px;
+  max-width: 300px;
+  padding: 5px;
+  margin: auto;
+  display: block;
+}
+
+.registration-modal-div {
+  width: 400px;
+}
+
+.registration-modal-image img {
+  width: 200px;
+  /* padding: 5px 5px 15px 5px; */
+  margin: auto;
+  display: block;
+  box-shadow: 4px 4px 6px #666;
+}
+
+@media (min-width: 650px) {
+  .reservations-container,
+  .registrations-container {
+    width: 620px;
+  }
+  .reservation-modal-image img {
+    height: 400px;
+    padding: 15px;
+  }
+  .reservation-modal-data h2 {
+    font-size: 1.5rem;
+  }
+  .reservation-modal-data h5 {
+    font-size: .9rem;
+  }
+  .reservation-modal-data h4 {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 950px) {
+  .reservations-container,
+  .registrations-container {
+    width: 930px;
+  }
+  .reservation-modal-image img {
+    height: 500px;
+  }
+  .reservation-modal-data h2 {
+    font-size: 1.6rem;
+  }
+  .reservation-modal-data h5 {
+    font-size: .95rem;
+  }
+  .reservation-modal-data h4 {
+    font-size: 1rem;
+  }
+}

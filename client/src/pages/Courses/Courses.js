@@ -16,7 +16,8 @@ class Courses extends Component {
       isOpen: false,
       header: "",
       body: "",
-      footer: ""
+      footer: "",
+      buttons: ""
     },
     loadingModalOpen: false,
     courses: []
@@ -38,7 +39,8 @@ class Courses extends Component {
         isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }
@@ -84,11 +86,11 @@ class Courses extends Component {
           console.log("Duplicate")
           this.toggleLoadingModal();
           this.setModal({
-            body: <h3>That Course is already in your cart.</h3>
+            body: <h4>That Course is already in your cart.</h4>
           })
         } else {
           this.setModal({
-            body: <h3>{course.name} has been added to your cart.</h3>
+            body: <h4>{course.name} has been added to your cart.</h4>
           })
           this.getAllCourses();
           this.toggleLoadingModal();
@@ -105,6 +107,7 @@ class Courses extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <LoadingModal show={this.state.loadingModalOpen} />
         <NavBar

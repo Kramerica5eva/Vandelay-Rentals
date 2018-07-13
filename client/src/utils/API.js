@@ -26,7 +26,7 @@ export default {
 
   //  WAIVER ROUTE
   // Creates a new signature request using the helloSign API
-  createSignatureRequest: function (email,name) {
+  createSignatureRequest: function (email, name) {
     return axios.post('/file/waiver/create-signature-request',
       {
         clientEmail: email,
@@ -43,6 +43,10 @@ export default {
   // Get user info
   getUser: function () {
     return axios.get('/user');
+  },
+  // Get user info for profile (excludes some data)
+  getUserProfileData: function () {
+    return axios.get('/user/data');
   },
   // New user signup
   signup: function (signupData) {
@@ -113,11 +117,10 @@ export default {
     return axios.put(`/api/courses/remove/${id}`, reservationData);
   },
 
-  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
   // Gets a single course by id
-  // getCourseById: function (id) {
-  //   return axios.get(`/api/courses/${id}`);
-  // },
+  getCourseById: function (id) {
+    return axios.get(`/api/courses/${id}`);
+  },
 
 
 
@@ -138,11 +141,11 @@ export default {
   getRentalsByCategory: function (category) {
     return axios.get(`/api/rentals/${category}`);
   },
-  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
+
   // Gets Rental item by id - if the user chooses a particular item, this will pull the data for it.
-  // getRentalById: function (category, id) {
-  //   return axios.get(`/api/rentals/${category}/${id}`);
-  // },
+  getRentalById: function (category, id) {
+    return axios.get(`/api/rentals/${category}/${id}`);
+  },
   // Cancels a reservation - 'reservationData' collected by event listener and should include the item info and the user.
   removeRentalReservation: function (reservationId, reservationData) {
     return axios.put(`/api/rentals/remove/${reservationId}`, reservationData);

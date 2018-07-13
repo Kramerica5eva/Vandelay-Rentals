@@ -76,6 +76,36 @@ module.exports = {
     })
   },
 
+  getUserProfileData: function (req, res) {
+    if (req.user) {
+      db.User.findOne({ _id: req.user._id })
+        .populate("reservations")
+        .populate("registrations")
+        .populate("pastRentals")
+        .populate("purchases")
+        .then(response => {
+          const userObject = {
+            reservations: response.reservations,
+            registrations: response.registrations,
+            pastRentals: response.pastRentals,
+            purchases: response.purchases,
+            username: response.username,
+            firstName: response.firstName,
+            lastName: response.lastName,
+            email: response.email,
+            street: response.street,
+            city: response.city,
+            state: response.state,
+            zipcode: response.zipcode,
+            phone: response.phone
+          }
+          res.json(userObject);
+        });
+    } else {
+      res.json({ user: null })
+    }
+  },
+
   login: function (req, res) {
     const { username } = req.body;
 

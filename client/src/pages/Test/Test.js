@@ -20,7 +20,8 @@ class Test extends Component {
       isOpen: false,
       header: "",
       body: "",
-      footer: ""
+      footer: "",
+      buttons: ""
     },
     categories: null,
     rentals: null,
@@ -50,7 +51,8 @@ class Test extends Component {
         isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }
@@ -176,6 +178,7 @@ class Test extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <LoadingModal show={this.state.loadingModalOpen} />
         <NavBar
@@ -271,7 +274,6 @@ class Test extends Component {
             <p>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</p>
             <button
               onClick={() => this.setModal({
-                header: "Kramer's Modal",
                 body:
                   <img src="https://pbs.twimg.com/profile_images/966923121482645507/qtpVrqVn_400x400.jpg" alt="Kramer" />,
                 footer: "Kramer's Modal Footer"

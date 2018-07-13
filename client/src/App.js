@@ -279,7 +279,9 @@ class App extends Component {
               firstName: this.state.firstName,
               admin: this.state.admin,
               dev: this.state.dev,
-              logout: this.logout
+              logout: this.logout,
+              categories: this.state.categories,
+              setCategories: this.setCategories
             })}
           />
           <PrivateRoute path="/test" component={AddPropsToRoute(Test, {

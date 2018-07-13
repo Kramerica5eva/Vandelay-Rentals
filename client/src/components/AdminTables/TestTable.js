@@ -21,7 +21,8 @@ export class TestTable extends Component {
         isOpen: false,
         header: "",
         body: "",
-        footer: ""
+        footer: "",
+        buttons: ""
       },
       password: "",
       confirmPassword: "",
@@ -48,7 +49,8 @@ export class TestTable extends Component {
         isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }
@@ -84,10 +86,10 @@ export class TestTable extends Component {
 
   changePwModal = () => {
     this.setModal({
-      header: "Change User Password",
       body:
         <Fragment>
           <form>
+            <h3>Change User Password</h3>
             <input
               name="password"
               onChange={this.handleInputChange}
@@ -100,11 +102,9 @@ export class TestTable extends Component {
               type="text"
             />
             <Label htmlFor="confirmPassword">Confirm Password:</Label>
-            <FormBtn onClick={this.handlePasswordFormSubmit}>
-              Submit
-            </FormBtn>
           </form>
-        </Fragment>
+        </Fragment>,
+      buttons: <button onClick={this.handlePasswordFormSubmit}>Submit</button>
     })
   }
 
@@ -117,16 +117,14 @@ export class TestTable extends Component {
         console.log(res);
         if (res.status === 200) {
           this.setModal({
-            header: "Success!",
-            body: <h3>Password successfully changed</h3>
+            body: <h4>Password successfully changed</h4>
           })
         } else {
           this.setModal({
-            header: "Error!",
             body:
               <Fragment>
-                <h3>Something went wrong</h3>
-                <h4>Please try again</h4>
+                <h4>Something went wrong</h4>
+                <h5>Please try again</h5>
               </Fragment>
           })
         }
@@ -136,15 +134,14 @@ export class TestTable extends Component {
   userStandingModal = () => {
     if (Object.keys(this.state.selectedRow).length !== 0) {
       this.setModal({
-        header: "Change Customer Standing",
         body:
           <Fragment>
             <form>
+              <h3>Change Customer Standing</h3>
               {/* using the Select and Option components in a modal seems to make everything stop working... */}
               <div className="group group-select">
                 <select
                   name="standing"
-                  label="Change Category:"
                   // for some reason, setting the select value to this.state.category (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
                   onChange={this.handleInputChange}
                 >
@@ -153,15 +150,10 @@ export class TestTable extends Component {
                   <option>Uncertain</option>
                   <option>Banned</option>
                 </select>
-                <Label htmlFor="standing">Submit</Label>
               </div>
-              <FormBtn
-                onClick={this.handleStandingFormSubmit}
-              >
-                Submit
-              </FormBtn>
             </form>
-          </Fragment>
+          </Fragment>,
+        buttons: <button onClick={this.handleStandingFormSubmit}>Submit</button>
       })
     }
   }
@@ -276,6 +268,7 @@ export class TestTable extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <LoadingModal show={this.state.loadingModalOpen} />
 

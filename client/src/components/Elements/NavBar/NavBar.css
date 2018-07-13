@@ -1,7 +1,7 @@
 .navbar {
     align-items: center;
     /* background-color: rgba(129, 129, 129, 0.75); */
-    background-color: rgba(78, 80, 216, 0.888);
+    background-color: #4e50d8e2;
     color: white;
     display: flex;
     height: 55px;
@@ -11,21 +11,19 @@
     justify-content: space-between;
     margin: 0 0 5px 0;
     position: fixed;
-    width:100%;
+    width: 100%;
     text-decoration: none;
     z-index: 999;
-    -webkit-box-shadow: 0px 7px 10px 1px rgba(0,0,0,0.71);
-    -moz-box-shadow: 0px 7px 10px 1px rgba(0,0,0,0.71);
-    box-shadow: 0px 7px 10px 1px rgba(0,0,0,0.71);
+    -webkit-box-shadow: 0px 7px 10px 1px rgba(0, 0, 0, 0.71);
+    -moz-box-shadow: 0px 7px 10px 1px rgba(0, 0, 0, 0.71);
+    box-shadow: 0px 7px 10px 1px rgba(0, 0, 0, 0.71);
 }
-
 
 .navbar .brand-logo, .links {
     display: flex;
     justify-content: space-between;
     margin: 0 15px;
     align-items: center;
-
 }
 
 .navbar .brand-logo {
@@ -35,40 +33,26 @@
 }
 
 .navbar .links {
-    display:none;
+    display: none;
     width: 70%;
 }
 
 .logo-fmt {
     height: 45px;
-    width: 50px;
 }
 
 .navbar .links a, .brand-logo a {
     color: white;
     text-decoration: none;
-
 }
 
-.links > .btn-link, .brand-logo > .btn-link {
-    text-shadow: 0 0 1px #000,
-    0 0 1px #000,
-    0 0 2px #000,
-    0 0 3px #000,
-    0 0 5px #fff,
-    /* 0 0 6px #fff; */
+.links>.btn-link, .brand-logo>.btn-link {
+    text-shadow: 0 0 1px #000, 0 0 1px #000, 0 0 2px #000, 0 0 3px #000, 0 0 5px #fff, /* 0 0 6px #fff; */
 }
 
-.links > .btn-link:hover, .brand-logo > .btn-link:hover {
-    text-shadow: 0 0 2px #000,
-    0 0 5px #000,
-    0 0 10px #000,
-    0 0 15px #000,
-    0 0 20px #fff,
-    0 0 25px #fff;
+.links>.btn-link:hover, .brand-logo>.btn-link:hover {
+    text-shadow: 0 0 2px #000, 0 0 5px #000, 0 0 10px #000, 0 0 15px #000, 0 0 20px #fff, 0 0 25px #fff;
 }
-
-
 
 /* ========== */
 
@@ -81,7 +65,7 @@
     display: flex;
 }
 
-  .hamburger, .cross {
+.hamburger, .cross {
     display: none;
     background-color: gainsboro;
     color: #999;
@@ -98,17 +82,17 @@
     align-content: center;
     align-items: center;
     flex-direction: column;
-  }
+}
 
-  .hamburger {
-      display: flex;
-  }
+.hamburger {
+    display: flex;
+}
 
-  .cross {
+.cross {
     font-size: 1.05em;
-  }
+}
 
-  .menu {
+.menu {
     display: flex;
     opacity: 0;
     visibility: hidden;
@@ -117,7 +101,7 @@
     width: 40%;
     /* background-color:#303185ec; */
     /* background-color: rgba(78, 80, 216, 0.888); */
-    background-color:rgba(115, 117, 216, 0.886);
+    background-color: rgba(115, 117, 216, 0.886);
     /* background-color: rgba(129, 129, 129, 0.95); */
     position: fixed;
     top: 0px;
@@ -132,12 +116,12 @@
     transition: opacity 400ms, visibility 400ms;
     -webkit-transition-timing-function: ease;
     transition-timing-function: ease;
-    -webkit-box-shadow: 0px 7px 10px 1px rgba(0,0,0,0.71);
-    -moz-box-shadow: 0px 7px 10px 1px rgba(0,0,0,0.71);
-    box-shadow: 0px 7px 10px 1px rgba(0,0,0,0.71);
+    -webkit-box-shadow: 0px 7px 10px 1px rgba(0, 0, 0, 0.71);
+    -moz-box-shadow: 0px 7px 10px 1px rgba(0, 0, 0, 0.71);
+    box-shadow: 0px 7px 10px 1px rgba(0, 0, 0, 0.71);
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
-  }
+}
 
 .menu a, .menu button {
     text-decoration: none;
@@ -149,23 +133,22 @@
     height: 50px;
     width: 100%;
     background: green;
-  }
+}
 
 /* ========== */
 
-
 /* Screens larger than 320 */
-@media (min-width: 320px) {
 
-  }
+@media (min-width: 320px) {}
+
 /* Screens larger than 1000 */
+
 @media (min-width: 1000px) {
     .navbar .links {
         display: flex;
         width: 70%;
     }
-
     .menu, .cross, .hamburger, .hamburger-btns {
         display: none;
-      }
-  }
+    }
+}

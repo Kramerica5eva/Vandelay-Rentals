@@ -28,8 +28,11 @@
 /* The Close Button */
 
 .my-modal-close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
   color: #aaa;
-  float: right;
+  float: right;  
   font-size: 28px;
   font-weight: bold;
 }
@@ -43,10 +46,10 @@
 /* my-modal Header */
 
 .my-modal-header {
-  padding: 5px 16px;
-  min-height: 30px;
-  background-color: #4e50d8e2;
-  color: white;
+  position: relative;
+  height: 30px;
+  background-color: transparent;
+  color: #000;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
@@ -54,18 +57,17 @@
 /* my-modal Body */
 
 .my-modal-body {
-  max-width: 90%;
-  margin:  auto;
-  padding: 5px 16px;
+  max-width: 100%;
+  margin: auto;
+  padding: 10px 30px;
 }
 
 /* my-modal Footer */
 
 .my-modal-footer {
-  padding: 5px 16px;
-  min-height: 30px;
-  background-color: #4e50d8e2;
-  color: white;
+  height: 30px;
+  background-color: transparent;
+  color: #000;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -79,11 +81,8 @@
   background-color: #fefefe;
   margin: auto;
   padding: 0;
-  border: 2px solid #000;
-  box-shadow: 0 0 5px #000,
-  0 0 10px #222222,
-  0 0 20px #333,
-  0 0 30px #444;
+  border: 1px solid #4e50d8e2;
+  box-shadow: 0 0 10px #fff, 0 0 10px #cacaca, 0 0 20px #a3a3a3, 0 0 30px #777777;
   animation-name: fadein;
   animation-duration: 0.4s;
   border-radius: 12px;
@@ -97,6 +96,78 @@
 
 .my-modal-body>form>.form-select {
   margin-top: 20px;
+
+}
+
+.my-modal h4 {
+  font-size: 1.1rem;
+}
+
+.my-modal h5 {
+  font-size: 1.2rem;
+}
+
+.my-modal h6 {
+  margin: 15px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  text-indent: 30px;
+}
+
+.my-modal p {
+  font-size: .9rem;
+  margin: 5px 0;
+}
+
+.my-modal .group-select {
+  margin-bottom: 10px;
+}
+
+.modal-btn-div {
+  padding: 20px 0 0 0;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.modal-btn-div button {
+  border: 1px solid #4e50d8e2;
+  padding: 7px 14px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 20px 20px #4e50d8e2 inset, 0 0 0 0 #4e50d8e2;
+  transition: all 150ms ease-in-out;
+}
+
+.modal-btn-div button:hover {
+  background-color: #fff;
+  box-shadow: 0 0 5px #4e50d8e2 inset, 0 0 5px #4e50d8e2;
+  color: #4e50d8e2;
+}
+
+
+
+@media (min-width: 650px) {
+  .my-modal h4 {
+    font-size: 1.1rem;
+  }  
+  .my-modal h5 {
+    font-size: 1.2rem;
+  }  
+  .my-modal h6 {
+    margin: 15px 0;
+    font-size: 1rem;
+    text-indent: 30px;
+  }  
+  .my-modal p {
+    font-size: .9rem;
+  }  
+  .modal-btn-div {
+    padding: 20px 0 0 0;
+  }  
+  .modal-btn-div button {
+    padding: 7px 14px;
+  }
 }
 
 /* Add Animation */

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { FormBtn, Label } from "../Elements/Form";
+import { Input, FormBtn, Label } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
@@ -21,7 +21,8 @@ export class UsersTable extends Component {
         isOpen: false,
         header: "",
         body: "",
-        footer: ""
+        footer: "",
+        buttons: ""
       },
       password: "",
       confirmPassword: "",
@@ -48,7 +49,8 @@ export class UsersTable extends Component {
         isOpen: true,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }
@@ -84,27 +86,25 @@ export class UsersTable extends Component {
 
   changePwModal = () => {
     this.setModal({
-      header: "Change User Password",
       body:
         <Fragment>
           <form>
-            <input
+            <h3>Change User Password</h3>
+            <Input
               name="password"
               onChange={this.handleInputChange}
               type="text"
+              Label="Password:"
             />
-            <Label htmlFor="password">Password:</Label>
-            <input
+            <Input
               name="confirmPassword"
               onChange={this.handleInputChange}
               type="text"
+              Label="Confirm Password:"
             />
-            <Label htmlFor="confirmPassword">Confirm Password:</Label>
-            <FormBtn onClick={this.handlePasswordFormSubmit}>
-              Submit
-            </FormBtn>
           </form>
-        </Fragment>
+        </Fragment>,
+      buttons: <button onClick={this.handlePasswordFormSubmit}>Submit</button>
     })
   }
 
@@ -119,17 +119,15 @@ export class UsersTable extends Component {
         if (res.status === 200) {
           setTimeout(this.toggleLoadingModal, 500);
           setTimeout(this.setModal, 500, {
-            header: "Success!",
-            body: <h3>Password successfully changed</h3>
+            body: <h4>Password successfully changed</h4>
           });
         } else {
           setTimeout(this.toggleLoadingModal, 500);
           setTimeout(this.setModal, 500, {
-            header: "Error!",
             body:
               <Fragment>
-                <h3>Something went wrong</h3>
-                <h4>Please try again</h4>
+                <h4>Something went wrong</h4>
+                <h5>Please try again</h5>
               </Fragment>
           });
         }
@@ -139,15 +137,14 @@ export class UsersTable extends Component {
   userStandingModal = () => {
     if (Object.keys(this.state.selectedRow).length !== 0) {
       this.setModal({
-        header: "Change Customer Standing",
         body:
           <Fragment>
             <form>
+              <h3>Change Customer Standing</h3>
               {/* using the Select and Option components in a modal seems to make everything stop working... */}
               <div className="group group-select">
                 <select
                   name="standing"
-                  label="Change Category:"
                   // for some reason, setting the select value to this.state.category (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
                   onChange={this.handleInputChange}
                 >
@@ -156,15 +153,10 @@ export class UsersTable extends Component {
                   <option>Uncertain</option>
                   <option>Banned</option>
                 </select>
-                <Label htmlFor="standing">Submit</Label>
               </div>
-              <FormBtn
-                onClick={this.handleStandingFormSubmit}
-              >
-                Submit
-              </FormBtn>
             </form>
-          </Fragment>
+          </Fragment>,
+        buttons: <FormBtn onClick={this.handleStandingFormSubmit}>Submit</FormBtn>
       })
     }
   }
@@ -230,8 +222,7 @@ export class UsersTable extends Component {
           setTimeout(this.toggleLoadingModal, 500);
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
-            header: "Success!",
-            body: <h3>Database successfully updated</h3>
+            body: <h4>Database successfully updated</h4>
           });
           this.adminGetAllUsers();
         }
@@ -290,6 +281,7 @@ export class UsersTable extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <LoadingModal show={this.state.loadingModalOpen} />
 

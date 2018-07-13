@@ -16,7 +16,8 @@ export class BrandonTestTable extends Component {
         isOpen: false,
         header: "",
         body: "",
-        footer: ""
+        footer: "",
+        buttons: ""
       },
       categories: [],
       rentals: [],
@@ -41,7 +42,8 @@ export class BrandonTestTable extends Component {
         isOpen: !this.state.modal.isOpen,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }
@@ -125,8 +127,7 @@ export class BrandonTestTable extends Component {
 
           // Modal for feedback
           this.setModal({
-            header: "Success!",
-            body: <h3>Database successfully updated</h3>
+            body: <h4>Database successfully updated</h4>
           });
 
           //  query the db and reload the table
@@ -154,11 +155,10 @@ export class BrandonTestTable extends Component {
 
   categoryModal = () => {
     this.setModal({
-      header: "Change Category",
       body:
         <Fragment>
           <form>
-            <label>Select a Category:</label>
+            <h3>Select a Category:</h3>
             <select
               className="form-select"
               name="category"
@@ -169,13 +169,9 @@ export class BrandonTestTable extends Component {
               <option>Paddleboard</option>
               <option>Kayak</option>
             </select>
-            <FormBtn
-              onClick={this.changeCategory}
-            >
-              Submit
-            </FormBtn>
           </form>
-        </Fragment>
+        </Fragment>,
+      buttons: <button onClick={this.changeCategory}>Submit</button>
     })
   }
 
@@ -229,6 +225,7 @@ export class BrandonTestTable extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
 
         <h2>Rental Test Table</h2>

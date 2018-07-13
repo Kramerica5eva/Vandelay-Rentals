@@ -10,7 +10,8 @@ export class AddCourseForm extends Component {
       isOpen: false,
       header: "",
       body: "",
-      footer: ""
+      footer: "",
+      buttons: ""
     },
     name: "",
     price: "",
@@ -34,7 +35,8 @@ export class AddCourseForm extends Component {
         isOpen: !this.state.modal.isOpen,
         header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
       }
     });
   }
@@ -80,6 +82,7 @@ export class AddCourseForm extends Component {
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
         />
         <form>
           <Input

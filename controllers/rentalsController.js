@@ -26,17 +26,23 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
-  // findById: function (req, res) {
-  //   db.Rental
-  //     .findById(req.params.id)
-  //     .then(dbModel =>
-
-  //       //  functionality to limit what info gets sent to users
-
-  //       res.json(dbModel))
-  //     .catch(err => res.status(422).json(err));
-  // },
+  findById: function (req, res) {
+    db.Rental
+      .findById(req.params.id)
+      .then(dbModel => {
+        console.log(dbModel);
+        const rentalObject = {
+          _id: dbModel._id,
+          name: dbModel.name,
+          category: dbModel.category,
+          maker: dbModel.maker,
+          dailyRate: dbModel.dailyRate,
+          displayImageUrl: dbModel.displayImageUrl
+        }
+        res.json(rentalObject)
+      })
+      .catch(err => res.status(422).json(err));
+  },
 
   reserveRental: function (req, res) {
     console.log("Here's the rental req.body:")
@@ -106,7 +112,7 @@ function filterRentalItemData(dbModel) {
       maker: element.maker,
       dailyRate: element.dailyRate,
       reservations: element.reservations,
-      displayImageUrl:element.displayImageUrl
+      displayImageUrl: element.displayImageUrl
     }
     rentalArray.push(rentalObject);
   }

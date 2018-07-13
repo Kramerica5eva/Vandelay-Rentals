@@ -20,12 +20,10 @@ module.exports = {
     console.log("Course req.body:")
     console.log(req.body);
 
-    db.TempRegistration.find(
-      {
-        courseId: req.params.id,
-        customerId: req.user._id
-      }
-    )
+    db.TempRegistration.find({
+      courseId: req.params.id,
+      customerId: req.user._id
+    })
       .then(tempRes => {
         console.log(tempRes);
         if (tempRes.length > 0) {
@@ -76,11 +74,12 @@ module.exports = {
 
     const reservationObject = {
       itemId: req.body._id,
+      category: req.body.category,
+      dailyRate: parseFloat(req.body.dailyRate.$numberDecimal),
       itemName: req.body.name,
       customerId: req.user._id,
       firstName: req.user.firstName,
       lastName: req.user.lastName,
-      dailyRate: parseFloat(req.body.dailyRate.$numberDecimal),
       date: {
         from: req.params.from,
         to: req.params.to
