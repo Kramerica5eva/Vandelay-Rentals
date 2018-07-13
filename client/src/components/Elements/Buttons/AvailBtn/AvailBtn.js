@@ -9,28 +9,27 @@ class AvailBtn extends React.Component {
 
   show = () => {
     this.props.click();
-    this.setState({
-      flag: true
-    });
+    // this.setState({
+    //   flag: true
+    // });
   }
 
   hide = () => {
     this.props.clear();
-    this.setState({
-      flag: false
-    });
+    // this.setState({
+    //   flag: false
+    // });
   }
 
   render() {
     return (
       <div className={"buttonblock"}>
-        <button className="btn-avail" onClick={!this.state.flag ? this.show : this.hide} />
+        <button className="btn-avail" onClick={this.props.view() ? this.hide : this.show} />
         <span className={"mobiletext"}>Check availability</span>
         <span className={"tooltiptext"}>Check availability</span>
       </div>
     );
   }
 }
-
 
 export default AvailBtn;

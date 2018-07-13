@@ -237,6 +237,7 @@
 
 .calendar .body .cell {
   position: relative;
+  font-size: 18px;
   height: 3em;
   border-right: 1px solid var(--border-color);
   overflow: hidden;
@@ -267,7 +268,7 @@
 
 .calendar .body .cell .number {
   position: absolute;
-  font-size: 82.5%;
+  font-size: 18px;
   line-height: 1;
   top: .75em;
   right: .75em;
@@ -328,6 +329,15 @@
   text-align: center;
   text-transform: none;
   top: 13px;
+}
+
+.viewing {
+  border-top: 1px lightgrey solid;
+  color: #23a7ff;
+  font-size: 16px;
+  height: 25px;
+  padding-top: 4px;
+  text-align: center;
 }
 
 #range {
