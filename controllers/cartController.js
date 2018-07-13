@@ -24,31 +24,40 @@ module.exports = {
       courseId: req.params.id,
       customerId: req.user._id
     })
-      .then(tempRes => {
-        console.log(tempRes);
-        if (tempRes.length > 0) {
+      .then(tempReg => {
+        console.log(tempReg);
+        if (tempReg.length > 0) {
           return res.send({ message: "duplicate" });
         } else {
-          const registrationObject = {
+          db.Registration.find({
             courseId: req.params.id,
-            courseName: req.body.name,
-            customerId: req.user._id,
-            firstName: req.user.firstName,
-            lastName: req.user.lastName,
-            price: req.body.price,
-            date: req.body.date
-          }
-
-          db.TempRegistration.create(registrationObject)
-            .then(registration => {
-              return db.ShoppingCart.findOneAndUpdate(
-                { customerId: req.user._id },
-                { $push: { tempRegistrations: registration._id } },
-                { new: true }
-              )
+            customerId: req.user._id
+          })
+            .then(reg => {
+              if (reg.length > 0) {
+                return res.send({ message: "registration duplicate" });
+              } else {
+                const registrationObject = {
+                  courseId: req.params.id,
+                  courseName: req.body.name,
+                  customerId: req.user._id,
+                  firstName: req.user.firstName,
+                  lastName: req.user.lastName,
+                  price: req.body.price,
+                  date: req.body.date
+                }
+                db.TempRegistration.create(registrationObject)
+                  .then(registration => {
+                    return db.ShoppingCart.findOneAndUpdate(
+                      { customerId: req.user._id },
+                      { $push: { tempRegistrations: registration._id } },
+                      { new: true }
+                    )
+                  })
+                  .then(cart => res.json(cart))
+                  .catch(err => res.json(err));
+              }
             })
-            .then(cart => res.json(cart))
-            .catch(err => res.json(err));
         }
       }).catch(err => res.send(err));
 
@@ -167,6 +176,24 @@ module.exports = {
         )
       })
       .then(cart => res.json(cart))
+      .catch(err => res.json(err));
+  },
+
+  checkout: function (req, res) {
+    const { reservations, registrations } = req.body;
+    let promiseArray = [];
+    for (let i = 0; i < reservations.length; i++) {
+      const element = reservations[i];
+      const query = db.Reservation.create(element)
+      promiseArray.push(query);
+    }
+    for (let id = 0; id < registrations.length; id++) {
+      const element = registrations[id];
+      const query = db.Registration.create(element)
+      promiseArray.push(query);
+    }
+    Promise.all(promiseArray)
+      .then(values => res.send({ values: values }))
       .catch(err => res.json(err));
   },
 

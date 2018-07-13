@@ -55,7 +55,7 @@ export class AddSaleItemForm extends Component {
       name: name,
       category: category,
       maker: maker,
-      sku, sku,
+      sku: sku,
       cost: cost,
       price: price,
       dateAcquired: dateAcquired,

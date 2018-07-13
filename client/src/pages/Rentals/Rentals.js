@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { Link } from 'react-router-dom';
-import { FormBtn } from "../../components/Elements/Form";
 import Header from "../../components/Elements/Header";
 import Modal from "../../components/Elements/Modal";
 import ParallaxHero from "../../components/ParallaxHero";

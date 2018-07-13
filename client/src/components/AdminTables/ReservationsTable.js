@@ -131,7 +131,7 @@ export class ReservationsTable extends Component {
       .then(res => {
         this.toggleLoadingModal();
         console.log(res)
-        this.state.reservations.map(res => {
+        this.state.reservations.forEach(res => {
           if (res._id === _id) {
             res.paid = !paid
           }
@@ -179,7 +179,7 @@ export class ReservationsTable extends Component {
     // console.log(this.state.reservations);
 
     if (this.state.reservations.length > 0) {
-      this.state.reservations.map(reservation => {
+      this.state.reservations.forEach(reservation => {
         if (reservation.paid) {
           reservation.hasPaid = "True";
           reservation.amtDue = "$0.00"

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import GreyBtn from "../../Elements/Buttons/GreyBtn"
 import "./CourseCard.css"
 
 class CourseCard extends Component {

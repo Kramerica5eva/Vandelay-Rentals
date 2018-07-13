@@ -1,13 +1,10 @@
 import React, { Component, Fragment } from "react";
-import { Link } from 'react-router-dom';
-import axios from 'axios';
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import ParallaxHero from "../../components/ParallaxHero"
-import { Input, FormBtn } from "../../components/Elements/Form";
 import DevLinks from "../../components/DevLinks";
 import RentalCard from "../../components/Cards/RentalCard";
 import "./Test.css";

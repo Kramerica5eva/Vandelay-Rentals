@@ -1,9 +1,6 @@
 import React, { Component, Fragment } from "react";
-import Header from "../../components/Elements/Header";
 import NavBar from "../../components/Elements/NavBar";
-import ParallaxHero from "./../../components/ParallaxHero";
 import FixedFooter from "../../components/Elements/FixedFooter";
-import API from "../../utils/API";
 import "./NoMatch.css"
 
 

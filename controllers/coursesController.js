@@ -82,7 +82,7 @@ module.exports = {
         Promise.all([
           db.Course.findByIdAndUpdate(
             { _id: req.body.courseId },
-            { $pull: { registrations: req.body.customerId } },
+            { $pull: { registrations: req.params.id } },
             { new: true }
           ),
           db.User.findByIdAndUpdate(

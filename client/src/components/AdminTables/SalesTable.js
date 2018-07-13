@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { FormBtn, Label } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
@@ -86,6 +85,7 @@ export class SalesTable extends Component {
             const sale = "$" + parseFloat(r.finalSale.$numberDecimal).toFixed(2) || null;
             r.parsedSale = sale;
           }
+          return r;
         });
         this.setState({
           sales: res.data,

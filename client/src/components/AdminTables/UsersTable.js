@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Label } from "../Elements/Form";
+import { Input, FormBtn } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";

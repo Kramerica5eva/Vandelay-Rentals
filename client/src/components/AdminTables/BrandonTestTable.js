@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import ReactTable from "react-table";

@@ -2,7 +2,6 @@ import React, { Component, Fragment } from "react";
 import ReactTable from "react-table";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import API from "../../utils/API";
-import dateFns from 'date-fns';
 import "react-table/react-table.css";
 import "./AdminTables.css";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
@@ -129,7 +128,7 @@ export class RegistrationsTable extends Component {
       .then(res => {
         this.toggleLoadingModal();
         console.log(res)
-        this.state.registrations.map(reg => {
+        this.state.registrations.forEach(reg => {
           if (reg._id === _id) {
             reg.paid = !paid
           }
@@ -150,7 +149,7 @@ export class RegistrationsTable extends Component {
     console.log(this.state.registrations);
 
     if (this.state.registrations.length > 0) {
-      this.state.registrations.map(registration => {
+      this.state.registrations.forEach(registration => {
         if (registration.paid) {
           registration.hasPaid = "True";
           registration.amtDue = "$0.00";

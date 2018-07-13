@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
 import Header from "../../components/Elements/Header";
 import ParallaxHero from "../../components/ParallaxHero";
 import NavBar from "../../components/Elements/NavBar";

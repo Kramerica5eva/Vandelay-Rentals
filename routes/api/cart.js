@@ -27,6 +27,10 @@ router
   .route('/rentals/:id')
   .delete(isLoggedIn, cartController.removeReservationFromCart);
 
+router
+  .route('/checkout')
+  .post(isLoggedIn, cartController.checkout);
+
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated())
     return next();

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Input, FormBtn, Label } from '../Elements/Form';
+import { Input } from '../Elements/Form';
 import API from '../../utils/API';
 import Modal from '../../components/Elements/Modal';
 import LoadingModal from '../../components/Elements/LoadingModal';
@@ -108,7 +108,7 @@ export class RentalsTable extends Component {
         console.log(res.data);
 
         //  loop through the response array and add a new key/value pair with the formatted rate
-        res.data.map(r => {
+        res.data.forEach(r => {
           r.rate = '$' + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
         });
         // set state for rentals, but also empty selection - selection is where the selected (highlighted) row _id is kept. This unselects the row - when a row is selected and the data is updated, it calls this function (adminGetAllRentals), and emptying this.state.selected results in unselecting the row, which works as a visual cue that an update operation is complete.
@@ -332,6 +332,7 @@ export class RentalsTable extends Component {
           <img
             style={{ width: '50px', display: 'block', margin: '50px auto' }}
             src="./../../../loading.gif"
+            alt="spinning gears"
           />
         </Fragment>
     });
@@ -355,6 +356,7 @@ export class RentalsTable extends Component {
           <img
             style={{ width: '50px', display: 'block', margin: '50px auto' }}
             src="./../../../loading.gif"
+            alt="spinning gears"
           />
         </Fragment>
     });
@@ -399,6 +401,7 @@ export class RentalsTable extends Component {
           <img
             style={{ width: '50px', display: 'block', margin: '50px auto' }}
             src="./../../../loading.gif"
+            alt="spinning gears"
           />
         </Fragment>
     });
@@ -414,7 +417,7 @@ export class RentalsTable extends Component {
   updateSelectedRow = () => {
     this.toggleLoadingModal();
     //  extract variables from the selectedRow object
-    const { category, condition, dailyRate, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
+    const { category, condition, dateAcquired, maker, name, rate, sku, timesRented, _id } = this.state.selectedRow;
 
     let newRate;
     if (rate)
