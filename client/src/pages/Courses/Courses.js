@@ -122,6 +122,9 @@ class Courses extends Component {
             title="LEARN"
           />
 
+
+
+          <div className='body-container courses'>
           <Header>
             <DevLinks
               loggedIn={this.props.loggedIn}
@@ -131,8 +134,6 @@ class Courses extends Component {
               location={this.props.location}
             />
           </Header>
-
-          <div className='body-container courses'>
             <h2>Courses Available:</h2>
             <ul>
               {this.state.courses.map(course => (

@@ -42,9 +42,9 @@ class NavBar extends React.Component {
         {/* <div className='brand-logo'>
           <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logosolid.png" /></Link>
         </div> */}
-        <div className='brand-logo'>
+        {/* <div className='brand-logo'>
           <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logoWordScript.png" /></Link>
-        </div>
+        </div> */}
         <div className='brand-logo'>
           <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logoWordHand.png" /></Link>
         </div>
@@ -56,8 +56,8 @@ class NavBar extends React.Component {
           {this.props.loggedIn ? (
             <Fragment>
               {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-              <Link className="btn-link" to="/profile" role="button">My Info</Link>
-              <Link className="btn-link" to="/cart" role="button">Cart</Link>
+              <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
+              <Link className="btn-link" to="/cart" role="button"><i class="fas fa-shopping-cart"></i></Link>
               <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
             </Fragment>
           ) : (
@@ -90,21 +90,21 @@ class NavBar extends React.Component {
           {this.props.loggedIn ? (
             <Fragment>
               {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
-              <Link className="btn-link" to="/profile" role="button">My Info</Link>
-              <Link className="btn-link" to="/cart" role="button">Cart</Link>
+              <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
+              <Link className="btn-link" to="/cart" role="button"><i class="fas fa-shopping-cart"></i></Link>
               <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
             </Fragment>
           ) : (
               <Fragment>
                 {this.props.loginShow ? (
                   <Fragment>
-                    <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button">Signup</Link>
-                    <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button">Login</Link>
+                    <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button"><i className="fas fa-user-plus"></i>Sign-up</Link>
+                    <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} role="button"><i className="fas fa-sign-in-alt"></i>Login</Link>
                   </Fragment>
                 ) : (
                     <Fragment>
-                      <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button">Signup</Link>
-                      <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button">Login</Link>
+                      <Link className="btn-link" to={{ pathname: "/signup", state: { from: this.props.location.pathname } }} role="button"><i className="fas fa-user-plus"></i>Signup</Link>
+                      <Link className="btn-link" to={{ pathname: "/login", state: { from: this.props.location.pathname } }} onClick={this.multiClick} role="button"><i className="fas fa-sign-in-alt"></i>Login</Link>
                     </Fragment>
                   )
                 }
