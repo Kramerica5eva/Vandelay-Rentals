@@ -108,23 +108,6 @@ class ShoppingCart extends Component {
       });
   }
 
-  // checkout = () => {
-  //   this.state.tempReservations.map(res => (
-  //     API.reserveRental(res)
-  //       .then(response => {
-  //         console.log(response);
-  //       })
-  //   ));
-  //   this.state.tempRegistrations.map(reg => (
-  //     API.reserveCourse(reg._id, reg)
-  //       .then(res => {
-  //         console.log(res)
-  //       })
-  //       .catch(err => console.log(err))
-  //   ));
-  //   this.getUserShoppingCart();
-  // }
-  
   checkout = () => {
     this.toggleLoadingModal();
     let promiseArray = [];

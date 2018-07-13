@@ -11,7 +11,7 @@
     "seed": "node scripts/courseSeed.js && node scripts/rentalSeed.js && node scripts/saleSeed.js && node scripts/categorySeed.js && node scripts/userSeed.js",
     "install": "cd client && yarn install",
     "build": "cd client && npm run build",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "cd client && yarn && yarn run build"
   },
   "author": "",
   "license": "ISC",
