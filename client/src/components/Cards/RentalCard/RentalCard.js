@@ -25,9 +25,9 @@ class RentalCard extends Component {
             />
             <AvailBtn
               click={() => this.props.markUnavailable(this.props.reservations, this.props.name)}
-              clear={() => this.props.clear}
-              // name={this.props.name}
-              view={() => this.props.view(this.props.name)}
+              clear={this.props.clear}
+              name={this.props.name}
+              unavailableName={this.props.unavailableName}
             />
           </div>
         </div>

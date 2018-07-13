@@ -28,6 +28,7 @@ class Rentals extends Component {
     rentals: [],
     unix: [],
     unavailable: [],
+    // unavailableView: "",
     name: "",
     loadingModalOpen: false,
   };
@@ -293,8 +294,8 @@ class Rentals extends Component {
                   rental={rental}
                   reservations={rental.reservations}
                   setAvailability={this.checkAvailability(rental.reservations)}
+                  unavailableName={this.state.name}
                   unix={this.state.unix}
-                  view={this.setView}
                 />
               ))}
             </div>

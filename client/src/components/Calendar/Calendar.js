@@ -104,18 +104,18 @@ class Calendar extends Component {
 
           <div className="toggle-section">
             <div className="day-label-and-logo">
-            {this.state.range ? <img className="dateSingle" src="./static/assets/images/dateSingle.png" /> : <img className="dateSingle" src="./static/assets/images/dateSingleActive.png" />}
+              {this.state.range ? <img className="dateSingle" alt="" src="./static/assets/images/dateSingle.png" /> : <img className="dateSingle" alt="" src="./static/assets/images/dateSingleActive.png" />}
               <p>Day</p>
             </div>
 
             <Toggle
-            id='range'
-            icons={false}
-            defaultChecked={this.state.range}
-            onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
+              id='range'
+              icons={false}
+              defaultChecked={this.state.range}
+              onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
             />
             <div className="day-label-and-logo">
-            {this.state.range ? <img className="dateRange" src="./static/assets/images/dateRangeActive.png" /> : <img className="dateRange" src="./static/assets/images/dateRange.png" />}
+              {this.state.range ? <img className="dateRange" alt="" src="./static/assets/images/dateRangeActive.png" /> : <img className="dateRange" alt="" src="./static/assets/images/dateRange.png" />}
               <p>Days</p>
             </div>
 
@@ -138,8 +138,8 @@ class Calendar extends Component {
         </div>
 
         <div className="column column-center reset-button" onClick={this.handleResetClick}>
-          <i class="fas fa-undo fa-2x"></i>
-          {/* <i class="fas fa-eraser fa-2x" onClick={this.handleResetClick}></i> */}
+          <i className="fas fa-undo fa-2x"></i>
+          {/* <i className="fas fa-eraser fa-2x" onClick={this.handleResetClick}></i> */}
           <div className="clearTag">clear</div>
         </div>
       </div >
@@ -249,6 +249,9 @@ class Calendar extends Component {
         {this.renderDays()}
         {this.renderCells()}
         {this.renderInfo()}
+        {/* <UnavailableView
+          unavailableName={this.props.unavailableName}
+        /> */}
       </div>
 
     );

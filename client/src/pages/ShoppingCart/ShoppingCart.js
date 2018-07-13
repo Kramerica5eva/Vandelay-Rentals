@@ -118,6 +118,23 @@ class ShoppingCart extends Component {
       });
   }
 
+  checkout = () => {
+    this.state.tempReservations.map(res => (
+      API.reserveRental(res)
+        .then(response => {
+          console.log(response);
+        })
+    ));
+    this.state.tempRegistrations.map(reg => (
+      API.reserveCourse(reg._id, reg)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => console.log(err))
+    ));
+    this.getUserShoppingCart();
+  }
+
   render() {
     // if left in still - take out this console log before production
     console.log(this.state.tempRegistrations);
@@ -160,6 +177,8 @@ class ShoppingCart extends Component {
             {this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
               <h3>Your Shopping Cart is Empty</h3> : null}
 
+            <button className={`${this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
+              "chkoutDisabled" : ""}`} onClick={() => this.checkout()}>Checkout</button>
             {this.state.tempReservations ? (
               this.state.tempReservations.map(res => (
                 <div key={res._id} className="cart-res-container">
@@ -170,8 +189,8 @@ class ShoppingCart extends Component {
                   <p>To: {dateFns.format(res.date.to * 1000, "ddd MMM Do YYYY")}</p>
                   <p>Daily Rate: ${parseFloat(res.dailyRate.$numberDecimal).toFixed(2)}</p>
                   <h4>Total cost: ${parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2))}</h4>
-                  <button onClick={() => this.confirmReservation(res)}>Confirm</button>
-                  <button onClick={() => this.removeReservationFromCart(res._id)}>Cancel</button>
+                  {/* <button onClick={() => this.confirmReservation(res)}>Confirm</button> */}
+                  <button onClick={() => this.removeReservationFromCart(res._id)}>Remove</button>
                 </div>
               ))
             ) : null}
@@ -183,8 +202,8 @@ class ShoppingCart extends Component {
                   <h3>{reg.courseName}</h3>
                   <h4>Class Date: {reg.date}</h4>
                   <h4>Price per person: ${parseFloat(reg.price.$numberDecimal).toFixed(2)}</h4>
-                  <button onClick={() => this.confirmRegistration(reg)}>Confirm</button>
-                  <button onClick={() => this.removeRegistrationFromCart(reg._id)}>Cancel</button>
+                  {/* <button onClick={() => this.confirmRegistration(reg)}>Confirm</button> */}
+                  <button onClick={() => this.removeRegistrationFromCart(reg._id)}>Remove</button>
                 </div>
               ))
             ) : null}
