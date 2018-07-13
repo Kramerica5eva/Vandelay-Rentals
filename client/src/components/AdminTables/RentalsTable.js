@@ -175,7 +175,6 @@ export class RentalsTable extends Component {
               onChange={this.handleInputChange}
               name="date"
               type="text"
-              label="Change Date"
               placeholder="e.g. Dec 20th 2018"
             />
           </form>
@@ -305,7 +304,6 @@ export class RentalsTable extends Component {
             <Input
               type="file"
               name="file"
-              label="Upload an image"
               onChange={this.fileSelectedHandler}
             />
           </form>

@@ -48,6 +48,10 @@ export default {
   getUserProfileData: function () {
     return axios.get('/user/data');
   },
+  // User updates their own info
+  updateUserInfo: function (userData) {
+    return axios.put('/user/data', userData);
+  },
   // New user signup
   signup: function (signupData) {
     return axios.post('/user', signupData);
@@ -60,9 +64,9 @@ export default {
   logout: function () {
     return axios.post('/user/logout');
   },
-  //  Checks current password before changing it
-  checkPassword: function (pwData) {
-    return axios.post('/user/check', pwData);
+  //  Checks current password and returns error message if incorrect, or changes it if correct
+  changePassword: function (pwData) {
+    return axios.post('/user/change', pwData);
   },
 
 

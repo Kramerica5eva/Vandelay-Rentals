@@ -139,37 +139,20 @@ input:focus~.highlight {
 /* form button */
 
 .form-btn {
-    font-family: var(--font-Raleway);
-    font-size: 14px;
-    margin: 10px 0;
-    display: block;
-    background-color: #272727;
-    border: 1px solid #272727;
-    padding: 7px 10px;
-    color: #000000;
-    font-weight: bold;
-    text-decoration: none;
-    text-shadow: 0 0 2px #fff,
-    0 0 5px #fff,
-    0 0 10px #fff,
-    0 0 15px #fff,
-    0 0 20px #fff,
-    0 0 25px #fff;
+  margin-top: 15px;
+  border: 1px solid #4e50d8e2;
+  padding: 7px 14px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 20px 20px #4e50d8e2 inset, 0 0 0 0 #4e50d8e2;
+  transition: all 150ms ease-in-out;
 }
 
 .form-btn:hover {
-    color: #fff;
-    background-color: #000;
-    text-shadow: 0 0 1px #000,
-    0 0 2px #000,
-    0 0 3px #000,
-    0 0 4px #000,
-    0 0 5px #000,
-    0 0 6px #fff,
-    0 0 8px #fff,
-    0 0 10px #fff,
-    0 0 20px #fff,
-    0 0 30px #fff;
+  background-color: #fff;
+  box-shadow: 0 0 5px #4e50d8e2 inset, 0 0 5px #4e50d8e2;
+  color: #4e50d8e2;
 }
 
 /* ANIMATIONS ================ */

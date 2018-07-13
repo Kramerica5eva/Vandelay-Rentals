@@ -94,13 +94,13 @@ export class UsersTable extends Component {
               name="password"
               onChange={this.handleInputChange}
               type="text"
-              Label="Password:"
+              label="Password:"
             />
             <Input
               name="confirmPassword"
               onChange={this.handleInputChange}
               type="text"
-              Label="Confirm Password:"
+              label="Confirm Password:"
             />
           </form>
         </Fragment>,
