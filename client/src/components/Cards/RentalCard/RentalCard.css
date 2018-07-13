@@ -1,14 +1,6 @@
+  /* RentalCard.css File */
+
 .rentalCard {
-  /* border: solid black 1px; */
-  /* text-shadow: 1px 1px 3px rgba(150, 150, 150, 1); */
-  /* width: 250px; */
-  /* height: 250px; */
-  /* text-align: center; */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* border-radius: 15px; */
-  /* padding: 10px; */
   border: solid black 1px;
   margin: 20px;
   text-shadow: 1px 1px 3px rgba(150, 150, 150, 1);

@@ -1,0 +1,31 @@
+  /* Calendar.css File */
+
+  .toggle-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-content: center;
+  }
+
+  .day-label-and-logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 5px;
+  }
+
+  .day-label-and-logo p{
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+ .calendar .calHeader .reset-button {
+    width: 50px;
+    cursor: pointer;
+  }
+
+.reset-button .fas {
+  font-size: 1.2em;
+  color:#1a8fff;
+  cursor: pointer;
+}

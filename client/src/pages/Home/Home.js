@@ -43,6 +43,7 @@ class Home extends Component {
             title="Vandelay Rentals"
           />
 
+          <div className='body-container'>
           <Header>
             <DevLinks
               loggedIn={this.props.loggedIn}
@@ -52,8 +53,6 @@ class Home extends Component {
               location={this.props.location}
             />
           </Header>
-
-          <div className='body-container'>
             {/* Heading */}
             <div className='desc-heading'>
               <h2>Your One Stop Shop</h2>

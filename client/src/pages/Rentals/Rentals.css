@@ -1,3 +1,5 @@
+    /* Renals.css File */
+
 .rentals .calendar-head-title {
   /* position: absolute; */
   top: -9.8em;
@@ -161,42 +163,27 @@
 }
 
 .main-container .calendar {
-  margin: 2% auto;
-  /* max-width: 100%; */
-  /* display: flex; */
-  /* justify-content: center; */
+    margin: 2% auto;
 }
 
 .calendar-head-title {
-  /* position: absolute; */
-  /* top: -9.8em; */
-  color: white;
-  /* position: absolute; */
-  /* position: relative; */
-  text-align: center;
-  /* left: 0px; */
-  /* right: 0px; */
-  /* bottom: 50px; */
-  margin: 8% auto;
-  font-size: 2.2rem;
-  /* width: 150px; */
-  line-height: 25px;
-  text-shadow: none;
+    color: white;
+    text-align: center;
+    margin: 8% auto;
+    font-size: 2.2rem;
+    line-height: 25px;
+    text-shadow: none;
+    letter-spacing: 6px;
+    font-family: var(--font-Raleway);
 }
 
 .calendar {
-  display: block;
-  /* position: absolute; */
-  /* top: 2em; */
-  /* left: 0vw; */
-  /* right: 0vw; */
-  /* width: 80%; */
-  max-width: 1000px;
-  /* min-width: 295px; */
-  background: var(--neutral-color);
-  border: 1px solid var(--border-color);
-  z-index: -1;
-  margin: 2% auto;
+    display: block;
+    max-width: 1000px;
+    background: var(--neutral-color);
+    border: 1px solid var(--border-color);
+    z-index: -1;
+    margin: 2% auto;
 }
 
 .calendar .calHeader {
@@ -288,18 +275,18 @@
 
 .dateSingle {
   height: 15px;
-  margin-right: 10px;
-  position: absolute;
-  top: 30px;
-  left: -10px;
+  margin-bottom: 5px;
+  /* position: absolute; */
+  /* top: 30px; */
+  /* left: -10px; */
 }
 
 .dateRange {
   height: 15px;
-  margin-left: 10px;
-  position: absolute;
-  top: 30px;
-  left: 20px;
+  margin-bottom: 5px;
+  /* position: absolute; */
+  /* top: 30px; */
+  /* left: 20px; */
 }
 
 .range {
@@ -323,12 +310,12 @@
   cursor: pointer;
   font-size: 17px;
   font-weight: 100;
-  left: 100px;
-  margin-right: 10px;
-  position: absolute;
+  /* left: 100px; */
+  margin-top: 10px;
+  /* position: absolute; */
   text-align: center;
-  text-transform: none;
-  top: 13px;
+  /* text-transform: none; */
+  /* top: 13px; */
 }
 
 .viewing {
@@ -361,27 +348,19 @@
 }
 
 @media (min-width: 1000px) {
-  .calendar-head-title {
-    /* position: absolute; */
-    /* top: -9.8em; */
-    color: white;
-    /* position: absolute; */
-    /* position: relative; */
-    text-align: center;
-    /* left: 0px; */
-    /* right: 0px; */
-    /* bottom: 50px; */
-    margin: 1% auto;
-    margin-top: 2%;
-    font-size: 2.2rem;
-    /* width: 150px; */
-    line-height: 25px;
-    text-shadow: none;
-  }
-  .calendar .body .cell {
-    height: 5em;
-  }
-  #parallax-container, .rentalPage {
-    height: 75vh;
-  }
+    .calendar-head-title {
+        color: white;
+        text-align: center;
+        margin: 1% auto;
+        margin-top: 2%;
+        font-size: 2.2rem;
+        line-height: 25px;
+        text-shadow: none;
+    }
+    .calendar .body .cell {
+        height: 5em;
+    }
+    #parallax-container, .rentalPage {
+        height: 75vh;
+    }
 }

@@ -1,4 +1,4 @@
-
+/* Courses.css File */
 .courses {
     background-color: white;
     display: flex;
@@ -10,16 +10,3 @@
     text-align: center;
 }
 
-.courses ul {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.courses ul li {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-}

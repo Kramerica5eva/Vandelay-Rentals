@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import dateFns, { getTime, isEqual, isAfter, isBefore, startOfDay, startOfToday } from "date-fns";
 import Toggle from "react-toggle";
 import "react-toggle/style.css";
+import "./Calendar.css";
 
 class Calendar extends Component {
 
@@ -100,15 +101,24 @@ class Calendar extends Component {
     return (
       <div className="calHeader row flex-middle">
         <div className="column column-start">
-          <Toggle
+
+          <div className="toggle-section">
+            <div className="day-label-and-logo">
+            {this.state.range ? <img className="dateSingle" src="./static/assets/images/dateSingle.png" /> : <img className="dateSingle" src="./static/assets/images/dateSingleActive.png" />}
+              <p>Day</p>
+            </div>
+
+            <Toggle
             id='range'
             icons={false}
             defaultChecked={this.state.range}
             onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
-          />
-          <div>
-            {this.state.range ? <img className="dateSingle" src="./static/assets/images/dateSingle.png" /> : <img className="dateSingle" src="./static/assets/images/dateSingleActive.png" />}
+            />
+            <div className="day-label-and-logo">
             {this.state.range ? <img className="dateRange" src="./static/assets/images/dateRangeActive.png" /> : <img className="dateRange" src="./static/assets/images/dateRange.png" />}
+              <p>Days</p>
+            </div>
+
           </div>
         </div>
         <div className="column column-center">
@@ -126,8 +136,10 @@ class Calendar extends Component {
             <i className="fas fa-angle-double-right"></i>
           </div>
         </div>
-        <div className="column column-end">
-          <i className="fas fa-eraser fa-2x" onClick={this.handleResetClick}></i>
+
+        <div className="column column-center reset-button" onClick={this.handleResetClick}>
+          <i class="fas fa-undo fa-2x"></i>
+          {/* <i class="fas fa-eraser fa-2x" onClick={this.handleResetClick}></i> */}
           <div className="clearTag">clear</div>
         </div>
       </div >

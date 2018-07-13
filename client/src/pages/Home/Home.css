@@ -6,15 +6,19 @@
     padding-bottom: 50px;
 }
 
-.desc-heading {
+
+
+.body-container div+.desc-heading {
     text-align: center;
     font-weight: bold;
     /* font-size: 1.3rem; */
     margin: 2em auto;
     padding: 3% 0;
-    border-bottom: 3px solid #FFCE40;
+    border-bottom: 3px solid #649ec6;
     /* border-bottom: 2px solid black; */
     font-style: italic;
+    position: inherit;
+
 }
 
 /* START of black and white page card links */
@@ -60,9 +64,9 @@
 
 .black-box:hover {
 
-    -moz-box-shadow: 0 0 3px #FFCE40;
-    -webkit-box-shadow: 0 0 3px #FFCE40;
-    box-shadow: 0 0 25px rgba(255, 207, 64, 0.858);
+    -moz-box-shadow: 0 0 3px #649ec6;
+    -webkit-box-shadow: 0 0 3px #649ec6;
+    box-shadow: 0 0 25px #649fc6cb;
     z-index: 999;
     cursor: pointer;
     transform: scale(1.03);
@@ -85,7 +89,7 @@
 .black-box h4{
 
    margin-bottom: 5px;
-   border-bottom: 2px solid #FFCE40;
+   border-bottom: 2px solid #649ec6;
    /* border-bottom: 2px solid white; */
 
 }

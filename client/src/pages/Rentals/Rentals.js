@@ -213,7 +213,11 @@ class Rentals extends Component {
         } else {
           //  If the chosen rental parameters (item + dates) don't exist in the db,
           //  the reservation is added to the cart, and the loading modal closes.
-          setTimeout(this.toggleLoadingModal, 1000);
+          setTimeout(this.toggleLoadingModal, 500);
+          console.log(rental)
+          setTimeout(this.setModal, 500, {
+            body: <h4>{rental.name} has been added to your cart.</h4>
+          });
         }
       });
   }
@@ -223,7 +227,7 @@ class Rentals extends Component {
     this.toggleLoadingModal();
     API.changeReservationInCart(from, to, rental)
       .then(response => {
-        setTimeout(this.toggleLoadingModal, 1000);
+        setTimeout(this.toggleLoadingModal, 500);
       })
   }
 
