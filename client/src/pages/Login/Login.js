@@ -66,7 +66,7 @@ class Login extends Component {
             toggleForm={this.toggleForm}
             loginShow={this.state.loginShow}
           />
-          <div className="login-content-container">
+          <div className="login-content-container" style={{ backgroundImage: 'url(./static/assets/images/swimming_in_the_water.jpeg)' }}>
           <Header>
             <DevLinks
               loggedIn={this.props.loggedIn}

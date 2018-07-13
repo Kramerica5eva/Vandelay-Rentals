@@ -16,7 +16,7 @@
     /* justify-content: center; */
     flex-direction: column;
     align-items: center;
-    background-image: url("https://images.unsplash.com/photo-1454897834822-1ece264a5d89?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjI0MX0&s=f4fb5d237a3ea9d38af26ed318115854&auto=format&fit=crop&w=1267&q=80");
+    /* background-image: url(./../assets/images/swimming_in_the_water.jpeg); */
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
