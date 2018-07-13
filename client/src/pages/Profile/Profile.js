@@ -172,7 +172,7 @@ class Profile extends Component {
                 <h5>Daily Rate: {`$${parseFloat(res.data.dailyRate.$numberDecimal).toFixed(2)}`}</h5>
               </div>
               <div className="reservation-modal-image">
-                <img src={res.data.displayImageUrl} alt={`${res.data.category} photo`} />
+                <img src={res.data.displayImageUrl} alt={`${res.data.category}`} />
               </div>
             </div>
         })
@@ -224,7 +224,7 @@ class Profile extends Component {
             <div className="registration-modal-div">
               <div className="registration-modal-data">
                 <div className="registration-modal-image">
-                  <img src={reg.data.displayImageUrl} alt={`${reg.data.name} photo`} />
+                  <img src={reg.data.displayImageUrl} alt={`${reg.data.name}`} />
                 </div>
                 <h3>{reg.data.name}</h3>
                 <h4>{reg.data.abstract}</h4>
@@ -252,7 +252,7 @@ class Profile extends Component {
     if (phone) telephone = `${phone.slice(0, 3)}-${phone.slice(3, 6)}-${phone.slice(6, 10)}`;
 
     if (this.state.reservations.length > 0) {
-      this.state.reservations.map(reservation => {
+      this.state.reservations.forEach(reservation => {
         if (reservation.paid) {
           reservation.hasPaid = "True";
           reservation.amtDue = "$0.00"

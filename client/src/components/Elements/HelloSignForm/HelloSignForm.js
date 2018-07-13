@@ -1,6 +1,5 @@
-import React, { Component, Fragment } from "react";
-import { Link } from 'react-router-dom';
-import { Input, Label, FormBtn } from "./../Form";
+import React, { Component } from "react";
+import { Input } from "./../Form";
 import API from "../../../utils/API";
 import HelloSign from 'hellosign-embedded';
 import "./HelloSignForm.css"
@@ -8,7 +7,7 @@ import "./HelloSignForm.css"
 // Must add in script to bottom of page (before the last closing element) for HelloSign to work
 // <script type="text/javascript" src="https://s3.amazonaws.com/cdn.hellosign.com/public/js/hellosign-embedded.LATEST.min.js"></script>
 
-class HelloSignForm extends React.Component {
+class HelloSignForm extends Component {
 
   state = {
     isOpen: false,

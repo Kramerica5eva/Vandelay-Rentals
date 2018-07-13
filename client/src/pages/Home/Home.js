@@ -60,7 +60,7 @@ class Home extends Component {
             {/* Checkboard Style */}
             <div className='main-catch'>
               <div className='row-top'>
-                <Link className="btn-link" to="/sales" role="button" className='black-box'>
+                <Link className="btn-link black-box" to="/sales" role="button">
                   <h4>Buy</h4>
                   <p>View our wide selection of the latest and greatest stand up paddle boards and kayaks to purchase.</p>
                   </Link>
@@ -72,13 +72,13 @@ class Home extends Component {
                 <div className='image-box'>
                   <i className="fas fa-exchange-alt icons"></i>
                 </div>
-                <Link className="btn-link" to="/rentals" role="button" className='black-box'>
+                <Link className="btn-link black-box" to="/rentals" role="button">
                     <h4>Rent</h4>
                     <p>Rent one of our boards or kayaks for the a single day or for multiple days in a row.</p>
                 </Link>
               </div>
               <div className='row-bottom'>
-                <Link className="btn-link" to="/courses" role="button" className='black-box'>
+                <Link className="btn-link black-box" to="/courses" role="button">
                   <h4>Learn</h4>
                   <p>Sign up for a class with our instructional staff to start your adventure in a new sport, or to sharpen your skills.</p>
                 </Link>

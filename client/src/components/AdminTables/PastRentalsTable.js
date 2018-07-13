@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import ReactTable from 'react-table';
 import Modal from '../../components/Elements/Modal';
 import LoadingModal from '../../components/Elements/LoadingModal';
-import API from '../../utils/API';
 import 'react-table/react-table.css';
 import './AdminTables.css';
 import checkboxHOC from 'react-table/lib/hoc/selectTable';
@@ -99,7 +98,7 @@ export class PastRentalsTable extends Component {
     // console.log(this.state.reservations);
 
     if (this.state.pastRentals.length > 0) {
-      this.state.pastRentals.map(pastRental => {
+      this.state.pastRentals.forEach(pastRental => {
         pastRental.date.formattedTo = dateFns.format(
           pastRental.date.to * 1000,
           'MMM Do YYYY'

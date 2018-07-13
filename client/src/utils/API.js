@@ -102,6 +102,11 @@ export default {
     return axios.delete(`/api/cart/rentals/${id}`);
   },
 
+  //  Grabs all cart items and sends them to the db
+  checkoutAllCartItems: (checkoutObject) => {
+    return axios.post('/api/cart/checkout', checkoutObject);
+  },
+
 
   // USER ROUTES
 

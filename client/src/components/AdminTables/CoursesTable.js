@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn, Label, } from "../Elements/Form";
+import { Input } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
@@ -71,7 +71,7 @@ export class CoursesTable extends Component {
   adminGetAllCourses = () => {
     API.adminGetAllCourses()
       .then(res => {
-        res.data.map(r => {
+        res.data.forEach(r => {
           r.pricePer = "$" + parseFloat(r.price.$numberDecimal).toFixed(2);
           // r.date = dateFns.format(r.date * 1000, "MMM Do YYYY");
           if (r.registrations.length) {
@@ -220,7 +220,7 @@ export class CoursesTable extends Component {
   //  Update selected Row - sends current field info to db and updates that item
   updateSelectedRow = () => {
     this.toggleLoadingModal()
-    const { name, pricePer, price, abstract, topics, date, slots, _id } = this.state.selectedRow;
+    const { name, pricePer, abstract, topics, date, slots, _id } = this.state.selectedRow;
 
     // if pricePer exists (it should, but to avoid an error, checking first...) and hasn't been changed, it will have a dollar sign in it, a format that does not exist in the database and will throw an error if submitted to the database as-is. This removes the '$' before submitting.
     let newPrice;
@@ -350,7 +350,6 @@ export class CoursesTable extends Component {
               {
                 Header: "Date",
                 accessor: "date",
-                Cell: this.renderEditable,
                 Cell: row => {
                   return (
                     dateFns.format(row.row.date * 1000, "MMM Do YYYY")

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Header from "../../components/Elements/Header";
 import DevLinks from "../../components/DevLinks";
 import NavBar from "../../components/Elements/NavBar";

@@ -80,11 +80,10 @@ export class SignupForm extends Component {
                 body: <h4>That email already exists in our database</h4>
               });
               break;
-            case "did not validate":
+            default:
               this.setModal({
                 body: <h4>Please correct highlighted items</h4>
               });
-              break;
           }
         }
         //  'errmsg' seems to be standard MongoDB terminology...

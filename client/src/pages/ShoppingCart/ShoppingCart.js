@@ -61,7 +61,6 @@ class ShoppingCart extends Component {
   getUserShoppingCart = () => {
     API.getUserShoppingCart()
       .then(cart => {
-        console.log(cart);
         this.setState({
           tempRegistrations: cart.data.tempRegistrations,
           tempReservations: cart.data.tempReservations
@@ -73,7 +72,6 @@ class ShoppingCart extends Component {
     this.toggleLoadingModal();
     API.removeRegistrationFromCart(id)
       .then(res => {
-        console.log(res)
         this.getUserShoppingCart();
         this.toggleLoadingModal();
       })
@@ -85,7 +83,6 @@ class ShoppingCart extends Component {
     const { _id } = course;
     API.reserveCourse(_id, course)
       .then(res => {
-        console.log(res)
         this.getUserShoppingCart();
         this.toggleLoadingModal();
       })
@@ -96,7 +93,6 @@ class ShoppingCart extends Component {
     this.toggleLoadingModal();
     API.removeReservationFromCart(id)
       .then(res => {
-        console.log(res)
         this.getUserShoppingCart();
         this.toggleLoadingModal();
       })
@@ -105,34 +101,47 @@ class ShoppingCart extends Component {
 
   confirmReservation = rental => {
     this.toggleLoadingModal();
-
-    // to and from will be adjusted later to match with the calendar
-    const from = 1533168000;
-    const to = 1537727200;
-
     API.reserveRental(rental)
-      .then(response => {
-        console.log(response);
+      .then(() => {
         this.getUserShoppingCart();
         this.toggleLoadingModal();
       });
   }
 
+  // checkout = () => {
+  //   this.state.tempReservations.map(res => (
+  //     API.reserveRental(res)
+  //       .then(response => {
+  //         console.log(response);
+  //       })
+  //   ));
+  //   this.state.tempRegistrations.map(reg => (
+  //     API.reserveCourse(reg._id, reg)
+  //       .then(res => {
+  //         console.log(res)
+  //       })
+  //       .catch(err => console.log(err))
+  //   ));
+  //   this.getUserShoppingCart();
+  // }
+  
   checkout = () => {
-    this.state.tempReservations.map(res => (
-      API.reserveRental(res)
-        .then(response => {
-          console.log(response);
-        })
-    ));
-    this.state.tempRegistrations.map(reg => (
-      API.reserveCourse(reg._id, reg)
-        .then(res => {
-          console.log(res)
-        })
-        .catch(err => console.log(err))
-    ));
-    this.getUserShoppingCart();
+    this.toggleLoadingModal();
+    let promiseArray = [];
+    this.state.tempReservations.forEach(res => {
+      const resQuery = API.reserveRental(res);
+      promiseArray.push(resQuery);
+    });
+    this.state.tempRegistrations.forEach(reg => {
+      const regQuery = API.reserveCourse(reg._id, reg);
+      promiseArray.push(regQuery)
+    });
+    Promise.all(promiseArray)
+      .then(() => {
+        this.getUserShoppingCart();
+        this.toggleLoadingModal();
+      })
+      .catch(err => console.log(err));
   }
 
   render() {

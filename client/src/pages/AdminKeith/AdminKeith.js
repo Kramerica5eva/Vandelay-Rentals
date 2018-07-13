@@ -1,9 +1,8 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import Header from "../../components/Elements/Header";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
-import Footer from "../../components/Elements/Footer";
 import DevLinks from "../../components/DevLinks";
 import { BrandonTestTable, RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
 import { AdminForms } from "../../components/AdminForms";

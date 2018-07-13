@@ -86,7 +86,13 @@ class Courses extends Component {
           console.log("Duplicate")
           this.toggleLoadingModal();
           this.setModal({
-            body: <h4>That Course is already in your cart.</h4>
+            body: <h4>That class is already in your cart.</h4>
+          })
+        } else if (response.data.message === "registration duplicate") {
+          console.log("Duplicate")
+          this.toggleLoadingModal();
+          this.setModal({
+            body: <h4>You are already registered for that class.</h4>
           })
         } else {
           this.setModal({
@@ -125,19 +131,20 @@ class Courses extends Component {
 
 
           <div className='body-container courses'>
-          <Header>
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
-          </Header>
+            <Header>
+              <DevLinks
+                loggedIn={this.props.loggedIn}
+                admin={this.props.admin}
+                dev={this.props.dev}
+                logout={this.props.logout}
+                location={this.props.location}
+              />
+            </Header>
             <h2>Courses Available:</h2>
             <ul>
               {this.state.courses.map(course => (
                 <CourseCard
+                  key={course._id}
                   id={course._id}
                   course={course}
                   name={course.name}
