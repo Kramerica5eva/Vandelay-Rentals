@@ -53,21 +53,19 @@ export class ChangePwForm extends Component {
       .then(res => {
         console.log(res);
         if (res.data.message === "incorrect") {
-          return this.setModal({
+          this.setModal({
             body: <h5>Current password does not match our records.</h5>,
             buttons: <button onClick={this.toggleModal}>Try Again</button>
           });
         }
-        if (res.data.message === "too many attempts") {
-          return this.setModal({
-            body: <h5>Your account has been locked. Please call Brandon Morin and complain.</h5>,
-            buttons: <button>(801) 866-9588</button>
+        else if (res.data.message === "too many attempts") {
+          this.props.badLogout();
+        } else {
+          this.setModal({
+            body: <h5>Your password has been changed.</h5>,
+            buttons: <button onClick={this.toggleModal}>Continue</button>
           })
         }
-        return this.setModal({
-          body: <h5>Your password has been changed.</h5>,
-          buttons: <button onClick={this.toggleModal}>Continue</button>
-        })
       })
   }
 
