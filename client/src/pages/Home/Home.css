@@ -1,12 +1,7 @@
-
-
-
 .body-container {
     background-color: white;
     padding-bottom: 50px;
 }
-
-
 
 .body-container div+.desc-heading {
     text-align: center;
@@ -18,7 +13,6 @@
     /* border-bottom: 2px solid black; */
     font-style: italic;
     position: inherit;
-
 }
 
 /* START of black and white page card links */
@@ -34,7 +28,6 @@
     justify-content: center;
     align-items: center;
     margin: 2em auto;
-
 }
 
 .icons {
@@ -50,7 +43,6 @@
 }
 
 .black-box {
-
     background-color: black;
     color: white;
     height: 100%;
@@ -63,7 +55,6 @@
 }
 
 .black-box:hover {
-
     -moz-box-shadow: 0 0 3px #649ec6;
     -webkit-box-shadow: 0 0 3px #649ec6;
     box-shadow: 0 0 25px #649fc6cb;
@@ -73,38 +64,29 @@
     transition: transform 1s linear;
     }
 .black-box:hover:nth-child(odd) {
-
     position: relative;
     /* bottom: 1%; */
     /* right: 1%; */
-
-    }
+}
 .black-box:hover:nth-child(even) {
-
     position: relative;
     /* left: 1%; */
-
-    }
-
-.black-box h4{
-
-   margin-bottom: 5px;
-   border-bottom: 2px solid #649ec6;
-   /* border-bottom: 2px solid white; */
-
 }
-.black-box p{
+.black-box h4 {
+    margin-bottom: 5px;
+    border-bottom: 2px solid #649ec6;
+    /* border-bottom: 2px solid white; */
+}
 
+.black-box p {
     font-size: 0.4em;
     padding: 5%;
     line-height: 35px;
     /* letter-spacing: 1px; */
     text-align: justify;
-
 }
 
-.image-box{
-
+.image-box {
     background-color: white;
     color: black;
     height: 200px;
@@ -161,13 +143,15 @@
     position: relative;
     bottom: 60px;
 }
-.about-us h3{
+
+.about-us h3 {
     font-size: 2rem;
     margin-bottom: 5px;
     border-bottom: 2px solid #649ec6;
     /* border-bottom: 2px solid black; */
 }
-.about-us p{
+
+.about-us p {
     font-size: 1.0rem;
     padding: 1%;
     line-height: 30px;
@@ -186,13 +170,14 @@
     justify-content: center;
     align-items: center;
 }
-.contact-email input{
+
+.contact-email input {
     font-size: 0.9rem;
     margin: 0;
     justify-content: start;
 }
 
-.clipboard-icon{
+.clipboard-icon {
     display: flex;
     flex-direction: column;
     margin: 15px 0;
@@ -201,7 +186,7 @@
 
 .clipboard-icon button {
     border-radius: 5px;
-    background-color:#adaaaa;
+    background-color: #adaaaa;
     text-shadow: 1px 1px 3px #666666;
     -webkit-box-shadow: 0px 1px 3px #666666;
     box-shadow: 1px 2px 5px #666666;
@@ -212,6 +197,7 @@
     max-height: 50px;
     min-height: 50px;
 }
+
 .clipboard-icon button:hover {
     background: #858585;
     cursor: pointer;
@@ -221,70 +207,56 @@ div .clipboard-icon p {
     font-size: 1rem;
     margin: 0 auto;
 }
+
 .contact-email input, .clipboard-icon {
     min-width: 250px;
     max-width: 250px;
 }
 
-
-
 @media (min-width:450px) {
     .black-box {
         max-width: 80%;
-
     }
 }
 
-
 @media (min-width: 650px) {
-
     .black-box {
         max-width: 75%;
     }
-
-    .black-box p{
+    .black-box p {
         font-size: 0.5em;
         letter-spacing: 1px;
     }
-
     .desc-heading h2 {
         font-size: 1.9rem;
     }
-
     #about-us-para-header {
         bottom: 7em;
         font-size: 2.5rem;
         width: 200px;
         line-height: 40px;
     }
-
-    .about-us h3{
+    .about-us h3 {
         font-size: 3rem;
         margin-bottom: 5px;
         /* border-bottom: 2px solid black; */
     }
-
-    .about-us p{
+    .about-us p {
         font-size: 1.75rem;
         /* padding: 1%; */
         line-height: 35px;
         letter-spacing: 1px;
         /* text-align: justify; */
     }
-
     .contact-email {
         align-items: start;
     }
-
 }
 
-
 @media (min-width: 750px) {
-
     .black-box {
         max-width: 70%;
     }
-
     #parallax-container h1 {
         font-size: 2.7em;
         width: 350px;
@@ -295,14 +267,11 @@ div .clipboard-icon p {
     }
 }
 
-
 @media (min-width: 850px) {
     /* START of black and white page card links */
-
     .desc-heading h2 {
         font-size: 2.3rem;
     }
-
     .main-catch {
         display: flex;
         width: 80%;
@@ -310,9 +279,7 @@ div .clipboard-icon p {
         justify-content: center;
         align-items: center;
         margin: 2em auto;
-
     }
-
     .icons {
         font-size: 16em;
         display: flex;
@@ -320,15 +287,11 @@ div .clipboard-icon p {
         align-items: center;
         height: 100%;
     }
-
     .main-catch .black-box, .image-box {
         border-radius: 2px;
         width: 50%;
     }
-
-
     .black-box {
-
         background-color: black;
         color: white;
         height: 325px;
@@ -336,37 +299,29 @@ div .clipboard-icon p {
         padding: 3% 5%;
         text-align: center;
         align-items: center;
-
     }
-    .black-box h4{
-
-    margin-bottom: 5px;
-    /* border-bottom: 2px solid white; */
-
+    .black-box h4 {
+        margin-bottom: 5px;
+        /* border-bottom: 2px solid white; */
     }
-    .black-box p{
-
+    .black-box p {
         font-size: 0.5em;
         padding: 5%;
         line-height: 35px;
         letter-spacing: 1px;
         text-align: justify;
-
     }
-
-    .image-box{
-
+    .image-box {
         background-color: white;
         color: black;
         height: 250px;
     }
-
     .row-top .image-box, .row-bottom .image-box {
         order: -1;
-    }.row-middle .image-box {
+    }
+    .row-middle .image-box {
         order: 1;
     }
-
     .row-top {
         display: flex;
         flex-direction: row;
@@ -374,7 +329,6 @@ div .clipboard-icon p {
         align-items: center;
         width: 100%;
     }
-
     .row-middle {
         display: flex;
         flex-direction: row;
@@ -382,7 +336,6 @@ div .clipboard-icon p {
         align-items: center;
         width: 100%;
     }
-
     .row-bottom {
         display: flex;
         flex-direction: row;
@@ -399,12 +352,10 @@ div .clipboard-icon p {
 }
 
 @media (min-width: 1000px) {
-        /* START of black and white page card links */
-
+    /* START of black and white page card links */
     .desc-heading h2 {
         font-size: 2.4rem;
     }
-
     .main-catch {
         display: flex;
         width: 80%;
@@ -412,9 +363,7 @@ div .clipboard-icon p {
         justify-content: center;
         align-items: center;
         margin: 2em auto;
-
     }
-
     .icons {
         font-size: 16em;
         display: flex;
@@ -422,56 +371,40 @@ div .clipboard-icon p {
         align-items: center;
         height: 100%;
     }
-
     .main-catch .black-box, .image-box {
         border-radius: 2px;
         width: 50%;
     }
-
-
     .black-box {
-
         background-color: black;
         color: white;
         height: 100%;
         font-size: 3em;
         padding: 3% 5%;
         text-align: center;
-
     }
-
-
-
-
-    .black-box h4{
-
-    margin-bottom: 5px;
-    /* border-bottom: 2px solid white; */
-
+    .black-box h4 {
+        margin-bottom: 5px;
+        /* border-bottom: 2px solid white; */
     }
-    .black-box p{
-
+    .black-box p {
         font-size: 0.5em;
         padding: 5%;
         line-height: 35px;
         letter-spacing: 1px;
         text-align: justify;
-
     }
-
-    .image-box{
-
+    .image-box {
         background-color: white;
         color: black;
         height: 250px;
     }
-
     .row-top .image-box, .row-bottom .image-box {
         order: 1;
-    }.row-middle .image-box {
+    }
+    .row-middle .image-box {
         order: -1;
     }
-
     .row-top {
         display: flex;
         flex-direction: row;
@@ -479,7 +412,6 @@ div .clipboard-icon p {
         align-items: center;
         width: 100%;
     }
-
     .row-middle {
         display: flex;
         flex-direction: row;
@@ -487,7 +419,6 @@ div .clipboard-icon p {
         align-items: center;
         width: 100%;
     }
-
     .row-bottom {
         display: flex;
         flex-direction: row;

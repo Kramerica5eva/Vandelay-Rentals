@@ -82,6 +82,7 @@ class Calendar extends Component {
   }
 
   handleResetClick() {
+    this.props.clearUnix();
     this.setState({
       from: null,
       to: null,

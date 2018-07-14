@@ -1,130 +1,145 @@
-import React, { Component, Fragment } from "react";
-import Header from "../../components/Elements/Header";
-import Modal from "../../components/Elements/Modal";
-import ParallaxHero from "../../components/ParallaxHero";
-import LoadingModal from "../../components/Elements/LoadingModal";
-import NavBar from "../../components/Elements/NavBar";
-import Footer from "../../components/Elements/Footer";
-import RentalCard from "./../../components/Cards/RentalCard";
-import DevLinks from "../../components/DevLinks";
-import API from "../../utils/API";
-import Calendar from "../../components/Calendar";
-import dateFns from "date-fns";
-import "./Rentals.css";
+import React, { Component, Fragment } from 'react';
+import Header from '../../components/Elements/Header';
+import Modal from '../../components/Elements/Modal';
+import ParallaxHero from '../../components/ParallaxHero';
+import LoadingModal from '../../components/Elements/LoadingModal';
+import NavBar from '../../components/Elements/NavBar';
+import { Link } from 'react-router-dom';
+import Footer from '../../components/Elements/Footer';
+import RentalCard from './../../components/Cards/RentalCard';
+import DevLinks from '../../components/DevLinks';
+import API from '../../utils/API';
+import Calendar from '../../components/Calendar';
+import dateFns from 'date-fns';
+import './Rentals.css';
 // import "./../../App.css";
 
-
 class Rentals extends Component {
+  
   state = {
     modal: {
       isOpen: false,
-      header: "",
-      body: "",
-      footer: "",
-      buttons: ""
+      header: '',
+      body: '',
+      footer: '',
+      buttons: ''
     },
     rentals: [],
     unix: [],
     unavailable: [],
-    // unavailableView: "",
-    name: "",
+    name: '',
     loadingModalOpen: false,
   };
 
-  componentDidMount() {
-    this.getAllRentals();
-  }
+	componentDidMount() {
+		this.getAllRentals();
+	}
 
-  toggleModal = () => {
+	toggleModal = () => {
+		this.setState({
+			modal: { isOpen: !this.state.modal.isOpen }
+		});
+	};
+
+	setModal = modalInput => {
+		this.setState({
+			modal: {
+				isOpen: true,
+				header: modalInput.header,
+				body: modalInput.body,
+				footer: modalInput.footer,
+				buttons: modalInput.buttons
+			}
+		});
+	};
+
+	toggleLoadingModal = () => {
+		this.setState({
+			loadingModalOpen: !this.state.loadingModalOpen
+		});
+	};
+
+	getAllRentals = () => {
+		API.getAllRentals()
+			.then(res => {
+				this.setState({
+					rentals: res.data
+				});
+			})
+			.catch(err => console.log(err));
+	};
+
+	onChange = date => {
+		this.getDays(date);
+	};
+
+	getDays = date => {
+		//date is the array that is passed from the calendar when days are selected.
+		let temp = [];
+		let range = [];
+		date.map(dates => temp.push(Date.parse(dates) / 1000)); //stores first and last day in temporary array
+		let days = Math.floor((temp[1] - temp[0]) / 86400); //seconds in day = 86400  Calculates total number of days for rental.
+		range.push(temp[0]); //store first day in range array.
+		for (let i = 0; i < days; i++) {
+			//adds each day (including last) to range array
+			range.push(range[i] + 86400);
+		}
+		this.setState({ unix: range, date: date }); //sets state
+	};
+
+	checkAvailability = itemRes => {
+		//passed all the reservations for a given item
+		for (let i = 0; i < itemRes.length; i++) {
+			//iterate through all individual reservations to compare to selected dates one at a time
+			let range = []; //holds each individual day of a reservation
+			let days = (itemRes[i].date.to - itemRes[i].date.from) / 86400; //determines total number of days for each reservation
+			range.push(itemRes[i].date.from); //pushes the first day of the reservation
+			for (let j = 0; j < days; j++) {
+				//
+				range.push(range[j] + 86400); //adds all days of a reservation to range for comparison
+			} //
+			for (let k = 0; k < this.state.unix.length; k++) {
+				//compares each index in this.state.unix to each index in range
+				if (range.includes(this.state.unix[k])) {
+					//
+					return false; //returns false if range include the index value of this.state.unix
+				} //
+			}
+		}
+		return true; //returns true if no matches are found
+	};
+
+	markUnavailable = (itemRes, name) => {
+		let unavailable = [];
+		for (let i = 0; i < itemRes.length; i++) {
+			//iterate through all individual reservations to compare to selected dates one at a time
+			let temp = [];
+			let days = (itemRes[i].date.to - itemRes[i].date.from) / 86400; //determines total number of days for each reservation
+			temp.push(itemRes[i].date.from); //pushes the first day of the reservation
+			for (let j = 0; j < days; j++) {
+				//
+				temp.push(temp[j] + 86400); //adds all days of a reservation to range for comparison
+			} //
+			for (let k = 0; k < temp.length; k++) {
+				unavailable.push(temp[k]);
+			}
+		}
+		this.setState({ unavailable: unavailable, name: name });
+	};
+
+	clearUnavailable = () => {
+		this.setState({ unavailable: [], name: '' });
+	};
+
+	setView = name => {
+		this.state.name == name ? true : false;
+		console.log(this.state.name == name, this.state.name, name);
+	};
+
+  clearUnix = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      unix: []
     });
-  }
-
-  setModal = (modalInput) => {
-    this.setState({
-      modal: {
-        isOpen: true,
-        header: modalInput.header,
-        body: modalInput.body,
-        footer: modalInput.footer,
-        buttons: modalInput.buttons
-      }
-    });
-  };
-
-  toggleLoadingModal = () => {
-    this.setState({
-      loadingModalOpen: !this.state.loadingModalOpen
-    });
-  };
-
-  getAllRentals = () => {
-    API.getAllRentals()
-      .then(res => {
-        this.setState({
-          rentals: res.data
-        });
-      })
-      .catch(err => console.log(err));
-  }
-
-  onChange = date => {
-    this.getDays(date);
-  }
-
-  getDays = date => { //date is the array that is passed from the calendar when days are selected.
-    let temp = [];
-    let range = [];
-    date.map(dates => temp.push(Date.parse(dates) / 1000)); //stores first and last day in temporary array
-    let days = Math.floor((temp[1] - temp[0]) / 86400); //seconds in day = 86400  Calculates total number of days for rental.
-    range.push(temp[0]); //store first day in range array.
-    for (let i = 0; i < days; i++) { //adds each day (including last) to range array
-      range.push(range[i] + 86400);
-    }
-    this.setState({ unix: range, date: date }); //sets state
-  }
-
-  checkAvailability = itemRes => { //passed all the reservations for a given item
-    for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
-      let range = []; //holds each individual day of a reservation
-      let days = (itemRes[i].date.to - itemRes[i].date.from) / 86400; //determines total number of days for each reservation
-      range.push(itemRes[i].date.from); //pushes the first day of the reservation
-      for (let j = 0; j < days; j++) {//
-        range.push(range[j] + 86400); //adds all days of a reservation to range for comparison
-      };                              //
-      for (let k = 0; k < this.state.unix.length; k++) { //compares each index in this.state.unix to each index in range
-        if (range.includes(this.state.unix[k])) { //
-          return false;                           //returns false if range include the index value of this.state.unix
-        }                                         //
-      }
-    }
-    return true; //returns true if no matches are found
-  }
-
-  markUnavailable = (itemRes, name) => {
-    let unavailable = [];
-    for (let i = 0; i < itemRes.length; i++) { //iterate through all individual reservations to compare to selected dates one at a time
-      let temp = [];
-      let days = (itemRes[i].date.to - itemRes[i].date.from) / 86400; //determines total number of days for each reservation
-      temp.push(itemRes[i].date.from); //pushes the first day of the reservation
-      for (let j = 0; j < days; j++) {//
-        temp.push(temp[j] + 86400); //adds all days of a reservation to range for comparison
-      };                              //
-      for (let k = 0; k < temp.length; k++) {
-        unavailable.push(temp[k]);
-      }
-    }
-    this.setState({ unavailable: unavailable, name: name });
-  }
-
-  clearUnavailable = () => {
-    this.setState({ unavailable: [], name: "" })
-  }
-
-  setView = (name) => {
-    this.state.name == name ? true : false;
-    console.log(this.state.name == name, this.state.name, name);
   }
 
   addReservationToCart = rental => {
@@ -151,84 +166,159 @@ class Rentals extends Component {
           // close the loading modal:
           this.toggleLoadingModal();
 
-          if (response.data.existingRes.length > 1) {
-            this.setModal({
-              body:
-                <Fragment>
-                  <h4>The dates you have chosen conflict with multiple reservations already in your cart. Please check your cart before proceeding.</h4>
-                </Fragment>
-            })
-          } else {
-            // assign existing cart item to a variable:
-            const existingRes = response.data.existingRes[0];
-            const changedFrom = existingRes.date.from;
-            const changedTo = existingRes.date.to;
-            console.log(`From: ${from}, To: ${to}`);
-            console.log(`From: ${changedFrom}, To: ${changedTo}`);
-            if (changedFrom === from && changedTo === to) {
-              this.setModal({
-                body:
-                  <Fragment>
-                    <h4>This item is already in your cart for the same date(s):</h4>
-                    {from !== to ?
-                      <div>
-                        <h6>from: {dateFns.format(existingRes.date.from * 1000, "ddd, MMMM Do YYYY")}</h6>
-                        <h6>to: {dateFns.format(existingRes.date.to * 1000, "ddd, MMMM Do YYYY")}</h6>
-                      </div>
-                      : <h6>{dateFns.format(existingRes.date.from * 1000, "ddd, MMMM Do YYYY")}</h6>
-                    }
-                  </Fragment>
-              });
-            } else {
-              //  Add existing reservation dates to the rental object so they can be passed to the changeReservationInCart function if the user chooses to change dates:
-              rental.oldFrom = existingRes.date.from;
-              rental.oldTo = existingRes.date.to;
-              //  Set modal to get user input:
-              this.setModal({
-                body:
-                  <Fragment>
-                    {changedFrom !== changedTo ?
-                      <div>
-                        <h4>This item is already in your cart for similar dates:</h4>
-                        <h6>from: {dateFns.format(existingRes.date.from * 1000, "ddd, MMMM Do YYYY")}</h6>
-                        <h6>to: {dateFns.format(existingRes.date.to * 1000, "ddd, MMMM Do YYYY")}</h6>
-                      </div>
-                      :
-                      <div>
-                        <h4>This item is already in your cart for one of your chosen dates:</h4>
-                        <h6>{dateFns.format(existingRes.date.from * 1000, "ddd, MMMM Do YYYY")}</h6>
-                      </div>
-                    }
-                    <h4>Would you like to keep the existing date(s) or change to your new selection?</h4>
-                  </Fragment>,
-                buttons:
-                  <Fragment>
-                    <button onClick={this.toggleModal}>Keep</button>
-                    <button onClick={() => this.changeReservationInCart(from, to, rental)}>Change</button>
-                  </Fragment>
-              });
-            }
-          }
-        } else {
-          //  If the chosen rental parameters (item + dates) don't exist in the db,
-          //  the reservation is added to the cart, and the loading modal closes.
-          setTimeout(this.toggleLoadingModal, 500);
-          console.log(rental)
-          setTimeout(this.setModal, 500, {
-            body: <h4>{rental.name} has been added to your cart.</h4>
-          });
-        }
-      });
-  }
+				if (response.data.existingRes.length > 1) {
+					this.setModal({
+						body: (
+							<Fragment>
+								<h4>
+									The dates you have chosen conflict with multiple reservations
+                  already in your cart. Please check your cart before
+                  proceeding.
+                </h4>
+							</Fragment>
+						)
+					});
+				} else {
+					// assign existing cart item to a variable:
+					const existingRes = response.data.existingRes[0];
+					const changedFrom = existingRes.date.from;
+					const changedTo = existingRes.date.to;
+					console.log(`From: ${from}, To: ${to}`);
+					console.log(`From: ${changedFrom}, To: ${changedTo}`);
+					if (changedFrom === from && changedTo === to) {
+						this.setModal({
+							body: (
+								<Fragment>
+									<h5>
+										This item is already in your cart for the same date(s):
+                  </h5>
+									{from !== to ? (
+										<div>
+											<h6>
+												from:{' '}
+												{dateFns.format(
+													existingRes.date.from * 1000,
+													'ddd, MMMM Do YYYY'
+												)}
+											</h6>
+											<h6>
+												to:{' '}
+												{dateFns.format(
+													existingRes.date.to * 1000,
+													'ddd, MMMM Do YYYY'
+												)}
+											</h6>
+										</div>
+									) : (
+											<h6>
+												{dateFns.format(
+													existingRes.date.from * 1000,
+													'ddd, MMMM Do YYYY'
+												)}
+											</h6>
+										)}
+								</Fragment>
+							),
+							buttons:
+								<button onClick={this.toggleModal}>Continue Shopping</button>
+						});
+					} else {
+						//  Add existing reservation dates to the rental object so they can be passed to the changeReservationInCart function if the user chooses to change dates:
+						rental.oldFrom = existingRes.date.from;
+						rental.oldTo = existingRes.date.to;
+						//  Set modal to get user input:
+						this.setModal({
+							body: (
+								<Fragment>
+									{changedFrom !== changedTo ? (
+										<div>
+											<h5>
+												This item is already in your cart for similar dates:
+                      </h5>
+											<h6>
+												from:{' '}
+												{dateFns.format(
+													existingRes.date.from * 1000,
+													'ddd, MMMM Do YYYY'
+												)}
+											</h6>
+											<h6>
+												to:{' '}
+												{dateFns.format(
+													existingRes.date.to * 1000,
+													'ddd, MMMM Do YYYY'
+												)}
+											</h6>
+										</div>
+									) : (
+											<div>
+												<h4>
+													This item is already in your cart for one of your chosen
+													dates:
+                      </h4>
+												<h6>
+													{dateFns.format(
+														existingRes.date.from * 1000,
+														'ddd, MMMM Do YYYY'
+													)}
+												</h6>
+											</div>
+										)}
+									<h4>
+										Would you like to keep the existing date(s) or change to
+                    your new selection?
+                  </h4>
+								</Fragment>
+							),
+							buttons:
+								<Fragment>
+									<button onClick={this.toggleModal}>Keep</button>
+									<button
+										onClick={() =>
+											this.changeReservationInCart(from, to, rental)
+										}
+									>
+										Change
+                  </button>
+								</Fragment>
+						});
+					}
+				}
+			} else {
+				//  If the chosen rental parameters (item + dates) don't exist in the db,
+				//  the reservation is added to the cart, and the loading modal closes.
+				setTimeout(this.toggleLoadingModal, 500);
+				console.log(rental);
+				setTimeout(this.setModal, 500, {
+					body:
+						<Fragment>
+							<h5>{rental.name} has been added to your cart.</h5>
+							<br />
+							<h4>Would you like to checkout or keep shopping?</h4>
+						</Fragment>,
+					buttons:
+						<Fragment>
+							<Link
+								className="modal-btn-link"
+								to={{ pathname: '/cart' }}
+								role="button"
+							>
+								Go to Checkout
+              </Link>
+							<button onClick={this.toggleModal}>Continue Shopping</button>
+						</Fragment>
+				});
+			}
+		});
+	};
 
-  changeReservationInCart = (from, to, rental) => {
-    this.toggleModal();
-    this.toggleLoadingModal();
-    API.changeReservationInCart(from, to, rental)
-      .then(response => {
-        setTimeout(this.toggleLoadingModal, 500);
-      })
-  }
+	changeReservationInCart = (from, to, rental) => {
+		this.toggleModal();
+		this.toggleLoadingModal();
+		API.changeReservationInCart(from, to, rental).then(response => {
+			setTimeout(this.toggleLoadingModal, 500);
+		});
+	};
 
   render() {
     return (
@@ -261,48 +351,49 @@ class Rentals extends Component {
               unavailable={this.state.unavailable}
               unavailableName={this.state.name}
               clearUnavailable={this.clearUnavailable}
+              clearUnix={this.clearUnix}
             />
           </div>
 
-          <div className='body-container rentals'>
-            <Header>
-              <DevLinks
-                loggedIn={this.props.loggedIn}
-                admin={this.props.admin}
-                dev={this.props.dev}
-                logout={this.props.logout}
-                location={this.props.location}
-              />
-            </Header>
+					<div className="body-container rentals">
+						<Header>
+							<DevLinks
+								loggedIn={this.props.loggedIn}
+								admin={this.props.admin}
+								dev={this.props.dev}
+								logout={this.props.logout}
+								location={this.props.location}
+							/>
+						</Header>
 
-            <h2>Rentals Available:</h2>
-            <div className='rental-card-container'>
-              {this.state.rentals.map(rental => (
-                <RentalCard
-                  addReservationToCart={this.addReservationToCart}
-                  category={rental.category}
-                  clear={this.clearUnavailable}
-                  displayImageUrl={rental.displayImageUrl}
-                  id={rental._id}
-                  key={rental._id}
-                  maker={rental.maker}
-                  markUnavailable={this.markUnavailable}
-                  name={rental.name}
-                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
-                  rental={rental}
-                  reservations={rental.reservations}
-                  setAvailability={this.checkAvailability(rental.reservations)}
-                  unavailableName={this.state.name}
-                  unix={this.state.unix}
-                />
-              ))}
-            </div>
-          </div>
-          <Footer />
-        </div>
-      </Fragment >
-    );
-  }
+						<h2>Rentals Available:</h2>
+						<div className="rental-card-container">
+							{this.state.rentals.map(rental => (
+								<RentalCard
+									addReservationToCart={this.addReservationToCart}
+									category={rental.category}
+									clear={this.clearUnavailable}
+									displayImageUrl={rental.displayImageUrl}
+									id={rental._id}
+									key={rental._id}
+									maker={rental.maker}
+									markUnavailable={this.markUnavailable}
+									name={rental.name}
+									rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}
+									rental={rental}
+									reservations={rental.reservations}
+									setAvailability={this.checkAvailability(rental.reservations)}
+									unavailableName={this.state.name}
+									unix={this.state.unix}
+								/>
+							))}
+						</div>
+					</div>
+					<Footer />
+				</div>
+			</Fragment>
+		);
+	}
 }
 
 export default Rentals;
