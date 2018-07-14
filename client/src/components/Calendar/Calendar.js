@@ -99,8 +99,8 @@ class Calendar extends Component {
     const dateFormat = "MMMM YYYY";
 
     return (
-      <div className="calHeader row flex-middle">
-        <div className="column column-start">
+      <div className="calHeader row flex-middle toggle-container">
+        <div className="toggle-section-parent">
 
           <div className="toggle-section">
             <div className="day-label-and-logo">
@@ -121,23 +121,26 @@ class Calendar extends Component {
 
           </div>
         </div>
-        <div className="column column-center">
-          <div className="icon" onClick={this.prevMonth}>
-            <i className="fas fa-angle-double-left"></i>
+        <div className="temp-month-container">
+          <div className="column column-center left">
+            <div className="icon" onClick={this.prevMonth}>
+              <i className="fas fa-angle-double-left"></i>
+            </div>
           </div>
-        </div>
-        <div className="column column-center">
-          <span>
-            {dateFns.format(this.state.currentMonth, dateFormat)}
-          </span>
-        </div>
-        <div className="column column-center">
-          <div className="icon" onClick={this.nextMonth}>
-            <i className="fas fa-angle-double-right"></i>
+          <div className="column column-center month">
+            <span>
+              {dateFns.format(this.state.currentMonth, dateFormat)}
+            </span>
+          </div>
+          <div className="column column-center right">
+            <div className="icon" onClick={this.nextMonth}>
+              <i className="fas fa-angle-double-right"></i>
+            </div>
           </div>
         </div>
 
-        <div className="column column-center reset-button" onClick={this.handleResetClick}>
+
+        <div className="reset-button" onClick={this.handleResetClick}>
           <i className="fas fa-undo fa-2x"></i>
           {/* <i className="fas fa-eraser fa-2x" onClick={this.handleResetClick}></i> */}
           <div className="clearTag">clear</div>
@@ -252,6 +255,31 @@ class Calendar extends Component {
         {/* <UnavailableView
           unavailableName={this.props.unavailableName}
         /> */}
+        <div className="small-phone-btns">
+          <div className="toggle-section">
+            <div className="day-label-and-logo">
+              {this.state.range ? <img className="dateSingle" alt="" src="./static/assets/images/dateSingle.png" /> : <img className="dateSingle" alt="" src="./static/assets/images/dateSingleActive.png" />}
+              <p>Day</p>
+            </div>
+
+            <Toggle
+              id='range'
+              icons={false}
+              defaultChecked={this.state.range}
+              onChange={() => this.state.range ? this.setState({ from: null, to: null, enteredTo: null, range: false }) : this.setState({ from: null, to: null, enteredTo: null, range: true })}
+            />
+            <div className="day-label-and-logo">
+              {this.state.range ? <img className="dateRange" alt="" src="./static/assets/images/dateRangeActive.png" /> : <img className="dateRange" alt="" src="./static/assets/images/dateRange.png" />}
+              <p>Days</p>
+            </div>
+
+          </div>
+          <div className="reset-button" onClick={this.handleResetClick}>
+            <i className="fas fa-undo fa-2x"></i>
+            {/* <i className="fas fa-eraser fa-2x" onClick={this.handleResetClick}></i> */}
+            <div className="clearTag">clear</div>
+          </div>
+        </div>
       </div>
 
     );
