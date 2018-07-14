@@ -44,6 +44,13 @@
   flex-direction: column;
 }
 
+.empty-cart {
+  margin: 3%;
+  color: white;
+  position: relative;
+  top: 5em;
+}
+
 div .checkout-proceed {
   display: flex;
   justify-content: flex-end;
@@ -109,6 +116,9 @@ div .checkout-proceed button:hover {
   color: #e34d3ae2;
 }
 
+.no-confirm {
+  display: none;
+}
 
 @media (min-width: 600px) {
   div .checkout-proceed button {
