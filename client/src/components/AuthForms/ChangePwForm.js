@@ -14,7 +14,8 @@ export class ChangePwForm extends Component {
     },
     currentPassword: "",
     newPassword: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    changeAttempts: 0
   }
 
   toggleModal = () => {
@@ -44,9 +45,29 @@ export class ChangePwForm extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    API.checkPassword(this.state.newPassword)
+    console.log("Password:" + this.state.currentPassword)
+    API.changePassword({
+      currentPassword: this.state.currentPassword,
+      newPassword: this.state.newPassword
+    })
       .then(res => {
         console.log(res);
+        if (res.data.message === "incorrect") {
+          return this.setModal({
+            body: <h5>Current password does not match our records.</h5>,
+            buttons: <button onClick={this.toggleModal}>Try Again</button>
+          });
+        }
+        if (res.data.message === "too many attempts") {
+          return this.setModal({
+            body: <h5>Your account has been locked. Please call Brandon Morin and complain.</h5>,
+            buttons: <button>(801) 866-9588</button>
+          })
+        }
+        return this.setModal({
+          body: <h5>Your password has been changed.</h5>,
+          buttons: <button onClick={this.toggleModal}>Continue</button>
+        })
       })
   }
 
@@ -74,6 +95,7 @@ export class ChangePwForm extends Component {
             value={this.state.newPassword}
             onChange={this.handleInputChange}
             name="newPassword"
+            pattern="^[\S]{4,}$"
             type="text"
             label="New Password:"
           />
@@ -81,6 +103,7 @@ export class ChangePwForm extends Component {
             value={this.state.confirmPassword}
             onChange={this.handleInputChange}
             name="confirmPassword"
+            pattern={this.state.newPassword}
             type="text"
             label="Confirm New Password:"
           />

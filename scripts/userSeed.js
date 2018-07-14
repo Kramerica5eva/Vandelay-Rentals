@@ -16,6 +16,7 @@ const userSeed = [
   {
     username: "Strangebrewer",
     password: pw,
+    pwChangeAttempts: 0,
     firstName: "Keith",
     lastName: "Allmon",
     email: "BKAShambala@gmail.com",
@@ -35,6 +36,7 @@ const userSeed = [
   {
     username: "bmorin",
     password: pw2,
+    pwChangeAttempts: 0,
     firstName: "Brandon",
     lastName: "hdah",
     email: "brandonmorin@gmail.com",
@@ -53,6 +55,7 @@ const userSeed = [
   {
     username: "ben",
     password: pw,
+    pwChangeAttempts: 0,
     firstName: "Ben",
     lastName: "Caler",
     email: "b.wayne@me.com",
@@ -72,6 +75,7 @@ const userSeed = [
     username: "Nicknard",
     firstName: "Joe",
     lastName: "Dirt",
+    pwChangeAttempts: 0,
     email: "Dood@gmail.com",
     street: "123 Home St",
     city: "Bountiful",
@@ -88,6 +92,7 @@ const userSeed = [
   {
     username: "Doofy",
     password: pw,
+    pwChangeAttempts: 0,
     firstName: "Mr",
     lastName: "Sillyface",
     email: "Why@gmail.com",
@@ -106,6 +111,7 @@ const userSeed = [
   {
     username: "Corbster",
     password: pw,
+    pwChangeAttempts: 0,
     firstName: "Yo",
     lastName: "Goofball",
     email: "isthatyou@gmail.com",
