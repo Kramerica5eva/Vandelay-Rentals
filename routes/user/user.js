@@ -14,7 +14,9 @@ router.post('/login', passport.authenticate('local'), userController.login);
 
 router.post('/logout', userController.logout);
 
-router.post('/check', userController.checkPw);
+// router.post('/check', userController.checkPw);
+
+router.post('/change', userController.changePw);
 
 //  this route isn't currently being used - thought it might be useful for validating a user
 router.get('/auth', function (req, res) {

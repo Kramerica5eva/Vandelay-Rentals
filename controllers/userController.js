@@ -1,4 +1,5 @@
 const db = require('../models');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
   getUser: function (req, res) {
@@ -131,12 +132,33 @@ module.exports = {
     }
   },
 
-  checkPw: function (res, req) {
+  changePw: function (req, res) {
     console.log(req.body);
-    db.User.checkPassword(req.body)
-      .then(res => {
-        res.json(res);
-      })
+    const isMatch = bcrypt.compareSync(req.body.currentPassword, req.user.password);
+    if (isMatch) {
+      const pw = bcrypt.hashSync(req.body.newPassword, bcrypt.genSaltSync(10), null);
+      db.User.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+          password: pw,
+          pwChangeAttempts: 0
+        }
+      )
+        .then(response => {
+          console.log("Check pw response:");
+          console.log(response);
+          res.json(response);
+        })
+    } else {
+      db.User.findOneAndUpdate(
+        { _id: req.user._id },
+        { $inc: { pwChangeAttempts: 1 } }
+      )
+        .then(response => {
+          console.log(response);
+          res.send({ message: "incorrect" });
+        })
+    }
   },
 
 }

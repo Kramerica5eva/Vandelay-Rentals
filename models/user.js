@@ -8,6 +8,7 @@ const tempPw = bcrypt.hashSync("BootsNPants", bcrypt.genSaltSync(10), null);
 const userSchema = new Schema({
 	username: { type: String, required: true },
 	password: { type: String, required: true, default: tempPw },
+	pwChangeAttempts: { type: Number, required: true, default: 0 },
 	firstName: String,
 	lastName: String,
 	email: String,
@@ -28,10 +29,10 @@ const userSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Registration"
 	}],
-  pastRentals: [{
-    type: Schema.Types.ObjectId,
-    ref: "PastRental"
-  }],
+	pastRentals: [{
+		type: Schema.Types.ObjectId,
+		ref: "PastRental"
+	}],
 	purchases: [{
 		itemId: String,
 		date: Number,
@@ -47,13 +48,14 @@ const userSchema = new Schema({
 });
 
 // Define schema methods
-userSchema.methods = {
-	checkPassword: function (inputPassword) {
-		return bcrypt.compareSync(inputPassword, this.password);
-	},
-	hashPassword: plainTextPassword => {
-		return bcrypt.hashSync(plainTextPassword, 10);
-	}
+userSchema.methods.checkPassword = function (inputPassword) {
+	console.log("In the CheckPassword function, here's this.schema:");
+	console.log(this);
+	return bcrypt.compareSync(inputPassword, this.password);
+}
+
+userSchema.methods.hashPassword = function (plainTextPassword) {
+	return bcrypt.hashSync(plainTextPassword, 10);
 }
 
 // Define hooks for pre-saving
