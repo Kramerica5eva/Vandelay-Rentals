@@ -229,7 +229,7 @@ class ShoppingCart extends Component {
             <div className={this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
                   "no-confirm" : "checkout-proceed"}>
               <button className={`${this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
-                "chkoutDisabled" : ""}`} onClick={() => this.checkout()}>Confirm Reservation <i class="fas fa-check-circle"></i></button>
+                "chkoutDisabled" : ""}`} onClick={() => this.checkout()}>Confirm Reservation <i className="fas fa-check-circle"></i></button>
             </div>
           </div>
           <Footer />

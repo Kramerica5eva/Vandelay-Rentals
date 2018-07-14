@@ -207,7 +207,7 @@ module.exports = {
       )
         .then(response => {
           console.log(response);
-          if (response.pwChangeAttempts === 3) {
+          if (response.pwChangeAttempts === 2) {
             const pw = bcrypt.hashSync("YourF33tAr3B4ckw4rd$", bcrypt.genSaltSync(10), null);
             db.User.findOneAndUpdate(
               { _id: req.user._id },
