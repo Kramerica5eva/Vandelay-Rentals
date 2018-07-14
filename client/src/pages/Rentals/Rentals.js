@@ -15,21 +15,21 @@ import './Rentals.css';
 // import "./../../App.css";
 
 class Rentals extends Component {
-	state = {
-		modal: {
-			isOpen: false,
-			header: '',
-			body: '',
-			footer: '',
-			buttons: ''
-		},
-		rentals: [],
-		unix: [],
-		unavailable: [],
-		// unavailableView: "",
-		name: '',
-		loadingModalOpen: false
-	};
+  
+  state = {
+    modal: {
+      isOpen: false,
+      header: '',
+      body: '',
+      footer: '',
+      buttons: ''
+    },
+    rentals: [],
+    unix: [],
+    unavailable: [],
+    name: '',
+    loadingModalOpen: false,
+  };
 
 	componentDidMount() {
 		this.getAllRentals();
@@ -136,28 +136,35 @@ class Rentals extends Component {
 		console.log(this.state.name == name, this.state.name, name);
 	};
 
-	addReservationToCart = rental => {
-		// Trigger the loading modal:
-		this.toggleLoadingModal();
-		//  Initialize date variables:
-		let from;
-		let to;
-		//  Set date variables:
-		if (this.state.unix.length > 1) {
-			from = this.state.unix[0];
-			to = this.state.unix[this.state.unix.length - 1];
-		} else {
-			from = this.state.unix[0];
-			to = this.state.unix[0];
-		}
-		// Call the API function:
-		API.addReservationToCart(from, to, rental).then(response => {
-			console.log(response);
-			// this function searches the database for existing cart items that conflict with the chosen dates
-			// if it finds such an item, it will return a message: "duplicate"
-			if (response.data.message === 'duplicate') {
-				// close the loading modal:
-				this.toggleLoadingModal();
+  clearUnix = () => {
+    this.setState({
+      unix: []
+    });
+  }
+
+  addReservationToCart = rental => {
+    // Trigger the loading modal:
+    this.toggleLoadingModal();
+    //  Initialize date variables:
+    let from;
+    let to;
+    //  Set date variables:
+    if (this.state.unix.length > 1) {
+      from = this.state.unix[0];
+      to = this.state.unix[this.state.unix.length - 1];
+    } else {
+      from = this.state.unix[0];
+      to = this.state.unix[0];
+    }
+    // Call the API function:
+    API.addReservationToCart(from, to, rental)
+      .then(response => {
+        console.log(response);
+        // this function searches the database for existing cart items that conflict with the chosen dates
+        // if it finds such an item, it will return a message: "duplicate"
+        if (response.data.message === "duplicate") {
+          // close the loading modal:
+          this.toggleLoadingModal();
 
 				if (response.data.existingRes.length > 1) {
 					this.setModal({
@@ -313,43 +320,40 @@ class Rentals extends Component {
 		});
 	};
 
-	render() {
-		return (
-			<Fragment>
-				<Modal
-					show={this.state.modal.isOpen}
-					toggleModal={this.toggleModal}
-					header={this.state.modal.header}
-					body={this.state.modal.body}
-					footer={this.state.modal.footer}
-					buttons={this.state.modal.buttons}
-				/>
-				<NavBar
-					loggedIn={this.props.loggedIn}
-					admin={this.props.admin}
-					logout={this.props.logout}
-					location={this.props.location}
-				/>
-				<LoadingModal show={this.state.loadingModalOpen} />
-				<div className="main-container">
-					<ParallaxHero
-						image={{
-							backgroundImage:
-								'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)',
-							backgroundPosition: 'bottom'
-						}}
-						title=""
-						pageClass={'rentalPage'}
-					/>
-					<div className="calendar-container">
-						<h1 className="calendar-head-title">Rentals</h1>
-						<Calendar
-							updateUnix={this.getDays}
-							unavailable={this.state.unavailable}
-							unavailableName={this.state.name}
-							clearUnavailable={this.clearUnavailable}
-						/>
-					</div>
+  render() {
+    return (
+      <Fragment>
+        <Modal
+          show={this.state.modal.isOpen}
+          toggleModal={this.toggleModal}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
+        />
+        <NavBar
+          loggedIn={this.props.loggedIn}
+          admin={this.props.admin}
+          logout={this.props.logout}
+          location={this.props.location}
+        />
+        <LoadingModal show={this.state.loadingModalOpen} />
+        <div className="main-container">
+          <ParallaxHero
+            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)', backgroundPosition: "bottom" }}
+            title=""
+            pageClass={"rentalPage"}
+          />
+          <div className="calendar-container">
+            <h1 className="calendar-head-title">Rentals</h1>
+            <Calendar
+              updateUnix={this.getDays}
+              unavailable={this.state.unavailable}
+              unavailableName={this.state.name}
+              clearUnavailable={this.clearUnavailable}
+              clearUnix={this.clearUnix}
+            />
+          </div>
 
 					<div className="body-container rentals">
 						<Header>

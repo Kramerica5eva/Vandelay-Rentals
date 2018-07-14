@@ -32,3 +32,8 @@
   opacity: 0.2;
   filter: alpha(opacity=20);
 }
+
+.inactive {
+  pointer-events: none;
+  cursor: not-allowed;
+}
