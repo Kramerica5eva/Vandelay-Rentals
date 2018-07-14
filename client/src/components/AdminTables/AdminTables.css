@@ -22,6 +22,10 @@
 .rt-td input:not(:focus):invalid {
   background-color: unset;
 }
+
+.rt-thead input {
+	display: none;
+}
 /* END overriding input styling */
 
 .table-btn-invis {

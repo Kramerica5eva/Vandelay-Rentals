@@ -138,17 +138,21 @@
   justify-content: space-evenly;
 }
 
-.modal-btn-div button {
+.modal-btn-div button,
+.modal-btn-link {
+	font-family: var(--font-Raleway);
   border: 1px solid #4e50d8e2;
   padding: 7px 14px;
   border-radius: 5px;
   color: #fff;
   cursor: pointer;
   box-shadow: 0 0 20px 20px #4e50d8e2 inset, 0 0 0 0 #4e50d8e2;
-  transition: all 150ms ease-in-out;
+	transition: all 150ms ease-in-out;
+	text-decoration: none;
 }
 
-.modal-btn-div button:hover {
+.modal-btn-div button:hover,
+.modal-btn-link:hover {
   background-color: #fff;
   box-shadow: 0 0 5px #4e50d8e2 inset, 0 0 5px #4e50d8e2;
   color: #4e50d8e2;
