@@ -46,17 +46,34 @@
 }
 
 .user-info-btn-div button {
-  background: transparent;
+  /* background: transparent;
   border: none;
   font-weight: bold;
   outline: transparent;
   text-decoration: underline;
   color: #4e50d8e2;
-  cursor: pointer;
+  cursor: pointer; */
+  font-family: var(--font-Raleway);
+    border: 1px solid #4e50d8e2;
+    padding: 3.5px 7px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    -webkit-box-shadow: 0 0 20px 20px #4e50d8e2 inset, 0 0 0 0 #4e50d8e2;
+    box-shadow: 0 0 20px 20px #4e50d8e2 inset, 0 0 0 0 #4e50d8e2;
+    -webkit-transition: all 150ms ease-in-out;
+    -o-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+    text-decoration: none;
+    margin: 0 5px;
 }
 
 .user-info-btn-div button:hover {
-  color: #649ec6;
+  /* color: #649ec6; */
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 5px #4e50d8e2 inset, 0 0 5px #4e50d8e2;
+  box-shadow: 0 0 5px #4e50d8e2 inset, 0 0 5px #4e50d8e2;
+  color: #4e50d8e2;
 }
 
 .reservations-container, .registrations-container {
