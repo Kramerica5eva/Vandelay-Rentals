@@ -156,8 +156,24 @@ module.exports = {
       )
         .then(response => {
           console.log(response);
-          res.send({ message: "incorrect" });
-        })
+          if (response.pwChangeAttempts === 3) {
+            const pw = bcrypt.hashSync("YourF33tAr3B4ckw4rd$", bcrypt.genSaltSync(10), null);
+            db.User.findOneAndUpdate(
+              { _id: req.user._id },
+              {
+                password: pw,
+                pwChangeAttempts: 0
+              }
+            )
+              .then(response => {
+                console.log("Check pw response:");
+                console.log(response);
+                res.json({ message: "too many attempts" });
+              })
+          } else {
+            res.send({ message: "incorrect" });
+          }
+        }).catch(err => res.json(err));
     }
   },
 

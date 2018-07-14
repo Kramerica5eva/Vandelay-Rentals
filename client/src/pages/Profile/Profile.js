@@ -403,6 +403,7 @@ class Profile extends Component {
                 <div className="user-form-div">
                   <ChangePwForm
                     getUserProfileData={this.getUserProfileData}
+                    badLogout={this.props.badLogout}
                   />
                 </div>
               </div>

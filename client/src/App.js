@@ -19,6 +19,7 @@ import AdminKeith from "./pages/AdminKeith";
 import AdminBrandon from "./pages/AdminBrandon";
 import AddPropsToRoute from "./components/AddPropsToRoute";
 import NoMatch from "./pages/NoMatch";
+import Modal from "./components/Elements/Modal";
 import API from "./utils/API";
 import "./App.css";
 
@@ -67,6 +68,13 @@ const AdminRoute = ({ component: Component, ...rest }) => (
 
 class App extends Component {
   state = {
+    modal: {
+      isOpen: false,
+      header: "",
+      body: "",
+      footer: "",
+      buttons: ""
+    },
     loggedIn: false,
     username: null,
     firstName: null,
@@ -78,6 +86,24 @@ class App extends Component {
   componentDidMount() {
     this.getUser();
     new ClipboardJS('.clipboard-btn');
+  }
+
+  toggleModal = () => {
+    this.setState({
+      modal: { isOpen: !this.state.modal.isOpen }
+    });
+  }
+
+  setModal = (modalInput) => {
+    this.setState({
+      modal: {
+        isOpen: !this.state.modal.isOpen,
+        header: modalInput.header,
+        body: modalInput.body,
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
+      }
+    });
   }
 
   updateUser = userObject => {
@@ -126,8 +152,32 @@ class App extends Component {
       })
   }
 
+  badLogout = () => {
+    API.logout()
+      .then(() => {
+        this.updateUser({
+          auth: false,
+          admin: false,
+          state: {
+            loggedIn: false,
+            username: null,
+            admin: false,
+            dev: false,
+            firstName: null
+          }
+        });
+      })
+      .catch(err => console.log(err));
+    this.setModal({
+      body: <h5>Your account has been locked. Please call Brandon Morin and complain.</h5>,
+      buttons: <button>(801) 866-9588</button>
+    })
+  }
+
   logout = event => {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     console.log("logging out");
     API.logout()
       .then(() => {
@@ -150,99 +200,108 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/"
-            render={routeProps => (
-              <Fragment>
-                <Home
-                  {...routeProps}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  dev={this.state.dev}
-                  logout={this.logout}
-                />
-              </Fragment>
-            )}
-          />
-          <Route exact path="/rentals"
-            render={routeProps => (
-              <Fragment>
-                <Rentals
-                  {...routeProps}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  dev={this.state.dev}
-                  logout={this.logout}
-                />
-              </Fragment>
-            )}
-          />
-          <Route exact path="/sales"
-            render={routeProps => (
-              <Fragment>
-                <Sales
-                  {...routeProps}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  dev={this.state.dev}
-                  logout={this.logout}
-                />
-              </Fragment>
-            )}
-          />
-          <Route exact path="/courses"
-            render={routeProps => (
-              <Fragment>
-                <Courses
-                  {...routeProps}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  dev={this.state.dev}
-                  logout={this.logout}
-                />
-              </Fragment>
-            )}
-          />
-          <Route exact path="/signup"
-            render={routeProps => (
-              <Fragment>
-                <Login
-                  {...routeProps}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  dev={this.state.dev}
-                  logout={this.logout}
-                  loginShow={false}
-                />
-              </Fragment>
-            )}
-          />
-          <Route exact path="/login"
-            render={routeProps => (
-              <Fragment>
-                <Login
-                  {...routeProps}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  dev={this.state.dev}
-                  logout={this.logout}
-                  loginShow={true}
-                />
-              </Fragment>
-            )}
-          />
-          <PrivateRoute path="/waiver" component={AddPropsToRoute(Waiver, {
+          <Fragment>
+            <Modal
+              show={this.state.modal.isOpen}
+              toggleModal={this.toggleModal}
+              header={this.state.modal.header}
+              body={this.state.modal.body}
+              footer={this.state.modal.footer}
+              buttons={this.state.modal.buttons}
+            />
+            <Route exact path="/"
+              render={routeProps => (
+                <Fragment>
+                  <Home
+                    {...routeProps}
+                    updateUser={this.updateUser}
+                    loggedIn={this.state.loggedIn}
+                    firstName={this.state.firstName}
+                    admin={this.state.admin}
+                    dev={this.state.dev}
+                    logout={this.logout}
+                  />
+                </Fragment>
+              )}
+            />
+            <Route exact path="/rentals"
+              render={routeProps => (
+                <Fragment>
+                  <Rentals
+                    {...routeProps}
+                    updateUser={this.updateUser}
+                    loggedIn={this.state.loggedIn}
+                    firstName={this.state.firstName}
+                    admin={this.state.admin}
+                    dev={this.state.dev}
+                    logout={this.logout}
+                  />
+                </Fragment>
+              )}
+            />
+            <Route exact path="/sales"
+              render={routeProps => (
+                <Fragment>
+                  <Sales
+                    {...routeProps}
+                    updateUser={this.updateUser}
+                    loggedIn={this.state.loggedIn}
+                    firstName={this.state.firstName}
+                    admin={this.state.admin}
+                    dev={this.state.dev}
+                    logout={this.logout}
+                  />
+                </Fragment>
+              )}
+            />
+            <Route exact path="/courses"
+              render={routeProps => (
+                <Fragment>
+                  <Courses
+                    {...routeProps}
+                    updateUser={this.updateUser}
+                    loggedIn={this.state.loggedIn}
+                    firstName={this.state.firstName}
+                    admin={this.state.admin}
+                    dev={this.state.dev}
+                    logout={this.logout}
+                  />
+                </Fragment>
+              )}
+            />
+            <Route exact path="/signup"
+              render={routeProps => (
+                <Fragment>
+                  <Login
+                    {...routeProps}
+                    updateUser={this.updateUser}
+                    loggedIn={this.state.loggedIn}
+                    firstName={this.state.firstName}
+                    admin={this.state.admin}
+                    dev={this.state.dev}
+                    logout={this.logout}
+                    loginShow={false}
+                  />
+                </Fragment>
+              )}
+            />
+            <Route exact path="/login"
+              render={routeProps => (
+                <Fragment>
+                  <Login
+                    {...routeProps}
+                    updateUser={this.updateUser}
+                    loggedIn={this.state.loggedIn}
+                    firstName={this.state.firstName}
+                    admin={this.state.admin}
+                    dev={this.state.dev}
+                    logout={this.logout}
+                    loginShow={true}
+                  />
+                </Fragment>
+              )}
+            />
+            <PrivateRoute path="/waiver" component={AddPropsToRoute(Waiver, {
               toggleModal: this.toggleModal,
               setModal: this.setModal,
               updateUser: this.updateUser,
@@ -252,8 +311,8 @@ class App extends Component {
               dev: this.state.dev,
               logout: this.logout
             })}
-          />
-          <PrivateRoute path="/profile" component={AddPropsToRoute(Profile, {
+            />
+            <PrivateRoute path="/profile" component={AddPropsToRoute(Profile, {
               toggleModal: this.toggleModal,
               setModal: this.setModal,
               updateUser: this.updateUser,
@@ -261,10 +320,10 @@ class App extends Component {
               firstName: this.state.firstName,
               admin: this.state.admin,
               dev: this.state.dev,
-              logout: this.logout
+              badLogout: this.badLogout
             })}
-          />
-          <PrivateRoute path="/cart" component={AddPropsToRoute(ShoppingCart, {
+            />
+            <PrivateRoute path="/cart" component={AddPropsToRoute(ShoppingCart, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -272,8 +331,8 @@ class App extends Component {
               dev: this.state.dev,
               logout: this.logout
             })}
-          />
-          <AdminRoute path="/admin" component={AddPropsToRoute(Admin, {
+            />
+            <AdminRoute path="/admin" component={AddPropsToRoute(Admin, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -283,8 +342,8 @@ class App extends Component {
               categories: this.state.categories,
               setCategories: this.setCategories
             })}
-          />
-          <PrivateRoute path="/test" component={AddPropsToRoute(Test, {
+            />
+            <PrivateRoute path="/test" component={AddPropsToRoute(Test, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -292,8 +351,8 @@ class App extends Component {
               dev: this.state.dev,
               logout: this.logout
             })}
-          />
-          <PrivateRoute path="/testnick" component={AddPropsToRoute(TestNick, {
+            />
+            <PrivateRoute path="/testnick" component={AddPropsToRoute(TestNick, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -301,8 +360,8 @@ class App extends Component {
               dev: this.state.dev,
               logout: this.logout
             })}
-          />
-          <PrivateRoute path="/testben" component={AddPropsToRoute(TestBen, {
+            />
+            <PrivateRoute path="/testben" component={AddPropsToRoute(TestBen, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -310,8 +369,8 @@ class App extends Component {
               dev: this.state.dev,
               logout: this.logout
             })}
-          />
-          <PrivateRoute path="/testbrandon" component={AddPropsToRoute(TestBrandon, {
+            />
+            <PrivateRoute path="/testbrandon" component={AddPropsToRoute(TestBrandon, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -319,8 +378,8 @@ class App extends Component {
               dev: this.state.dev,
               logout: this.logout
             })}
-          />
-          <PrivateRoute path="/testcorb" component={AddPropsToRoute(TestCorb, {
+            />
+            <PrivateRoute path="/testcorb" component={AddPropsToRoute(TestCorb, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -328,8 +387,8 @@ class App extends Component {
               dev: this.state.dev,
               logout: this.logout
             })}
-          />
-          <AdminRoute path="/adminbrandon" component={AddPropsToRoute(AdminBrandon, {
+            />
+            <AdminRoute path="/adminbrandon" component={AddPropsToRoute(AdminBrandon, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -337,8 +396,8 @@ class App extends Component {
               dev: this.state.dev,
               logout: this.logout
             })}
-          />
-          <AdminRoute path="/adminkeith" component={AddPropsToRoute(AdminKeith, {
+            />
+            <AdminRoute path="/adminkeith" component={AddPropsToRoute(AdminKeith, {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
@@ -348,25 +407,26 @@ class App extends Component {
               categories: this.state.categories,
               setCategories: this.setCategories
             })}
-          />
-          <Route
-          //component={NoMatch}
-           // exact
-            //path="*"
-            render={routeProps => (
-              <Fragment>
-                <NoMatch
-                  {...routeProps}
-                  updateUser={this.updateUser}
-                  loggedIn={this.state.loggedIn}
-                  firstName={this.state.firstName}
-                  admin={this.state.admin}
-                  dev={this.state.dev}
-                  logout={this.logout}
-                />
-              </Fragment>
-            )}
-           />
+            />
+            <Route
+              //component={NoMatch}
+              // exact
+              //path="*"
+              render={routeProps => (
+                <Fragment>
+                  <NoMatch
+                    {...routeProps}
+                    updateUser={this.updateUser}
+                    loggedIn={this.state.loggedIn}
+                    firstName={this.state.firstName}
+                    admin={this.state.admin}
+                    dev={this.state.dev}
+                    logout={this.logout}
+                  />
+                </Fragment>
+              )}
+            />
+          </Fragment>
         </Switch>
       </Router>
     );
