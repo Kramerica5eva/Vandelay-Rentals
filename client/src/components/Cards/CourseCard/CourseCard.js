@@ -29,9 +29,9 @@ class CourseCard extends Component {
           </div>
 
             <div className="CourseBtn">
-            <button onClick={() => this.props.addCourseToCart(this.props.course)}>
-              Reserve Course Spot
-            </button>
+              <button onClick={() => this.props.addCourseToCart(this.props.course)}>
+                Reserve Course Spot
+              </button>
             </div>
           </div>
         </div>

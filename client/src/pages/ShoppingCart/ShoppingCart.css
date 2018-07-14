@@ -2,12 +2,116 @@
 
 /* general styling */
 
+#shopping-cart-page .body-container{
+  background-image: url("https://images.unsplash.com/photo-1428954376791-d9ae785dfb2d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b1d1c3353d1a6b599d22960a10440ed8&auto=format&fit=crop&w=1350&q=80");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: calc(100vh);
+  height: 100%;
+}
+
 .body-container .shopping-cart-header {
   text-align: center;
-  margin: 0 auto;
+  margin: 5% auto 0 auto;
+  /* color: white; */
 }
 
 .chkoutDisabled {
   /* pointer-events: none; */
   cursor: not-allowed;
+}
+
+.cart-page-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.cart-page-container .side-image {
+  /* width: 100%; */
+  /* max-width: 300px; */
+}
+
+.cart-items {
+  max-width: 550px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+div .checkout-proceed {
+  display: flex;
+  justify-content: flex-end;
+}
+
+div .checkout-proceed button {
+  font-family: var(--font-Raleway);
+    border: 1px solid #41ba41e2;
+    padding: 7px 14px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    -webkit-box-shadow: 0 0 20px 20px #41ba41e2 inset, 0 0 0 0 #41ba41e2;
+    box-shadow: 0 0 20px 20px #41ba41e2 inset, 0 0 0 0 #41ba41e2;
+    -webkit-transition: all 150ms ease-in-out;
+    -o-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+    text-decoration: none;
+    margin: 0 auto 50px auto;
+}
+div .checkout-proceed button:hover {
+  background-color: transparent;
+  -webkit-box-shadow: 0 0 5px #41ba41e2 inset, 0 0 5px #41ba41e2;
+  box-shadow: 0 0 5px #3fb53fe2 inset, 0 0 5px #41ba41e2;
+  color: #41ba41e2;
+}
+
+.cart-res-container, .cart-reg-container {
+  background-color: rgba(255, 255, 255, 0.863);
+  margin: 3% 1%;
+  padding: 10px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.cart-res-container>*, .cart-reg-container>* {
+  margin-bottom: 5px;
+}
+
+.cart-res-container>h2, .cart-reg-container>h2 {
+  border-bottom: 2px solid #494fc9;
+}
+
+
+.cart-res-container .remove-reservation, .cart-reg-container .remove-reservation {
+  font-family: var(--font-Raleway);
+  border: 1px solid #e34d3ae2;
+  padding: 7px 14px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  -webkit-box-shadow: 0 0 20px 20px #e34d3ae2 inset, 0 0 0 0 #e34d3ae2;
+  box-shadow: 0 0 20px 20px #e34d3ae2 inset, 0 0 0 0 #e34d3ae2;
+  -webkit-transition: all 150ms ease-in-out;
+  -o-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
+  text-decoration: none;
+}
+.cart-res-container .remove-reservation:hover, .cart-reg-container .remove-reservation:hover {
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 5px #e34d3ae2 inset, 0 0 5px #e34d3ae2;
+  box-shadow: 0 0 5px #e34d3ae2 inset, 0 0 5px #e34d3ae2;
+  color: #e34d3ae2;
+}
+
+
+@media (min-width: 600px) {
+  div .checkout-proceed button {
+    margin: 0 25px 50px 25px;
+  }
 }
