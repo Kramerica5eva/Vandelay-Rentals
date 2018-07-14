@@ -5,6 +5,7 @@
     flex-direction: row;
     justify-content: space-evenly;
     align-content: center;
+    width: 165px;
   }
 
   .day-label-and-logo {
@@ -17,15 +18,25 @@
   .day-label-and-logo p{
     text-align: center;
     margin-bottom: 5px;
+    font-size: 0.7em;
   }
 
  .calendar .calHeader .reset-button {
-    width: 50px;
+    width: 165px;
+    max-width: 100%;
+    display: none;
+    justify-content: center;
+    align-items: flex-end;
+    text-align: center;
     cursor: pointer;
+    flex-direction: column;
+    margin-right: 10px;
+
   }
 
 .reset-button .fas {
   font-size: 1.2em;
   color:#1a8fff;
   cursor: pointer;
+  margin-right: 17px;
 }
