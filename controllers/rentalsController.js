@@ -38,7 +38,8 @@ module.exports = {
           category: dbModel.category,
           maker: dbModel.maker,
           dailyRate: dbModel.dailyRate,
-          displayImageUrl: dbModel.displayImageUrl
+          displayImageUrl: dbModel.displayImageUrl,
+          reservations: dbModel.reservations
         }
         res.json(rentalObject)
       })
@@ -60,11 +61,15 @@ module.exports = {
     console.log("Shpoopy, here's the rental req.body:")
     console.log(req.body);
     db.Rental.findById(req.body.itemId)
+      .populate("reservations")
       .then(dbModel => {
         console.log("start dbModel");
         console.log(dbModel);
         console.log("end dbModel");
         if (dbModel.reservations.length > 0) {
+          console.log("Here come the reservations:")
+          console.log(dbModel.reservations);
+          console.log("Here end the reservations.")
           for (let i = 0; i < dbModel.reservations.length; i++) {
             if (dbModel.reservations[i].date.from === dbModel.reservations[i].date.to && req.body.date.from === req.body.date.to) {
               if (dbModel.reservations[i].date.from === req.body.date.from) {
