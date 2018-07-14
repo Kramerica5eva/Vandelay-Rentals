@@ -77,6 +77,40 @@ module.exports = {
     })
   },
 
+  updateUserInfo: function (req, res) {
+    const { username, firstName, lastName, email, state, zipcode, phone } = req.body;
+
+    let zipTest = /^\d{5}(-\d{4})?$/.test(zipcode);
+    let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);
+    let phoneTest = /^\d{3}[\-]\d{3}[\-]\d{4}/.test(phone);
+    let userTest = /^[a-zA-Z0-9]+$/.test(username);
+    let firstTest = /^[a-zA-Z]+$/.test(firstName);
+    let lastTest = /^[a-zA-Z]+$/.test(lastName);
+    let stateTest = /^(?:A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])*$/.test(state);
+
+    console.log(zipTest);
+    console.log(emailTest);
+    console.log(phoneTest);
+    console.log(userTest);
+    console.log(firstTest);
+    console.log(lastTest);
+
+    if (!zipTest || !emailTest || !phoneTest || !userTest || !firstTest || !lastTest || !stateTest) {
+      console.log(zipTest);
+      console.log(emailTest);
+      console.log(phoneTest);
+      console.log(userTest);
+      console.log(firstTest);
+      console.log(lastTest);
+      return res.json({ error: 'did not validate' });
+    }
+
+    db.User.findOneAndUpdate({ _id: req.user._id }, req.body)
+      .then(response => res.json(response))
+      .catch(err => res.json(err));
+
+  },
+
   getUserProfileData: function (req, res) {
     if (req.user) {
       db.User.findOne({ _id: req.user._id })
