@@ -105,10 +105,27 @@ module.exports = {
       return res.json({ error: 'did not validate' });
     }
 
-    db.User.findOneAndUpdate({ _id: req.user._id }, req.body)
-      .then(response => res.json(response))
-      .catch(err => res.json(err));
-
+    // ADD VALIDATION
+    db.User.findOne({ username: username }, (err, user) => {
+      if (err) {
+        console.log('User.js post error: ', err)
+      } else if (user) {
+        res.json({ error: 'username taken' });
+      } else {
+        db.User.findOne({ email: email }, (err, nextUser) => {
+          if (err) {
+            console.log('User.js post error: ', err)
+          } else if (nextUser) {
+            res.json({ error: 'email taken' })
+          }
+          else {
+            db.User.findOneAndUpdate({ _id: req.user._id }, req.body)
+              .then(response => res.json(response))
+              .catch(err => res.json(err));
+          }
+        })
+      }
+    })
   },
 
   getUserProfileData: function (req, res) {
