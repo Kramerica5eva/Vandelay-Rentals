@@ -198,17 +198,17 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
-        <Switch>
-          <Fragment>
-            <Modal
-              show={this.state.modal.isOpen}
-              toggleModal={this.toggleModal}
-              header={this.state.modal.header}
-              body={this.state.modal.body}
-              footer={this.state.modal.footer}
-              buttons={this.state.modal.buttons}
-            />
+      <Fragment>
+        <Modal
+          show={this.state.modal.isOpen}
+          toggleModal={this.toggleModal}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
+        />
+        <Router>
+          <Switch>
             <Route exact path="/"
               render={routeProps => (
                 <Fragment>
@@ -426,9 +426,9 @@ class App extends Component {
                 </Fragment>
               )}
             />
-          </Fragment>
-        </Switch>
-      </Router>
+          </Switch>
+        </Router>
+      </Fragment>
     );
   }
 }

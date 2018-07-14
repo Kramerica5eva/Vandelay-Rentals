@@ -217,7 +217,7 @@ class ShoppingCart extends Component {
                   <div key={reg._id} className="cart-reg-container">
                     <h2>Classes</h2>
                     <h3>{reg.courseName}</h3>
-                    <h4>Class Date: {reg.date}</h4>
+                    <h4>Class Date: {dateFns.format(reg.date * 1000, "ddd MMM Do YYYY")}</h4>
                     <h4>Price per person: ${parseFloat(reg.price.$numberDecimal).toFixed(2)}</h4>
                     {/* <button onClick={() => this.confirmRegistration(reg)}>Confirm</button> */}
                     <button  className="remove-reservation" onClick={() => this.removeRegistrationFromCart(reg._id)}>Remove</button>
