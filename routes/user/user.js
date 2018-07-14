@@ -8,7 +8,8 @@ router.route('/')
 
 router
   .route('/data')
-  .get(isLoggedIn, userController.getUserProfileData);
+  .get(isLoggedIn, userController.getUserProfileData)
+  .put(isLoggedIn,userController.updateUserInfo);
 
 router.post('/login', passport.authenticate('local'), userController.login);
 
