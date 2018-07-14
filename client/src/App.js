@@ -170,7 +170,7 @@ class App extends Component {
       .catch(err => console.log(err));
     this.setModal({
       body: <h5>Your account has been locked. Please call Brandon Morin and complain.</h5>,
-      buttons: <button>(801) 866-9588</button>
+      buttons: <button>(801) 824-3638</button>
     })
   }
 
