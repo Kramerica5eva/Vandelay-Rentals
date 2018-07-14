@@ -20,7 +20,9 @@ class ShoppingCart extends Component {
     },
     loadingModalOpen: false,
     tempRegistrations: [],
-    tempReservations: []
+    tempReservations: [],
+    courses: [],
+    rentals: []
   }
 
   componentWillMount() {
@@ -66,6 +68,28 @@ class ShoppingCart extends Component {
           tempReservations: cart.data.tempReservations
         })
       })
+  }
+
+  getAllCourses = () => {
+    API.getAllCourses()
+      .then(res => {
+        console.log(res);
+        this.setState({
+          courses: res.data
+        });
+        console.log(this.state.courses);
+      })
+      .catch(err => console.log(err));
+  }
+
+  getAllRentals = () => {
+    API.getAllRentals()
+      .then(res => {
+        this.setState({
+          rentals: res.data
+        });
+      })
+      .catch(err => console.log(err));
   }
 
   removeRegistrationFromCart = id => {
@@ -176,9 +200,11 @@ class ShoppingCart extends Component {
                 <div key={res._id} className="cart-res-container">
                   <h2>Rentals</h2>
                   <h3>{res.itemName}</h3>
-                  <h4>Reservation Dates:</h4>
-                  <p>From: {dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>
-                  <p>To: {dateFns.format(res.date.to * 1000, "ddd MMM Do YYYY")}</p>
+                  {res.date.from !== res.date.to ? <h4>Reservation Dates:</h4> : <h4>Reservation Date:</h4>}
+                  {res.date.from !== res.date.to
+                    ? <div><p>From: {dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>
+                      <p>To: {dateFns.format(res.date.to * 1000, "ddd MMM Do YYYY")}</p></div>
+                    : <p>{dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>}
                   <p>Daily Rate: ${parseFloat(res.dailyRate.$numberDecimal).toFixed(2)}</p>
                   <h4>Total cost: ${parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2))}</h4>
                   {/* <button onClick={() => this.confirmReservation(res)}>Confirm</button> */}

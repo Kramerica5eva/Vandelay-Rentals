@@ -22,6 +22,7 @@ class RentalCard extends Component {
               rental={this.props.rental}
               addReservationToCart={this.props.addReservationToCart}
               availability={this.props.setAvailability}
+              unix={this.props.unix}
             />
             <AvailBtn
               click={() => this.props.markUnavailable(this.props.reservations, this.props.name)}
