@@ -320,6 +320,7 @@ class App extends Component {
               firstName: this.state.firstName,
               admin: this.state.admin,
               dev: this.state.dev,
+              logout: this.logout,
               badLogout: this.badLogout
             })}
             />
