@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import Header from "../../components/Elements/Header";
 import DevLinks from "../../components/DevLinks";
 import NavBar from "../../components/Elements/NavBar";
-import FixedFooter from "../../components/Elements/FixedFooter";
+import Footer from "../../components/Elements/Footer";
 import { LoginForm, SignupForm } from "../../components/AuthForms";
 import "./Login.css";
 
@@ -56,7 +56,7 @@ class Login extends Component {
 
     return (
 
-      <div className="login-container">
+      <div className="login-container" style={{ backgroundImage: 'url(./static/assets/images/swimming_in_the_water.jpeg)' }}>
         <div className="sticky-footer-div">
           <NavBar
             loggedIn={this.props.loggedIn}
@@ -66,7 +66,6 @@ class Login extends Component {
             toggleForm={this.toggleForm}
             loginShow={this.state.loginShow}
           />
-          <div className="login-content-container" style={{ backgroundImage: 'url(./static/assets/images/swimming_in_the_water.jpeg)' }}>
           <Header>
             <DevLinks
               loggedIn={this.props.loggedIn}
@@ -76,8 +75,7 @@ class Login extends Component {
               location={this.props.location}
             />
           </Header>
-            <div id="login-forms-container">
-
+          <div id="login-forms-container">
             {this.state.loginShow ? (
               <Fragment>
                 <div className="login-toggle-div">
@@ -108,17 +106,11 @@ class Login extends Component {
                 </Fragment>
               )}
 
-            </div>
           </div>
 
         </div>
 
-        {/* <footer className='footer'> */}
-          {/* <a href="https://github.com/Kramerica5eva/Vandelay-Rentals" target="_blank">GitHub</a> */}
-          {/* <p>&#9400;Copyright 2018 Kramerica Industries</p> */}
-          {/* <Link className="btn-link" to="##########" role="button">Contact</Link> */}
-        {/* </footer> */}
-        <FixedFooter/>
+        <Footer />
       </div>
     );
   }

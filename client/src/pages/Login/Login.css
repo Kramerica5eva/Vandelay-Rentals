@@ -1,80 +1,69 @@
-    /* Login.css File */
+/* Login.css File */
 
 .header h3 {
-    text-align: center;
-    margin-bottom: 10px;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .header, .header+div {
-    position: relative;
-    top: 50px;
-    padding: 15px;
-}
-
-.login-content-container {
-    display: flex;
-    /* justify-content: center; */
-    flex-direction: column;
-    align-items: center;
-    /* background-image: url(./../assets/images/swimming_in_the_water.jpeg); */
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    height: 100%;
+  position: relative;
+  top: 50px;
+  padding: 15px;
 }
 
 #login-forms-container {
-    max-width: 370px;
-    width: 100%;
-    margin: 50px 2% 75px 2%;
-    padding: 0;
-    border: 1px solid #000;
-    background-color: white;
+  max-width: 370px;
+  width: 100%;
+  margin: 30px auto 100px auto;
+  padding: 0;
+  border: 1px solid #000;
+  background-color: white;
 }
 
 .login-form-div {
-    border: 1px solid #000;
-    padding: 20px 5px 20px 35px;
+  border: 1px solid #000;
+  padding: 20px 5px 20px 35px;
 }
 
 .login-form-div h2 {
-    margin-bottom: 40px;
+  margin-bottom: 40px;
 }
 
 .login-toggle-div {
-    display: flex;
-    border: 1px solid #000;
+  display: flex;
+  border: 1px solid #000;
 }
 
 .login-toggle-btn {
-    width: 50%;
-    background-color: #000;
-    color: #ddd;
-    padding: 10px 0;
-    border: none;
-    outline: transparent;
+  width: 50%;
+  background-color: #000;
+  color: #ddd;
+  padding: 10px 0;
+  border: none;
+  outline: transparent;
 }
 
 .login-toggle-btn-light {
-    opacity: .6;
+  opacity: .6;
 }
 
 .login-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .sticky-footer-div {
-    flex: 1 0 auto;
+  flex: 1 0 auto;
 }
 
 /* At screens larger than 370px */
 
 @media (max-width: 370px) {
-    .login-form-div {
-        padding: 20px 10px 20px 15px;
-    }
+  .login-form-div {
+    padding: 20px 10px 20px 15px;
+  }
 }
-
