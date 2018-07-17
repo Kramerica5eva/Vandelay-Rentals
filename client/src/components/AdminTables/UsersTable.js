@@ -198,10 +198,18 @@ export class UsersTable extends Component {
   };
 
   updateSelectedRow = () => {
+    this.toggleLoadingModal();
     console.log(this.state.selectedRow);
     const { city, admin, email, firstName, lastName, phone, standing, state, street, username, zipcode, _id } = this.state.selectedRow;
+
+    console.log(admin);
+    let adminStr;
+    if (typeof admin === 'string' || admin instanceof String) adminStr = admin.toLowerCase();
+    else if (admin === false) adminStr = "false";
+    else if (admin === true) adminStr = "true";
+
     const updateObject = {
-      admin: admin.toLowerCase(),
+      admin: adminStr,
       city: city,
       email: email,
       firstName: firstName,
@@ -216,16 +224,31 @@ export class UsersTable extends Component {
     console.log(updateObject);
     API.adminUpdateUser(_id, updateObject)
       .then(response => {
-        console.log(response);
+        console.log(response.data.dbModel._id);
+        console.log(response.data.user._id);
         if (response.status === 200) {
-          //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+          if (response.data.dbModel._id !== response.data.user._id) {
+            //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+            setTimeout(this.toggleLoadingModal, 500);
+            // success modal after the loading modal is gone.
+            setTimeout(this.setModal, 500, {
+              body: <h4>Database successfully updated</h4>
+            });
+            this.adminGetAllUsers();
+          } else {
+            //  This should set up a redirect away from here to the home page, since this 'else' will only be triggered if a person revokes their own admin status... stupid, but... someone out there is stupid enough to do it. 
+          }
+        } else {
           setTimeout(this.toggleLoadingModal, 500);
-          // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
-            body: <h4>Database successfully updated</h4>
+            body: <h4>There was a problem with your request. Please try again.</h4>
           });
-          this.adminGetAllUsers();
         }
+      }).catch(err => {
+        setTimeout(this.toggleLoadingModal, 500);
+        setTimeout(this.setModal, 500, {
+          body: <h4>There was a problem with your request. Please try again.</h4>
+        });
       })
   }
 

@@ -170,7 +170,7 @@ class App extends Component {
       .catch(err => console.log(err));
     this.setModal({
       body: <h5>Your account has been locked. Please call Brandon Morin and complain.</h5>,
-      buttons: <button>(801) 866-9588</button>
+      buttons: <button>(801) 824-3638</button>
     })
   }
 
@@ -198,17 +198,17 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
-        <Switch>
-          <Fragment>
-            <Modal
-              show={this.state.modal.isOpen}
-              toggleModal={this.toggleModal}
-              header={this.state.modal.header}
-              body={this.state.modal.body}
-              footer={this.state.modal.footer}
-              buttons={this.state.modal.buttons}
-            />
+      <Fragment>
+        <Modal
+          show={this.state.modal.isOpen}
+          toggleModal={this.toggleModal}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
+        />
+        <Router>
+          <Switch>
             <Route exact path="/"
               render={routeProps => (
                 <Fragment>
@@ -320,6 +320,7 @@ class App extends Component {
               firstName: this.state.firstName,
               admin: this.state.admin,
               dev: this.state.dev,
+              logout: this.logout,
               badLogout: this.badLogout
             })}
             />
@@ -426,9 +427,9 @@ class App extends Component {
                 </Fragment>
               )}
             />
-          </Fragment>
-        </Switch>
-      </Router>
+          </Switch>
+        </Router>
+      </Fragment>
     );
   }
 }

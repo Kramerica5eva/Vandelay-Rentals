@@ -1,9 +1,17 @@
 import React, { Component, Fragment } from "react";
 import { Input, FormBtn } from "../Elements/Form";
+import Modal from "../../components/Elements/Modal";
 import API from "../../utils/API";
 
 export class UserUpdateForm extends Component {
   state = {
+    modal: {
+      isOpen: false,
+      header: "",
+      body: "",
+      footer: "",
+      buttons: ""
+    },
     username: "",
     firstName: "",
     lastName: "",
@@ -21,6 +29,25 @@ export class UserUpdateForm extends Component {
       [name]: value
     });
   };
+
+  toggleModal = () => {
+    this.setState({
+      modal: { isOpen: !this.state.modal.isOpen }
+    });
+  };
+
+  setModal = (modalInput) => {
+    this.setState({
+      modal: {
+        isOpen: true,
+        header: modalInput.header,
+        body: modalInput.body,
+        footer: modalInput.footer,
+        buttons: modalInput.buttons
+      }
+    });
+  };
+
 
   handleFormSubmit = event => {
     event.preventDefault();
@@ -73,6 +100,14 @@ export class UserUpdateForm extends Component {
   render() {
     return (
       <Fragment>
+        <Modal
+          show={this.state.modal.isOpen}
+          toggleModal={this.toggleModal}
+          header={this.state.modal.header}
+          body={this.state.modal.body}
+          footer={this.state.modal.footer}
+          buttons={this.state.modal.buttons}
+        />
         <form>
           <h3>Edit Your Info</h3>
           <Input

@@ -93,3 +93,26 @@
 .black {
     color: black;
 }
+
+.CourseBtn button {
+    font-family: var(--font-Raleway);
+    border: 1px solid #4e50d8e2;
+    padding: 7px 14px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    -webkit-box-shadow: 0 0 20px 20px #4e50d8e2 inset, 0 0 0 0 #4e50d8e2;
+    box-shadow: 0 0 20px 20px #4e50d8e2 inset, 0 0 0 0 #4e50d8e2;
+    -webkit-transition: all 150ms ease-in-out;
+    -o-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+    text-decoration: none;
+}
+.CourseBtn button:hover {
+    background-color: #fff;
+    -webkit-box-shadow: 0 0 5px #4e50d8e2 inset, 0 0 5px #4e50d8e2;
+    box-shadow: 0 0 5px #4e50d8e2 inset, 0 0 5px #4e50d8e2;
+    color: #4e50d8e2;
+}
+
+

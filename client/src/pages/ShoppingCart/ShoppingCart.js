@@ -205,15 +205,15 @@ class ShoppingCart extends Component {
           logout={this.props.logout}
           location={this.props.location}
         />
-        <div className="main-container">
-          <ParallaxHero
+        <div className="main-container" id="shopping-cart-page">
+          {/* <ParallaxHero
             image={{ backgroundImage: 'url(./static/assets/images/long_pier.jpeg)' }}
             title="Shopping Cart"
-          />
-          <div className='body-container'>
+          /> */}
+          <div className='body-container '>
             <div className="shopping-cart-header">
               <h2>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</h2>
-              <h3>This is the final step.</h3>
+              <h3>You're almost done!</h3>
             </div>
 
             <DevLinks
@@ -224,41 +224,47 @@ class ShoppingCart extends Component {
               location={this.props.location}
             />
 
-            {this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
-              <h3>Your Shopping Cart is Empty</h3> : null}
+            <div className="cart-page-container">
+              <div className="cart-items">
+                {this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
+                  <h3 className="empty-cart">Your Shopping Cart is Empty</h3> : null}
+                {this.state.tempReservations ? (
+                  this.state.tempReservations.map(res => (
+                  <div key={res._id} className="cart-res-container">
+                    <h2>Rentals</h2>
+                    <h3>{res.itemName}</h3>
+                    {res.date.from !== res.date.to ? <h4>Reservation Dates:</h4> : <h4>Reservation Date:</h4>}
+                    {res.date.from !== res.date.to
+                      ? <div><p>From: {dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>
+                        <p>To: {dateFns.format(res.date.to * 1000, "ddd MMM Do YYYY")}</p></div>
+                      : <p>{dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>}
+                    <p>Daily Rate: ${parseFloat(res.dailyRate.$numberDecimal).toFixed(2)}</p>
+                    <h4>Total cost: ${parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2))}</h4>
+                      {/* <button onClick={() => this.confirmReservation(res)}>Confirm</button> */}
+                    <button className="remove-reservation" onClick={() => this.removeReservationFromCart(res._id)}>Remove</button>
+                  </div>
+                ))
+              ) : null}
 
-            <button className={`${this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
-              "chkoutDisabled" : ""}`} onClick={() => this.checkout()}>Checkout</button>
-            {this.state.tempReservations ? (
-              this.state.tempReservations.map(res => (
-                <div key={res._id} className="cart-res-container">
-                  <h2>Rentals</h2>
-                  <h3>{res.itemName}</h3>
-                  {res.date.from !== res.date.to ? <h4>Reservation Dates:</h4> : <h4>Reservation Date:</h4>}
-                  {res.date.from !== res.date.to
-                    ? <div><p>From: {dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>
-                      <p>To: {dateFns.format(res.date.to * 1000, "ddd MMM Do YYYY")}</p></div>
-                    : <p>{dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>}
-                  <p>Daily Rate: ${parseFloat(res.dailyRate.$numberDecimal).toFixed(2)}</p>
-                  <h4>Total cost: ${parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2))}</h4>
-                  {/* <button onClick={() => this.confirmReservation(res)}>Confirm</button> */}
-                  <button onClick={() => this.removeReservationFromCart(res._id)}>Remove</button>
-                </div>
-              ))
-            ) : null}
-
-            {this.state.tempRegistrations ? (
-              this.state.tempRegistrations.map(reg => (
-                <div key={reg._id} className="cart-reg-container">
-                  <h2>Classes</h2>
-                  <h3>{reg.courseName}</h3>
-                  <h4>Class Date: {reg.date}</h4>
-                  <h4>Price per person: ${parseFloat(reg.price.$numberDecimal).toFixed(2)}</h4>
-                  {/* <button onClick={() => this.confirmRegistration(reg)}>Confirm</button> */}
-                  <button onClick={() => this.removeRegistrationFromCart(reg._id)}>Remove</button>
-                </div>
-              ))
-            ) : null}
+              {this.state.tempRegistrations ? (
+                this.state.tempRegistrations.map(reg => (
+                  <div key={reg._id} className="cart-reg-container">
+                    <h2>Classes</h2>
+                    <h3>{reg.courseName}</h3>
+                    <h4>Class Date: {dateFns.format(reg.date * 1000, "ddd MMM Do YYYY")}</h4>
+                    <h4>Price per person: ${parseFloat(reg.price.$numberDecimal).toFixed(2)}</h4>
+                    {/* <button onClick={() => this.confirmRegistration(reg)}>Confirm</button> */}
+                    <button  className="remove-reservation" onClick={() => this.removeRegistrationFromCart(reg._id)}>Remove</button>
+                  </div>
+                ))
+              ) : null}
+              </div>
+            </div>
+            <div className={this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
+                  "no-confirm" : "checkout-proceed"}>
+              <button className={`${this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
+                "chkoutDisabled" : ""}`} onClick={() => this.checkout()}>Confirm Reservation <i className="fas fa-check-circle"></i></button>
+            </div>
           </div>
           <Footer />
 

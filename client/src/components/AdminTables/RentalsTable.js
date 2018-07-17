@@ -40,7 +40,8 @@ export class RentalsTable extends Component {
     image: null,
     rentals: [],
     selection: [],
-    selectedRow: {}
+    selectedRow: {},
+    selected: null
   };
 
   componentDidMount = () => {
@@ -377,8 +378,7 @@ export class RentalsTable extends Component {
   // Once image names have been retrieved, they are placed into img tags for display inside a modal
   getImageModal = images => {
     this.setImageModal({
-      header: 'Rental Images',
-      body: (
+      body:
         <Fragment>
           {images.map(image => (
             <div className="rental-img-div">
@@ -388,7 +388,6 @@ export class RentalsTable extends Component {
             </div>
           ))}
         </Fragment>
-      )
     });
   };
 
@@ -522,7 +521,21 @@ export class RentalsTable extends Component {
           }
         };
       }
-    };
+    }
+
+    // getTrProps={(state, rowInfo) => {
+    //   return {
+    //     onClick: (e) => {
+    //       that.setState({
+    //         selected: rowInfo.index
+    //       })
+    //     },
+    //     style: {
+    //       background: rowInfo.index === that.state.selected ? '#00afec' : 'white',
+    //       color: rowInfo.index === that.state.selected ? 'white' : 'black'
+    //     }
+    //   }
+    // }
 
     return (
       <Fragment>

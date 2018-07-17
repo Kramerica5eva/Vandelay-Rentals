@@ -61,8 +61,8 @@
     z-index: 999;
     cursor: pointer;
     transform: scale(1.25);
-    transition: transform .25s linear;
-}
+    transition: transform 0.25s linear;
+    }
 
 .black-box:hover:nth-child(odd) {
     position: relative;

@@ -15,21 +15,21 @@ import './Rentals.css';
 // import "./../../App.css";
 
 class Rentals extends Component {
-  
-  state = {
-    modal: {
-      isOpen: false,
-      header: '',
-      body: '',
-      footer: '',
-      buttons: ''
-    },
-    rentals: [],
-    unix: [],
-    unavailable: [],
-    name: '',
-    loadingModalOpen: false,
-  };
+
+	state = {
+		modal: {
+			isOpen: false,
+			header: '',
+			body: '',
+			footer: '',
+			buttons: ''
+		},
+		rentals: [],
+		unix: [],
+		unavailable: [],
+		name: '',
+		loadingModalOpen: false,
+	};
 
 	componentDidMount() {
 		this.getAllRentals();
@@ -136,180 +136,123 @@ class Rentals extends Component {
 		console.log(this.state.name == name, this.state.name, name);
 	};
 
-  clearUnix = () => {
-    this.setState({
-      unix: []
-    });
-  }
+	clearUnix = () => {
+		this.setState({
+			unix: []
+		});
+	}
 
-  addReservationToCart = rental => {
-    // Trigger the loading modal:
-    this.toggleLoadingModal();
-    //  Initialize date variables:
-    let from;
-    let to;
-    //  Set date variables:
-    if (this.state.unix.length > 1) {
-      from = this.state.unix[0];
-      to = this.state.unix[this.state.unix.length - 1];
-    } else {
-      from = this.state.unix[0];
-      to = this.state.unix[0];
-    }
-    // Call the API function:
-    API.addReservationToCart(from, to, rental)
-      .then(response => {
-        console.log(response);
-        // this function searches the database for existing cart items that conflict with the chosen dates
-        // if it finds such an item, it will return a message: "duplicate"
-        if (response.data.message === "duplicate") {
-          // close the loading modal:
-          this.toggleLoadingModal();
+	addReservationToCart = rental => {
+		// Trigger the loading modal:
+		this.toggleLoadingModal();
+		//  Initialize date variables:
+		let from;
+		let to;
+		//  Set date variables:
+		if (this.state.unix.length > 1) {
+			from = this.state.unix[0];
+			to = this.state.unix[this.state.unix.length - 1];
+		} else {
+			from = this.state.unix[0];
+			to = this.state.unix[0];
+		}
+		// Call the API function:
+		API.addReservationToCart(from, to, rental)
+			.then(response => {
+				console.log(response);
+				// this function searches the database for existing cart items that conflict with the chosen dates
+				// if it finds such an item, it will return a message: "duplicate"
+				if (response.data.message === "duplicate") {
+					// close the loading modal:
+					this.toggleLoadingModal();
 
-				if (response.data.existingRes.length > 1) {
-					this.setModal({
-						body: (
-							<Fragment>
-								<h4>
-									The dates you have chosen conflict with multiple reservations
-                  already in your cart. Please check your cart before
-                  proceeding.
-                </h4>
-							</Fragment>
-						)
-					});
-				} else {
-					// assign existing cart item to a variable:
-					const existingRes = response.data.existingRes[0];
-					const changedFrom = existingRes.date.from;
-					const changedTo = existingRes.date.to;
-					console.log(`From: ${from}, To: ${to}`);
-					console.log(`From: ${changedFrom}, To: ${changedTo}`);
-					if (changedFrom === from && changedTo === to) {
+					if (response.data.existingRes.length > 1) {
 						this.setModal({
-							body: (
+							body:
 								<Fragment>
-									<h5>
-										This item is already in your cart for the same date(s):
-                  </h5>
-									{from !== to ? (
-										<div>
-											<h6>
-												from:{' '}
-												{dateFns.format(
-													existingRes.date.from * 1000,
-													'ddd, MMMM Do YYYY'
-												)}
-											</h6>
-											<h6>
-												to:{' '}
-												{dateFns.format(
-													existingRes.date.to * 1000,
-													'ddd, MMMM Do YYYY'
-												)}
-											</h6>
-										</div>
-									) : (
-											<h6>
-												{dateFns.format(
-													existingRes.date.from * 1000,
-													'ddd, MMMM Do YYYY'
-												)}
-											</h6>
-										)}
+									<h4>The dates you have chosen conflict with multiple reservations already in your cart. Please check your cart before proceeding.</h4>
 								</Fragment>
-							),
-							buttons:
-								<button onClick={this.toggleModal}>Continue Shopping</button>
 						});
 					} else {
-						//  Add existing reservation dates to the rental object so they can be passed to the changeReservationInCart function if the user chooses to change dates:
-						rental.oldFrom = existingRes.date.from;
-						rental.oldTo = existingRes.date.to;
-						//  Set modal to get user input:
-						this.setModal({
-							body: (
-								<Fragment>
-									{changedFrom !== changedTo ? (
-										<div>
-											<h5>
-												This item is already in your cart for similar dates:
-                      </h5>
-											<h6>
-												from:{' '}
-												{dateFns.format(
-													existingRes.date.from * 1000,
-													'ddd, MMMM Do YYYY'
-												)}
-											</h6>
-											<h6>
-												to:{' '}
-												{dateFns.format(
-													existingRes.date.to * 1000,
-													'ddd, MMMM Do YYYY'
-												)}
-											</h6>
-										</div>
-									) : (
+						// assign existing cart item to a variable:
+						const existingRes = response.data.existingRes[0];
+						const changedFrom = existingRes.date.from;
+						const changedTo = existingRes.date.to;
+						console.log(`From: ${from}, To: ${to}`);
+						console.log(`From: ${changedFrom}, To: ${changedTo}`);
+						if (changedFrom === from && changedTo === to) {
+							this.setModal({
+								body:
+									<Fragment>
+										<h5>This item is already in your cart for the same date(s):</h5>
+										{from !== to ? (
 											<div>
-												<h4>
-													This item is already in your cart for one of your chosen
-													dates:
-                      </h4>
-												<h6>
-													{dateFns.format(
-														existingRes.date.from * 1000,
-														'ddd, MMMM Do YYYY'
-													)}
-												</h6>
+												<h6>from:{' '} {dateFns.format(existingRes.date.from * 1000, 'ddd, MMMM Do YYYY')}</h6>
+												<h6>to:{' '} {dateFns.format(existingRes.date.to * 1000, 'ddd, MMMM Do YYYY')}</h6>
 											</div>
-										)}
-									<h4>
-										Would you like to keep the existing date(s) or change to
-                    your new selection?
-                  </h4>
-								</Fragment>
-							),
-							buttons:
-								<Fragment>
-									<button onClick={this.toggleModal}>Keep</button>
-									<button
-										onClick={() =>
-											this.changeReservationInCart(from, to, rental)
-										}
-									>
-										Change
-                  </button>
-								</Fragment>
-						});
+										) : (
+												<h6>{dateFns.format(existingRes.date.from * 1000, 'ddd, MMMM Do YYYY')}</h6>
+											)}
+									</Fragment>,
+								buttons:
+									<button onClick={this.toggleModal}>Continue Shopping</button>
+							});
+						} else {
+							//  Add existing reservation dates to the rental object so they can be passed to the changeReservationInCart function if the user chooses to change dates:
+							rental.oldFrom = existingRes.date.from;
+							rental.oldTo = existingRes.date.to;
+							//  Set modal to get user input:
+							this.setModal({
+								body:
+									<Fragment>
+										{changedFrom !== changedTo ? (
+											<div>
+												<h5>This item is already in your cart for similar dates:</h5>
+												<h6>from:{' '} {dateFns.format(existingRes.date.from * 1000, 'ddd, MMMM Do YYYY')}</h6>
+												<h6>to:{' '} {dateFns.format(existingRes.date.to * 1000, 'ddd, MMMM Do YYYY')}</h6>
+											</div>
+										) : (
+												<div>
+													<h4>This item is already in your cart for one of your chosen dates:</h4>
+													<h6>{dateFns.format(existingRes.date.from * 1000, 'ddd, MMMM Do YYYY')}</h6>
+												</div>
+											)}
+										<h4>Would you like to keep the existing date(s) or change to your new selection?</h4>
+									</Fragment>,
+								buttons:
+									<Fragment>
+										<button onClick={this.toggleModal}>Keep</button>
+										<button onClick={() => this.changeReservationInCart(from, to, rental)}>Change</button>
+									</Fragment>
+							});
+						}
 					}
-				}
-			} else {
-				//  If the chosen rental parameters (item + dates) don't exist in the db,
-				//  the reservation is added to the cart, and the loading modal closes.
-				setTimeout(this.toggleLoadingModal, 500);
-				console.log(rental);
-				setTimeout(this.setModal, 500, {
-					body:
-						<Fragment>
-							<h5>{rental.name} has been added to your cart.</h5>
-							<br />
-							<h4>Would you like to checkout or keep shopping?</h4>
-						</Fragment>,
-					buttons:
-						<Fragment>
-							<Link
-								className="modal-btn-link"
-								to={{ pathname: '/cart' }}
-								role="button"
-							>
-								Go to Checkout
+				} else {
+					//  If the chosen rental parameters (item + dates) don't exist in the db,
+					//  the reservation is added to the cart, and the loading modal closes.
+					setTimeout(this.toggleLoadingModal, 500);
+					console.log(rental);
+					setTimeout(this.setModal, 500, {
+						body:
+							<Fragment>
+								<h5>{rental.name} has been added to your cart.</h5>
+								<br />
+								<h4>Would you like to checkout or keep shopping?</h4>
+							</Fragment>,
+						buttons:
+							<Fragment>
+								<Link
+									className="modal-btn-link"
+									to={{ pathname: '/cart' }}
+									role="button"
+								>
+									Go to Checkout
               </Link>
-							<button onClick={this.toggleModal}>Continue Shopping</button>
-						</Fragment>
-				});
-			}
-		});
+								<button onClick={this.toggleModal}>Continue Shopping</button>
+							</Fragment>
+					});
+				}
+			});
 	};
 
 	changeReservationInCart = (from, to, rental) => {
@@ -320,40 +263,40 @@ class Rentals extends Component {
 		});
 	};
 
-  render() {
-    return (
-      <Fragment>
-        <Modal
-          show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
-          header={this.state.modal.header}
-          body={this.state.modal.body}
-          footer={this.state.modal.footer}
-          buttons={this.state.modal.buttons}
-        />
-        <NavBar
-          loggedIn={this.props.loggedIn}
-          admin={this.props.admin}
-          logout={this.props.logout}
-          location={this.props.location}
-        />
-        <LoadingModal show={this.state.loadingModalOpen} />
-        <div className="main-container">
-          <ParallaxHero
-            image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)', backgroundPosition: "bottom" }}
-            title=""
-            pageClass={"rentalPage"}
-          />
-          <div className="calendar-container">
-            <h1 className="calendar-head-title">Rentals</h1>
-            <Calendar
-              updateUnix={this.getDays}
-              unavailable={this.state.unavailable}
-              unavailableName={this.state.name}
-              clearUnavailable={this.clearUnavailable}
-              clearUnix={this.clearUnix}
-            />
-          </div>
+	render() {
+		return (
+			<Fragment>
+				<Modal
+					show={this.state.modal.isOpen}
+					toggleModal={this.toggleModal}
+					header={this.state.modal.header}
+					body={this.state.modal.body}
+					footer={this.state.modal.footer}
+					buttons={this.state.modal.buttons}
+				/>
+				<NavBar
+					loggedIn={this.props.loggedIn}
+					admin={this.props.admin}
+					logout={this.props.logout}
+					location={this.props.location}
+				/>
+				<LoadingModal show={this.state.loadingModalOpen} />
+				<div className="main-container">
+					<ParallaxHero
+						image={{ backgroundImage: 'url(https://images.unsplash.com/photo-1471074454408-f7db62d99254?ixlib=rb-0.3.5&s=510c5a89003b801af4a67b96353f118b&auto=format&fit=crop&w=1267&q=80)', backgroundPosition: "bottom" }}
+						title=""
+						pageClass={"rentalPage"}
+					/>
+					<div className="calendar-container">
+						<h1 className="calendar-head-title">Rentals</h1>
+						<Calendar
+							updateUnix={this.getDays}
+							unavailable={this.state.unavailable}
+							unavailableName={this.state.name}
+							clearUnavailable={this.clearUnavailable}
+							clearUnix={this.clearUnix}
+						/>
+					</div>
 
 					<div className="body-container rentals">
 						<Header>
