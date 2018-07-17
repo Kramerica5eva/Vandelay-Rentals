@@ -348,9 +348,11 @@ export class TestTable extends Component {
                 Header: "Contact Info",
                 columns: [
                   {
-                    Header: "Email",
+                    Header: "Buttonhooked",
                     accessor: "email",
-                    Cell: this.renderEditable
+                    Cell: row => {
+                      return <button onClick={() => console.log(row)}>Row!</button>
+                    }
                   },
                   {
                     Header: "Street",

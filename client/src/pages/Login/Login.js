@@ -100,6 +100,7 @@ class Login extends Component {
                     <h2>Sign Up</h2>
                     <SignupForm
                       setRedirectLogin={this.setRedirectLogin}
+                      setRedirect={this.setRedirect}
                       updateUser={this.props.updateUser}
                     />
                   </div>

@@ -67,7 +67,6 @@ export class SignupForm extends Component {
       phone: this.state.phone
     })
       .then(res => {
-        console.log(res);
         if (res.data.error) {
           switch (res.data.error) {
             case "username taken":
@@ -89,11 +88,27 @@ export class SignupForm extends Component {
         //  'errmsg' seems to be standard MongoDB terminology...
         else if (!res.data.errmsg) {
 
-          console.log("Creating user:")
-          console.log(res);
+          //  If signup was successful, log the user in and setRedirect, which will send them either back where they came from, or to where they were going (the 'to' part of this is currently irrelevant, but may again be relevant if there are any links to protected routes that show to non-logged in users - such as cart functionality that requires a login before checkout)
+          API.login({
+            username: this.state.username,
+            password: this.state.password
+          }).then(response => {
+            // update App.js state
+            this.props.updateUser({
+              auth: true,
+              admin: res.data.admin,
+              state: {
+                loggedIn: true,
+                username: res.data.username,
+                firstName: res.data.firstName,
+                admin: res.data.admin,
+                dev: res.data.dev
+              }
+            });
+            // Once logged in, set call this.props.redirect to setState on the login page so the component will reload and trigger the if/else to redirect elsewhere
+            this.props.setRedirect();
 
-          // Once signed up, set this.state.setRedirectLogin so the user will be redirected login (currently, signing up does not log you in...)
-          setTimeout(this.props.setRedirectLogin(), 200);
+          })
         } else {
           console.log('username already taken');
         }
