@@ -145,6 +145,40 @@ class ShoppingCart extends Component {
     });
     Promise.all(promiseArray)
       .then(() => {
+        // console.log(promiseArray);
+        // if (response.data.message === "duplicate") {
+        // 	console.log("Duplicate")
+        // 	this.toggleLoadingModal();
+        // 	this.setModal({
+        // 		body:
+        // 			<Fragment>
+        // 				<h5>That class is already in your cart.</h5>
+        // 				<br />
+        // 				<h4>Would you like to checkout or keep shopping?</h4>
+        // 			</Fragment>,
+        // 		buttons:
+        // 			<Fragment>
+        // 				<Link
+        // 					className="modal-btn-link"
+        // 					to={{ pathname: '/cart' }}
+        // 					role="button"
+        // 				>
+        // 					Go to Checkout
+        // 		</Link>
+        // 				<button onClick={this.toggleModal}>Continue Shopping</button>
+        // 			</Fragment>
+        // 	})
+        // } else if (response.data.message === "registration duplicate") {
+        // 	console.log("Duplicate")
+        // 	this.toggleLoadingModal();
+        // 	this.setModal({
+        // 		body:
+        // 			<h4>You are already registered for that class.</h4>,
+        // 		buttons:
+        // 			<button onClick={this.toggleModal}>Continue Shopping</button>
+
+        // 	})
+        // }
         this.getUserShoppingCart();
         this.toggleLoadingModal();
       })
