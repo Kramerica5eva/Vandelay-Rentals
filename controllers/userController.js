@@ -20,7 +20,7 @@ module.exports = {
 
     let zipTest = /^\d{5}(-\d{4})?$/.test(zipcode);
     let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);
-    let phoneTest = /^\d{3}[\-]\d{3}[\-]\d{4}/.test(phone);
+    let phoneTest = /^\d{3}[\-]\d{3}[\-]\d{4}/.test(phone) || /^\d{10}/.test(phone);
     let userTest = /^[a-zA-Z0-9]+$/.test(username);
     let firstTest = /^[a-zA-Z]+$/.test(firstName);
     let lastTest = /^[a-zA-Z]+$/.test(lastName);
@@ -82,7 +82,7 @@ module.exports = {
 
     let zipTest = /^\d{5}(-\d{4})?$/.test(zipcode);
     let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);
-    let phoneTest = /^\d{3}[\-]\d{3}[\-]\d{4}/.test(phone);
+    let phoneTest = /^\d{3}[\-]\d{3}[\-]\d{4}/.test(phone) || /^\d{10}/.test(phone);
     let userTest = /^[a-zA-Z0-9]+$/.test(username);
     let firstTest = /^[a-zA-Z]+$/.test(firstName);
     let lastTest = /^[a-zA-Z]+$/.test(lastName);

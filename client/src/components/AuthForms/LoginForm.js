@@ -45,7 +45,7 @@ export class LoginForm extends Component {
     event.preventDefault();
 
     API.login({
-      username: this.state.username,
+      username: this.state.username.toLowerCase(),
       password: this.state.password
     })
       .then(res => {

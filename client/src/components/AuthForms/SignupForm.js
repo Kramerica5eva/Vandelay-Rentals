@@ -55,7 +55,7 @@ export class SignupForm extends Component {
 
     //request to server to add a new username/password
     API.signup({
-      username: this.state.username,
+      username: this.state.username.toLowerCase(),
       password: this.state.password,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -90,7 +90,7 @@ export class SignupForm extends Component {
 
           //  If signup was successful, log the user in and setRedirect, which will send them either back where they came from, or to where they were going (the 'to' part of this is currently irrelevant, but may again be relevant if there are any links to protected routes that show to non-logged in users - such as cart functionality that requires a login before checkout)
           API.login({
-            username: this.state.username,
+            username: this.state.username.toLowerCase(),
             password: this.state.password
           }).then(response => {
             // update App.js state
