@@ -1,40 +1,7 @@
-/* overriding input styling */
-.rt-td input {
-  font-size: unset;
-  padding: unset;
-  display: unset;
-  width: unset;
-  border: unset;
-  border-bottom: unset;
-}
-
-.rt-td input:focus {
-  outline: unset;
-}
-
-.rt-td input:focus~label,
-.rt-td input:valid~label {
-  top: unset;
-  font-size: unset;
-  color: unset;
-}
-
-.rt-td input:not(:focus):invalid {
-  background-color: unset;
-}
-
-.rt-thead input {
-	display: none;
-}
-/* END overriding input styling */
-
-.table-btn-invis {
-  border: none;
-  outline: transparent;
-  background: transparent;
-  font-family: var(--font-Raleway);
-  cursor: pointer;
-  font-size: 14px;
+.main-table-container {
+  background: #ececec;  
+  background: linear-gradient(#dadada,#f1f1f1);
+  padding: 10px;
 }
 
 .rental-img {
@@ -76,64 +43,77 @@
   cursor: pointer;
 }
 
-.table-btn-div {  
-  margin-left: 50px;
-  padding: 0 0 10px 0;
+.table-select select {
+  border: none;
+  outline: transparent;
+  background: #fafafa;
+  font-family: var(--font-Raleway);
 }
 
-.table-btn-div h4 {
-  font-size: 1.25rem;
-  font-weight: bold;
-  padding: 5px;
-}
-
-.table-btn-div button {  
-  background-color: #555555;
-  color: #fff;
-  border: 1px solid #000;
-  padding: 3px 5px;
-  margin: 0 5px;
+.table-icon {
+  padding: 0 10px;
   cursor: pointer;
-  box-shadow: 5px 5px 10px #333;
-  text-shadow: 0 0 2px #000,
-  0 0 3px #000,
-  0 0 4px #000,
-  0 0 5px #fff,
-  0 0 10px #fff;
 }
 
-.table-btn-div button:hover {  
-  background-color: #fff;
-  border: 1px solid #787878;
-  text-shadow: 0 0 2px #000,
-  0 0 3px #000,
-  0 0 5px #000,
-  0 0 10px #000,
-  0 0 15px #000,
-  0 0 20px #000;
+.-headerGroups {
+  border: transparent;
 }
 
-.table-btn-div button:active {  
-  box-shadow: 3px 3px 10px #333;
-  transform: translateY(2px);
-}
-
-.table-btn-div button:disabled,
-.table-btn-div button[disabled]{
-  opacity: 0.6;
-}
-
-.table-btn-div button:disabled:hover,
-.table-btn-div button[disabled]:hover{
-  background-color: #555555;
+.-headerGroups > .rt-tr > .rt-th {
+  border-left: 1px solid #a3a3a3;
+  outline: transparent;
+  font-weight: bold;
+  font-size: 1rem;
   color: #fff;
-  border: 1px solid #000;
-  cursor: default;
-  box-shadow: 5px 5px 10px #333;
-  text-shadow: 0 0 2px #000,
-  0 0 3px #000,
-  0 0 4px #000,
-  0 0 5px #fff,
-  0 0 10px #fff;
-  opacity: 0.6;
+  background-color: #303170;
 }
+
+.-headerGroups > .rt-tr > .rt-th:first-child {
+  background-color: #303170;
+  /* background: #16a086; */
+  border-left: none;
+}
+
+/* .-headerGroups > .rt-tr > .rt-th:nth-child(2),
+.-headerGroups > .rt-tr > .rt-th:nth-child(5) {
+  background-color: #16a086;
+  background: linear-gradient(to right, #5e60d8, #5e60d841);
+}
+
+.-headerGroups > .rt-tr > .rt-th:nth-child(3),
+.-headerGroups > .rt-tr > .rt-th:nth-child(6) {
+  background-color: #f39c11;
+  background: linear-gradient(to right, #5e60d8, #5e60d841);
+}
+
+.-headerGroups > .rt-tr > .rt-th:nth-child(4),
+.-headerGroups > .rt-tr > .rt-th:nth-child(7) {
+  background-color: #c23a2c;
+  background: linear-gradient(to right, #5e60d8, #5e60d841);
+} */
+
+.ReactTable {
+  background: #f1f1f1;
+}
+
+.-header > .rt-tr > .rt-th:first-child {
+  background: #5e60d8;
+  border-bottom: 1px solid #a3a3a3;
+}
+
+.rt-resizable-header {
+  outline: transparent;
+	background-color: #5e60d8;
+  color: #ffffff;
+  border: 1px solid #a3a3a3;
+  border-top: none;
+  cursor: pointer;
+}
+
+.rt-resizable-header:hover {
+	background-color: #5e60d8b7;
+}
+
+.ReactTable .rt-tbody .rt-td {
+  border-right: 1px solid #fff;
+} 
