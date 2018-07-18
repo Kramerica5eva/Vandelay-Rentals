@@ -234,32 +234,32 @@ module.exports = {
       });
   },
 
-    db.Reservation.create(req.body)
-      .then(reservation => {
+  //   db.Reservation.create(req.body)
+  //     .then(reservation => {
 
-        Promise.all([
-          db.Rental.findOneAndUpdate(
-            { _id: req.body.itemId },
-            { $push: { reservations: reservation._id } },
-            { new: true }
-          ), db.User.findOneAndUpdate(
-            { _id: req.user._id },
-            { $push: { reservations: reservation._id } },
-            { new: true }
-          ), db.ShoppingCart.findOneAndUpdate(
-            { customerId: req.user._id },
-            { $pull: { tempReservations: req.body._id } },
-            { new: true }
-          ), db.TempReservation.deleteOne(
-            { _id: req.body._id }
-          )
-        ])
-          .then(() => {
-            return res.send({ response: "Success!" })
-          })
-      })
-      .catch(err => res.json(err));
-  },
+  //       Promise.all([
+  //         db.Rental.findOneAndUpdate(
+  //           { _id: req.body.itemId },
+  //           { $push: { reservations: reservation._id } },
+  //           { new: true }
+  //         ), db.User.findOneAndUpdate(
+  //           { _id: req.user._id },
+  //           { $push: { reservations: reservation._id } },
+  //           { new: true }
+  //         ), db.ShoppingCart.findOneAndUpdate(
+  //           { customerId: req.user._id },
+  //           { $pull: { tempReservations: req.body._id } },
+  //           { new: true }
+  //         ), db.TempReservation.deleteOne(
+  //           { _id: req.body._id }
+  //         )
+  //       ])
+  //         .then(() => {
+  //           return res.send({ response: "Success!" })
+  //         })
+  //     })
+  //     .catch(err => res.json(err));
+  // },
 
   breakReservation: function (req, res) {
     db.Reservation
