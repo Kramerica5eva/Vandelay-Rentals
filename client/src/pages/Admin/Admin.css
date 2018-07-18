@@ -23,12 +23,13 @@
 .admin-btn-array button {
   font-size: .9rem;
 	font-family: var(--font-Raleway);
-  border: 1px solid #0e705e;
+  border: 1px solid #5e60d8;
   padding: 7px 14px;
   border-radius: 5px;
+  outline: transparent;
   color: #fff;
   cursor: pointer;
-  box-shadow: 0 0 20px 20px #0e705e inset, 0 0 0 0 #0e705e;
+  box-shadow: 0 0 20px 20px #5e60d8 inset, 0 0 0 0 #5e60d8;
 	transition: all 150ms ease-in-out;
 	text-decoration: none;
   padding: 5px 7px;
@@ -39,6 +40,6 @@
 
 .admin-btn-array button:hover {
   background-color: #fff;
-  box-shadow: 0 0 5px #0e705e inset, 0 0 5px #0e705e;
-  color: #0e705e;
+  box-shadow: 0 0 5px #5e60d8 inset, 0 0 5px #5e60d8;
+  color: #5e60d8;
 }
