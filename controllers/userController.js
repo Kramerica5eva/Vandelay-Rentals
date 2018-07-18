@@ -18,9 +18,12 @@ module.exports = {
   signup: function (req, res) {
     const { username, firstName, lastName, email, state, zipcode, phone } = req.body;
 
+    const noDashPhone = phone.split("-").join("");
+    console.log(noDashPhone);
+
     let zipTest = /^\d{5}(-\d{4})?$/.test(zipcode);
     let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);
-    let phoneTest = /^\d{3}[\-]\d{3}[\-]\d{4}/.test(phone);
+    let phoneTest = /^[\S]{10,}$/.test(noDashPhone);
     let userTest = /^[a-zA-Z0-9]+$/.test(username);
     let firstTest = /^[a-zA-Z]+$/.test(firstName);
     let lastTest = /^[a-zA-Z]+$/.test(lastName);
