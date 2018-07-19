@@ -340,7 +340,7 @@ export class TestTable extends Component {
   renderEditableDate = cellInfo => {
     return (
       <div
-        style={{ backgroundColor: '#fafafa' }}
+        // style={{ backgroundColor: '#aff0ca' }}
         contentEditable
         suppressContentEditableWarning
         onBlur={e => {
@@ -359,7 +359,7 @@ export class TestTable extends Component {
   renderEditable = cellInfo => {
     return (
       <div
-        style={{ backgroundColor: '#fafafa' }}
+        // style={{ backgroundColor: '#aff0ca' }}
         contentEditable
         suppressContentEditableWarning
         onBlur={e => {
@@ -394,7 +394,7 @@ export class TestTable extends Component {
           footer={this.state.imageModal.footer}
         />
         <LoadingModal show={this.state.loadingModalOpen} />
-        <div className="main-table-container">
+        <div className="main-table-container test-table">
           <div className="table-title-div">
             <h2>Test Rentals Table <button onClick={this.props.toggleRentals}>hide table</button></h2>
           </div>
@@ -438,25 +438,38 @@ export class TestTable extends Component {
                     id: 'item',
                     Cell: row => {
                       return (
-                        <Fragment>
-                          <i onClick={() => this.updateRow(row.row)} className="table-icon fas fa-sync fa-lg"></i>
-                          <i onClick={() => this.rentalDeleteModal(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
-                        </Fragment>
+                        <div className="table-icon-div">
+                          <div className="fa-sync-div table-icon-inner-div">
+                            <i onClick={() => this.updateRow(row.row)} className="table-icon fas fa-sync fa-lg"></i>
+                            <span className="fa-sync-tooltip table-tooltip">upload changes</span>
+                          </div>
+                          <div className="fa-trash-alt-div table-icon-inner-div">
+                            <i onClick={() => this.rentalDeleteModal(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
+                            <span className="fa-trash-alt-tooltip table-tooltip">delete record</span>
+                          </div>
+                        </div>
                       )
-                    }
+                    },
+                    width: 80
                   },
                   {
                     Header: 'Images',
                     id: 'images',
                     Cell: row => {
                       return (
-                        <Fragment>
-                          <i onClick={() => this.getImageUploadModal(row.row)} className="table-icon fas fa-upload fa-lg"></i>
-                          <i onClick={() => this.getImageNames(row.row)} className="table-icon fas fa-images fa-lg"></i>
-                        </Fragment>
+                        <div className="table-icon-div">
+                          <div className="fa-upload-div table-icon-inner-div">
+                            <i onClick={() => this.getImageUploadModal(row.row)} className="table-icon fas fa-upload fa-lg"></i>
+                            <span className="fa-upload-tooltip table-tooltip">upload images</span>
+                          </div>
+                          <div className="fa-images-div table-icon-inner-div">
+                            <i onClick={() => this.getImageNames(row.row)} className="table-icon fas fa-images fa-lg"></i>
+                            <span className="fa-images-tooltip table-tooltip">see images</span>
+                          </div>
+                        </div>
                       )
-                    }
-
+                    },
+                    width: 80
                   },
                 ]
               },
@@ -472,6 +485,7 @@ export class TestTable extends Component {
                     {
                       Header: 'Type',
                       accessor: 'category',
+                      width: 115,
                       Cell: row => {
                         return (
                           <Fragment>
@@ -495,7 +509,7 @@ export class TestTable extends Component {
                       }
                     },
                     {
-                      Header: 'Manufacturer',
+                      Header: 'Mfr.',
                       accessor: 'maker',
                       Cell: this.renderEditable
                     },
@@ -510,8 +524,9 @@ export class TestTable extends Component {
                 Header: 'Rental Details',
                 columns: [
                   {
-                    Header: 'Daily $',
+                    Header: 'Rate',
                     accessor: 'rate',
+                    width: 70,
                     Cell: this.renderEditable
                   },
                   {
@@ -527,6 +542,7 @@ export class TestTable extends Component {
                   {
                     Header: 'Condition',
                     accessor: 'condition',
+                    width: 85,
                     Cell: row => {
                       return (
                         <Fragment>

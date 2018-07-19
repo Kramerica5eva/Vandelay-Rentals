@@ -46,13 +46,22 @@
 .table-select select {
   border: none;
   outline: transparent;
-  background: #fafafa;
+  background-color: #dee9e5;
+  border-bottom: 1px dashed #79b8a0;
+  border: 1px dashed #79b8a0;
+  padding: 2px 0;
   font-family: var(--font-Raleway);
+  width: 100%;
+}
+
+.table-icon-div {
+  text-align: center;
 }
 
 .table-icon {
-  padding: 0 10px;
+  padding: 0 7px;
   cursor: pointer;
+  color: #555;
 }
 
 .-headerGroups {
@@ -116,4 +125,60 @@
 
 .ReactTable .rt-tbody .rt-td {
   border-right: 1px solid #fff;
-} 
+}
+
+.test-table .-filters > div > div:nth-child(2) input,
+.test-table .-filters > div > div:nth-child(3) input {
+  display: none;
+}
+
+.ReactTable  div.rt-td > div[contenteditable="true"] {
+  background-color: #dee9e5;
+  padding: 3px;
+  border: 1px dashed #79b8a0;
+}
+
+/* this allows the tooltip hover effect to be visible outside the cell */
+.test-table .ReactTable  div.rt-tr > div:nth-child(2),
+.test-table .ReactTable  div.rt-tr > div:nth-child(3) {
+  overflow: visible;
+}
+
+.table-icon-div {
+  position: relative;
+  overflow: visible;
+}
+
+.table-icon-inner-div {
+  display: inline-block;
+}
+
+.table-tooltip {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  visibility: hidden;
+  font-size: .7rem;
+  color: #fff;
+  padding: 5px 10px;
+  background-color: #5e60d8bd;
+  text-align: center;
+  border-radius: 5px;
+  z-index: 999;
+}
+
+.fa-sync-div:hover .fa-sync-tooltip  {
+  visibility: visible;
+}
+
+.fa-trash-alt-div:hover .fa-trash-alt-tooltip  {
+  visibility: visible;
+}
+
+.fa-upload-div:hover .fa-upload-tooltip  {
+  visibility: visible;
+}
+
+.fa-images-div:hover .fa-images-tooltip  {
+  visibility: visible;
+}
