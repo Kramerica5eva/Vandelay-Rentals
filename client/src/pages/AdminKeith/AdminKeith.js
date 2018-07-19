@@ -6,7 +6,7 @@ import NavBar from "../../components/Elements/NavBar";
 import DevLinks from "../../components/DevLinks";
 import { BrandonTestTable, RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
 import { AdminForms } from "../../components/AdminForms";
-import "./Admin.css";
+import "../Admin/Admin.css";
 
 class Admin extends Component {
   state = {

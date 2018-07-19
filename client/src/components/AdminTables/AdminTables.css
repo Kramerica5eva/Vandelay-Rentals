@@ -1,9 +1,39 @@
+/* General table styling */
 .main-table-container {
   background: #ececec;  
   background: linear-gradient(#dadada,#f1f1f1);
   padding: 10px;
 }
 
+.ReactTable {
+  background: #f1f1f1;
+}
+
+.sub-table {
+  width: 90%;
+  margin: auto;
+}
+
+.table-title-div {
+  padding: 15px 0 5px 0;
+}
+
+.table-title-div h2 {
+  display: inline-block;
+}
+
+/* 'hide table' button styling */
+.table-title-div button {
+  vertical-align: middle;
+  border: none;
+  outline: transparent;
+  background: transparent;
+  text-decoration: underline;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Image modal image styling */
 .rental-img {
   width: 250px;
   margin: auto;
@@ -20,29 +50,7 @@
   display: block;
 }
 
-.sub-table {
-  width: 90%;
-  margin: auto;
-}
-
-.table-title-div {
-  padding: 15px 0 5px 0;
-}
-
-.table-title-div h2 {
-  display: inline-block;
-}
-
-.table-title-div button {
-  vertical-align: middle;
-  border: none;
-  outline: transparent;
-  background: transparent;
-  text-decoration: underline;
-  font-weight: bold;
-  cursor: pointer;
-}
-
+/* drop down menus inside the tables */
 .table-select select {
   border: none;
   outline: transparent;
@@ -54,20 +62,7 @@
   width: 100%;
 }
 
-.table-icon-div {
-  text-align: center;
-}
-
-.table-icon {
-  padding: 0 7px;
-  cursor: pointer;
-  color: #555;
-}
-
-.-headerGroups {
-  border: transparent;
-}
-
+/* top header styling */
 .-headerGroups > .rt-tr > .rt-th {
   border-left: 1px solid #a3a3a3;
   outline: transparent;
@@ -79,32 +74,10 @@
 
 .-headerGroups > .rt-tr > .rt-th:first-child {
   background-color: #303170;
-  /* background: #16a086; */
   border-left: none;
 }
 
-/* .-headerGroups > .rt-tr > .rt-th:nth-child(2),
-.-headerGroups > .rt-tr > .rt-th:nth-child(5) {
-  background-color: #16a086;
-  background: linear-gradient(to right, #5e60d8, #5e60d841);
-}
-
-.-headerGroups > .rt-tr > .rt-th:nth-child(3),
-.-headerGroups > .rt-tr > .rt-th:nth-child(6) {
-  background-color: #f39c11;
-  background: linear-gradient(to right, #5e60d8, #5e60d841);
-}
-
-.-headerGroups > .rt-tr > .rt-th:nth-child(4),
-.-headerGroups > .rt-tr > .rt-th:nth-child(7) {
-  background-color: #c23a2c;
-  background: linear-gradient(to right, #5e60d8, #5e60d841);
-} */
-
-.ReactTable {
-  background: #f1f1f1;
-}
-
+/* sub-header styling */
 .-header > .rt-tr > .rt-th:first-child {
   background: #5e60d8;
   border-bottom: 1px solid #a3a3a3;
@@ -123,34 +96,48 @@
 	background-color: #5e60d8b7;
 }
 
+/* remove filter searchbox above icon button column */
+.-filters > div > div:nth-child(2) input {
+  display: none;
+}
+
+/* table body column border to make each cell more easily distinguishable */
 .ReactTable .rt-tbody .rt-td {
   border-right: 1px solid #fff;
 }
 
-.test-table .-filters > div > div:nth-child(2) input,
-.test-table .-filters > div > div:nth-child(3) input {
-  display: none;
-}
-
+/* editable cell styling */
 .ReactTable  div.rt-td > div[contenteditable="true"] {
   background-color: #dee9e5;
   padding: 3px;
   border: 1px dashed #79b8a0;
+  cursor: url('./editCursor.png') 0 15, auto;
 }
 
-/* this allows the tooltip hover effect to be visible outside the cell */
-.test-table .ReactTable  div.rt-tr > div:nth-child(2),
-.test-table .ReactTable  div.rt-tr > div:nth-child(3) {
-  overflow: visible;
-}
-
+/* div containing the icon buttons in each row */
 .table-icon-div {
+  text-align: center;
   position: relative;
   overflow: visible;
 }
 
+/* this allows the tooltip hover effect to be visible outside the cell */
+.ReactTable  div.rt-tr > div:nth-child(2) {
+  overflow: visible;
+  position: relative;
+}
+
+/* each icon is contained in a div along with its tooltip span
+ to make the hover effect work */
 .table-icon-inner-div {
   display: inline-block;
+  overflow: visible;
+}
+
+.table-icon {
+  padding: 0 7px;
+  cursor: pointer;
+  color: #555;
 }
 
 .table-tooltip {
@@ -173,6 +160,21 @@
 
 .fa-trash-alt-div:hover .fa-trash-alt-tooltip  {
   visibility: visible;
+}
+
+
+/* Rental Table styling */
+/* filter search box over the button columns aren't necessary */
+.rental-table .-filters > div > div:nth-child(2) input,
+.rental-table .-filters > div > div:nth-child(3) input {
+  display: none;
+}
+
+/* this allows the tooltip hover effect to be visible outside the cell */
+.rental-table .ReactTable  div.rt-tr > div:nth-child(2),
+.rental-table .ReactTable  div.rt-tr > div:nth-child(3) {
+  overflow: visible;
+  position: relative;
 }
 
 .fa-upload-div:hover .fa-upload-tooltip  {
