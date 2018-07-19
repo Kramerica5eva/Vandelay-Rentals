@@ -95,7 +95,24 @@ export class TestTable extends Component {
 
   // Course delete function
   deleteCourse = row => {
-
+    console.log(row);
+    if (row._original.registrations.length > 0) {
+      this.setModal({
+        body: <h4>You must remove all class registrations first.</h4>,
+        buttons: <button onClick={this.toggleModal}>OK</button>
+      });
+    } else {
+      this.toggleLoadingModal();
+      const { _id } = row._original
+      API.adminDeleteCourse(_id)
+        .then(res => {
+          console.log(res)
+          this.adminGetAllCourses();
+          this.toggleLoadingModal();
+          this.toggleModal();
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   //  Update selected Row - sends current field info to db and updates that item
