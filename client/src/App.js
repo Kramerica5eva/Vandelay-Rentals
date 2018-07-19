@@ -132,15 +132,17 @@ class App extends Component {
             });
           })
       } else {
-        isAuthenticated = false;
-        isAdmin = false;
-        this.setState({
-          loggedIn: false,
-          username: null,
-          firstName: null,
-          admin: false,
-          dev: false
-        });
+        API.getAllCategories()
+          .then(categories => {
+            this.setState({
+              loggedIn: false,
+              username: null,
+              firstName: null,
+              admin: false,
+              dev: false,
+              categories: categories.data
+            });
+          })
       }
     });
   };
