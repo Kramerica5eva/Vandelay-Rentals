@@ -30,7 +30,6 @@ export class TestTable extends Component {
       footer: ''
     },
     loadingModalOpen: false,
-    currentReservations: null,
     categories: this.props.categories,
     category: '',
     condition: '',
@@ -38,9 +37,6 @@ export class TestTable extends Component {
     selectedFile: null,
     image: null,
     rentals: [],
-    selection: [],
-    selectedRow: {},
-    selected: null
   };
 
   componentDidMount = () => {
@@ -86,9 +82,7 @@ export class TestTable extends Component {
     this.setState({
       imageModal: {
         isOpen: true,
-        header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer
       }
     });
   };
@@ -111,11 +105,9 @@ export class TestTable extends Component {
         res.data.forEach(r => {
           r.rate = '$' + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
         });
-        // set state for rentals, but also empty selection - selection is where the selected (highlighted) row _id is kept. This unselects the row - when a row is selected and the data is updated, it calls this function (adminGetAllRentals), and emptying this.state.selected results in unselecting the row, which works as a visual cue that an update operation is complete.
+        // set state for rentals
         this.setState({
-          rentals: res.data,
-          selection: [],
-          selectedRow: {}
+          rentals: res.data
         });
       })
       .catch(err => console.log(err));
@@ -138,7 +130,7 @@ export class TestTable extends Component {
       body:
         <Fragment>
           <h3>Warning!</h3>
-          <h4>Are you sure you want to delete {this.state.selectedRow.name}?</h4>
+          <h4>Are you sure you want to delete {row.row.name}?</h4>
           <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
           <h4>Would you rather retire the item and keep the data?</h4>
           <p>(make sure you contact customers and change any existing reservations)</p>
@@ -215,7 +207,7 @@ export class TestTable extends Component {
           />
         </Fragment>
     });
-    //  the row must be selected (checkbox and highlighted) for this to work
+
     const { _id } = row._original;
     const fd = new FormData();
     fd.append('file', this.state.selectedFile, this.state.selectedFile.name);
@@ -291,10 +283,10 @@ export class TestTable extends Component {
   };
   //  END - IMAGE CRUD OPERATIONS FUNCTIONS
 
-  //  Update selected Row - sends current field info to db and updates that item
+  //  Update Row - sends current field info to db and updates that item
   updateRow = row => {
     this.toggleLoadingModal();
-    //  extract variables from the selectedRow object
+    //  extract variables from the row object
     const { condition, dateAcquired, maker, name, rate, sku, timesRented, _id } = row._original;
     console.log(row);
     const unixDate = dateFns.format(dateAcquired, "X");
@@ -499,7 +491,7 @@ export class TestTable extends Component {
                                 >
                                   <option>{row.row.category}</option>
                                   {this.state.categories ? this.state.categories.map(cat => (
-                                    <option key={cat._id}>{cat.category}</option>
+                                    cat.category !== row.row.category ? <option key={cat._id}>{cat.category}</option> : null
                                   )) : null}
                                 </select>
                               </div>
@@ -555,11 +547,11 @@ export class TestTable extends Component {
                                 onChange={this.handleInputChange}
                               >
                                 <option>{row.row.condition}</option>
-                                <option>New</option>
-                                <option>Good</option>
-                                <option>Working</option>
-                                <option>Disrepair</option>
-                                <option>Retired</option>
+                                {row.row.condition !== "New" ? <option>New</option> : null}
+                                {row.row.condition !== "Good" ? <option>Good</option> : null}
+                                {row.row.condition !== "Working" ? <option>Working</option> : null}
+                                {row.row.condition !== "Disprepair" ? <option>Disprepair</option> : null}
+                                {row.row.condition !== "Retired" ? <option>Retired</option> : null}
                               </select>
                             </div>
                           </form>
@@ -568,6 +560,12 @@ export class TestTable extends Component {
                     }
                   }
                 ]
+              }
+            ]}
+            defaultSorted={[
+              {
+                id: "name",
+                desc: false
               }
             ]}
             defaultPageSize={10}
