@@ -1,0 +1,34 @@
+.contact-page {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.contact-boxes {
+    border: solid black 1px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    max-width: 300px;
+    min-width: 300px;
+    height: 300px;
+    margin: 1%;
+}
+
+.contact-boxes h3 {
+    border-bottom: solid 2px black;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.contact-boxes h4 {
+    margin-bottom: 10px;
+}
+
+.contact-boxes i {
+    font-size: 60px;
+    margin-top: 20px;
+}
