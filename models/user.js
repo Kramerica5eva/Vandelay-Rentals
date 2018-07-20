@@ -43,14 +43,13 @@ const userSchema = new Schema({
 		enum: ['Good', 'Uncertain', 'Banned'],
 		default: 'Good'
 	},
+  note: String,
 	admin: { type: Boolean, default: false },
 	dev: { type: Boolean, default: false }
 });
 
 // Define schema methods
 userSchema.methods.checkPassword = function (inputPassword) {
-	console.log("In the CheckPassword function, here's this.schema:");
-	console.log(this);
 	return bcrypt.compareSync(inputPassword, this.password);
 }
 
@@ -65,7 +64,6 @@ userSchema.pre('save', function (next) {
 		next();
 	} else {
 		console.log('models/user.js hashPassword in pre save');
-
 		this.password = this.hashPassword(this.password);
 		next();
 	}
@@ -74,6 +72,3 @@ userSchema.pre('save', function (next) {
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
-
-
-//  Docu-sign docs and iamges may be easier to store in a server file system and just referenced in the DB

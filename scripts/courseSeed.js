@@ -12,8 +12,8 @@ const courseSeed = [
   {
     name: 'Paddleboard Choir',
     price: 30.00,
-    abstract: 'Learn how to sing while you paddle',
-    detail: 'What better way to spend your day on the water than by annoying everyone around you with your "lovely" singing voice? Come hang out with us for an afternoon and learn how to lose friends and disinterest people. You *will* regret it.',
+    summary: 'Learn how to sing while you paddle',
+    description: 'What better way to spend your day on the water than by annoying everyone around you with your "lovely" singing voice? Come hang out with us for an afternoon and learn how to lose friends and disinterest people. You *will* regret it.',
     topics: [
       'Tone control',
       'Multi-tasking',
@@ -29,8 +29,8 @@ const courseSeed = [
   {
     name: 'Whitewater Kayaking',
     price: 299.99,
-    abstract: 'Learn how tie your shoes before driving to your kayaking launch.',
-    detail: 'Never get caught with your shoes untied, espcially if you have a kayak with you. Disaster will ensue. Come spend the weekend with us with both your shoes tied and a big smile on your face.',
+    summary: 'Learn how tie your shoes before driving to your kayaking launch.',
+    description: 'Never get caught with your shoes untied, espcially if you have a kayak with you. Disaster will ensue. Come spend the weekend with us with both your shoes tied and a big smile on your face.',
     topics: [
       'Calculus',
       'More multi-tasking',
@@ -46,8 +46,8 @@ const courseSeed = [
   {
     name: 'Water Snipe Hunting',
     price: 135.00,
-    abstract: 'Catch your very first snipe!',
-    detail: 'Come on a snipe hunt with us. Learn the basics like how not to freeze to death by yourself in the wilderness when you get left behind as the last one to figure it out. Bring lots of money and a big box of tissues.',
+    summary: 'Catch your very first snipe!',
+    description: 'Come on a snipe hunt with us. Learn the basics like how not to freeze to death by yourself in the wilderness when you get left behind as the last one to figure it out. Bring lots of money and a big box of tissues.',
     topics: [
       'Holding the bag',
       'Snipe calls',

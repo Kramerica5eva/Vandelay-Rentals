@@ -182,6 +182,7 @@ class Admin extends Component {
 
           {this.state.users ? (
             <UsersTable
+              updateUser={this.props.updateUser}
               toggleUsers={this.toggleUsers}
             />
           ) : null}

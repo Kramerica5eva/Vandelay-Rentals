@@ -33,7 +33,8 @@ const saleSchema = new Schema({
   },
   finalSale: {
     type: Schema.Types.Decimal128
-  }
+  },
+  note: String
 });
 
 const Sale = mongoose.model('Sale', saleSchema);

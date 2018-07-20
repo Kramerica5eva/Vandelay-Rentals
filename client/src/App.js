@@ -58,7 +58,7 @@ const AdminRoute = ({ component: Component, ...rest }) => (
           //  'loginShow' is to make sure the login form shows instead of the signup form
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: "/",
               state: { from: props.location, loginShow: true }
             }}
           />

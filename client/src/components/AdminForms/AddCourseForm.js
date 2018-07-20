@@ -13,8 +13,8 @@ export class AddCourseForm extends Component {
     },
     name: "",
     price: "",
-    abstract: "",
-    detail: "",
+    summary: "",
+    description: "",
     topics: "",
     level: "",
     date: "",
@@ -46,15 +46,15 @@ export class AddCourseForm extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    const { name, price, abstract, detail, topics, level, date, slots } = this.state;
+    const { name, price, summary, description, topics, level, date, slots } = this.state;
     const topicsArray = topics.split(',').map(topic => topic.trim());
     const unixDate = dateFns.format(date, "X");
 
     const courseObject = {
       name: name,
       price: price,
-      abstract: abstract,
-      detail: detail,
+      summary: summary,
+      description: description,
       topics: topicsArray,
       level: level,
       date: unixDate,
@@ -94,15 +94,15 @@ export class AddCourseForm extends Component {
             label="Price:"
           />
           <Textarea
-            value={this.state.abstract}
+            value={this.state.summary}
             onChange={this.handleInputChange}
-            name="abstract"
+            name="summary"
             label="Summary:"
           />
           <Textarea
-            value={this.state.detail}
+            value={this.state.description}
             onChange={this.handleInputChange}
-            name="detail"
+            name="description"
             label="Detailed Description:"
           />
           <Textarea
@@ -143,8 +143,8 @@ export class AddCourseForm extends Component {
             disabled={
               !this.state.name ||
               !this.state.price ||
-              !this.state.abstract ||
-              !this.state.detail ||
+              !this.state.summary ||
+              !this.state.description ||
               !this.state.topics ||
               !this.state.date ||
               !this.state.slots

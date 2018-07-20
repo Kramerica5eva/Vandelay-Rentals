@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const courseSchema = new Schema({
   name: { type: String, required: true },
   price: Schema.Types.Decimal128,
-  abstract: String,
-  detail: String,
+  summary: String,
+  description: String,
   topics: [],
   level: {
     type: String,
@@ -18,7 +18,8 @@ const courseSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Registration"
   }],
-  displayImageUrl:String
+  displayImageUrl:String,
+  note: String
 });
 
 const Course = mongoose.model('Course', courseSchema);

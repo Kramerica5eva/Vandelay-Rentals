@@ -16,7 +16,8 @@ const RegistrationSchema = new Schema({
   paid: {
     type: Boolean,
     default: false
-  }
+  },
+  note: String
 });
 
 const Registration = mongoose.model('Registration', RegistrationSchema);

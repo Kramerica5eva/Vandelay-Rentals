@@ -26,6 +26,7 @@ export class RentalsTable extends Component {
     categories: this.props.categories,
     category: '',
     condition: '',
+    note: '',
     images: [],
     selectedFile: null,
     image: null,
@@ -90,11 +91,10 @@ export class RentalsTable extends Component {
   adminGetAllRentals = () => {
     API.adminGetAllRentals()
       .then(res => {
-        console.log(res.data);
 
-        //  loop through the response array and add a new key/value pair with the formatted rate
+        // //  loop through the response array and add a new key/value pair with the formatted rate
         res.data.forEach(r => {
-          r.rate = '$' + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
+          r.rate = parseFloat(r.dailyRate.$numberDecimal);
         });
 
         // set state for rentals
@@ -156,6 +156,40 @@ export class RentalsTable extends Component {
       .catch(err => console.log(err));
   };
 
+  noteModal = row => {
+    const { _id, note } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <textarea name="note" onChange={this.handleInputChange} rows="10" cols="80" defaultValue={note}></textarea>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={() => this.submitNote(_id, this.state.note)}>Submit</button>
+          <button onClick={this.toggleModal}>Nevermind</button>
+        </Fragment>
+    })
+  }
+
+  submitNote = (id, note) => {
+    this.toggleModal();
+    this.toggleLoadingModal();
+    API.adminUpdateRental(id, { note: note })
+      .then(response => {
+        console.log(response);
+        //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+        setTimeout(this.toggleLoadingModal, 500);
+        // success modal after the loading modal is gone.
+        setTimeout(this.setModal, 500, {
+          body: <h3>Database successfully updated</h3>
+        });
+        //  query the db and reload the table
+        this.adminGetAllRentals();
+      })
+      .catch(err => console.log(err));
+  }
+
   //  IMAGE CRUD OPERATIONS FUNCTIONS
   // Gets the modal with the image upload form
   getImageUploadModal = row => {
@@ -172,7 +206,11 @@ export class RentalsTable extends Component {
             />
           </form>
         </Fragment>,
-      buttons: <button onClick={() => this.handleImageUpload(row)}>Submit</button>
+      buttons:
+        <Fragment>
+          <button onClick={() => this.handleImageUpload(row)}>Submit</button>
+          <button onClick={this.toggleModal}>I'm done</button>
+        </Fragment>
 
     });
   };
@@ -202,12 +240,22 @@ export class RentalsTable extends Component {
 
     const { _id } = row._original;
     const fd = new FormData();
-    fd.append('file', this.state.selectedFile, this.state.selectedFile.name);
-    API.uploadImage(_id, fd).then(res => {
-      console.log(res);
-      this.toggleModal();
-      this.getImageUploadModal(row);
-    });
+    if (this.state.selectedFile) {
+      fd.append('file', this.state.selectedFile, this.state.selectedFile.name);
+      API.uploadImage(_id, fd).then(res => {
+        console.log(res);
+        this.setState({
+          selectedFile: null
+        })
+        this.toggleModal();
+        this.getImageUploadModal(row);
+      });
+    } else {
+      this.setModal({
+        body: <h3>You have not selected a file to upload</h3>,
+        buttons: <button onClick={() => this.getImageUploadModal(row)}>Try Again</button>
+      })
+    }
   };
 
   // Gets image names from the db so they can be put into 'img' elements to be streamed for display
@@ -280,26 +328,33 @@ export class RentalsTable extends Component {
     this.toggleLoadingModal();
     //  extract variables from the row object
     const { category, condition, dateAcquired, maker, name, rate, sku, timesRented, _id } = row._original;
-    console.log(row);
-    const unixDate = dateFns.format(dateAcquired, "X");
+
+    let unixDate;
+    if (typeof dateAcquired === "string") unixDate = dateFns.format(dateAcquired, "X");
+    else unixDate = dateFns.format(dateAcquired * 1000, "X");
+
     let newCategory;
     if (this.state.category) newCategory = this.state.category;
     else newCategory = category;
+
     let newCondition;
     if (this.state.condition) newCondition = this.state.condition;
     else newCondition = condition;
 
+    // if rate exists (it should, but to avoid an error, checking first...) and it hasn't been changed, it will be a number type because the formatting occurs in the renderEditableRate function (the actual value remains a number type until it is changed) and so the .split method won't exist for it (that's a string method), causing an 'is not a function' error
     let newRate;
-    if (rate)
-      newRate = rate.split('').filter(x => x !== '$').join('');
+    if (rate) {
+      if (typeof rate === "string") newRate = rate.split('').filter(x => x !== '$').join('');
+      else newRate = rate;
+    }
 
     const updateObject = {
       category: newCategory,
       condition: newCondition,
+      dailyRate: newRate,
       dateAcquired: unixDate,
       maker: maker,
       name: name,
-      dailyRate: newRate,
       sku: sku,
       timesRented: timesRented
     };
@@ -318,6 +373,34 @@ export class RentalsTable extends Component {
         }
       })
       .catch(err => console.log(err));
+  };
+
+  // editable react table - this was necessary so the sort function would properly sort numbers.
+  renderEditableRate = cellInfo => {
+    return (
+      <div
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          const rentals = [...this.state.rentals];
+          rentals[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ rentals: rentals });
+        }}
+        dangerouslySetInnerHTML={{
+          __html: (
+            //  When you enter a new rate that includes anything other than digits (e.g. a dollar sign)
+            //  It renders as 'NaN', which shows in the cell for just a second before the change
+            //  So, if the cell includes 'NaN', just render what's already in the cell
+            //  Otherwise, display the formatted rate.
+            `$${parseFloat(this.state.rentals[cellInfo.index][cellInfo.column.id]).toFixed(2)}`.includes('NaN')
+              ?
+              this.state.rentals[cellInfo.index][cellInfo.column.id]
+              :
+              `$${parseFloat(this.state.rentals[cellInfo.index][cellInfo.column.id]).toFixed(2)}`
+          )
+        }}
+      />
+    );
   };
 
   // editable react table for the date - allows for date formatting within the cell
@@ -422,6 +505,7 @@ export class RentalsTable extends Component {
                   {
                     Header: 'Item',
                     id: 'item',
+                    width: 110,
                     Cell: row => {
                       return (
                         <div className="table-icon-div">
@@ -431,12 +515,15 @@ export class RentalsTable extends Component {
                           </div>
                           <div className="fa-trash-alt-div table-icon-inner-div">
                             <i onClick={() => this.rentalDeleteModal(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
-                            <span className="fa-trash-alt-tooltip table-tooltip">delete record</span>
+                            <span className="fa-trash-alt-tooltip table-tooltip">delete rental</span>
+                          </div>
+                          <div className="fa-sticky-note-div table-icon-inner-div">
+                            <i onClick={() => this.noteModal(row.row)} className="table-icon far fa-sticky-note fa-lg"></i>
+                            <span className="fa-sticky-note-tooltip table-tooltip">see/edit notes</span>
                           </div>
                         </div>
                       )
-                    },
-                    width: 80
+                    }
                   },
                   {
                     Header: 'Images',
@@ -476,11 +563,9 @@ export class RentalsTable extends Component {
                         return (
                           <Fragment>
                             <form>
-                              {/* using the Select and Option components in a modal seems to make everything stop working... */}
                               <div className="table-select">
                                 <select
                                   name="category"
-                                  // for whatever reason, setting the select value to this.state.category (as in the React docs) does not work with select/option dropdowns...
                                   onChange={this.handleInputChange}
                                 >
                                   <option>{row.row.category}</option>
@@ -513,7 +598,7 @@ export class RentalsTable extends Component {
                     Header: 'Rate',
                     accessor: 'rate',
                     width: 70,
-                    Cell: this.renderEditable
+                    Cell: this.renderEditableRate
                   },
                   {
                     Header: 'Date Acq.',

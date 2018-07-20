@@ -181,11 +181,11 @@ class Courses extends Component {
 									id={course._id}
 									course={course}
 									name={course.name}
-									abstract={course.abstract}
+									summary={course.summary}
 									addCourseToCart={this.addCourseToCart}
 									level={course.level}
 									price={parseFloat(course.price.$numberDecimal).toFixed(2)}
-									detail={course.detail}
+									description={course.description}
 									slots={course.slots}
 									displayImageUrl={course.displayImageUrl}>
 									{course.topics.map((topic, index) => (

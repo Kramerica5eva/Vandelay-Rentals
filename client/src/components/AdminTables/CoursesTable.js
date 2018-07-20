@@ -7,9 +7,7 @@ import ReactTable from "react-table";
 import { RegistrationsTable } from "./RegistrationsTable";
 import "react-table/react-table.css";
 import "./AdminTables.css";
-import checkboxHOC from "react-table/lib/hoc/selectTable";
 import dateFns from "date-fns";
-const CheckboxTable = checkboxHOC(ReactTable);
 
 export class CoursesTable extends Component {
   state = {
@@ -20,10 +18,10 @@ export class CoursesTable extends Component {
     },
     courses: [],
     level: "",
-    date: "",
-    rentals: [],
-    selection: [],
-    selectedRow: {}
+    note: '',
+    topics: '',
+    summary: '',
+    description: ''
   };
 
   componentDidMount() {
@@ -68,7 +66,7 @@ export class CoursesTable extends Component {
     API.adminGetAllCourses()
       .then(res => {
         res.data.forEach(r => {
-          r.pricePer = "$" + parseFloat(r.price.$numberDecimal).toFixed(2);
+          r.pricePer = parseFloat(r.price.$numberDecimal);
           // r.date = dateFns.format(r.date * 1000, "MMM Do YYYY");
           if (r.registrations.length) {
             r.openSlots = r.slots - r.registrations.length;
@@ -77,158 +75,200 @@ export class CoursesTable extends Component {
           }
         });
         this.setState({
-          courses: res.data,
-          selection: []
+          courses: res.data
         });
       })
       .catch(err => console.log(err));
   };
 
-  //  COURSE UPDATE MODALS W/UPDATE FUNCTIONS
-  //  Course Date update modal
-  //  Changing course date in a modal because:
-  //  a) If the date is formatted before going into the table, then the table sort functions end up sorting the date alphabetically, which of course isn't useful.
-  //  b) To format the date in the table cell prevents passing in the renderEditable function
-  courseDateModal = () => {
-    this.setModal({
-      body:
-        <Fragment>
-          <form>
-            <h3>Change Course Date</h3>
-            <Input
-              onChange={this.handleInputChange}
-              name="date"
-              type="text"
-              placeholder="e.g. Dec 20th 2018"
-            />
-          </form>
-        </Fragment>,
-      buttons: <button onClick={this.changeCourseDate}>Submit</button>
-    });
-  }
-
-  // Course date update function
-  changeCourseDate = event => {
-    event.preventDefault();
-    this.toggleModal();
-    this.toggleLoadingModal();
-    const { _id } = this.state.selectedRow;
-    const unixDate = dateFns.format(this.state.date, "X");
-    API.adminUpdateCourse(_id, { date: unixDate })
-      .then(res => {
-        this.adminGetAllCourses();
-        this.toggleLoadingModal();
-      })
-      .catch(err => console.log(err));
-  }
-
-  //  Course level update modal
-  courseLevelModal = () => {
-    this.setModal({
-      body:
-        <Fragment>
-          <form>
-            <h3>Change Difficulty</h3>
-            <div className="group group-select">
-              <select
-                name="level"
-                onChange={this.handleInputChange}
-              >
-                <option></option>
-                <option>Advanced</option>
-                <option>Intermediate</option>
-                <option>Beginner</option>
-              </select>
-            </div>
-          </form>
-        </Fragment>,
-      buttons: <button onClick={this.changeCourseLevel}>Submit</button>
-    });
-  };
-
-  //  Course level update function
-  changeCourseLevel = event => {
-    event.preventDefault();
-    this.toggleModal();
-    this.toggleLoadingModal()
-    const { _id } = this.state.selectedRow;
-    API.adminUpdateCourse(_id, { level: this.state.level })
-      .then(res => {
-        this.adminGetAllCourses();
-        this.toggleLoadingModal();
-      })
-      .catch(err => console.log(err));
-  };
-
   //  Course delete modal
-  courseDeleteModal = () => {
+  courseDeleteModal = row => {
     this.setModal({
       body:
         <Fragment>
-          <h4>Are you sure you want to delete {this.state.selectedRow.name}?</h4>
+          <h4>Are you sure you want to delete {row.name}?</h4>
           <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
         </Fragment>,
       buttons:
         <Fragment>
           <button onClick={this.toggleModal}>Nevermind</button>
-          <button onClick={this.deleteCourse}>Delete it</button>
+          <button onClick={() => this.deleteCourse(row)}>Delete it</button>
         </Fragment>
     })
   }
 
   // Course delete function
-  deleteCourse = () => {
-
+  deleteCourse = row => {
+    console.log(row);
+    if (row._original.registrations.length > 0) {
+      this.setModal({
+        body: <h4>You must remove all class registrations first.</h4>,
+        buttons: <button onClick={this.toggleModal}>OK</button>
+      });
+    } else {
+      this.toggleLoadingModal();
+      const { _id } = row._original
+      API.adminDeleteCourse(_id)
+        .then(res => {
+          console.log(res)
+          this.adminGetAllCourses();
+          this.toggleLoadingModal();
+          this.toggleModal();
+        })
+        .catch(err => console.log(err));
+    }
   }
 
-  //  REACT-TABLE: SELECT TABLE HOC FUNCTION
-  //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
-  toggleSelection = (key, shift, row) => {
-    let selection = [...this.state.selection];
-    const keyIndex = selection.indexOf(key);
+  noteModal = row => {
+    const { _id, note } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Update Note</h3>
+          <textarea name="note" onChange={this.handleInputChange} rows="10" defaultValue={note}></textarea>
+        </Fragment>,
+      buttons: <button onClick={() => this.submitNote(_id)}>Submit</button>
+    })
+  }
 
-    if (keyIndex >= 0) {
-      // it does exist so we will remove it
-      selection = [
-        ...selection.slice(0, keyIndex),
-        ...selection.slice(keyIndex + 1)
-      ];
-    } else {
-      // it does not exist so add it
-      selection = [];
-      selection.push(key);
-    }
+  submitNote = id => {
+    this.toggleModal();
+    this.toggleLoadingModal();
+    API.adminUpdateCourse(id, { note: this.state.note })
+      .then(response => {
+        console.log(response);
+        //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+        setTimeout(this.toggleLoadingModal, 500);
+        // success modal after the loading modal is gone.
+        setTimeout(this.setModal, 500, {
+          body: <h3>Database successfully updated</h3>
+        });
+        //  query the db and reload the table
+        this.adminGetAllCourses();
+      })
+      .catch(err => console.log(err));
+  }
 
-    //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
-    this.setState({ selection, selectedRow: row });
-  };
+  topicsModal = row => {
+    const { _id, topics } = row._original;
+    const topicsString = topics.join(", ");
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Course Topics</h3>
+          <textarea name="topics" onChange={this.handleInputChange} rows="4" defaultValue={topicsString}></textarea>
+        </Fragment>,
+      buttons: <button onClick={() => this.submitTopics(_id)}>Submit</button>
+    })
+  }
 
-  isSelected = key => {
-    return this.state.selection.includes(key);
-  };
+  submitTopics = id => {
+    this.toggleModal();
+    this.toggleLoadingModal();
+    const topicsArray = this.state.topics.split(", ");
+    API.adminUpdateCourse(id, { topics: topicsArray })
+      .then(response => {
+        console.log(response);
+        //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+        setTimeout(this.toggleLoadingModal, 500);
+        // success modal after the loading modal is gone.
+        setTimeout(this.setModal, 500, {
+          body: <h3>Database successfully updated</h3>
+        });
+        //  query the db and reload the table
+        this.adminGetAllCourses();
+      })
+      .catch(err => console.log(err));
+  }
 
-  logSelection = () => {
-    console.log("Selection:", this.state.selection);
-    console.log("Row: ", this.state.selectedRow);
-  };
-  //  END REACT-TABLE: SELECT TABLE HOC FUNCTIONs
+  summaryModal = row => {
+    const { _id, summary } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Course Summary</h3>
+          <textarea name="summary" onChange={this.handleInputChange} rows="2" defaultValue={summary}></textarea>
+        </Fragment>,
+      buttons: <button onClick={() => this.submitSummary(_id, this.state.summary)}>Submit</button>
+    });
+  }
+
+  submitSummary = id => {
+    this.toggleModal();
+    this.toggleLoadingModal();
+    API.adminUpdateCourse(id, { summary: this.state.summary })
+      .then(response => {
+        console.log(response);
+        //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+        setTimeout(this.toggleLoadingModal, 500);
+        // success modal after the loading modal is gone.
+        setTimeout(this.setModal, 500, {
+          body: <h3>Database successfully updated</h3>
+        });
+        //  query the db and reload the table
+        this.adminGetAllCourses();
+      })
+      .catch(err => console.log(err));
+  }
+
+  descriptionModal = row => {
+    const { _id, description } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Course Description</h3>
+          <textarea name="description" onChange={this.handleInputChange} rows="10" defaultValue={description}></textarea>
+        </Fragment>,
+      buttons: <button onClick={() => this.submitDescription(_id, this.state.description)}>Submit</button>
+    });
+  }
+
+  submitDescription = id => {
+    this.toggleModal();
+    this.toggleLoadingModal();
+    API.adminUpdateCourse(id, { description: this.state.description })
+      .then(response => {
+        console.log(response);
+        //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+        setTimeout(this.toggleLoadingModal, 500);
+        // success modal after the loading modal is gone.
+        setTimeout(this.setModal, 500, {
+          body: <h3>Database successfully updated</h3>
+        });
+        //  query the db and reload the table
+        this.adminGetAllCourses();
+      })
+      .catch(err => console.log(err));
+  }
 
   //  Update selected Row - sends current field info to db and updates that item
-  updateSelectedRow = () => {
+  updateRow = row => {
     this.toggleLoadingModal()
-    const { name, pricePer, abstract, topics, date, slots, _id } = this.state.selectedRow;
-
-    // if pricePer exists (it should, but to avoid an error, checking first...) and hasn't been changed, it will have a dollar sign in it, a format that does not exist in the database and will throw an error if submitted to the database as-is. This removes the '$' before submitting.
+    const { name, pricePer, level, date, slots, _id } = row._original;
+    
+    let unixDate;
+    if (typeof date === "string") unixDate = dateFns.format(date, "X");
+    else unixDate = dateFns.format(date * 1000, "X");
+    
+    // if pricePer exists (it should, but to avoid an error, checking first...) and it hasn't been changed, it will be a number type because the formatting occurs in the renderEditablePrice function (the actual value remains a number type until it is changed) and so the .split method doesn't exist (that's a string method)
     let newPrice;
-    if (pricePer)
-      newPrice = pricePer.split("").filter(x => x !== "$").join("");
+    if (pricePer) {
+      if (typeof pricePer === "string") newPrice = pricePer.split("").filter(x => x !== "$").join("");
+      else newPrice = pricePer;
+    }
+
+    let newLevel;
+    if (this.state.level) newLevel = this.state.level;
+    else newLevel = level;
 
     const updateObject = {
       name: name,
+      date: unixDate,
+      level: newLevel,
       price: newPrice,
-      abstract: abstract,
-      topics: topics,
-      date: date,
       slots: slots
     };
 
@@ -249,10 +289,63 @@ export class CoursesTable extends Component {
   };
 
   // editable react table function
+  renderEditablePrice = cellInfo => {
+    return (
+      <div
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          const courses = [...this.state.courses];
+          courses[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ courses: courses });
+        }}
+        dangerouslySetInnerHTML={{
+          __html: (
+            //  When you enter a new price that includes anything other than digits (e.g. a dollar sign)
+            //  It renders as 'NaN', which shows in the cell for just a second before the change
+            //  So, if the cell includes 'NaN', just render what's already in the cell
+            //  Otherwise, display the formatted price.
+            `$${parseFloat(this.state.courses[cellInfo.index][cellInfo.column.id]).toFixed(2)}`.includes('NaN')
+              ?
+              this.state.courses[cellInfo.index][cellInfo.column.id]
+              :
+              `$${parseFloat(this.state.courses[cellInfo.index][cellInfo.column.id]).toFixed(2)}`
+          )
+        }}
+      />
+    );
+  };
+
+  // editable react table for the date - allows for date formatting within the cell
+  renderEditableDate = cellInfo => {
+    return (
+      <div
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          const courses = [...this.state.courses];
+          courses[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ courses: courses });
+        }}
+        dangerouslySetInnerHTML={{
+          //  When you enter a new date that's not in unix time, the below format renders it as "Invalid Date"
+          //  As a result, in the split second before the database updates, the field says "Invalid Date"
+          //  So, if invalid date, just display what's being typed in. Otherwise, display the formatted version.
+          __html: (
+            dateFns.format(this.state.courses[cellInfo.index][cellInfo.column.id] * 1000, 'MMM Do YYYY') === "Invalid Date"
+              ?
+              this.state.courses[cellInfo.index][cellInfo.column.id]
+              :
+              dateFns.format(this.state.courses[cellInfo.index][cellInfo.column.id] * 1000, 'MMM Do YYYY'))
+        }}
+      />
+    );
+  };
+
+  // editable react table function
   renderEditable = cellInfo => {
     return (
       <div
-        style={{ backgroundColor: "#fafafa" }}
         contentEditable
         suppressContentEditableWarning
         onBlur={e => {
@@ -268,25 +361,6 @@ export class CoursesTable extends Component {
   };
 
   render() {
-    const { toggleSelection, isSelected } = this;
-
-    const checkboxProps = {
-      isSelected,
-      toggleSelection,
-      selectType: "checkbox",
-      getTrProps: (s, r) => {
-        let selected;
-        if (r) {
-          selected = this.isSelected(r.original._id);
-        }
-        return {
-          style: {
-            backgroundColor: selected ? "yellow" : "inherit",
-            color: selected ? "#000" : "inherit"
-          }
-        };
-      }
-    };
 
     return (
       <Fragment>
@@ -297,29 +371,17 @@ export class CoursesTable extends Component {
           buttons={this.state.modal.buttons}
         />
         <LoadingModal show={this.state.loadingModalOpen} />
-        <div className="main-table-container">
+        <div className="main-table-container courses-table">
 
           <div className="table-title-div">
             <h2>Courses Table <button onClick={this.props.toggleCourses}>Hide Table</button></h2>
           </div>
 
-          <div className="table-btn-div">
-            <h4>Courses Table Options</h4>
-            <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.courseDateModal}>Change Date</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.courseLevelModal}>Change Difficulty</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.courseDeleteModal}>Delete</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
-          </div>
-
-
-
-          <CheckboxTable
-            // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object
-            ref={r => (this.checkboxTable = r)}
+          <ReactTable
             data={this.state.courses}
+            filterable
             SubComponent={row => {
-              //  thisReservation grabs the reservations from this.state.rentals that matches the row index - it grabs the reservations for this rental item.
+              //  thisReservation grabs the reservations from this.state.courses that matches the row index - it grabs the registrations for this course.
               const thisRow = this.state.courses[row.row._index];
               return (
                 <Fragment>
@@ -337,51 +399,120 @@ export class CoursesTable extends Component {
             }}
             columns={[
               {
-                Header: "Name",
-                accessor: "name",
-                Cell: this.renderEditable
+                Header: 'Actions',
+                columns: [
+                  {
+                    Header: 'Item',
+                    id: 'item',
+                    width: 110,
+                    Cell: row => {
+                      return (
+                        <div className="table-icon-div">
+                          <div className="fa-sync-div table-icon-inner-div">
+                            <i onClick={() => this.updateRow(row.row)} className="table-icon fas fa-sync fa-lg"></i>
+                            <span className="fa-sync-tooltip table-tooltip">upload changes</span>
+                          </div>
+                          <div className="fa-trash-alt-div table-icon-inner-div">
+                            <i onClick={() => this.courseDeleteModal(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
+                            <span className="fa-trash-alt-tooltip table-tooltip">delete course</span>
+                          </div>
+                          <div className="fa-sticky-note-div table-icon-inner-div">
+                            <i onClick={() => this.noteModal(row.row)} className="table-icon far fa-sticky-note fa-lg"></i>
+                            <span className="fa-sticky-note-tooltip table-tooltip">see/edit notes</span>
+                          </div>
+                        </div>
+                      )
+                    }
+                  }
+                ]
               },
               {
-                Header: "Date",
-                accessor: "date",
-                Cell: row => {
-                  return (
-                    dateFns.format(row.row.date * 1000, "MMM Do YYYY")
-                  )
-                }
+                Header: 'Course Info',
+                columns: [
+                  {
+                    Header: "Name",
+                    accessor: "name",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Date",
+                    accessor: "date",
+                    Cell: this.renderEditableDate
+                  },
+                  {
+                    Header: "Difficulty",
+                    accessor: "level",
+                    Cell: row => {
+                      return (
+                        <Fragment>
+                          <form>
+                            <div className="table-select">
+                              <select
+                                name="level"
+                                onChange={this.handleInputChange}
+                              >
+                                <option>{row.row.level}</option>
+                                {row.row.level !== "Advanced" ? <option>Advanced</option> : null}
+                                {row.row.level !== "Intermediate" ? <option>Intermediate</option> : null}
+                                {row.row.level !== "Beginner" ? <option>Beginner</option> : null}
+                              </select>
+                            </div>
+                          </form>
+                        </Fragment>
+                      )
+                    }
+                  },
+                  {
+                    Header: "Price",
+                    accessor: "pricePer",
+                    width: 80,
+                    Cell: this.renderEditablePrice
+                  },
+                  {
+                    Header: "Slots",
+                    accessor: "slots",
+                    width: 70,
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Open",
+                    accessor: "openSlots",
+                    width: 70
+                  }
+                ]
               },
               {
-                Header: "Abstract",
-                accessor: "abstract",
-                Cell: this.renderEditable
-              },
-              {
-                Header: "Topics",
-                accessor: "topics",
-                Cell: this.renderEditable
-              },
-              {
-                Header: "Difficulty",
-                accessor: "level"
-              },
-              {
-                Header: "Price",
-                accessor: "pricePer",
-                Cell: this.renderEditable
-              },
-              {
-                Header: "Slots",
-                accessor: "slots",
-                Cell: this.renderEditable
-              },
-              {
-                Header: "Availability",
-                accessor: "openSlots"
+                Header: 'Course Details',
+                columns: [
+                  {
+                    Header: "More Info",
+                    accessor: "",
+                    width: 140,
+                    Cell: row => {
+                      return (
+                        <div className="table-icon-div">
+                          <div className="fa-list-ul-div table-icon-inner-div">
+                            <i onClick={() => this.topicsModal(row.row)} className="table-icon fas fa-list-ul fa-lg"></i>
+                            <span className="fa-list-ul-tooltip table-tooltip">see/edit topics</span>
+                          </div>
+                          <div className="fa-comment-alt-div table-icon-inner-div">
+                            <i onClick={() => this.summaryModal(row.row)} className="table-icon far fa-comment-alt fa-lg"></i>
+                            <span className="fa-comment-alt-tooltip table-tooltip">see/edit summary</span>
+                          </div>
+                          <div className="fa-book-open-div table-icon-inner-div">
+                            <i onClick={() => this.descriptionModal(row.row)} className="table-icon fas fa-book-open fa-lg"></i>
+                            <span className="fa-book-open-tooltip table-tooltip">see/edit description</span>
+                          </div>
+                        </div>
+
+                      )
+                    }
+                  }
+                ]
               }
             ]}
             defaultPageSize={10}
             className="-striped -highlight"
-            {...checkboxProps}
           />
         </div>
       </Fragment>
