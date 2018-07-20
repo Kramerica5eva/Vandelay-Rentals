@@ -8,9 +8,7 @@ export class AddCourseForm extends Component {
   state = {
     modal: {
       isOpen: false,
-      header: "",
       body: "",
-      footer: "",
       buttons: ""
     },
     name: "",
@@ -33,9 +31,7 @@ export class AddCourseForm extends Component {
     this.setState({
       modal: {
         isOpen: !this.state.modal.isOpen,
-        header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer,
         buttons: modalInput.buttons
       }
     });
@@ -79,9 +75,7 @@ export class AddCourseForm extends Component {
         <Modal
           show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
-          header={this.state.modal.header}
           body={this.state.modal.body}
-          footer={this.state.modal.footer}
           buttons={this.state.modal.buttons}
         />
         <form>

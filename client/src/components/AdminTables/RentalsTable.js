@@ -15,16 +15,12 @@ export class RentalsTable extends Component {
   state = {
     modal: {
       isOpen: false,
-      header: '',
       body: '',
-      footer: '',
       buttons: ''
     },
     imageModal: {
       isOpen: false,
-      header: '',
       body: '',
-      footer: ''
     },
     loadingModalOpen: false,
     categories: this.props.categories,
@@ -375,17 +371,13 @@ export class RentalsTable extends Component {
         <Modal
           show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
-          header={this.state.modal.header}
           body={this.state.modal.body}
-          footer={this.state.modal.footer}
           buttons={this.state.modal.buttons}
         />
         <ImageModal
           show={this.state.imageModal.isOpen}
           toggleImageModal={this.toggleImageModal}
-          header={this.state.imageModal.header}
           body={this.state.imageModal.body}
-          footer={this.state.imageModal.footer}
         />
         <LoadingModal show={this.state.loadingModalOpen} />
         <div className="main-table-container rental-table">

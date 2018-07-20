@@ -7,9 +7,7 @@ export class SignupForm extends Component {
   state = {
     modal: {
       isOpen: false,
-      header: "",
       body: "",
-      footer: "",
       buttons: ""
     },
     username: "",
@@ -35,9 +33,7 @@ export class SignupForm extends Component {
     this.setState({
       modal: {
         isOpen: !this.state.modal.isOpen,
-        header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer,
         buttons: modalInput.buttons
       }
     });
@@ -55,7 +51,7 @@ export class SignupForm extends Component {
 
     //request to server to add a new username/password
     API.signup({
-      username: this.state.username.toLowerCase(),
+      username: this.state.username,
       password: this.state.password,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -124,9 +120,7 @@ export class SignupForm extends Component {
         <Modal
           show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
-          header={this.state.modal.header}
           body={this.state.modal.body}
-          footer={this.state.modal.footer}
           buttons={this.state.modal.buttons}
         />
         <form>

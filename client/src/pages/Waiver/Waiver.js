@@ -10,11 +10,6 @@ import "./Waiver.css";
 
 class Waiver extends Component {
   state = {
-    isOpen: false,
-    header: "",
-    body: "",
-    footer: "",
-    buttons: "",
     rentals: [],
     images: [],
     rentalId: "",

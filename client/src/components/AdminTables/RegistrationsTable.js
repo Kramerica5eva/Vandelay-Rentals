@@ -9,13 +9,6 @@ const CheckboxTable = checkboxHOC(ReactTable);
 
 export class RegistrationsTable extends Component {
   state = {
-    modal: {
-      isOpen: false,
-      header: "",
-      body: "",
-      footer: "",
-      buttons: ""
-    },
     fromUsers: this.props.fromUsers,
     runUnmount: false,
     registrations: this.props.registrations,
@@ -34,26 +27,6 @@ export class RegistrationsTable extends Component {
       }
     }
   }
-
-  // MODAL TOGGLE FUNCTIONS
-  toggleModal = () => {
-    this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
-    });
-  }
-
-  setModal = (modalInput) => {
-    this.setState({
-      modal: {
-        isOpen: true,
-        header: modalInput.header,
-        body: modalInput.body,
-        footer: modalInput.footer,
-        buttons: modalInput.buttons
-      }
-    });
-  }
-  // END MODAL TOGGLE FUNCTIONS
 
   //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoing
   toggleLoadingModal = () => {

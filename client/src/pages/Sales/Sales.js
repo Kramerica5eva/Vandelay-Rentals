@@ -23,7 +23,6 @@ class Sales extends Component {
         this.setState({
           saleItems: res.data
         });
-        console.log(this.state.saleItems);
       })
       .catch(err => console.log(err));
   }
@@ -33,11 +32,6 @@ class Sales extends Component {
     this.setState({
       [name]: value
     });
-  };
-
-  handleFormSubmit = event => {
-    event.preventDefault();
-    //  blah blah blah
   };
 
   render() {
