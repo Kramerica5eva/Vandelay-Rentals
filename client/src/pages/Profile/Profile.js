@@ -223,10 +223,10 @@ class Profile extends Component {
                   <img src={reg.data.displayImageUrl} alt={`${reg.data.name}`} />
                 </div>
                 <h3>{reg.data.name}</h3>
-                <h4>{reg.data.abstract}</h4>
+                <h4>{reg.data.summary}</h4>
                 <h4>Difficulty: {reg.data.level}</h4>
                 <h5>Price per person: {`$${parseFloat(reg.data.price.$numberDecimal).toFixed(2)}`}</h5>
-                <p>{reg.data.detail}</p>
+                <p>{reg.data.description}</p>
                 <ul>
                   <p>Topics include:</p>
                   {reg.data.topics ? reg.data.topics.map((topic, i) => (

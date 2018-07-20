@@ -28,7 +28,8 @@ const rentalSchema = new Schema({
   images: [{
     type: Schema.Types.ObjectId
   }],
-  displayImageUrl: String
+  displayImageUrl: String,
+  note: String
 });
 
 const Rental = mongoose.model('Rental', rentalSchema);

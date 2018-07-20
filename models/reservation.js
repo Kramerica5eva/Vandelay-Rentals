@@ -20,7 +20,8 @@ const reservationSchema = new Schema({
   paid: {
     type: Boolean,
     default: false
-  }
+  },
+  note: String
 });
 
 const Reservation = mongoose.model('Reservation', reservationSchema);

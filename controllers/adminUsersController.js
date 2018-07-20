@@ -28,7 +28,7 @@ module.exports = {
       req.body.password = pw;
     }
     db.User
-      .findOneAndUpdate({ _id: req.params.id }, req.body)
+      .findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
       .then(dbModel => res.json({
         dbModel: dbModel,
         user: req.user
