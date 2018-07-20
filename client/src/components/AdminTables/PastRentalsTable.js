@@ -12,9 +12,7 @@ export class PastRentalsTable extends Component {
   state = {
     modal: {
       isOpen: false,
-      header: '',
       body: '',
-      footer: '',
       buttons: ""
     },
     runUnmount: false,
@@ -42,9 +40,7 @@ export class PastRentalsTable extends Component {
     this.setState({
       modal: {
         isOpen: true,
-        header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer,
         buttons: modalInput.buttons
       }
     });
@@ -140,9 +136,7 @@ export class PastRentalsTable extends Component {
         <Modal
           show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
-          header={this.state.modal.header}
           body={this.state.modal.body}
-          footer={this.state.modal.footer}
           buttons={this.state.modal.buttons}
         />
         <LoadingModal show={this.state.loadingModalOpen} />

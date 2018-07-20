@@ -7,9 +7,7 @@ export class LoginForm extends Component {
   state = {
     modal: {
       isOpen: false,
-      header: "",
       body: "",
-      footer: "",
       buttons: ""
     },
     username: "",
@@ -26,9 +24,7 @@ export class LoginForm extends Component {
     this.setState({
       modal: {
         isOpen: !this.state.modal.isOpen,
-        header: modalInput.header,
         body: modalInput.body,
-        footer: modalInput.footer,
         buttons: modalInput.buttons
       }
     });
@@ -45,7 +41,7 @@ export class LoginForm extends Component {
     event.preventDefault();
 
     API.login({
-      username: this.state.username.toLowerCase(),
+      username: this.state.username,
       password: this.state.password
     })
       .then(res => {
@@ -79,9 +75,7 @@ export class LoginForm extends Component {
         <Modal
           show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
-          header={this.state.modal.header}
           body={this.state.modal.body}
-          footer={this.state.modal.footer}
           buttons={this.state.modal.buttons}
         />
         <form>
