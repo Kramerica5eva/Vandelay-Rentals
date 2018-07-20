@@ -13,6 +13,7 @@ import Waiver from "./pages/Waiver";
 import Sales from "./pages/Sales";
 import Profile from "./pages/Profile";
 import Courses from "./pages/Courses";
+import About from "./pages/About";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import AdminKeith from "./pages/AdminKeith";
@@ -291,6 +292,22 @@ class App extends Component {
               render={routeProps => (
                 <Fragment>
                   <Login
+                    {...routeProps}
+                    updateUser={this.updateUser}
+                    loggedIn={this.state.loggedIn}
+                    firstName={this.state.firstName}
+                    admin={this.state.admin}
+                    dev={this.state.dev}
+                    logout={this.logout}
+                    loginShow={true}
+                  />
+                </Fragment>
+              )}
+            />
+            <Route exact path="/about"
+              render={routeProps => (
+                <Fragment>
+                  <About
                     {...routeProps}
                     updateUser={this.updateUser}
                     loggedIn={this.state.loggedIn}
