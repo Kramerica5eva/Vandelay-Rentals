@@ -44,6 +44,7 @@ class Home extends Component {
           />
 
           <div className='body-container'>
+          { this.props.dev ?
           <Header>
             <DevLinks
               loggedIn={this.props.loggedIn}
@@ -52,49 +53,55 @@ class Home extends Component {
               logout={this.props.logout}
               location={this.props.location}
             />
-          </Header>
-            {/* Heading */}
-            <div className='desc-heading'>
-              <h2>Your One Stop Shop</h2>
-            </div>
+          </Header> : null}
+                 {/* Heading */}
+          <div className='desc-heading'>
+            <span className="desc-img mobile"><img src="http://i1174.photobucket.com/albums/r619/vandelay-rentals/surftech-logo-cut_zpsjfsrag0g.png" alt=""/></span>
+            <span className="desc-img"><img src="http://i1174.photobucket.com/albums/r619/vandelay-rentals/delta-kayak-logo-cut_zpshnuws6l8.png" alt=""/></span>
+            <span className="desc-img"><img src="http://i1174.photobucket.com/albums/r619/vandelay-rentals/oru-kayak-logo-cut_zps8nslgyfw.png" alt=""/></span>
+            <span className="desc-img"><img src="http://i1174.photobucket.com/albums/r619/vandelay-rentals/pau-hana-logo-cut_zpslbmc0ggc.png" alt=""/></span>
+            <span className="desc-img mobile"><img src="http://i1174.photobucket.com/albums/r619/vandelay-rentals/BOTE-logo-cut_zps2tqj9ofm.png" alt=""/></span>
+          </div>
             {/* Checkboard Style */}
-            <div className='main-catch'>
-              <div className='row-top'>
-                <Link className="btn-link black-box" to="/sales" role="button">
-                  <h4>Buy</h4>
+          <div className='main-card-expander'>
+            <div className='top-row-container'>
+              <div className="card1">
+                <Link className="btn-link expander-card"  to="/sales" role="button">
+                  <div className="expander-card-head">
+                    <h4>Buy</h4><i className="fas fa-money-bill-alt icons"></i>
+                  </div>
+
                   <p>View our wide selection of the latest and greatest stand up paddle boards and kayaks to purchase.</p>
-                  </Link>
-                <div className='image-box'>
-                  <i className="fas fa-money-bill-alt icons"></i>
-                </div>
-              </div>
-              <div className='row-middle'>
-                <div className='image-box'>
-                  <i className="fas fa-exchange-alt icons"></i>
-                </div>
-                <Link className="btn-link black-box" to="/rentals" role="button">
-                    <h4>Rent</h4>
-                    <p>Rent one of our boards or kayaks for the a single day or for multiple days in a row.</p>
                 </Link>
               </div>
-              <div className='row-bottom'>
-                <Link className="btn-link black-box" to="/courses" role="button">
-                  <h4>Learn</h4>
+              <div className="card2">
+                <Link className="btn-link expander-card"  to="/rentals" role="button">
+                  <div className="expander-card-head">
+                    <h4>Rent</h4><i className="fas fa-exchange-alt icons"></i>
+                  </div>
+
+                  <p>Rent one of our boards or kayaks for the a single day or for multiple days in a row.</p>
+                </Link>
+              </div>
+              <div className="card3">
+                <Link className="btn-link expander-card"  to="/courses" role="button">
+                  <div className="expander-card-head">
+                    <h4>Learn</h4><i className="fab fa-leanpub icons"></i>
+                  </div>
+
                   <p>Sign up for a class with our instructional staff to start your adventure in a new sport, or to sharpen your skills.</p>
                 </Link>
-                <div className='image-box'>
-                  <i className="fab fa-leanpub icons"></i>
-                </div>
               </div>
             </div>
           </div>
-          <ParallaxHero
+        </div>
+          {/* <ParallaxHero
             image={{ backgroundImage: 'url(./static/assets/images/overhead_paddleboarder_zoomed_out.jpeg)' }}
             title=""
-          />
+          /> */}
 
           <div className='body-container'>
-            <h1 id="about-us-para-header">About Our Company</h1>
+            {/* <h1 id="about-us-para-header">About Our Company</h1> */}
             <div className='about-us'>
               <h3>Designed and Built for your Business</h3>
               <p>This website started as a proof of concept for a local water sports rental shop. Their problem was they needed a website that allowed their users the ability to shop and rent items from home, but also provide a useful in-store interface.</p>
