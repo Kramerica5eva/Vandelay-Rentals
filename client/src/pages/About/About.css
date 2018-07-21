@@ -6,7 +6,7 @@
 }
 
 .contact-boxes {
-    border: solid black 1px;
+    /* border: solid black 1px; */
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -20,7 +20,7 @@
 
 .contact-boxes h3 {
     border-bottom: solid 2px black;
-    margin-top: 40px;
+    margin-top: 30px;
     margin-bottom: 20px;
 }
 
