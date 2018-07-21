@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import Header from "../../components/Elements/Header";
 import DevLinks from "../../components/DevLinks";
 import API from "../../utils/API";
@@ -6,6 +7,7 @@ import ParallaxHero from "./../../components/ParallaxHero";
 import HelloSignForm from "./../../components/Elements/HelloSignForm";
 import { Input, Label, FormBtn } from "./../../components/Elements/Form";
 import "./../../App.css";
+import "./TestNick.css";
 
 class Test extends Component {
   state = {
@@ -102,9 +104,45 @@ class Test extends Component {
               </li>
             ))}
 
-            <p>Eat a bag o' dicks, foo!</p>
           </ul>
+
         </div>
+            {/* Heading */}
+          <div className='desc-heading'>
+            <h2>Your One Stop Shop</h2>
+          </div>
+            {/* Checkboard Style */}
+          <div className='main-card-expander'>
+            <div className='top-row-container'>
+              <div className="card1">
+                <Link className="btn-link expander-card"  to="/sales" role="button">
+                  <div className="expander-card-head">
+                    <h4>Buy</h4><i className="fas fa-money-bill-alt icons"></i>
+                  </div>
+
+                  <p>View our wide selection of the latest and greatest stand up paddle boards and kayaks to purchase.</p>
+                </Link>
+              </div>
+              <div className="card2">
+                <Link className="btn-link expander-card"  to="/sales" role="button">
+                  <div className="expander-card-head">
+                    <h4>Rent</h4><i className="fas fa-exchange-alt icons"></i>
+                  </div>
+
+                  <p>Rent one of our boards or kayaks for the a single day or for multiple days in a row.</p>
+                </Link>
+              </div>
+              <div className="card3">
+                <Link className="btn-link expander-card"  to="/sales" role="button">
+                  <div className="expander-card-head">
+                    <h4>Learn</h4><i className="fab fa-leanpub icons"></i>
+                  </div>
+
+                  <p>Sign up for a class with our instructional staff to start your adventure in a new sport, or to sharpen your skills.</p>
+                </Link>
+              </div>
+            </div>
+          </div>
       </div>
     );
   }
