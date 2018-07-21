@@ -189,26 +189,46 @@
 
 .contact-email {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin-top: 3%;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
 }
 
 .contact-email input {
     font-size: 0.9rem;
     margin: 0;
+    display: flex;
+    flex-direction: row;
     justify-content: start;
 }
 
 .clipboard-icon {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin: 15px 0;
     justify-content: start;
 }
 
-.clipboard-icon button {
+.contact-email button {
+    border-radius: 5px;
+    background-color: #adaaaa;
+    text-shadow: 1px 1px 3px #666666;
+    -webkit-box-shadow: 0px 1px 3px #666666;
+    box-shadow: 1px 2px 5px #666666;
+    border: none;
+    text-decoration: none;
+    margin: 5px;
+    width: 15%;
+    /* max-height: 25px; */
+    min-height: 25px;
+}
+
+.contact-email button:hover {
+    background: #858585;
+    cursor: pointer;
+}
+/* .clipboard-icon button {
     border-radius: 5px;
     background-color: #adaaaa;
     text-shadow: 1px 1px 3px #666666;
@@ -217,15 +237,15 @@
     border: none;
     text-decoration: none;
     margin: 5px auto;
-    width: 70%;
-    /* max-height: 50px; */
-    min-height: 50px;
+    width: 15%;
+    /* max-height: 25px;
+    min-height: 25px;
 }
 
 .clipboard-icon button:hover {
     background: #858585;
     cursor: pointer;
-}
+} */
 
 div .clipboard-icon p {
     font-size: 1rem;
@@ -233,8 +253,8 @@ div .clipboard-icon p {
 }
 
 .contact-email input, .clipboard-icon {
-    min-width: 250px;
-    max-width: 250px;
+    min-width: 255px;
+    max-width: 255px;
 }
 
 /* expanding card section */
@@ -303,6 +323,8 @@ div .clipboard-icon p {
     min-height: 300px;
     display: flex;
     justify-content: center;
+    text-shadow: 1px 1px 1px grey;
+    font-size:1.2em;
   }
   .main-card-expander .top-row-container .card2{
     width: 100%;
@@ -315,6 +337,8 @@ div .clipboard-icon p {
     min-height: 300px;
     display: flex;
     justify-content: center;
+    text-shadow: 1px 1px 1px grey;
+    font-size:1.2em;
   }
   .main-card-expander .top-row-container .card3{
     width: 100%;
@@ -327,6 +351,8 @@ div .clipboard-icon p {
     min-height: 300px;
     display: flex;
     justify-content: center;
+    text-shadow: 1px 1px 1px grey;
+    font-size:1.2em;
   }
   .main-card-expander .top-row-container .card1:hover{
     /* height: 100vh; */
@@ -408,6 +434,9 @@ div .clipboard-icon p {
     }
     .contact-email {
         align-items: start;
+    }
+    .contact-email button{
+        width: 5%;
     }
 }
 

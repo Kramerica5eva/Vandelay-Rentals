@@ -110,11 +110,14 @@ class Home extends Component {
 
               <div className="contact-email">
                 <input id="contactEmail" value="vandelayrentals.contact@gmail.com" readOnly />
-                  <div className="clipboard-icon">
-                    <button className="clipboard-btn" data-clipboard-target="#contactEmail">
+                <button className="clipboard-btn" data-clipboard-target="#contactEmail">
                       <i className="fas fa-copy"></i>
                     </button>
-                    <p>Copy to Clipboard</p>
+                  <div className="clipboard-icon">
+                    {/* <button className="clipboard-btn" data-clipboard-target="#contactEmail">
+                      <i className="fas fa-copy"></i>
+                    </button> */}
+                    {/* <p>Copy to Clipboard</p> */}
                   </div>
               </div>
 
