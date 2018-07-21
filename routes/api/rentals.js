@@ -4,7 +4,8 @@ const rentalsController = require('../../controllers/rentalsController');
 // Matches with '/api/rentals'
 router.route('/')
   .get(rentalsController.findAll)
-  .post(isLoggedIn, rentalsController.reserveRental);
+  .post(isLoggedIn, rentalsController.reserveRental)
+  .put(isLoggedIn, rentalsController.finalCheck);
 
 // Matches with '/api/rentals/:category'
 router
