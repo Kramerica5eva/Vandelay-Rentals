@@ -42,6 +42,19 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
+  checkSpace: function (req, res) {
+    db.Course.findById(req.body.courseId)
+      .populate("registrations")
+      .then(dbModel => {
+        if (dbModel.slots - dbModel.registrations.length > 0) {
+          return res.send({ response: "space", info: dbModel });
+        } else {
+          return res.send({ response: "full", info: dbModel });
+        }
+      })
+      .catch(err => res.json(err));
+  },
+
   reserveCourse: function (req, res) {
     console.log(req.body);
     db.Registration.create(req.body)

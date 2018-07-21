@@ -4,10 +4,10 @@ import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
-import ParallaxHero from "../../components/ParallaxHero"
 import DevLinks from "../../components/DevLinks";
 import "./ShoppingCart.css";
 import dateFns from "date-fns"
+import { Link } from 'react-router-dom';
 
 class ShoppingCart extends Component {
   state = {
@@ -130,60 +130,85 @@ class ShoppingCart extends Component {
 
   checkout = () => {
     this.toggleLoadingModal();
+    let checkArray = [];
     let promiseArray = [];
     this.state.tempReservations.forEach(res => {
-      const resQuery = API.reserveRental(res);
-      promiseArray.push(resQuery);
+      const checkQuery = API.finalCheck(res);
+      // const resQuery = API.reserveRental(res);
+      checkArray.push(checkQuery);
+      // promiseArray.push(resQuery);
+      // API.finalCheck(res).then(response => { checkArray.push(response.data) })
     });
     this.state.tempRegistrations.forEach(reg => {
-      const regQuery = API.reserveCourse(reg._id, reg);
-      promiseArray.push(regQuery)
+      const spaceQuery = API.checkSpace(reg._id, reg)
+      // const regQuery = API.reserveCourse(reg._id, reg);
+      checkArray.push(spaceQuery);
+      // promiseArray.push(regQuery);
+      // API.checkSpace(reg).then(response => { checkArray.push(response.data); console.log(checkArray); })
     });
-    Promise.all(promiseArray)
-      .then(() => {
-        // console.log(promiseArray);
-        // if (response.data.message === "duplicate") {
-        // 	console.log("Duplicate")
-        // 	this.toggleLoadingModal();
-        // 	this.setModal({
-        // 		body:
-        // 			<Fragment>
-        // 				<h5>That class is already in your cart.</h5>
-        // 				<br />
-        // 				<h4>Would you like to checkout or keep shopping?</h4>
-        // 			</Fragment>,
-        // 		buttons:
-        // 			<Fragment>
-        // 				<Link
-        // 					className="modal-btn-link"
-        // 					to={{ pathname: '/cart' }}
-        // 					role="button"
-        // 				>
-        // 					Go to Checkout
-        // 		</Link>
-        // 				<button onClick={this.toggleModal}>Continue Shopping</button>
-        // 			</Fragment>
-        // 	})
-        // } else if (response.data.message === "registration duplicate") {
-        // 	console.log("Duplicate")
-        // 	this.toggleLoadingModal();
-        // 	this.setModal({
-        // 		body:
-        // 			<h4>You are already registered for that class.</h4>,
-        // 		buttons:
-        // 			<button onClick={this.toggleModal}>Continue Shopping</button>
-
-        // 	})
-        // }
-        this.getUserShoppingCart();
-        this.toggleLoadingModal();
+    // if (checkArray.includes('data.response: "success"'))
+    console.log("***CHECKARRAY***");
+    console.log(checkArray);
+    console.log("***PROMISEARRAY***");
+    console.log(promiseArray);
+    Promise.all(checkArray)
+      // Promise.all(promiseArray)
+      .then(response => {
+        console.log(response)
+        let noGood = [];
+        for (let i = 0; i < response.length; i++) {
+          if (response[i].data.response === "already reserved" || response[i].data.response === "full") {
+            noGood.push({ name: response[i].data.info.name })
+          }
+        }
+        console.log(noGood)
+        if (noGood.length > 0) {
+          this.toggleLoadingModal();
+          this.setModal({
+            body:
+              <Fragment>
+                <h3>Oh no!!</h3>
+                <br />
+                <h4>Someone beat you to the punch and reserved the following {noGood.length === 1 ? "item" : "items"} before you did... <h1>🤯</h1></h4>
+                {noGood.map(thing =>
+                  <h3 key={thing.name}>{thing.name}</h3>
+                )}
+                <h5>Would you like to remove {noGood.length === 1 ? "it" : "them"} and continue to checkout, or go back and select another date for your reservation?</h5>
+              </Fragment>,
+            buttons:
+              <Fragment>
+                <Link
+                  className="modal-btn-link"
+                  to={{ pathname: '/rentals' }}
+                  role="button"
+                >
+                  Select new date
+          		</Link>
+                <button>Remove</button>
+              </Fragment>
+          })
+        } else {
+          this.state.tempReservations.forEach(res => {
+            const resQuery = API.reserveRental(res);
+            promiseArray.push(resQuery);
+          });
+          this.state.tempRegistrations.forEach(reg => {
+            const regQuery = API.reserveCourse(reg._id, reg);
+            promiseArray.push(regQuery);
+          });
+          Promise.all(promiseArray)
+            .then(() => {
+              this.getUserShoppingCart();
+              this.toggleLoadingModal();
+            });
+        }
       })
       .catch(err => console.log(err));
   }
 
   render() {
     // if left in still - take out this console log before production
-    console.log(this.state.tempRegistrations);
+    // console.log(this.state.tempRegistrations);
     return (
       <Fragment>
         <Modal
@@ -224,38 +249,38 @@ class ShoppingCart extends Component {
                   <h3 className="empty-cart">Your Shopping Cart is Empty</h3> : null}
                 {this.state.tempReservations ? (
                   this.state.tempReservations.map(res => (
-                  <div key={res._id} className="cart-res-container">
-                    <h2>Rentals</h2>
-                    <h3>{res.itemName}</h3>
-                    {res.date.from !== res.date.to ? <h4>Reservation Dates:</h4> : <h4>Reservation Date:</h4>}
-                    {res.date.from !== res.date.to
-                      ? <div><p>From: {dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>
-                        <p>To: {dateFns.format(res.date.to * 1000, "ddd MMM Do YYYY")}</p></div>
-                      : <p>{dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>}
-                    <p>Daily Rate: ${parseFloat(res.dailyRate.$numberDecimal).toFixed(2)}</p>
-                    <h4>Total cost: ${parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2))}</h4>
+                    <div key={res._id} className="cart-res-container">
+                      <h2>Rentals</h2>
+                      <h3>{res.itemName}</h3>
+                      {res.date.from !== res.date.to ? <h4>Reservation Dates:</h4> : <h4>Reservation Date:</h4>}
+                      {res.date.from !== res.date.to
+                        ? <div><p>From: {dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>
+                          <p>To: {dateFns.format(res.date.to * 1000, "ddd MMM Do YYYY")}</p></div>
+                        : <p>{dateFns.format(res.date.from * 1000, "ddd MMM Do YYYY")}</p>}
+                      <p>Daily Rate: ${parseFloat(res.dailyRate.$numberDecimal).toFixed(2)}</p>
+                      <h4>Total cost: ${parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2))}</h4>
                       {/* <button onClick={() => this.confirmReservation(res)}>Confirm</button> */}
-                    <button className="remove-reservation" onClick={() => this.removeReservationFromCart(res._id)}>Remove</button>
-                  </div>
-                ))
-              ) : null}
+                      <button className="remove-reservation" onClick={() => this.removeReservationFromCart(res._id)}>Remove</button>
+                    </div>
+                  ))
+                ) : null}
 
-              {this.state.tempRegistrations ? (
-                this.state.tempRegistrations.map(reg => (
-                  <div key={reg._id} className="cart-reg-container">
-                    <h2>Classes</h2>
-                    <h3>{reg.courseName}</h3>
-                    <h4>Class Date: {dateFns.format(reg.date * 1000, "ddd MMM Do YYYY")}</h4>
-                    <h4>Price per person: ${parseFloat(reg.price.$numberDecimal).toFixed(2)}</h4>
-                    {/* <button onClick={() => this.confirmRegistration(reg)}>Confirm</button> */}
-                    <button  className="remove-reservation" onClick={() => this.removeRegistrationFromCart(reg._id)}>Remove</button>
-                  </div>
-                ))
-              ) : null}
+                {this.state.tempRegistrations ? (
+                  this.state.tempRegistrations.map(reg => (
+                    <div key={reg._id} className="cart-reg-container">
+                      <h2>Classes</h2>
+                      <h3>{reg.courseName}</h3>
+                      <h4>Class Date: {dateFns.format(reg.date * 1000, "ddd MMM Do YYYY")}</h4>
+                      <h4>Price per person: ${parseFloat(reg.price.$numberDecimal).toFixed(2)}</h4>
+                      {/* <button onClick={() => this.confirmRegistration(reg)}>Confirm</button> */}
+                      <button className="remove-reservation" onClick={() => this.removeRegistrationFromCart(reg._id)}>Remove</button>
+                    </div>
+                  ))
+                ) : null}
               </div>
             </div>
             <div className={this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
-                  "no-confirm" : "checkout-proceed"}>
+              "no-confirm" : "checkout-proceed"}>
               <button className={`${this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
                 "chkoutDisabled" : ""}`} onClick={() => this.checkout()}>Confirm Reservation <i className="fas fa-check-circle"></i></button>
             </div>

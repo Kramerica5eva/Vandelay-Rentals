@@ -121,6 +121,10 @@ export default {
     return axios.post(`/api/courses/${id}`, reservationData);
   },
 
+  checkSpace: function (id, reservationData) {
+    return axios.put(`/api/courses/${id}`, reservationData);
+  },
+
   // Remove a reservation
   removeCourseRegistration: function (id, reservationData) {
     return axios.put(`/api/courses/remove/${id}`, reservationData);
@@ -144,6 +148,10 @@ export default {
   // Reserves Rental by date range
   reserveRental: function (rentalData) {
     return axios.post(`/api/rentals`, rentalData);
+  },
+
+  finalCheck: function (rentalData) {
+    return axios.put(`/api/rentals`, rentalData)
   },
 
   // Gets Rental item by category - if the user chooses Paddleboard or Kayak without first entering dates, this will pull all rentals.
