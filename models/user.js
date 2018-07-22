@@ -40,7 +40,7 @@ const userSchema = new Schema({
 	}],
 	standing: {
 		type: String,
-		enum: ['Good', 'Uncertain', 'Banned'],
+		enum: ['Good', 'Uncertain', 'Banned', 'Inactive'],
 		default: 'Good'
 	},
   note: String,

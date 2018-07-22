@@ -18,12 +18,14 @@ module.exports = {
   signup: function (req, res) {
     const { username, firstName, lastName, email, state, zipcode, phone } = req.body;
 
-    const noDashPhone = phone.split("-").join("");
-    console.log(noDashPhone);
+    console.log(phone);
+    const filteredPhone = phone.split("").filter(num => /^[0-9]+$/.test(num)).join("");
+    console.log("Filtered phone: " + filteredPhone);
 
     let zipTest = /^\d{5}(-\d{4})?$/.test(zipcode);
     let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);
-    let phoneTest = /^\d{3}[\-]\d{3}[\-]\d{4}/.test(phone) || /^\d{10}/.test(phone); //I added this so that my computer can auto complete the phone number and I don't have to go back and put the dashes in. Makes it faster to test. We can remove it later. 
+    // let phoneTest = /^\d{3}[\-]\d{3}[\-]\d{4}/.test(phone) || /^\d{10}/.test(phone); //I added this so that my computer can auto complete the phone number and I don't have to go back and put the dashes in. Makes it faster to test. We can remove it later. 
+    let phoneTest = /^\d{10}/.test(filteredPhone);
     let userTest = /^[a-zA-Z0-9]+$/.test(username);
     let firstTest = /^[a-zA-Z]+$/.test(firstName);
     let lastTest = /^[a-zA-Z]+$/.test(lastName);

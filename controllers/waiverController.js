@@ -3,38 +3,6 @@ const hellosign = require('hellosign-sdk')({key: "885fe716760ad052c0df78878bd1ae
 
 // Defining methods for the waiverController
 module.exports = {
-  findAll: function (req, res) {
-    db.Course
-      .find({})
-      .sort({ date: -1 })
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  findById: function (req, res) {
-    db.Course
-      .findById(req.params.id)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  findByCategory: function (req, res) {
-    db.Course
-      .create(req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  update: function (req, res) {
-    db.Course
-      .findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  remove: function (req, res) {
-    db.Course
-      .findById({ _id: req.params.id })
-      .then(dbModel => dbModel.remove())
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
 
   // hellosign-embeded
   createSignatureRequest: function (req, res) {
@@ -82,4 +50,5 @@ module.exports = {
       });
     });
   }
+  
 };
