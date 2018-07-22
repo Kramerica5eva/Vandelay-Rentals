@@ -115,7 +115,60 @@ export class TestTable extends Component {
   }
 
   userDeleteModal = row => {
+    console.log(row);
+    const { registrations, reservations } = row._original;
 
+    if (registrations.length > 0 || reservations.length > 0) {
+      this.setModal({
+        body: <h3>You must remove all reservations and class registrations for this user before you can delete them.</h3>
+      })
+    } else {
+      this.setModal({
+        body:
+          <Fragment>
+            <h4>Are you sure you want to delete {row.firstName} {row.lastName}?</h4>
+            <p>(this is permanent - you cannot undo it and you will lose all data)</p>
+            <h4>Would you rather deactivate the account (or -gasp!- ban the user) and keep the data?</h4>
+          </Fragment>,
+        buttons:
+          <Fragment>
+            <button onClick={this.toggleModal}>Nevermind</button>
+            <button onClick={() => this.deactivateUser(row)}>Deactivate</button>
+            <button onClick={() => this.banUser(row)}>Ban User</button>
+            <button onClick={() => this.deleteUser(row)}>Delete</button>
+          </Fragment>
+      })
+    }
+  }
+
+  deactivateUser = row => {
+    this.toggleLoadingModal();
+    const { _id } = row._original;
+    API.adminUpdateUser(_id, { standing: "Inactive" })
+      .then(res => {
+        console.log(res);
+        this.toggleLoadingModal();
+        this.adminGetAllUsers();
+        this.setModal({
+          body: <h3>Database sucessfully updated.</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
+        });
+      });
+  }
+
+  banUser = row => {
+    this.toggleLoadingModal();
+    const { _id } = row._original;
+    API.adminUpdateUser(_id, { standing: "Banned" })
+      .then(res => {
+        console.log(res);
+        this.toggleLoadingModal();
+        this.adminGetAllUsers();
+        this.setModal({
+          body: <h3>Database sucessfully updated.</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
+        });
+      });
   }
 
   deleteUser = id => {
@@ -360,6 +413,7 @@ export class TestTable extends Component {
                                 {row.row.standing !== "Good" ? <option>Good</option> : null}
                                 {row.row.standing !== "Uncertain" ? <option>Uncertain</option> : null}
                                 {row.row.standing !== "Banned" ? <option>Banned</option> : null}
+                                {row.row.standing !== "Inactive" ? <option>Inactive</option> : null}
                               </select>
                             </div>
                           </form>
