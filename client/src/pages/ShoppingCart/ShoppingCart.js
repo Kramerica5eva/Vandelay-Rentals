@@ -27,10 +27,13 @@ class ShoppingCart extends Component {
     this.getUserShoppingCart();
   }
 
-  toggleModal = () => {
+  toggleModal = (checkout) => {
     this.setState({
       modal: { isOpen: !this.state.modal.isOpen }
     });
+    if (checkout) {
+      this.checkout();
+    }
   }
 
   setModal = (modalInput) => {
@@ -179,6 +182,10 @@ class ShoppingCart extends Component {
           });
           Promise.all(noGood)
             .then(() => {
+              console.log("start state tempreservations")
+              console.log(this.state.tempRegistrations)
+              console.log(this.state.tempReservations)
+              console.log("end state tempreservations")
               this.toggleLoadingModal();
               this.setModal({
                 body:
@@ -200,7 +207,12 @@ class ShoppingCart extends Component {
                     >
                       Select new date
           		</Link>
-                    <button>Remove</button>
+                    <button
+                      className="modal-btn-link"
+                      onClick={() => this.toggleModal(true)}
+                    >
+                      Remove
+                      </button>
                   </Fragment>
               })
             })
