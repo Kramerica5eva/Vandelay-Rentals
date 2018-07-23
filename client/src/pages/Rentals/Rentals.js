@@ -273,6 +273,7 @@ class Rentals extends Component {
 					admin={this.props.admin}
 					logout={this.props.logout}
 					location={this.props.location}
+					dev={this.props.dev}
 				/>
 				<LoadingModal show={this.state.loadingModalOpen} />
 				<div className="main-container">

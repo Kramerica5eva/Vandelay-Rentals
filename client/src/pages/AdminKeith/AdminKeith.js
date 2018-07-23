@@ -148,6 +148,7 @@ class Admin extends Component {
           admin={this.props.admin}
           logout={this.props.logout}
           location={this.props.location}
+          dev={this.props.dev}
         />
         <Header>
           <h1>Vandelay Admin Page</h1>

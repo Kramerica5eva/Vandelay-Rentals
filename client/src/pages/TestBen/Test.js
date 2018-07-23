@@ -4,10 +4,12 @@ import Header from "../../components/Elements/Header";
 import API from "../../utils/API";
 import Calendar from "../../components/Calendar";
 import DevLinks from "../../components/DevLinks.js";
+import NavBar from "../../components/Elements/NavBar";
 // import Calendar2 from "react-calendar";
 import "./../../App.css";
 import "./testBen.css";
 import RentalCard from "../../components/Cards/RentalCard";
+import DevMenu from "../../components/Elements/DevMenu/DevMenu";
 import dateFns from "date-fns";
 let moment = require("moment");
 
@@ -102,13 +104,23 @@ class Test extends Component {
   render() {
     return (
       <div className="main-container">
-
+        <NavBar
+          loggedIn={this.props.loggedIn}
+          admin={this.props.admin}
+          logout={this.props.logout}
+          location={this.props.location}
+          dev={this.props.dev}
+        />
         <Header>
           <h1>BEN'S TEST PAGE</h1>
           <h2>A Page for Testing Components</h2>
           <h2>(CALENDAR STUFF)</h2>
 
           {/* Navigation */}
+          <DevMenu
+            loggedIn={this.props.loggedIn}
+            admin={this.props.admin}
+          />
           <DevLinks />
           <div className="nav-container">
             <Link className="btn-link" to="/" role="button">Home</Link>

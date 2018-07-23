@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Link } from 'react-router-dom';
 import GreyBtn from "../Buttons/GreyBtn";
+import DevMenu from "../../Elements/DevMenu/DevMenu";
 import "./NavBar.css"
 
 // Must pass in a relative or web url with an image in order for parallax to work
@@ -46,7 +47,7 @@ class NavBar extends React.Component {
           <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logoWordScript.png" /></Link>
         </div> */}
         <div className='brand-logo'>
-          <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logoWordHand.png" alt=""/></Link>
+          <Link className="btn-link" to="/" role="button"><img className="logo-fmt" src="./static/assets/images/logoWordHand.png" alt="" /></Link>
         </div>
         <div className='links'>
           <Link className="btn-link" to="/" role="button">Home</Link>
@@ -58,6 +59,7 @@ class NavBar extends React.Component {
               {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
               <Link className="btn-link" to="/cart" role="button"><i className="fas fa-shopping-cart"></i></Link>
               <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
+              {this.props.dev ? <DevMenu loggedIn={this.props.loggedIn} admin={this.props.admin} /> : null}
               <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
             </Fragment>
           ) : (
@@ -92,6 +94,7 @@ class NavBar extends React.Component {
               {this.props.admin ? <Link className="btn-link" to="/admin" role="button">Admin</Link> : null}
               <Link className="btn-link" to="/profile" role="button"><i className="far fa-user-circle"></i></Link>
               <Link className="btn-link" to="/cart" role="button"><i className="fas fa-shopping-cart"></i></Link>
+              {this.props.dev ? <DevMenu loggedIn={this.props.loggedIn} admin={this.props.admin} /> : null}
               <GreyBtn logout={this.props.logout}>Logout</GreyBtn>
             </Fragment>
           ) : (

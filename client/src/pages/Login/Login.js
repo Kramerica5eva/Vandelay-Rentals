@@ -61,6 +61,7 @@ class Login extends Component {
           <NavBar
             loggedIn={this.props.loggedIn}
             admin={this.props.admin}
+            dev={this.props.dev}
             logout={this.props.logout}
             location={this.props.location}
             toggleForm={this.toggleForm}
