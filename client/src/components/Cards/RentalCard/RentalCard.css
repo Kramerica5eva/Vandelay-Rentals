@@ -71,11 +71,29 @@
     margin-left: -70px;
   }
 
+  .selectDate {
+    visibility: hidden;
+    width: auto;
+    color: rgb(255, 110, 110);
+    background-color: rgba(78, 80, 216, 0.888);
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 3px;
+    position: absolute;
+    z-index: 1;
+    top: 115%;
+    margin-left: -70px;
+  }
+
   .mobiletext {
     display: none;
   }
 
   .mobiletextNA {
+    display: none;
+  }
+
+  .mobileSelectDate {
     display: none;
   }
 
@@ -92,11 +110,18 @@
     visibility: visible;
   }
 
+  .buttonblock:hover .selectDate {
+    visibility: visible;
+  }
+
   @media (max-width: 1000px) {
     .tooltiptext {
       display: none;
     }
     .tooltiptextNA {
+      display: none;
+    }
+    .selectDate {
       display: none;
     }
     .mobiletext {
@@ -107,6 +132,14 @@
       z-index: 1;
     }
     .mobiletextNA {
+      color: red;
+      display: inline-block;
+      font-size: 10px;
+      vertical-align: 7px;
+      width: auto;
+      z-index: 1;
+    }
+    .mobileSelectDate {
       color: red;
       display: inline-block;
       font-size: 10px;
