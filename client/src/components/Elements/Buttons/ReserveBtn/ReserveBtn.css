@@ -29,11 +29,13 @@
 
 .btn-unavailable {
   cursor: not-allowed;
-  opacity: 0.2;
   filter: alpha(opacity=20);
+  opacity: 0.2;
 }
 
 .inactive {
-  pointer-events: none;
   cursor: not-allowed;
+  filter: alpha(opacity=20);
+  opacity: 0.2;
+  pointer-events: none;
 }

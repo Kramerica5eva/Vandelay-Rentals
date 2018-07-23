@@ -18,8 +18,16 @@ class ReserveBtn extends React.Component {
           }`}
           onClick={this.props.availability ? () => this.props.addReservationToCart(this.props.rental) : null}
         />
-        {this.props.availability ? <span className={"mobiletext"}>Reserve</span> : <span className={"mobiletextNA"}>Not available</span>}
-        {this.props.availability ? <span className={"tooltiptext"}>Reserve</span> : <span className={"tooltiptextNA"}>Not available</span>}
+        {this.props.unix.length === 0
+          ? <span className={"selectDate"}>Select dates</span>
+          : this.props.availability
+            ? <span className={"tooltiptext"}>Reserve</span>
+            : <span className={"tooltiptextNA"}>Not available</span>}
+        {this.props.unix.length === 0
+          ? <span className={"mobileSelectDate"}>Select dates</span>
+          : this.props.availability
+            ? <span className={"mobiletext"}>Reserve</span>
+            : <span className={"mobiletextNA"}>Not available</span>}
       </div>
     );
   }
