@@ -7,7 +7,7 @@ import API from "../../utils/API";
 import "./About.css";
 
 class About extends Component {
- 
+
   render() {
     return (
       <Fragment>
@@ -16,6 +16,7 @@ class About extends Component {
           admin={this.props.admin}
           logout={this.props.logout}
           location={this.props.location}
+          dev={this.props.dev}
         />
         <div className="main-container">
           <ParallaxHero
@@ -24,22 +25,22 @@ class About extends Component {
           />
           <div className='body-container contact-page'>
             <div className='contact-boxes'>
-                <i className="fas fa-warehouse"></i>
-                <h3>Come visit us</h3>
-                <h4>10000 Nowhere Lane</h4>
-                <h4>Whoknowsville, ZZ 24680</h4>
+              <i className="fas fa-warehouse"></i>
+              <h3>Come visit us</h3>
+              <h4>10000 Nowhere Lane</h4>
+              <h4>Whoknowsville, ZZ 24680</h4>
             </div>
             <div className='contact-boxes'>
-                <i className="fas fa-mobile"></i>
-                <h3>Give us a call</h3>
-                <h4>(801) 123-4567</h4>
-                <h4>Mon-Fri | 8 AM - 4 PM</h4>
-                <h4>Sat | 7 AM - 6 PM</h4>
+              <i className="fas fa-mobile"></i>
+              <h3>Give us a call</h3>
+              <h4>(801) 123-4567</h4>
+              <h4>Mon-Fri | 8 AM - 4 PM</h4>
+              <h4>Sat | 7 AM - 6 PM</h4>
             </div>
             <div className='contact-boxes'>
-                <i className="fas fa-envelope-open"></i>
-                <h3>Send us an email</h3>
-                <h4>vandelayrentals.contact@gmail.com</h4>
+              <i className="fas fa-envelope-open"></i>
+              <h3>Send us an email</h3>
+              <h4>vandelayrentals.contact@gmail.com</h4>
             </div>
           </div>
           <Footer />

@@ -276,6 +276,7 @@ class Profile extends Component {
           admin={this.props.admin}
           logout={this.props.logout}
           location={this.props.location}
+          dev={this.props.dev}
         />
 
         <div className="page-container">

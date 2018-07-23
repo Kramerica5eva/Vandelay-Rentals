@@ -13,6 +13,7 @@ class NoMatch extends Component {
           admin={this.props.admin}
           logout={this.props.logout}
           location={this.props.location}
+          dev={this.props.dev}
         />
         <div className="main-container" >
           <div className='body-container page-not-found'>
