@@ -59,7 +59,8 @@ export class AddCourseForm extends Component {
       level: level,
       date: unixDate,
       slots: slots,
-      registrations: []
+      registrations: [],
+      type: "course"
     }
 
     API.adminAddNewCourse(courseObject)

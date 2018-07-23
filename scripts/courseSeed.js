@@ -24,7 +24,8 @@ const courseSeed = [
     date: 1533196800,
     slots: 30,
     registrations: [],
-    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/paddleboard_choir_zpsk6ilp5ha.jpg"
+    displayImageUrl: "http://i1174.photobucket.com/albums/r619/vandelay-rentals/paddleboard_choir_zpsk6ilp5ha.jpg",
+    type: "course"
   },
   {
     name: 'Whitewater Kayaking',
@@ -41,7 +42,8 @@ const courseSeed = [
     date: 1534932000,
     slots: 20,
     registrations: [],
-    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/essential_whitewater_kayaking_class_zpsj3flgx4v.jpg"
+    displayImageUrl: "http://i1174.photobucket.com/albums/r619/vandelay-rentals/essential_whitewater_kayaking_class_zpsj3flgx4v.jpg",
+    type: "course"
   },
   {
     name: 'Water Snipe Hunting',
@@ -58,7 +60,8 @@ const courseSeed = [
     date: 1535810400,
     slots: 50,
     registrations: [],
-    displayImageUrl:"http://i1174.photobucket.com/albums/r619/vandelay-rentals/water_snipe_hunt_zpsjr0tn1nu.jpg"
+    displayImageUrl: "http://i1174.photobucket.com/albums/r619/vandelay-rentals/water_snipe_hunt_zpsjr0tn1nu.jpg",
+    type: "course"
   }
 ];
 

@@ -132,6 +132,12 @@ class ShoppingCart extends Component {
     this.toggleLoadingModal();
     let checkArray = [];
     let promiseArray = [];
+    console.log("Start temp reservations")
+    console.log(this.state.tempReservations)
+    console.log("end temp reservatios")
+    console.log("Start temp registrations")
+    console.log(this.state.tempRegistrations)
+    console.log("end temp registrations")
     this.state.tempReservations.forEach(res => {
       const checkQuery = API.finalCheck(res);
       // const resQuery = API.reserveRental(res);
@@ -147,46 +153,57 @@ class ShoppingCart extends Component {
       // API.checkSpace(reg).then(response => { checkArray.push(response.data); console.log(checkArray); })
     });
     // if (checkArray.includes('data.response: "success"'))
-    console.log("***CHECKARRAY***");
-    console.log(checkArray);
-    console.log("***PROMISEARRAY***");
-    console.log(promiseArray);
+    // console.log("***CHECKARRAY***");
+    // console.log(checkArray);
+    // console.log("***PROMISEARRAY***");
+    // console.log(promiseArray);
     Promise.all(checkArray)
-      // Promise.all(promiseArray)
       .then(response => {
+        // console.log(res)
         console.log(response)
         let noGood = [];
         for (let i = 0; i < response.length; i++) {
           if (response[i].data.response === "already reserved" || response[i].data.response === "full") {
-            noGood.push({ name: response[i].data.info.name })
+            noGood.push({ name: response[i].data.info.name, id: response[i].data.tempId, type: response[i].data.info.type })
           }
         }
         console.log(noGood)
         if (noGood.length > 0) {
-          this.toggleLoadingModal();
-          this.setModal({
-            body:
-              <Fragment>
-                <h3>Oh no!!</h3>
-                <br />
-                <h4>Someone beat you to the punch and reserved the following {noGood.length === 1 ? "item" : "items"} before you did... <h1>🤯</h1></h4>
-                {noGood.map(thing =>
-                  <h3 key={thing.name}>{thing.name}</h3>
-                )}
-                <h5>Would you like to remove {noGood.length === 1 ? "it" : "them"} and continue to checkout, or go back and select another date for your reservation?</h5>
-              </Fragment>,
-            buttons:
-              <Fragment>
-                <Link
-                  className="modal-btn-link"
-                  to={{ pathname: '/rentals' }}
-                  role="button"
-                >
-                  Select new date
+          noGood.forEach(del => {
+            console.log(del)
+            if (del.type === "course") {
+              this.removeRegistrationFromCart(del.id);
+            } else if (del.type === "item") {
+              this.removeReservationFromCart(del.id);
+            }
+          });
+          Promise.all(noGood)
+            .then(() => {
+              this.toggleLoadingModal();
+              this.setModal({
+                body:
+                  <Fragment>
+                    <h3>Oh no!!</h3>
+                    <br />
+                    <h4>Someone beat you to the punch and reserved the following {noGood.length === 1 ? "item" : "items"} before you did... </h4><h1>🤯</h1>
+                    {noGood.map(thing =>
+                      <h3 key={thing.name}>{thing.name}</h3>
+                    )}
+                    <h5>Would you like to remove {noGood.length === 1 ? "it" : "them"} and continue to checkout, or go back and select another date for your reservation?</h5>
+                  </Fragment>,
+                buttons:
+                  <Fragment>
+                    <Link
+                      className="modal-btn-link"
+                      to={{ pathname: '/rentals' }}
+                      role="button"
+                    >
+                      Select new date
           		</Link>
-                <button>Remove</button>
-              </Fragment>
-          })
+                    <button>Remove</button>
+                  </Fragment>
+              })
+            })
         } else {
           this.state.tempReservations.forEach(res => {
             const resQuery = API.reserveRental(res);
