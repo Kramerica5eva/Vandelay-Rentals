@@ -13,17 +13,14 @@ class ModalContent extends Component {
       <div className="my-modal-content">
         <div className="my-modal-header">
           <span className="my-modal-close" onClick={this.props.toggleModal}>&times;</span>
-          <h3>{this.props.header}</h3>
         </div>
-        <div className="my-modal-body">
+        <div className="my-modal-body" style={this.props.style}>
           {this.props.body}
-          <div className="modal-btn-div">
+          <div className="modal-btn-div" style={this.props.buttonStyle}>
             {this.props.buttons}
           </div>
         </div>
-        <div className="my-modal-footer">
-          <h3>{this.props.footer}</h3>
-        </div>
+        <div className="my-modal-footer"></div>
       </div>
     )
   }

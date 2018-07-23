@@ -246,6 +246,9 @@ class ShoppingCart extends Component {
             })
         } else {
           this.state.tempReservations.forEach(res => {
+            //  Add total cost of the reservation to the reservation object:
+            res.total = (((parseInt(res.date.to) - parseInt(res.date.from)) / 86400) + 1) * res.dailyRate.$numberDecimal;
+
             const resQuery = API.reserveRental(res);
             promiseArray.push(resQuery);
           });

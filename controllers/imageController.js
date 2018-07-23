@@ -11,17 +11,10 @@ dbConnection.once('open', () => {
   gfs.collection('uploads');
 });
 
-// const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/vandelay_rental';
-// const conn = mongoose.createConnection(mongoURI);
-// conn.once('open', () => {
-//   gfs = Grid(conn.db, mongoose.mongo);
-//   gfs.collection('uploads');
-// });
-
 // Defining methods for the imageController
 module.exports = {
 
-  findAll: function (req, res) {
+  findAllRentalImages: function (req, res) {
     db.Rental.findOne({ _id: req.params.id })
       .then(rental => {
         console.log(rental.images);
@@ -34,7 +27,7 @@ module.exports = {
       })
   },
 
-  findById: function (req, res) {
+  findImageById: function (req, res) {
     gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
       if (!file || file.length === 0) {
         return res.status(404).json({
@@ -55,7 +48,7 @@ module.exports = {
     });
   },
 
-  create: function (req, res) {
+  createRentalImage: function (req, res) {
     console.log("Here's the uploaded image data:");
     console.log(req.file);
     db.Rental.findOneAndUpdate(
@@ -68,13 +61,55 @@ module.exports = {
     })
   },
 
-  remove: function (req, res) {
+  removeRentalImage: function (req, res) {
     console.log("Delete route active...");
     console.log(`Rental _id: `);
     console.log(req.params.rental);
     gfs.remove({ _id: req.params.id, root: 'uploads' }, (err, gridStore) => {
       if (err) return res.status(404).json({ err: err });
       db.Rental.findOneAndUpdate(
+        { _id: req.params.rental },
+        { $pull: { images: req.params.id } },
+        { new: true }
+      ).then(rental => {
+        res.json(rental);
+      })
+    });
+  },
+
+  findAllPastRentalImages: function (req, res) {
+    db.PastRental.findOne({ _id: req.params.id })
+      .then(pr => {
+        console.log(pr.images);
+        gfs.files.find({
+          _id: { $in: pr.images }
+        }).toArray((err, files) => {
+          console.log(files);
+          res.send(files);
+        })
+      })
+  },
+
+  createPastRentalImage: function (req, res) {
+    console.log("Here's the uploaded image data:");
+    console.log(req.file);
+    db.PastRental.findOneAndUpdate(
+      { _id: req.params.id },
+      { $push: { images: req.file.id } },
+      { new: true }
+    ).then(file => {
+      console.log(file);
+      res.json(file);
+    })
+  },
+
+  removePastRentalImage: function (req, res) {
+    console.log("Delete route active...");
+    console.log(`Rental _id: `);
+    console.log(req.params.rental);
+    gfs.remove({ _id: req.params.id, root: 'uploads' }, (err, gridStore) => {
+      if (err) return res.status(404).json({ err: err });
+      db.PastRental.findOneAndUpdate(
         { _id: req.params.rental },
         { $pull: { images: req.params.id } },
         { new: true }

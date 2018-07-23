@@ -11,9 +11,7 @@ class ImageModal extends Component {
     return (
       <div id="image-modal" className="image-modal">
         <ImageModalContent
-          header={this.props.header}
           body={this.props.body}
-          footer={this.props.footer}
           buttons={this.props.buttons}
           toggleImageModal={this.props.toggleImageModal}
         />

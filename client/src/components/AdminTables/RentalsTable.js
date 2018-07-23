@@ -147,7 +147,8 @@ export class RentalsTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          body: <h3>Database successfully updated</h3>
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllRentals();
@@ -182,7 +183,8 @@ export class RentalsTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          body: <h3>Database successfully updated</h3>
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllRentals();
@@ -276,7 +278,8 @@ export class RentalsTable extends Component {
       console.log(res);
       if (res.data.length === 0) {
         setTimeout(this.setModal, 500, {
-          body: <h4>No images to display</h4>
+          body: <h3>No images to display</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
         });
       } else {
         this.toggleModal();
@@ -366,7 +369,8 @@ export class RentalsTable extends Component {
           setTimeout(this.toggleLoadingModal, 500);
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
-            body: <h4>Database successfully updated</h4>
+            body: <h3>Database successfully updated</h3>,
+            buttons: <button onClick={this.toggleModal}>OK</button>
           });
           //  query the db and reload the table
           this.adminGetAllRentals();
@@ -475,7 +479,7 @@ export class RentalsTable extends Component {
               //  thisReservation grabs the reservations from this.state.rentals that matches the row index - it grabs the reservations for this rental item.
               const thisRow = this.state.rentals[row.row._index];
               return (
-                <Fragment>
+                <div className="sub-table-container">
                   {thisRow.reservations.length > 0 ? (
                     <ReservationsTable
                       forName={thisRow.name}
@@ -495,7 +499,7 @@ export class RentalsTable extends Component {
                       adminGetAllRentals={this.adminGetAllRentals}
                     />
                   ) : null}
-                </Fragment>
+                </div>
               );
             }}
             columns={[

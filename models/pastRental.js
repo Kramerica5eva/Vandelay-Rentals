@@ -20,7 +20,12 @@ const pastRentalSchema = new Schema({
   paid: {
     type: Boolean,
     default: true
-  }
+  },
+  images: [{
+    type: Schema.Types.ObjectId
+  }],
+  total: Schema.Types.Decimal128,
+  note: String
 });
 
 const PastRental = mongoose.model('PastRental', pastRentalSchema);
