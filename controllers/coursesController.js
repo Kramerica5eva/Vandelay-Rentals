@@ -43,13 +43,16 @@ module.exports = {
   },
 
   checkSpace: function (req, res) {
+    console.log("start of the req")
+    console.log(req)
+    console.log("end of the req")
     db.Course.findById(req.body.courseId)
       .populate("registrations")
       .then(dbModel => {
         if (dbModel.slots - dbModel.registrations.length > 0) {
-          return res.send({ response: "space", info: dbModel });
+          return res.send({ response: "space", info: dbModel, tempId: req.body._id });
         } else {
-          return res.send({ response: "full", info: dbModel });
+          return res.send({ response: "full", info: dbModel, tempId: req.body._id });
         }
       })
       .catch(err => res.json(err));

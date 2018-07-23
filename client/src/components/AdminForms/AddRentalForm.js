@@ -58,7 +58,8 @@ export class AddRentalForm extends Component {
       timesRented: timesRented,
       dateAcquired: dateAcquired,
       condition: condition,
-      images: []
+      images: [],
+      type: "rental"
     }
 
     API.adminAddNewRental(rentalObject)

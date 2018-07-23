@@ -159,27 +159,27 @@ module.exports = {
         for (let i = 0; i < dbModel.reservations.length; i++) {
           if (dbModel.reservations[i].date.from === dbModel.reservations[i].date.to && req.body.date.from === req.body.date.to) {
             if (dbModel.reservations[i].date.from === req.body.date.from) {
-              return res.send({ response: "already reserved", info: dbModel })
+              return res.send({ response: "already reserved", info: dbModel, tempId: req.body._id })
             }
           }
           if (dbModel.reservations[i].date.from === dbModel.reservations[i].date.to && req.body.date.from !== req.body.date.to) {
             if (dateFns.isWithinRange(dbModel.reservations[i].date.from, req.body.date.from, req.body.date.to)) {
-              return res.send({ response: "already reserved", info: dbModel })
+              return res.send({ response: "already reserved", info: dbModel, tempId: req.body._id })
             }
           }
           if (dbModel.reservations[i].date.from !== dbModel.reservations[i].date.to && req.body.date.from === req.body.date.to) {
             if (dateFns.isWithinRange(req.body.date.from, dbModel.reservations[i].date.from, dbModel.reservations[i].date.to)) {
-              return res.send({ response: "already reserved", info: dbModel })
+              return res.send({ response: "already reserved", info: dbModel, tempId: req.body._id })
             }
           }
           if (dbModel.reservations[i].date.from !== dbModel.reservations[i].date.to && req.body.date.from !== req.body.date.to) {
             if (dateFns.areRangesOverlapping(dbModel.reservations[i].date.from, dbModel.reservations[i].date.to, req.body.date.from, req.body.date.to)) {
-              return res.send({ response: "already reserved", info: dbModel })
+              return res.send({ response: "already reserved", info: dbModel, tempId: req.body._id })
             }
           }
         }
         // return res.send(true)
-        return res.send({ response: "Success!", info: dbModel })
+        return res.send({ response: "Success!", info: dbModel, tempId: req.body._id })
       }).catch(err => res.json(err));
   },
 
