@@ -165,6 +165,7 @@ class ShoppingCart extends Component {
         // console.log(res)
         console.log(response)
         let noGood = [];
+        let types = [];
         for (let i = 0; i < response.length; i++) {
           if (response[i].data.response === "already reserved" || response[i].data.response === "full") {
             noGood.push({ name: response[i].data.info.name, id: response[i].data.tempId, type: response[i].data.info.type })
@@ -179,6 +180,7 @@ class ShoppingCart extends Component {
             } else if (del.type === "item") {
               this.removeReservationFromCart(del.id);
             }
+            types.push(del.type);
           });
           Promise.all(noGood)
             .then(() => {
@@ -200,13 +202,39 @@ class ShoppingCart extends Component {
                   </Fragment>,
                 buttons:
                   <Fragment>
-                    <Link
-                      className="modal-btn-link"
-                      to={{ pathname: '/rentals' }}
-                      role="button"
-                    >
-                      Select new date
-          		</Link>
+                    {types.includes("course") && types.includes("rental")
+                      ? <Link
+                        className="modal-btn-link"
+                        to={{ pathname: '/rentals' }}
+                        role="button"
+                      >
+                        Select new date
+              </Link> &&
+                      <Link
+                        className="modal-btn-link"
+                        to={{ pathname: '/courses' }}
+                        role="button"
+                      >
+                        Select new course
+              </Link>
+                      : types.includes("course")
+                        ? <Link
+                          className="modal-btn-link"
+                          to={{ pathname: '/courses' }}
+                          role="button"
+                        >
+                          Select new course
+              </Link>
+                        : types.includes("rental")
+                          ? <Link
+                            className="modal-btn-link"
+                            to={{ pathname: '/rental' }}
+                            role="button"
+                          >
+                            Select new dates
+              </Link>
+                          : null
+                    }
                     <button
                       className="modal-btn-link"
                       onClick={() => this.toggleModal(true)}
