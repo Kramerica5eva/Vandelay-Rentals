@@ -9,9 +9,13 @@
   background: #f1f1f1;
 }
 
+.sub-table-container h3 {
+  margin: 15px 0 5px 50px;
+}
+
 .sub-table {
-  width: 90%;
-  margin: auto;
+  width: 90vw;
+  margin-left: 50px;
 }
 
 .table-title-div {
@@ -130,28 +134,28 @@
 /* each icon is contained in a div along with its tooltip span
  to make the hover effect work */
 .table-icon-inner-div {
+  /* margin-right: 7px; */
   display: inline-block;
   overflow: visible;
 }
 
 .table-icon {
-  padding: 0 7px;
+  margin: 0 7px;
   cursor: pointer;
   color: #555;
 }
 
 .table-tooltip {
   position: absolute;
-  top: 20px;
-  left: 0;
+  top: 10px;
   visibility: hidden;
   font-size: .7rem;
   color: #fff;
   padding: 5px 10px;
-  background-color: #5e60d8bd;
+  background-color: #5e60d8e0;
   text-align: center;
   border-radius: 5px;
-  z-index: 999;
+  z-index: 2;
 }
 
 .fa-sync-div:hover .fa-sync-tooltip,
@@ -167,6 +171,18 @@
   display: none;
 }
 
+/* .rental-table .fa-sync-div:hover .rental-table .fa-sync-tooltip,
+.rental-table .fa-trash-alt-div:hover .rental-table .fa-trash-alt-tooltip,
+.rental-table .fa-sticky-note-div:hover .rental-table .fa-sticky-note-tooltip  {
+  left: 30px
+}
+
+.fa-sync-div:hover .fa-sync-tooltip,
+.fa-trash-alt-div:hover .fa-trash-alt-tooltip,
+.fa-sticky-note-div:hover .fa-sticky-note-tooltip  {
+  visibility: visible;
+} */
+
 /* this allows the tooltip hover effect to be visible outside the cell */
 .rental-table .ReactTable  div.rt-tr > div:nth-child(2),
 .rental-table .ReactTable  div.rt-tr > div:nth-child(3) {
@@ -181,12 +197,12 @@
 
 /* Courses Table styling */
 /* filter search box over the button columns aren't necessary */
-.courses-table .-filters > div > div:last-child input {
+.courses-table .-filters > div > div:nth-child(3) input {
   display: none;
 }
 
 /* this allows the tooltip hover effect to be visible outside the cell */
-.courses-table .ReactTable  div.rt-tr > div:last-child {
+.courses-table .ReactTable  div.rt-tr > div:nth-child(3) {
   overflow: visible;
   position: relative;
 }
@@ -202,6 +218,7 @@
 .sales-table .-filters > div > div:nth-child(2) input {
   display: unset;
 }
+
 .sales-table .-filters > div > div:first-child input {
   display: none;
 }
@@ -212,11 +229,30 @@
 }
 
 /* this allows the tooltip hover effect to be visible outside the cell */
-.sales-table .ReactTable  div.rt-tr > div:last-child {
+.sales-table .ReactTable  div.rt-tr > div:first-child {
   overflow: visible;
   position: relative;
 }
 
 .fa-unlock-alt-div:hover .fa-unlock-alt-tooltip {
   visibility: visible;
+}
+
+/* Reservations table styling */
+.fa-dollar-sign-div:hover .fa-dollar-sign-tooltip {
+  visibility: visible;
+}
+
+.fa-check-circle-div:hover .fa-check-circle-tooltip {
+  visibility: visible;
+}
+
+/* button cells are rendered as overflow: visible for tooltips, but the sales table is formatted differently and thus the second column does not need overflow: visible */
+/* .sub-table .ReactTable  div.rt-tr > div:nth-child(2) {
+  overflow: hidden;
+} */
+
+/* button cells are rendered as overflow: visible for tooltips, but the sales table is formatted differently and thus the second column does not need overflow: visible */
+.sub-table div.rt-tr > div:first-child {
+  overflow: visible;
 }

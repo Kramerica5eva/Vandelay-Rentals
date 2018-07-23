@@ -11,6 +11,7 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+
   //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
   // findById: function (req, res) {
   //   db.Rental
@@ -18,6 +19,7 @@ module.exports = {
   //     .then(dbModel => res.json(dbModel))
   //     .catch(err => res.status(422).json(err));
   // },
+
   //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT
   // getReservations: function (req, res) {
   //   db.Rental
@@ -26,54 +28,15 @@ module.exports = {
   //     .then(dbModel => res.json(dbModel))
   //     .catch(err => res.status(422).json(err));
   // },
-  updateReservation: function (req, res) {
-    db.Reservation
-      .findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  finishReservation: function (req, res) {
-    console.log("Here's the Reservation req.body:")
-    console.log(req.body);
-    db.PastRental
-      .create(req.body)
-      .then(dbModel => {
 
-        Promise.all([
-          db.User.findOneAndUpdate(
-            { _id: req.body.customerId },
-            {
-              $pull: { reservations: req.body._id },
-              $push: { pastRentals: dbModel._id }
-            },
-            { new: true }
-          ), db.Rental.findOneAndUpdate(
-            { _id: req.body.itemId },
-            {
-              $pull: { reservations: req.body._id },
-              $push: { pastRentals: dbModel._id },
-              $inc: { timesRented: 1 } /* if we add rental checkout functionality, this $inc should go there rather than here */
-            },
-            { new: true }
-          ), db.Reservation.deleteOne(
-            { _id: req.params.id }
-          )
-        ])
-          .then(values => {
-            return res.json({ values: values });
-          })
-          .catch(err => res.status(422).json(err));
-
-      })
-      .catch(err => res.status(422).json(err));
-  },
   create: function (req, res) {
     db.Rental
       .create(req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  update: function (req, res) {
+
+  updateRental: function (req, res) {
     db.Rental
       .findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
@@ -98,7 +61,7 @@ module.exports = {
 
           const cartQuery = db.ShoppingCart.update(
             { tempReservations: element._id },
-            { $pull: {tempReservations: element._id} },
+            { $pull: { tempReservations: element._id } },
             { multi: true }
           )
           const userQuery = db.User.update(
@@ -137,6 +100,57 @@ module.exports = {
           .then(response => res.send(response))
           .catch(err => res.status(422).json(err));
       })
+  },
+
+  updateReservation: function (req, res) {
+    db.Reservation
+      .findOneAndUpdate({ _id: req.params.id }, req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+
+  finishReservation: function (req, res) {
+    console.log("Here's the Reservation req.body:")
+    console.log(req.body._original);
+    db.PastRental
+      .create(req.body._original)
+      .then(dbModel => {
+
+        Promise.all([
+          db.User.findOneAndUpdate(
+            { _id: req.body._original.customerId },
+            {
+              $pull: { reservations: req.body._original._id },
+              $push: { pastRentals: dbModel._id }
+            },
+            { new: true }
+          ), db.Rental.findOneAndUpdate(
+            { _id: req.body._original.itemId },
+            {
+              $pull: { reservations: req.body._original._id },
+              $push: { pastRentals: dbModel._id },
+              $inc: { timesRented: 1 } /* if we add rental checkout functionality, this $inc should go there rather than here */
+            },
+            { new: true }
+          ), db.Reservation.deleteOne(
+            { _id: req.params.id }
+          )
+        ])
+          .then(values => {
+            return res.json({ values: values });
+          })
+          .catch(err => res.status(422).json(err));
+
+      })
+      .catch(err => res.status(422).json(err));
+  },
+
+  updatePastRental: function (req, res) {
+    console.log(req.body);
+    db.PastRental
+      .findOneAndUpdate({ _id: req.params.id }, req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
   }
 
 };

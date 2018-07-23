@@ -1,32 +1,50 @@
 import React, { Component, Fragment } from 'react';
+import { Input } from '../Elements/Form';
 import ReactTable from 'react-table';
 import Modal from '../../components/Elements/Modal';
 import LoadingModal from '../../components/Elements/LoadingModal';
+import ImageModal from '../../components/Elements/ImageModal';
+import API from "../../utils/API";
 import 'react-table/react-table.css';
 import './AdminTables.css';
-import checkboxHOC from 'react-table/lib/hoc/selectTable';
 import dateFns from 'date-fns';
-const CheckboxTable = checkboxHOC(ReactTable);
 
 export class PastRentalsTable extends Component {
   state = {
     modal: {
       isOpen: false,
       body: '',
-      buttons: ""
+      buttons: ''
     },
+    imageModal: {
+      isOpen: false,
+      body: ''
+    },
+    loadingModalOpen: false,
+    fromUsers: this.props.fromUsers,
     runUnmount: false,
     pastRentals: this.props.pastRentals,
-    selection: [],
-    selectedRow: {}
+    images: [],
+    selectedFile: null,
+    image: null,
+    note: ''
   };
 
   componentWillUnmount = () => {
     //  Why call get users on Unmount?
     //  Clicking cancelReservation runs all the necessary database functions to delete the reservation, but in this component it only filters it from the this.state.reservations array, meaning if you close the table and reopen it, the one you just deleted will still show. So by running the get user function when the component unmounts ensures this won't happen while also avoiding an extra database query with every deletion.
     if (this.state.runUnmount) {
-      this.props.adminGetAllRentals();
+      if (this.state.fromUsers) this.props.adminGetAllUsers();
+      else this.props.adminGetAllRentals();
     }
+  };
+
+  // Standard input change controller
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
   };
 
   // MODAL TOGGLE FUNCTIONS
@@ -47,6 +65,23 @@ export class PastRentalsTable extends Component {
   };
   // END MODAL TOGGLE FUNCTIONS
 
+  // IMAGEMODAL TOGGLE FUNCTIONS
+  toggleImageModal = () => {
+    this.setState({
+      imageModal: { isOpen: !this.state.imageModal.isOpen }
+    });
+  };
+
+  setImageModal = modalInput => {
+    this.setState({
+      imageModal: {
+        isOpen: true,
+        body: modalInput.body,
+      }
+    });
+  };
+  // END IMAGEMODAL TOGGLE FUNCTIONS
+
   //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoing
   toggleLoadingModal = () => {
     this.setState({
@@ -54,82 +89,173 @@ export class PastRentalsTable extends Component {
     });
   };
 
-  //  REACT-TABLE: SELECT TABLE HOC FUNCTIONS
-  //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
-  toggleSelection = (key, shift, row) => {
-    let selection = [...this.state.selection];
-    const keyIndex = selection.indexOf(key);
+  noteModal = row => {
+    const { _id, note } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <textarea name="note" onChange={this.handleInputChange} rows="10" cols="80" defaultValue={note}></textarea>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={() => this.submitNote(_id)}>Submit</button>
+          <button onClick={this.toggleModal}>Nevermind</button>
+        </Fragment>
+    })
+  }
 
-    if (keyIndex >= 0) {
-      // it does exist so we will remove it
-      selection = [
-        ...selection.slice(0, keyIndex),
-        ...selection.slice(keyIndex + 1)
-      ];
+  submitNote = id => {
+    this.toggleModal();
+    this.toggleLoadingModal();
+    API.adminUpdatePastRental(id, { note: this.state.note })
+      .then(response => {
+        console.log(response);
+        setTimeout(this.toggleLoadingModal, 500);
+        this.state.pastRentals.forEach(pr => {
+          if (pr._id === id) pr.note = this.state.note;
+          this.setState({ runUnmount: true })
+        });
+      })
+      .catch(err => console.log(err));
+  }
+
+  //  IMAGE CRUD OPERATIONS FUNCTIONS
+  // Gets the modal with the image upload form
+  getImageUploadModal = row => {
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Upload An Image</h3>
+          {/* form encType must be set this way to take in a file */}
+          <form encType="multipart/form-data">
+            <Input
+              type="file"
+              name="file"
+              onChange={this.fileSelectedHandler}
+            />
+          </form>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={() => this.handleImageUpload(row)}>Submit</button>
+          <button onClick={this.toggleModal}>I'm done</button>
+        </Fragment>
+
+    });
+  };
+
+  // the image chosen in the modal form is pushed into state (similar to handleInputChange function)
+  fileSelectedHandler = event => {
+    const newFile = event.target.files[0];
+    console.log(newFile);
+    this.setState({
+      selectedFile: newFile
+    });
+  };
+
+  //  When the submit button on the image upload modal is pressed, the image is uploaded into the db
+  handleImageUpload = row => {
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Loading...</h3>
+          <img
+            style={{ width: '50px', display: 'block', margin: '50px auto' }}
+            src="./../../../loading.gif"
+            alt="spinning gears"
+          />
+        </Fragment>
+    });
+
+    const { _id } = row._original;
+    const fd = new FormData();
+    if (this.state.selectedFile) {
+      fd.append('file', this.state.selectedFile, this.state.selectedFile.name);
+      API.uploadPastRentalImage(_id, fd).then(res => {
+        console.log(res);
+        this.setState({
+          selectedFile: null
+        })
+        this.toggleModal();
+        this.getImageUploadModal(row);
+      });
     } else {
-      // it does not exist so add it
-      selection = [];
-      selection.push(key);
+      this.setModal({
+        body: <h3>You have not selected a file to upload</h3>,
+        buttons: <button onClick={() => this.getImageUploadModal(row)}>Try Again</button>
+      })
     }
-
-    //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
-    this.setState({ selection, selectedRow: row });
   };
 
-  // Inside the render function, isSelected returns a true or false depending on if a row is selected
-  isSelected = key => {
-    return this.state.selection.includes(key);
+  // Gets image names from the db so they can be put into 'img' elements to be streamed for display
+  getImageNames = row => {
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Loading...</h3>
+          <img
+            style={{ width: '50px', display: 'block', margin: '50px auto' }}
+            src="./../../../loading.gif"
+            alt="spinning gears"
+          />
+        </Fragment>
+    });
+    const { _id } = row._original;
+    API.getPastRentalImageNames(_id).then(res => {
+      console.log(res);
+      if (res.data.length === 0) {
+        setTimeout(this.setModal, 500, {
+          body: <h3>No images to display</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
+        });
+      } else {
+        this.toggleModal();
+        this.getImageModal(res.data, row);
+      }
+    });
   };
 
-  //  logs the selected row and the selection array to the console
-  logSelection = () => {
-    console.log('Selection:', this.state.selection);
-    console.log('Row: ', this.state.selectedRow);
+  // Once image names have been retrieved, they are placed into img tags for display inside a modal
+  getImageModal = (images, row) => {
+    console.log(images)
+    this.setImageModal({
+      body:
+        <Fragment>
+          {images.map(image => (
+            <div key={image._id} className="rental-img-div">
+              <p>Uploaded {dateFns.format(image.uploadDate, 'MMM Do YYYY hh:mm a')} </p>
+              <img className="rental-img" src={`file/image/past/${image.filename}`} alt="rental condition" />
+              <button onClick={() => this.deleteImage(image._id, row)}>Delete</button>
+            </div>
+          ))}
+        </Fragment>
+    });
   };
-  //  END REACT-TABLE: SELECT TABLE HOC FUNCTIONS
+
+  // Deletes an image, then closes the modal so when getImageNames toggles the modal, it will reopen it
+  deleteImage = (image, row) => {
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Loading...</h3>
+          <img
+            style={{ width: '50px', display: 'block', margin: '50px auto' }}
+            src="./../../../loading.gif"
+            alt="spinning gears"
+          />
+        </Fragment>
+    });
+    const { _id } = row._original;
+    API.deletePastRentalImage(image, _id).then(res => {
+      this.toggleImageModal();
+      this.getImageNames(row);
+    });
+  };
+  //  END - IMAGE CRUD OPERATIONS FUNCTIONS
 
   render() {
-    //  destructure from 'this' because the props object doesn't like 'this.anything' unless it's in a key:value pair
-    const { toggleSelection, isSelected } = this;
-    // console.log(this.state.reservations);
-
-    if (this.state.pastRentals.length > 0) {
-      this.state.pastRentals.forEach(pastRental => {
-        pastRental.date.formattedTo = dateFns.format(
-          pastRental.date.to * 1000,
-          'MMM Do YYYY'
-        );
-        pastRental.date.formattedFrom = dateFns.format(
-          pastRental.date.from * 1000,
-          'MMM Do YYYY'
-        );
-        const bill =
-          ((parseInt(pastRental.date.to) - parseInt(pastRental.date.from)) /
-            86400 +
-            1) *
-          pastRental.dailyRate.$numberDecimal;
-        pastRental.amountPaid = '$' + parseFloat(bill).toFixed(2);
-      });
-    }
-
-    const checkboxProps = {
-      isSelected,
-      toggleSelection,
-      selectType: 'checkbox',
-      getTrProps: (s, r) => {
-        // If there are any empty rows ('r'), r.orignal will throw an error ('r' is undefined), so check for r:
-        let selected;
-        if (r) {
-          selected = this.isSelected(r.original._id);
-        }
-        return {
-          style: {
-            backgroundColor: selected ? 'yellow' : 'inherit',
-            color: selected ? '#000' : 'inherit'
-          }
-        };
-      }
-    };
+    console.log(this.state.pastRentals);
 
     return (
       <Fragment>
@@ -139,41 +265,69 @@ export class PastRentalsTable extends Component {
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
+        <ImageModal
+          show={this.state.imageModal.isOpen}
+          toggleImageModal={this.toggleImageModal}
+          body={this.state.imageModal.body}
+        />
         <LoadingModal show={this.state.loadingModalOpen} />
 
         <h3>Past Rentals for {this.props.forName}</h3>
 
-        {/* if no rows have been selected, button remains disabled;
-      otherwise, clicking the button without anything selected results in an error */}
-
-        <div className="table-btn-div">
-          <h4>Past Rentals Table Options</h4>
-          {/* <button disabled={this.state.selection.length === 0} onClick={this.toggleReservationPaid}>Record Payment</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.recordRentalInUse}>Record Checkout</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.recordRentalReturn}>Record Turn-in</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.cancelReservation}>Cancel Reservation</button> */}
-          <button
-            disabled={this.state.selection.length === 0}
-            onClick={this.logSelection}
-          >
-            Log Selection
-          </button>
-        </div>
-        <CheckboxTable
-          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object
-          ref={r => (this.checkboxTable = r)}
+        <ReactTable
           data={this.state.pastRentals}
           columns={[
+            {
+              Header: 'Actions',
+              columns: [
+                {
+                  Header: 'Item',
+                  id: 'item',
+                  width: 80,
+                  Cell: row => {
+                    return (
+                      <div className="table-icon-div">
+                        <div className="fa-sticky-note-div table-icon-inner-div">
+                          <i onClick={() => this.noteModal(row.row)} className="table-icon far fa-sticky-note fa-lg"></i>
+                          <span className="fa-sticky-note-tooltip table-tooltip">see/edit notes</span>
+                        </div>
+                      </div>
+                    )
+                  }
+                },
+                {
+                  Header: 'Images',
+                  id: 'images',
+                  Cell: row => {
+                    return (
+                      <div className="table-icon-div">
+                        <div className="fa-upload-div table-icon-inner-div">
+                          <i onClick={() => this.getImageUploadModal(row.row)} className="table-icon fas fa-upload fa-lg"></i>
+                          <span className="fa-upload-tooltip table-tooltip">upload images</span>
+                        </div>
+                        <div className="fa-images-div table-icon-inner-div">
+                          <i onClick={() => this.getImageNames(row.row)} className="table-icon fas fa-images fa-lg"></i>
+                          <span className="fa-images-tooltip table-tooltip">see images</span>
+                        </div>
+                      </div>
+                    )
+                  },
+                  width: 80
+                },
+              ]
+            },
             {
               Header: 'Customer',
               columns: [
                 {
                   Header: 'First Name',
-                  accessor: 'firstName'
+                  accessor: 'firstName',
+                  width: 100
                 },
                 {
                   Header: 'Last Name',
-                  accessor: 'lastName'
+                  accessor: 'lastName',
+                  width: 100
                 }
               ]
             },
@@ -186,22 +340,32 @@ export class PastRentalsTable extends Component {
                 },
                 {
                   Header: 'Date From',
-                  accessor: 'date.formattedFrom'
+                  accessor: "date.from",
+                  width: 110,
+                  Cell: row => {
+                    return dateFns.format(row.value * 1000, "MMM Do YYYY")
+                  }
                 },
                 {
                   Header: 'Date To',
-                  accessor: 'date.formattedTo'
+                  accessor: "date.to",
+                  width: 110,
+                  Cell: row => {
+                    return dateFns.format(row.value * 1000, "MMM Do YYYY")
+                  }
                 },
                 {
                   Header: 'Amount Paid',
-                  accessor: 'amountPaid'
+                  accessor: 'total.$numberDecimal',
+                  Cell: row => {
+                    return `$${parseFloat(row.value).toFixed(2)}`
+                  }
                 }
               ]
             }
           ]}
           defaultPageSize={5}
           className="-striped -highlight sub-table"
-          {...checkboxProps}
         />
       </Fragment>
     );

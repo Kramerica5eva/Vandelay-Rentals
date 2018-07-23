@@ -8,6 +8,7 @@ module.exports = {
       .find({})
       .populate('reservations')
       .populate('registrations')
+      .populate('pastRentals')
       .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));

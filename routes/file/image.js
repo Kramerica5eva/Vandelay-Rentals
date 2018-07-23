@@ -27,24 +27,44 @@ const storage = new GridFsStorage({
 });
 const upload = multer({ storage });
 
-
+//  RENTAL IMAGE ROUTES
 // Matches with '/file/image'
 router.route('/names/:id')
-  .get(isAdmin, imageController.findAll);
+  .get(isAdmin, imageController.findAllRentalImages);
 
 // This route is called in the img tag src attribute
 router.route('/:filename')
-  .get(isAdmin, imageController.findById);
+  .get(isAdmin, imageController.findImageById);
 
 // Matches with '/file/image//:id'
 // Uploading images to the database
 router
   .route('/:id')
-  .post(isAdmin, upload.single('file'), imageController.create);
+  .post(isAdmin, upload.single('file'), imageController.createRentalImage);
 
 router
   .route('/:id/:rental')
-  .delete(isAdmin, imageController.remove);
+  .delete(isAdmin, imageController.removeRentalImage);
+
+
+//  PASTRENTAL IMAGE ROUTES
+// Matches with '/file/image'
+router.route('/past/names/:id')
+  .get(isAdmin, imageController.findAllPastRentalImages);
+
+// This route is called in the img tag src attribute
+router.route('/past/:filename')
+  .get(isAdmin, imageController.findImageById);
+
+// Matches with '/file/image//:id'
+// Uploading images to the database
+router
+  .route('/past/:id')
+  .post(isAdmin, upload.single('file'), imageController.createPastRentalImage);
+
+router
+  .route('/past/:id/:rental')
+  .delete(isAdmin, imageController.removePastRentalImage);
 
 function isAdmin(req, res, next) {
   if (req.user.admin)
