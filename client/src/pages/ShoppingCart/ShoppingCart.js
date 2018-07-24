@@ -464,6 +464,26 @@ class ShoppingCart extends Component {
               <h3>You're almost done!</h3>
             </div>
 
+            <div className="payment-container">
+              <StripeProvider apiKey="pk_test_RwSP4QeJgsTpThoHAR7VRKmR">
+                <Elements>
+                  <CheckoutForm
+                    btn={() => this.checkout()}
+                    firstName={this.props.firstName}
+                    getUserShoppingCart={() => this.getUserShoppingCart()}
+                    lastName={this.props.lastName}
+                    removeRegistrationFromCart={() => this.removeRegistrationFromCart()}
+                    removeReservationFromCart={() => this.removeReservationFromCart()}
+                    setModal={() => this.setModal()}
+                    tempRegistrations={this.state.tempRegistrations}
+                    tempReservations={this.state.tempReservations}
+                    toggleLoadingModal={() => this.toggleLoadingModal()}
+                    total={this.state.total}
+                  />
+                </Elements>
+              </StripeProvider>
+            </div>
+
             <div className="cart-page-container">
               <div className="cart-items">
                 {this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
