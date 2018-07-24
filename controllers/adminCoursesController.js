@@ -18,6 +18,11 @@ module.exports = {
   //     .catch(err => res.status(422).json(err));
   // },
   create: function (req, res) {
+    const { price } = req.body;
+    if (price === "$") return res.send({ message: "$ only" })
+    const formatPrice = price.split("").filter(char => /^[0-9.]+$/.test(char)).join("");
+    req.body.price = formatPrice;
+    console.log(req.body.price);
     db.Course
       .create(req.body)
       .then(dbModel => res.json(dbModel))

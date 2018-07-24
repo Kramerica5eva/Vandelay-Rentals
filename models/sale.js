@@ -12,7 +12,6 @@ const saleSchema = new Schema({
   sku: String,
   cost: Schema.Types.Decimal128,
   price: Schema.Types.Decimal128,
-
   dateAcquired: Number,
   saleType: {
     type: String,

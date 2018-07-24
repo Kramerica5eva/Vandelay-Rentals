@@ -77,7 +77,7 @@ export class SignupForm extends Component {
               break;
             default:
               this.setModal({
-                body: <h4>Please correct highlighted items</h4>
+                body: <h4>Something went wrong - please try again</h4>
               });
           }
         }
@@ -86,7 +86,7 @@ export class SignupForm extends Component {
 
           //  If signup was successful, log the user in and setRedirect, which will send them either back where they came from, or to where they were going (the 'to' part of this is currently irrelevant, but may again be relevant if there are any links to protected routes that show to non-logged in users - such as cart functionality that requires a login before checkout)
           API.login({
-            username: this.state.username.toLowerCase(),
+            username: this.state.username,
             password: this.state.password
           }).then(response => {
             // update App.js state
@@ -214,19 +214,35 @@ export class SignupForm extends Component {
           />
           <FormBtn
             disabled={(
-              !this.state.username ||
-              !this.state.password ||
-              !this.state.confirmPassword ||
-              !this.state.username ||
-              !this.state.password ||
-              !this.state.firstName ||
-              !this.state.lastName ||
-              !this.state.email ||
-              !this.state.street ||
-              !this.state.city ||
-              !this.state.state ||
-              !this.state.zipcode ||
-              !this.state.phone
+              (
+                !this.state.username ||
+                !/^[a-zA-Z0-9]+$/.test(this.state.username)
+              ) || (
+                !this.state.password ||
+                !/^[\S]{4,}$/.test(this.state.password)
+              ) || (
+                !this.state.firstName ||
+                !/^[a-zA-Z]+$/.test(this.state.firstName)
+              ) || (
+                !this.state.lastName ||
+                !/^[a-zA-Z]+$/.test(this.state.lastName)
+              ) || (
+                !this.state.email ||
+                !/^[a-zA-Z0-9.!#$%&amp;'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(this.state.email)
+              ) || (
+                !this.state.street
+              ) || (
+                !this.state.city
+              ) || (
+                !this.state.state ||
+                !/^(?:A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])*$/.test(this.state.state)
+              ) || (
+                !this.state.zipcode ||
+                !/^\d{5}(-\d{4})?$/.test(this.state.zipcode)
+              ) || (
+                !this.state.phone ||
+                !/^\d{3}[\-]\d{3}[\-]\d{4}/.test(this.state.phone)
+              )
             ) || (this.state.password !== this.state.confirmPassword)}
             onClick={this.handleFormSubmit}
           >
