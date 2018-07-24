@@ -27,6 +27,7 @@ module.exports = {
   //     .populate("reservations")
   //     .then(dbModel => res.json(dbModel))
   //     .catch(err => res.status(422).json(err));
+  // },
 
   updateReservation: function (req, res) {
     db.Reservation
@@ -34,6 +35,7 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+
   finishReservation: function (req, res) {
     // console.log("Here's the Reservation req.body:")
     // console.log(req.body);
@@ -65,6 +67,8 @@ module.exports = {
             return res.json({ values: values });
           })
           .catch(err => res.status(422).json(err));
+      })
+  },
 
   create: function (req, res) {
     const { dailyRate } = req.body;
