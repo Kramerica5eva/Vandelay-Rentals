@@ -20,7 +20,8 @@ const pastRentalSchema = new Schema({
   paid: {
     type: Boolean,
     default: true
-  }
+  },
+  amtPaid: Schema.Types.Decimal128
 });
 
 const PastRental = mongoose.model('PastRental', pastRentalSchema);

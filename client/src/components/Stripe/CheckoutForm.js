@@ -240,23 +240,30 @@ class CheckoutForm extends Component {
     console.log(charge);
     // let charge = { test: "test" };
     API.charge(charge)
-      .then(() => {
-        console.log("Purchase Complete!")
-        let promiseArray = [];
-        this.props.tempReservations.forEach(res => {
-          const resQuery = API.reserveRental(res);
-          promiseArray.push(resQuery);
-        });
-        this.props.tempRegistrations.forEach(reg => {
-          const regQuery = API.reserveCourse(reg._id, reg);
-          promiseArray.push(regQuery);
-        });
-        Promise.all(promiseArray)
-          .then(() => {
-            this.props.getUserShoppingCart();
-            this.props.toggleLoadingModal();
-            this.setState({ complete: true })
+      .then((res) => {
+        console.log("GETTING A RESPONSE")
+        console.log(res)
+        console.log(res.data[0].status);
+        if (res.data[0].status === "succeeded") {
+          console.log("Purchase Complete!")
+          let promiseArray = [];
+          this.props.tempReservations.forEach(res => {
+            const resQuery = API.reserveRental(res);
+            const logResPayment = API.logResPayment(res);
+            promiseArray.push(resQuery, logResPayment);
           });
+          this.props.tempRegistrations.forEach(reg => {
+            const regQuery = API.reserveCourse(reg._id, reg);
+            const logRegPayment = API.logRegPayment(reg);
+            promiseArray.push(regQuery, logRegPayment);
+          });
+          Promise.all(promiseArray)
+            .then(() => {
+              this.props.getUserShoppingCart();
+              this.props.toggleLoadingModal();
+              this.setState({ complete: true })
+            });
+        }
       })
       .catch(err => console.log(err));
   }
@@ -274,9 +281,12 @@ class CheckoutForm extends Component {
         />
         <p>Would you like to complete the purchase?</p>
         <CardNumberElement
-          className="input numberInput" />
-        <CardExpiryElement className="expInput input" />
-        <CardCVCElement className="cvcInput input" />
+          className="input numberInput"
+        />
+        <CardExpiryElement className="expInput input"
+        />
+        <CardCVCElement className="cvcInput input"
+        />
         <button className="chkbtn" onClick={this.checkout}>Send</button>
       </div>
     );
