@@ -21,8 +21,10 @@ const reservationSchema = new Schema({
     type: Boolean,
     default: false
   },
-  note: String,
-  amtPaid: Schema.Types.Decimal128
+  amtPaid: Schema.Types.Decimal128,
+  total: Schema.Types.Decimal128,
+  note: String
+
 });
 
 const Reservation = mongoose.model('Reservation', reservationSchema);

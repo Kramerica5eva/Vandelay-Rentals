@@ -1,13 +1,11 @@
 import React, { Component, Fragment } from "react";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
-import Header from "../../components/Elements/Header";
 import ParallaxHero from "./../../components/ParallaxHero";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import CourseCard from "./../../components/Cards/CourseCard";
 import API from "../../utils/API";
-import DevLinks from "../../components/DevLinks";
 import { Link } from 'react-router-dom';
 import "./Courses.css";
 
@@ -161,18 +159,7 @@ class Courses extends Component {
 						title="LEARN"
 					/>
 
-
-
 					<div className='body-container courses'>
-						<Header>
-							<DevLinks
-								loggedIn={this.props.loggedIn}
-								admin={this.props.admin}
-								dev={this.props.dev}
-								logout={this.props.logout}
-								location={this.props.location}
-							/>
-						</Header>
 						<h2>Courses Available:</h2>
 						<ul>
 							{this.state.courses.map(course => (

@@ -43,9 +43,9 @@ module.exports = {
     ).then((resp) => {
       console.log("REG PRESPONSE")
       console.log(resp)
-      res.send("registration paid")
+      res.send("registration paid");
     })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
   }
 
 }

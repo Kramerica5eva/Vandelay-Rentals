@@ -6,7 +6,7 @@ export const Input = props => (
   <div className="group">
     <input className="" {...props}/>
      <span className="highlight"></span>
-      <span className="bar"></span>
+      <span className={`bar ${props.barclass}`}></span>
     <Label htmlFor={props.name}>{props.label}</Label>
   </div>
 );

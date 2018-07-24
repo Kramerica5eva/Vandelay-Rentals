@@ -1,10 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
-import Header from "../../components/Elements/Header";
 import ParallaxHero from "./../../components/ParallaxHero";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
-import DevLinks from "../../components/DevLinks";
 import "./Home.css";
 
 class Home extends Component {
@@ -45,16 +43,6 @@ class Home extends Component {
           />
 
           <div className='body-container'>
-            {this.props.dev ?
-              <Header>
-                <DevLinks
-                  loggedIn={this.props.loggedIn}
-                  admin={this.props.admin}
-                  dev={this.props.dev}
-                  logout={this.props.logout}
-                  location={this.props.location}
-                />
-              </Header> : null}
             {/* Heading */}
             <div className='desc-heading'>
               <span className="desc-img mobile"><img src="http://i1174.photobucket.com/albums/r619/vandelay-rentals/surftech-logo-cut_zpsjfsrag0g.png" alt="" /></span>

@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { Redirect } from "react-router-dom";
 import { Input, FormBtn } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
@@ -6,30 +7,24 @@ import LoadingModal from "../../components/Elements/LoadingModal";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import "./AdminTables.css";
-import checkboxHOC from "react-table/lib/hoc/selectTable";
 import { ReservationsTable } from './ReservationsTable';
 import { RegistrationsTable } from './RegistrationsTable';
-
-const CheckboxTable = checkboxHOC(ReactTable);
+import { PastRentalsTable } from './PastRentalsTable';
 
 // export class UsersTable extends Component {
 export class UsersTable extends Component {
-  constructor() {
-    super();
-    this.state = {
-      modal: {
-        isOpen: false,
-        body: "",
-        buttons: ""
-      },
-      password: "",
-      confirmPassword: "",
-      standing: "",
-      users: [],
-      selection: [],
-      selectedRow: {}
-    };
-  }
+  state = {
+    modal: {
+      isOpen: false,
+      body: "",
+      buttons: ""
+    },
+    password: "",
+    confirmPassword: "",
+    note: "",
+    standing: null,
+    users: []
+  };
 
   componentDidMount() {
     this.adminGetAllUsers();
@@ -69,60 +64,51 @@ export class UsersTable extends Component {
   adminGetAllUsers = () => {
     API.adminGetAllUsers()
       .then(res => {
-        console.log(res);
         this.setState({
           users: res.data,
           selection: [],
           selectedRow: {}
         });
-        console.log(this.state.users);
       })
       .catch(err => console.log(err));
   };
 
-  changePwModal = () => {
+  changePwModal = row => {
+    this.setState({
+      row: row._original
+    })
     this.setModal({
       body:
         <Fragment>
-          <form>
-            <h3>Change User Password</h3>
-            <Input
-              name="password"
-              onChange={this.handleInputChange}
-              type="text"
-              label="Password:"
-            />
-            <Input
-              name="confirmPassword"
-              onChange={this.handleInputChange}
-              type="text"
-              label="Confirm Password:"
-            />
-          </form>
+          <h3>Change User Password</h3>
+          <Input
+            name="password"
+            onChange={this.handleInputChange}
+            type="text"
+            label="Password:"
+          />
         </Fragment>,
       buttons: <button onClick={this.handlePasswordFormSubmit}>Submit</button>
     })
   }
 
-  handlePasswordFormSubmit = event => {
-    event.preventDefault();
+  handlePasswordFormSubmit = row => {
     this.toggleLoadingModal();
-    console.log("Changing password...")
-    const { _id } = this.state.selectedRow;
+    const { _id } = row._original;
     API.adminUpdateUser(_id, { password: this.state.password })
       .then(res => {
-        console.log(res);
         if (res.status === 200) {
           setTimeout(this.toggleLoadingModal, 500);
           setTimeout(this.setModal, 500, {
-            body: <h4>Password successfully changed</h4>
+            body: <h3>Password successfully changed</h3>,
+            buttons: <button onClick={this.toggleModal}>OK</button>
           });
         } else {
           setTimeout(this.toggleLoadingModal, 500);
           setTimeout(this.setModal, 500, {
             body:
               <Fragment>
-                <h4>Something went wrong</h4>
+                <h3>Something went wrong</h3>
                 <h5>Please try again</h5>
               </Fragment>
           });
@@ -130,75 +116,122 @@ export class UsersTable extends Component {
       });
   }
 
-  userStandingModal = () => {
-    if (Object.keys(this.state.selectedRow).length !== 0) {
+  userDeleteModal = row => {
+    console.log(row);
+    const { registrations, reservations } = row._original;
+
+    if (registrations.length > 0 || reservations.length > 0) {
+      this.setModal({
+        body: <h3>You must remove all reservations and class registrations for this user before you can delete them.</h3>
+      })
+    } else {
       this.setModal({
         body:
           <Fragment>
-            <form>
-              <h3>Change Customer Standing</h3>
-              {/* using the Select and Option components in a modal seems to make everything stop working... */}
-              <div className="group group-select">
-                <select
-                  name="standing"
-                  // for some reason, setting the select value to this.state.category (as in the React docs) breaks the whole thing. It seems to be grabbing the value from the option html and putting that into state...
-                  onChange={this.handleInputChange}
-                >
-                  <option></option>
-                  <option>Good</option>
-                  <option>Uncertain</option>
-                  <option>Banned</option>
-                </select>
-              </div>
-            </form>
+            <h4>Are you sure you want to delete {row.firstName} {row.lastName}?</h4>
+            <p>(this is permanent - you cannot undo it and you will lose all data)</p>
+            <h4>Would you rather deactivate the account (or -gasp!- ban the user) and keep the data?</h4>
           </Fragment>,
-        buttons: <FormBtn onClick={this.handleStandingFormSubmit}>Submit</FormBtn>
+        buttons:
+          <Fragment>
+            <button onClick={this.toggleModal}>Nevermind</button>
+            <button onClick={() => this.deactivateUser(row)}>Deactivate</button>
+            <button onClick={() => this.banUser(row)}>Ban User</button>
+            <button onClick={() => this.deleteUser(row)}>Delete</button>
+          </Fragment>
       })
     }
   }
 
-  handleStandingFormSubmit = e => {
-    e.preventDefault();
-    const { _id } = this.state.selectedRow;
-    API.adminUpdateUser(_id, { standing: this.state.standing })
+  deactivateUser = row => {
+    this.toggleLoadingModal();
+    const { _id } = row._original;
+    API.adminUpdateUser(_id, { standing: "Inactive" })
       .then(res => {
+        console.log(res);
+        this.toggleLoadingModal();
         this.adminGetAllUsers();
-        this.toggleModal();
+        this.setModal({
+          body: <h3>Database sucessfully updated.</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
+        });
       });
+  }
+
+  banUser = row => {
+    this.toggleLoadingModal();
+    const { _id } = row._original;
+    API.adminUpdateUser(_id, { standing: "Banned" })
+      .then(res => {
+        console.log(res);
+        this.toggleLoadingModal();
+        this.adminGetAllUsers();
+        this.setModal({
+          body: <h3>Database sucessfully updated.</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
+        });
+      });
+  }
+
+  deleteUser = row => {
+    this.toggleLoadingModal();
+    const { _id } = row._original;
+    API.deleteUser(_id)
+      .then(res => {
+        console.log(res);
+        this.toggleLoadingModal();
+        this.adminGetAllUsers();
+        this.setModal({
+          body: <h3>Database sucessfully updated.</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
+        });
+      })
 
   }
 
-  //  REACT-TABLE: SELECT TABLE HOC FUNCTIONS
+  noteModal = row => {
+    const { _id, note } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <textarea name="note" onChange={this.handleInputChange} rows="10" cols="80" defaultValue={note}></textarea>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={() => this.submitNote(_id)}>Submit</button>
+          <button onClick={this.toggleModal}>Nevermind</button>
+        </Fragment>
+    })
+  }
 
-  toggleSelection = (key, shift, row) => {
-    let selection = [...this.state.selection];
-    const keyIndex = selection.indexOf(key);
-
-    if (keyIndex >= 0) {
-      // it does exist so we will remove it
-      selection = [
-        ...selection.slice(0, keyIndex),
-        ...selection.slice(keyIndex + 1)
-      ];
-    } else {
-      // it does not exist so add it
-      selection = [];
-      selection.push(key);
-    }
-
-    this.setState({ selection, selectedRow: row });
-  };
-
-  isSelected = key => {
-    return this.state.selection.includes(key);
-  };
-
-  updateSelectedRow = () => {
+  submitNote = id => {
+    this.toggleModal();
     this.toggleLoadingModal();
-    console.log(this.state.selectedRow);
-    const { city, admin, email, firstName, lastName, phone, standing, state, street, username, zipcode, _id } = this.state.selectedRow;
+    API.adminUpdateUser(id, { note: this.state.note })
+      .then(response => {
+        console.log(response);
+        //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+        setTimeout(this.toggleLoadingModal, 500);
+        // success modal after the loading modal is gone.
+        setTimeout(this.setModal, 500, {
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
+        });
+        //  query the db and reload the table
+        this.adminGetAllUsers();
+      })
+      .catch(err => console.log(err));
+  }
 
-    console.log(admin);
+  updateRow = row => {
+    this.toggleLoadingModal();
+    const { city, admin, email, firstName, lastName, phone, standing, state, street, username, zipcode, _id } = row._original;
+
+    let newStanding;
+    if (this.state.standing) newStanding = this.state.standing;
+    else newStanding = standing;
+
     let adminStr;
     if (typeof admin === 'string' || admin instanceof String) adminStr = admin.toLowerCase();
     else if (admin === false) adminStr = "false";
@@ -211,7 +244,7 @@ export class UsersTable extends Component {
       firstName: firstName,
       lastName: lastName,
       phone: phone,
-      standing: standing,
+      standing: newStanding,
       state: state,
       street: street,
       username: username,
@@ -220,43 +253,47 @@ export class UsersTable extends Component {
     console.log(updateObject);
     API.adminUpdateUser(_id, updateObject)
       .then(response => {
-        console.log(response.data.dbModel._id);
-        console.log(response.data.user._id);
         if (response.status === 200) {
-          if (response.data.dbModel._id !== response.data.user._id) {
+          if (response.data.dbModel._id === response.data.user._id && response.data.dbModel.admin === false) {
+            console.log("Changing my own admin status like a doofus!");
+            //  This will only be triggered if a person revokes their own admin status. Stupid, but... someone out there will do it. So, redirecting the user to the "/" page by updating user via the App.js function (passed down as a prop).
+            this.props.updateUser({
+              auth: true,
+              admin: false,
+              state: {
+                loggedIn: true,
+                admin: false,
+              }
+            });
+          } else {
             //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
             setTimeout(this.toggleLoadingModal, 500);
             // success modal after the loading modal is gone.
             setTimeout(this.setModal, 500, {
-              body: <h4>Database successfully updated</h4>
+              body: <h4>Database successfully updated</h4>,
+              buttons: <button onClick={this.toggleModal}>OK</button>
             });
             this.adminGetAllUsers();
-          } else {
-            //  This should set up a redirect away from here to the home page, since this 'else' will only be triggered if a person revokes their own admin status... stupid, but... someone out there is stupid enough to do it. 
           }
         } else {
           setTimeout(this.toggleLoadingModal, 500);
           setTimeout(this.setModal, 500, {
-            body: <h4>There was a problem with your request. Please try again.</h4>
+            body: <h4>There was a problem with your request. Please try again.</h4>,
+            buttons: <button onClick={this.toggleModal}>OK</button>
           });
         }
       }).catch(err => {
         setTimeout(this.toggleLoadingModal, 500);
         setTimeout(this.setModal, 500, {
-          body: <h4>There was a problem with your request. Please try again.</h4>
+          body: <h4>There was a problem with your request. Please try again.</h4>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
         });
       })
   }
 
-  logSelection = () => {
-    console.log("Selection:", this.state.selection);
-    console.log("Row: ", this.state.selectedRow);
-  };
-
   renderEditable = cellInfo => {
     return (
       <div
-        style={{ backgroundColor: "#fafafa" }}
         contentEditable
         suppressContentEditableWarning
         onBlur={e => {
@@ -272,25 +309,6 @@ export class UsersTable extends Component {
   }
 
   render() {
-    const { toggleSelection, isSelected } = this;
-
-    const checkboxProps = {
-      isSelected,
-      toggleSelection,
-      selectType: "checkbox",
-      getTrProps: (s, r) => {
-        let selected;
-        if (r) {
-          selected = this.isSelected(r.original._id);
-        }
-        return {
-          style: {
-            backgroundColor: selected ? "#00eef7" : "inherit",
-            color: selected ? '#000' : 'inherit',
-          }
-        };
-      }
-    };
 
     return (
       <Fragment>
@@ -302,25 +320,14 @@ export class UsersTable extends Component {
         />
         <LoadingModal show={this.state.loadingModalOpen} />
 
-        <div className="main-table-container">
+        <div className="main-table-container user-table">
 
           {/* <h2>All Users</h2> */}
           <div className="table-title-div">
             <h2>Users Table <button onClick={this.props.toggleUsers}>hide table</button></h2>
           </div>
 
-          {/* if no rows have been selected, buttons remain disabled;
-        otherwise, clicking the button without anything selected results in an error */}
-          <div className="table-btn-div">
-            <h4>Users Table Options</h4>
-            <button disabled={this.state.selection.length === 0} onClick={this.updateSelectedRow}>Update Selected Row</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.changePwModal}>Change Password</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.userStandingModal}>Change User Standing</button>
-            <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
-          </div>
-
-          <CheckboxTable
-            ref={r => (this.checkboxTable = r)}
+          <ReactTable
             data={this.state.users}
             filterable
             SubComponent={row => {
@@ -329,7 +336,7 @@ export class UsersTable extends Component {
               const thisRow = this.state.users[row.row._index];
 
               return (
-                <Fragment>
+                <div className="sub-table-container">
                   {thisRow.reservations.length > 0 ? (
                     <ReservationsTable
                       forName={`${thisRow.firstName} ${thisRow.lastName}`}
@@ -347,10 +354,51 @@ export class UsersTable extends Component {
                       adminGetAllUsers={this.adminGetAllUsers}
                     />
                   ) : null}
-                </Fragment>
+
+                  {thisRow.pastRentals.length > 0 ? (
+                    <PastRentalsTable
+                      forName={`${thisRow.firstName} ${thisRow.lastName}`}
+                      pastRentals={thisRow.pastRentals}
+                      fromUsers={true}
+                      adminGetAllUsers={this.adminGetAllUsers}
+                    />
+                  ) : null}
+                </div>
               )
             }}
             columns={[
+              {
+                Header: 'Actions',
+                columns: [
+                  {
+                    Header: 'User',
+                    id: 'user',
+                    width: 140,
+                    Cell: row => {
+                      return (
+                        <div className="table-icon-div">
+                          <div className="fa-sync-div table-icon-inner-div">
+                            <i onClick={() => this.updateRow(row.row)} className="table-icon fas fa-sync fa-lg"></i>
+                            <span className="fa-sync-tooltip table-tooltip">upload changes</span>
+                          </div>
+                          <div className="fa-trash-alt-div table-icon-inner-div">
+                            <i onClick={() => this.userDeleteModal(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
+                            <span className="fa-trash-alt-tooltip table-tooltip">delete user</span>
+                          </div>
+                          <div className="fa-sticky-note-div table-icon-inner-div">
+                            <i onClick={() => this.noteModal(row.row)} className="table-icon far fa-sticky-note fa-lg"></i>
+                            <span className="fa-sticky-note-tooltip table-tooltip">see/edit notes</span>
+                          </div>
+                          <div className="fa-unlock-alt-div table-icon-inner-div">
+                            <i onClick={() => this.changePwModal(row.row)} className="table-icon fas fa-unlock-alt fa-lg"></i>
+                            <span className="fa-unlock-alt-tooltip table-tooltip">change password</span>
+                          </div>
+                        </div>
+                      )
+                    }
+                  },
+                ]
+              },
               {
                 Header: "User",
                 columns: [
@@ -362,6 +410,7 @@ export class UsersTable extends Component {
                   {
                     Header: "Admin?",
                     accessor: "admin",
+                    width: 70,
                     Cell: this.renderEditable
                   },
                   {
@@ -376,7 +425,28 @@ export class UsersTable extends Component {
                   },
                   {
                     Header: "Standing",
-                    accessor: "standing"
+                    accessor: "standing",
+                    width: 90,
+                    Cell: row => {
+                      return (
+                        <Fragment>
+                          <form>
+                            <div className="table-select">
+                              <select
+                                name="standing"
+                                onChange={this.handleInputChange}
+                              >
+                                <option>{row.row.standing}</option>
+                                {row.row.standing !== "Good" ? <option>Good</option> : null}
+                                {row.row.standing !== "Uncertain" ? <option>Uncertain</option> : null}
+                                {row.row.standing !== "Banned" ? <option>Banned</option> : null}
+                                {row.row.standing !== "Inactive" ? <option>Inactive</option> : null}
+                              </select>
+                            </div>
+                          </form>
+                        </Fragment>
+                      )
+                    }
                   }
                 ]
               },
@@ -401,11 +471,13 @@ export class UsersTable extends Component {
                   {
                     Header: "State",
                     accessor: "state",
+                    width: 50,
                     Cell: this.renderEditable
                   },
                   {
                     Header: "Zipcode",
                     accessor: "zipcode",
+                    width: 70,
                     Cell: this.renderEditable
                   },
                   {
@@ -418,7 +490,6 @@ export class UsersTable extends Component {
             ]}
             defaultPageSize={10}
             className="-striped -highlight"
-            {...checkboxProps}
           />
         </div>
       </Fragment>

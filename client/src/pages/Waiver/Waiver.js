@@ -5,7 +5,6 @@ import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import ParallaxHero from "../../components/ParallaxHero"
 import { Input, Label, FormBtn } from "../../components/Elements/Form";
-import DevLinks from "../../components/DevLinks";
 import "./Waiver.css";
 
 class Waiver extends Component {
@@ -104,13 +103,6 @@ class Waiver extends Component {
             title="Rental Agreement"
           />
           <div className='body-container'>
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
             <div className="form-style">
               <form action="" id="formTest">
                 <Input

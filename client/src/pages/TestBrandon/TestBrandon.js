@@ -1,11 +1,8 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component, Fragment } from "react";
+import NavBar from "../../components/Elements/NavBar";
 import Header from "../../components/Elements/Header";
 import API from "../../utils/API";
-import ParallaxHero from "./../../components/ParallaxHero";
-import { Input, Label, FormBtn } from "./../../components/Elements/Form";
 import "./../../App.css";
-import DevLinks from "../../components/DevLinks";
 
 class TestBrandon extends Component {
   state = {
@@ -41,21 +38,22 @@ class TestBrandon extends Component {
 
   render() {
     return (
-      <div className="main-container">
-        <Header>
-          <h1>BRANDON'S TEST PAGE</h1>
-          <h2>A Page for Testing Components</h2>
-          <h2>(Inventory Stuff)</h2>
-
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
-        </Header>
-      </div>
+      <Fragment>
+        <NavBar
+          loggedIn={this.props.loggedIn}
+          admin={this.props.admin}
+          logout={this.props.logout}
+          location={this.props.location}
+          dev={this.props.dev}
+        />
+        <div className="main-container">
+          <Header>
+            <h1>BRANDON'S TEST PAGE</h1>
+            <h2>A Page for Testing Components</h2>
+            <h2>(Inventory Stuff)</h2>
+          </Header>
+        </div>
+      </Fragment>
     );
   }
 }

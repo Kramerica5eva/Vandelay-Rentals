@@ -3,6 +3,7 @@ import axios from "axios";
 export default {
 
   // IMAGE UPLOADING & DOWNLOADING ROUTES
+  //  IMAGE ROUTES FOR RENTALS
   // Gets image names from the database so they can be inserted into img tags
   getImageNames: function (id) {
     return axios.get(`/file/image/names/${id}`);
@@ -22,6 +23,28 @@ export default {
   //  Deletes an image and removes the association in the rental
   deleteImage: function (imageId, rentalId) {
     return axios.delete(`/file/image/${imageId}/${rentalId}`);
+  },
+
+  //  IMAGE ROUTES FOR PASTRENTALS
+  // Gets pastRental image names from the database so they can be inserted into img tags
+  getPastRentalImageNames: function (id) {
+    return axios.get(`/file/image/past/names/${id}`);
+  },
+
+  //  Uploads pastRental images to the database and associates them to a rental
+  uploadPastRentalImage: function (rentalId, imageData) {
+    return axios.post(`/file/image/past/${rentalId}`, imageData);
+  },
+
+  // This route is embedded in the img tags as part of the filepath.
+  // The filepath calls the route
+  getPastRentalImage: function () {
+    return axios.get('/file/image/past/:filename');
+  },
+
+  //  Deletes a pastRental image and removes the association in the pastRental
+  deletePastRentalImage: function (imageId, rentalId) {
+    return axios.delete(`/file/image/past/${imageId}/${rentalId}`);
   },
 
   //  WAIVER ROUTE
@@ -312,6 +335,11 @@ export default {
   // Remove rental item - admin function
   adminDeleteRentalItem: function (id) {
     return axios.delete(`/admin/rentals/${id}`);
+  },
+
+  //  Update PastRentals item - only updates note attached.
+  adminUpdatePastRental: function (id, rentalData) {
+    return axios.put(`/admin/rentals/past/${id}`, rentalData);
   },
 
 

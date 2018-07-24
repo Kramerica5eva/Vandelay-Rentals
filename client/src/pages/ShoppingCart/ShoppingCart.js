@@ -4,7 +4,6 @@ import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
-import DevLinks from "../../components/DevLinks";
 import "./ShoppingCart.css";
 import dateFns from "date-fns"
 import { Link } from 'react-router-dom';
@@ -145,6 +144,7 @@ class ShoppingCart extends Component {
         this.toggleLoadingModal();
       });
   }
+
 
   // checkout = () => {
   //   console.log("running checkout")
@@ -299,6 +299,141 @@ class ShoppingCart extends Component {
   //   console.log(token.id)
   // }
 
+  checkout = () => {
+    this.toggleLoadingModal();
+    let checkArray = [];
+    let promiseArray = [];
+    console.log("Start temp reservations")
+    console.log(this.state.tempReservations)
+    console.log("end temp reservatios")
+    console.log("Start temp registrations")
+    console.log(this.state.tempRegistrations)
+    console.log("end temp registrations")
+    this.state.tempReservations.forEach(res => {
+      const checkQuery = API.finalCheck(res);
+      // const resQuery = API.reserveRental(res);
+      checkArray.push(checkQuery);
+      // promiseArray.push(resQuery);
+      // API.finalCheck(res).then(response => { checkArray.push(response.data) })
+    });
+    this.state.tempRegistrations.forEach(reg => {
+      const spaceQuery = API.checkSpace(reg._id, reg)
+      // const regQuery = API.reserveCourse(reg._id, reg);
+      checkArray.push(spaceQuery);
+      // promiseArray.push(regQuery);
+      // API.checkSpace(reg).then(response => { checkArray.push(response.data); console.log(checkArray); })
+    });
+    // if (checkArray.includes('data.response: "success"'))
+    // console.log("***CHECKARRAY***");
+    // console.log(checkArray);
+    // console.log("***PROMISEARRAY***");
+    // console.log(promiseArray);
+    Promise.all(checkArray)
+      .then(response => {
+        // console.log(res)
+        console.log(response)
+        let noGood = [];
+        let types = [];
+        for (let i = 0; i < response.length; i++) {
+          if (response[i].data.response === "already reserved" || response[i].data.response === "full") {
+            noGood.push({ name: response[i].data.info.name, id: response[i].data.tempId, type: response[i].data.info.type })
+          }
+        }
+        console.log(noGood)
+        if (noGood.length > 0) {
+          noGood.forEach(del => {
+            console.log(del)
+            if (del.type === "course") {
+              this.removeRegistrationFromCart(del.id);
+            } else if (del.type === "item") {
+              this.removeReservationFromCart(del.id);
+            }
+            types.push(del.type);
+          });
+          Promise.all(noGood)
+            .then(() => {
+              console.log("start state tempreservations")
+              console.log(this.state.tempRegistrations)
+              console.log(this.state.tempReservations)
+              console.log("end state tempreservations")
+              this.toggleLoadingModal();
+              this.setModal({
+                body:
+                  <Fragment>
+                    <h3>Oh no!!</h3>
+                    <br />
+                    <h4>Someone beat you to the punch and reserved the following {noGood.length === 1 ? "item" : "items"} before you did... </h4><h1>🤯</h1>
+                    {noGood.map(thing =>
+                      <h3 key={thing.name}>{thing.name}</h3>
+                    )}
+                    <h5>Would you like to remove {noGood.length === 1 ? "it" : "them"} and continue to checkout, or go back and select another date for your reservation?</h5>
+                  </Fragment>,
+                buttons:
+                  <Fragment>
+                    {types.includes("course") && types.includes("rental")
+                      ? <Link
+                        className="modal-btn-link"
+                        to={{ pathname: '/rentals' }}
+                        role="button"
+                      >
+                        Select new date
+              </Link> &&
+                      <Link
+                        className="modal-btn-link"
+                        to={{ pathname: '/courses' }}
+                        role="button"
+                      >
+                        Select new course
+              </Link>
+                      : types.includes("course")
+                        ? <Link
+                          className="modal-btn-link"
+                          to={{ pathname: '/courses' }}
+                          role="button"
+                        >
+                          Select new course
+              </Link>
+                        : types.includes("rental")
+                          ? <Link
+                            className="modal-btn-link"
+                            to={{ pathname: '/rental' }}
+                            role="button"
+                          >
+                            Select new dates
+              </Link>
+                          : null
+                    }
+                    <button
+                      className="modal-btn-link"
+                      onClick={() => this.toggleModal(true)}
+                    >
+                      Remove
+                      </button>
+                  </Fragment>
+              })
+            })
+        } else {
+          this.state.tempReservations.forEach(res => {
+            //  Add total cost of the reservation to the reservation object:
+            res.total = (((parseInt(res.date.to) - parseInt(res.date.from)) / 86400) + 1) * res.dailyRate.$numberDecimal;
+
+            const resQuery = API.reserveRental(res);
+            promiseArray.push(resQuery);
+          });
+          this.state.tempRegistrations.forEach(reg => {
+            const regQuery = API.reserveCourse(reg._id, reg);
+            promiseArray.push(regQuery);
+          });
+          Promise.all(promiseArray)
+            .then(() => {
+              this.getUserShoppingCart();
+              this.toggleLoadingModal();
+            });
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
   render() {
     // if left in still - take out this console log before production
     // console.log(this.state.tempRegistrations);
@@ -329,32 +464,6 @@ class ShoppingCart extends Component {
               <h3>You're almost done!</h3>
             </div>
 
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
-            <div className="payment-container">
-              <StripeProvider apiKey="pk_test_RwSP4QeJgsTpThoHAR7VRKmR">
-                <Elements>
-                  <CheckoutForm
-                    btn={() => this.checkout()}
-                    firstName={this.props.firstName}
-                    getUserShoppingCart={() => this.getUserShoppingCart()}
-                    lastName={this.props.lastName}
-                    removeRegistrationFromCart={() => this.removeRegistrationFromCart()}
-                    removeReservationFromCart={() => this.removeReservationFromCart()}
-                    setModal={() => this.setModal()}
-                    tempRegistrations={this.state.tempRegistrations}
-                    tempReservations={this.state.tempReservations}
-                    toggleLoadingModal={() => this.toggleLoadingModal()}
-                    total={this.state.total}
-                  />
-                </Elements>
-              </StripeProvider>
-            </div>
             <div className="cart-page-container">
               <div className="cart-items">
                 {this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?

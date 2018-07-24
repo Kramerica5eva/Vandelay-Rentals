@@ -1,10 +1,8 @@
 import React, { Component, Fragment } from "react";
-import Header from "../../components/Elements/Header";
 import ParallaxHero from "../../components/ParallaxHero";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import SaleCard from "./../../components/Cards/SaleCard";
-import DevLinks from "../../components/DevLinks";
 import API from "../../utils/API";
 import "./Sales.css";
 
@@ -51,16 +49,6 @@ class Sales extends Component {
             title="PURCHASE"
           />
           <div className='body-container sales'>
-            {/* developer links */}
-            <Header>
-              <DevLinks
-                loggedIn={this.props.loggedIn}
-                admin={this.props.admin}
-                dev={this.props.dev}
-                logout={this.props.logout}
-                location={this.props.location}
-              />
-            </Header>
             <h2>Purchase Items:</h2>
             <ul>
               {this.state.saleItems.filter(saleItem => saleItem.status === 'Available').map(item => (
