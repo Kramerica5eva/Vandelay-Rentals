@@ -10,6 +10,10 @@
   padding: 20px 5px 20px 35px;
 }
 
+.admin-form-div > form > button[disabled] {
+  opacity: .6;
+}
+
 .admin-form-div h2 {
   margin-bottom: 40px;
 }
@@ -49,4 +53,31 @@
 
 .admin-toggle-btn-light {
   background-color: #00000099;
+}
+
+.no-bar {
+  position: unset;
+  display: unset;
+  width: unset;
+  max-width: unset;
+}
+
+.no-bar:before, .no-bar:after {
+  content: '';
+  height: unset;
+  width: unset;
+  bottom: unset;
+  position: unset;
+  background: unset;
+  transition: unset;
+  -moz-transition:unset;
+  -webkit-transition:unset;
+}
+
+.no-bar:before {
+  left: unset;
+}
+
+.no-bar:after {
+  right: unset;
 }

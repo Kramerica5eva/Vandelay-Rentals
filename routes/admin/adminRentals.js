@@ -12,7 +12,7 @@ router
   .route('/:id')
   //  NOT YET BEING USED - DELETE IF UNUSED IN FINAL PRODUCT - 'GET'
   // .get(isAdmin, adminRentalsController.findById)
-  .put(isAdmin, adminRentalsController.update)
+  .put(isAdmin, adminRentalsController.updateRental)
   .delete(isAdmin, adminRentalsController.remove);
 
 // Matches with '/admin/rentals/reservations/:id'
@@ -22,11 +22,15 @@ router
   // .get(isAdmin, adminRentalsController.getReservations)
   .put(isAdmin, adminRentalsController.updateReservation)
   .post(isAdmin, adminRentalsController.finishReservation);
-  
-  function isAdmin(req, res, next) {
-    if (req.user.admin)
-      return next();
-    res.json({ isAuthenticated: false });
-  }
+
+router
+  .route('/past/:id')
+  .put(isAdmin, adminRentalsController.updatePastRental);
+
+function isAdmin(req, res, next) {
+  if (req.user.admin)
+    return next();
+  res.json({ isAuthenticated: false });
+}
 
 module.exports = router;

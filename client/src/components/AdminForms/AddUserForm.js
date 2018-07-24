@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Input, FormBtn } from "../Elements/Form";
+import { Input, FormBtn, Label } from "../Elements/Form";
 import Modal from "../../components/Elements/Modal";
 import API from "../../utils/API";
 
@@ -82,17 +82,33 @@ export class AddUserForm extends Component {
               break;
             default:
               this.setModal({
-                body: <h4>Please correct highlighted items</h4>
+                body: <h4>Something went wrong - please try again</h4>
               });
           }
         }
         //  'errmsg' seems to be standard MongoDB terminology...
         else if (!res.data.errmsg) {
-
           console.log("Creating user:")
           console.log(res);
-
-        }
+          this.setModal({
+            body: <h4>New User has been added to the  database.</h4>,
+            buttons: <button onClick={this.toggleModal}>OK</button>
+          })
+          this.setState({
+            username: "",
+            password: "",
+            confirmPassword: "",
+            firstName: "",
+            lastName: "",
+            email: "",
+            street: "",
+            city: "",
+            state: "",
+            zipcode: "",
+            phone: "",
+            admin: false
+          })
+        };
       }).catch(error => {
         console.log('signup error: ');
         console.log(error);
@@ -179,6 +195,7 @@ export class AddUserForm extends Component {
             maxLength="2"
             pattern="^(?:A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])*$"
             label="State:"
+            placeholder="e.g. 'UT' or 'CA'"
           />
           <Input
             value={this.state.zipcode}
@@ -198,7 +215,6 @@ export class AddUserForm extends Component {
             placeholder="e.g. xxx-xxx-xxxx"
           />
           <Fragment>
-            <label>Admin:</label>
             <Input
               checked={this.state.admin}
               onChange={this.handleInputChange}
@@ -206,28 +222,45 @@ export class AddUserForm extends Component {
               label="Admin:"
               type="checkbox"
               style={{ display: "inline-block", width: "20px" }}
+              barclass="no-bar"
             />
           </Fragment>
           <FormBtn
             disabled={(
-              !this.state.username ||
-              !this.state.password ||
-              !this.state.confirmPassword ||
-              !this.state.username ||
-              !this.state.password ||
-              !this.state.firstName ||
-              !this.state.lastName ||
-              !this.state.email ||
-              !this.state.street ||
-              !this.state.city ||
-              !this.state.state ||
-              !this.state.zipcode ||
-              !this.state.phone
+              (
+                !this.state.username ||
+                !/^[a-zA-Z0-9]+$/.test(this.state.username)
+              ) || (
+                !this.state.password ||
+                !/^[\S]{4,}$/.test(this.state.password)
+              ) || (
+                !this.state.firstName ||
+                !/^[a-zA-Z]+$/.test(this.state.firstName)
+              ) || (
+                !this.state.lastName ||
+                !/^[a-zA-Z]+$/.test(this.state.lastName)
+              ) || (
+                !this.state.email ||
+                !/^[a-zA-Z0-9.!#$%&amp;'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(this.state.email)
+              ) || (
+                !this.state.street
+              ) || (
+                !this.state.city
+              ) || (
+                !this.state.state ||
+                !/^(?:A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])*$/.test(this.state.state)
+              ) || (
+                !this.state.zipcode ||
+                !/^\d{5}(-\d{4})?$/.test(this.state.zipcode)
+              ) || (
+                !this.state.phone ||
+                !/^\d{3}[\-]\d{3}[\-]\d{4}/.test(this.state.phone)
+              )
             ) || (this.state.password !== this.state.confirmPassword)}
             onClick={this.handleFormSubmit}
           >
             Submit
-        </FormBtn>
+          </FormBtn>
         </form>
       </Fragment>
     )

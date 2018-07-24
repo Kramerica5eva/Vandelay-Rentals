@@ -21,22 +21,15 @@ module.exports = {
     console.log(phone);
     const filteredPhone = phone.split("").filter(num => /^[0-9]+$/.test(num)).join("");
     console.log("Filtered phone: " + filteredPhone);
+    req.body.phone = filteredPhone;
 
     let zipTest = /^\d{5}(-\d{4})?$/.test(zipcode);
-    let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);
-    // let phoneTest = /^\d{3}[\-]\d{3}[\-]\d{4}/.test(phone) || /^\d{10}/.test(phone); //I added this so that my computer can auto complete the phone number and I don't have to go back and put the dashes in. Makes it faster to test. We can remove it later. 
+    let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email); 
     let phoneTest = /^\d{10}/.test(filteredPhone);
     let userTest = /^[a-zA-Z0-9]+$/.test(username);
     let firstTest = /^[a-zA-Z]+$/.test(firstName);
     let lastTest = /^[a-zA-Z]+$/.test(lastName);
     let stateTest = /^(?:A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])*$/.test(state);
-
-    console.log(zipTest);
-    console.log(emailTest);
-    console.log(phoneTest);
-    console.log(userTest);
-    console.log(firstTest);
-    console.log(lastTest);
 
     if (!zipTest || !emailTest || !phoneTest || !userTest || !firstTest || !lastTest || !stateTest) {
       console.log(zipTest);

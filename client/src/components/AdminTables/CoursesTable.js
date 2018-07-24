@@ -61,6 +61,37 @@ export class CoursesTable extends Component {
     });
   }
 
+  noteModal = row => {
+    const { _id, note } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <textarea name="note" onChange={this.handleInputChange} rows="10" cols="80" defaultValue={note}></textarea>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={() => this.submitNote(_id)}>Submit</button>
+          <button onClick={this.toggleModal}>Nevermind</button>
+        </Fragment>
+    })
+  }
+
+  submitNote = id => {
+    this.toggleModal();
+    this.toggleLoadingModal();
+    API.adminUpdateCourse(id, { note: this.state.note })
+      .then(response => {
+        console.log(response);
+        setTimeout(this.toggleLoadingModal, 500);
+        this.state.courses.forEach(pr => {
+          if (pr._id === id) pr.note = this.state.note;
+          this.setState({ runUnmount: true })
+        });
+      })
+      .catch(err => console.log(err));
+  }
+
   //  Get all courses from the database and set state so the table will display
   adminGetAllCourses = () => {
     API.adminGetAllCourses()
@@ -83,40 +114,41 @@ export class CoursesTable extends Component {
 
   //  Course delete modal
   courseDeleteModal = row => {
-    this.setModal({
-      body:
-        <Fragment>
-          <h4>Are you sure you want to delete {row.name}?</h4>
-          <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
-        </Fragment>,
-      buttons:
-        <Fragment>
-          <button onClick={this.toggleModal}>Nevermind</button>
-          <button onClick={() => this.deleteCourse(row)}>Delete it</button>
-        </Fragment>
-    })
+    if (row._original.registrations.length > 0) {
+      this.setModal({
+        body: <h3>You must remove all class registrations first.</h3>,
+        buttons: <button onClick={this.toggleModal}>OK</button>
+      });
+    } else {
+      this.setModal({
+        body:
+          <Fragment>
+            <h4>Are you sure you want to delete {row.name}?</h4>
+            <p>(this is permenent - you cannot undo it and you will lose all data)</p>
+          </Fragment>,
+        buttons:
+          <Fragment>
+            <button onClick={this.toggleModal}>Nevermind</button>
+            <button onClick={() => this.deleteCourse(row)}>Delete it</button>
+          </Fragment>
+      })
+    }
   }
 
   // Course delete function
   deleteCourse = row => {
     console.log(row);
-    if (row._original.registrations.length > 0) {
-      this.setModal({
-        body: <h4>You must remove all class registrations first.</h4>,
-        buttons: <button onClick={this.toggleModal}>OK</button>
-      });
-    } else {
-      this.toggleLoadingModal();
-      const { _id } = row._original
-      API.adminDeleteCourse(_id)
-        .then(res => {
-          console.log(res)
-          this.adminGetAllCourses();
-          this.toggleLoadingModal();
-          this.toggleModal();
-        })
-        .catch(err => console.log(err));
-    }
+    this.toggleModal();
+    this.toggleLoadingModal();
+    const { _id } = row._original
+    API.adminDeleteCourse(_id)
+      .then(res => {
+        console.log(res)
+        this.adminGetAllCourses();
+        this.toggleLoadingModal();
+        this.toggleModal();
+      })
+      .catch(err => console.log(err));
   }
 
   noteModal = row => {
@@ -142,7 +174,8 @@ export class CoursesTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          body: <h3>Database successfully updated</h3>
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllCourses();
@@ -174,7 +207,8 @@ export class CoursesTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          body: <h3>Database successfully updated</h3>
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllCourses();
@@ -205,7 +239,8 @@ export class CoursesTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          body: <h3>Database successfully updated</h3>
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllCourses();
@@ -236,7 +271,8 @@ export class CoursesTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          body: <h3>Database successfully updated</h3>
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllCourses();
@@ -248,11 +284,11 @@ export class CoursesTable extends Component {
   updateRow = row => {
     this.toggleLoadingModal()
     const { name, pricePer, level, date, slots, _id } = row._original;
-    
+
     let unixDate;
     if (typeof date === "string") unixDate = dateFns.format(date, "X");
     else unixDate = dateFns.format(date * 1000, "X");
-    
+
     // if pricePer exists (it should, but to avoid an error, checking first...) and it hasn't been changed, it will be a number type because the formatting occurs in the renderEditablePrice function (the actual value remains a number type until it is changed) and so the .split method doesn't exist (that's a string method)
     let newPrice;
     if (pricePer) {
@@ -279,7 +315,8 @@ export class CoursesTable extends Component {
           setTimeout(this.toggleLoadingModal, 500);
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
-            body: <h4>Database successfully updated</h4>
+            body: <h3>Database successfully updated</h3>,
+            buttons: <button onClick={this.toggleModal}>OK</button>
           });
           //  query the db and reload the table
           this.adminGetAllCourses();
@@ -384,7 +421,7 @@ export class CoursesTable extends Component {
               //  thisReservation grabs the reservations from this.state.courses that matches the row index - it grabs the registrations for this course.
               const thisRow = this.state.courses[row.row._index];
               return (
-                <Fragment>
+                <div className="sub-table-container">
                   {thisRow.registrations.length > 0 ? (
                     <RegistrationsTable
                       forName={thisRow.name}
@@ -394,7 +431,7 @@ export class CoursesTable extends Component {
                       adminGetAllCourses={this.adminGetAllCourses}
                     />
                   ) : null}
-                </Fragment>
+                </div>
               )
             }}
             columns={[
@@ -421,6 +458,35 @@ export class CoursesTable extends Component {
                             <span className="fa-sticky-note-tooltip table-tooltip">see/edit notes</span>
                           </div>
                         </div>
+                      )
+                    }
+                  }
+                ]
+              },
+              {
+                Header: 'Course Details',
+                columns: [
+                  {
+                    Header: "More Info",
+                    accessor: "",
+                    width: 140,
+                    Cell: row => {
+                      return (
+                        <div className="table-icon-div">
+                          <div className="fa-list-ul-div table-icon-inner-div">
+                            <i onClick={() => this.topicsModal(row.row)} className="table-icon fas fa-list-ul fa-lg"></i>
+                            <span className="fa-list-ul-tooltip table-tooltip">see/edit topics</span>
+                          </div>
+                          <div className="fa-comment-alt-div table-icon-inner-div">
+                            <i onClick={() => this.summaryModal(row.row)} className="table-icon far fa-comment-alt fa-lg"></i>
+                            <span className="fa-comment-alt-tooltip table-tooltip">see/edit summary</span>
+                          </div>
+                          <div className="fa-book-open-div table-icon-inner-div">
+                            <i onClick={() => this.descriptionModal(row.row)} className="table-icon fas fa-book-open fa-lg"></i>
+                            <span className="fa-book-open-tooltip table-tooltip">see/edit description</span>
+                          </div>
+                        </div>
+
                       )
                     }
                   }
@@ -478,35 +544,6 @@ export class CoursesTable extends Component {
                     Header: "Open",
                     accessor: "openSlots",
                     width: 70
-                  }
-                ]
-              },
-              {
-                Header: 'Course Details',
-                columns: [
-                  {
-                    Header: "More Info",
-                    accessor: "",
-                    width: 140,
-                    Cell: row => {
-                      return (
-                        <div className="table-icon-div">
-                          <div className="fa-list-ul-div table-icon-inner-div">
-                            <i onClick={() => this.topicsModal(row.row)} className="table-icon fas fa-list-ul fa-lg"></i>
-                            <span className="fa-list-ul-tooltip table-tooltip">see/edit topics</span>
-                          </div>
-                          <div className="fa-comment-alt-div table-icon-inner-div">
-                            <i onClick={() => this.summaryModal(row.row)} className="table-icon far fa-comment-alt fa-lg"></i>
-                            <span className="fa-comment-alt-tooltip table-tooltip">see/edit summary</span>
-                          </div>
-                          <div className="fa-book-open-div table-icon-inner-div">
-                            <i onClick={() => this.descriptionModal(row.row)} className="table-icon fas fa-book-open fa-lg"></i>
-                            <span className="fa-book-open-tooltip table-tooltip">see/edit description</span>
-                          </div>
-                        </div>
-
-                      )
-                    }
                   }
                 ]
               }

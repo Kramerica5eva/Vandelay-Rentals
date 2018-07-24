@@ -46,16 +46,6 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  // getAllRentals = () => {
-  //   API.getAllRentals()
-  //     .then(res => {
-  //       this.setState({
-  //         rentals: res.data
-  //       });
-  //     })
-  //     .catch(err => console.log(err));
-  // }
-
 
   // reserveRental: function (req, res) {
   //   console.log("Shpoopy, here's the rental req.body:")
@@ -250,16 +240,17 @@ module.exports = {
   // },
 
   breakReservation: function (req, res) {
+    console.log(req.body);
     db.Reservation
       .deleteOne({ _id: req.params.id })
       .then(() => {
         Promise.all([
           db.Rental.findByIdAndUpdate(
-            { _id: req.body.itemId },
+            { _id: req.body._original.itemId },
             { $pull: { reservations: req.params.id } },
             { new: true }
           ), db.User.findByIdAndUpdate(
-            { _id: req.body.customerId },
+            { _id: req.body._original.customerId },
             { $pull: { reservations: req.params.id } },
             { new: true }
           )

@@ -5,29 +5,27 @@ import LoadingModal from "../../components/Elements/LoadingModal";
 import API from "../../utils/API";
 import "react-table/react-table.css";
 import "./AdminTables.css";
-import checkboxHOC from "react-table/lib/hoc/selectTable";
 import dateFns from "date-fns";
-const CheckboxTable = checkboxHOC(ReactTable);
 
 export class ReservationsTable extends Component {
   state = {
     modal: {
       isOpen: false,
-      body: "",
-      buttons: ""
+      body: '',
+      buttons: ''
     },
+    loadingModalOpen: false,
     fromUsers: this.props.fromUsers,
     runUnmount: false,
     reservations: this.props.reservations,
-    selection: [],
-    selectedRow: {}
+    note: ''
   };
 
   componentWillUnmount = () => {
     //  Why call get Users or get Rentals on Unmount?
     //  Clicking cancelReservation runs all the necessary database functions to delete the reservation, but in this component it only filters it from the this.state.reservations array, meaning if you close the table and reopen it, the one you just deleted will still show. So by running the get user function when the component unmounts ensures this won't happen while also avoiding an extra database query with every deletion.
     if (this.state.runUnmount) {
-      console.log("Registrations Unmount Running!");
+      console.log("Reservations Unmount Running!");
       if (this.state.fromUsers) {
         this.props.adminGetAllUsers();
       } else {
@@ -61,45 +59,10 @@ export class ReservationsTable extends Component {
     });
   }
 
-  //  REACT-TABLE: SELECT TABLE HOC FUNCTIONS
-  //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
-  toggleSelection = (key, shift, row) => {
-    let selection = [...this.state.selection];
-    const keyIndex = selection.indexOf(key);
-
-    if (keyIndex >= 0) {
-      // it does exist so we will remove it
-      selection = [
-        ...selection.slice(0, keyIndex),
-        ...selection.slice(keyIndex + 1)
-      ];
-    } else {
-      // it does not exist so add it
-      selection = [];
-      selection.push(key);
-    }
-
-    //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
-    this.setState({ selection, selectedRow: row });
-  };
-
-  // Inside the render function, isSelected returns a true or false depending on if a row is selected
-  isSelected = key => {
-    return this.state.selection.includes(key);
-  };
-
-  //  logs the selected row and the selection array to the console
-  logSelection = () => {
-    console.log("Selection:", this.state.selection);
-    console.log("Row: ", this.state.selectedRow);
-  };
-  //  END REACT-TABLE: SELECT TABLE HOC FUNCTIONS
-
   //  Cancel function works - Deletes reservation and removes the reference from User and Rental
-  cancelReservation = () => {
+  cancelReservation = row => {
     this.toggleLoadingModal();
-    const { _id } = this.state.selectedRow;
-    const row = this.state.selectedRow;
+    const { _id } = row._original;
 
     API.removeRentalReservation(_id, row)
       .then(res => {
@@ -111,8 +74,6 @@ export class ReservationsTable extends Component {
         //  empty selection and selectedRow so the affected buttons revert to disabled
         this.setState({
           reservations: newReservations,
-          selection: [],
-          selectedRow: {},
           runUnmount: true
         })
       })
@@ -120,9 +81,9 @@ export class ReservationsTable extends Component {
   }
 
   //  If reservation is paid: false, flips it to true, and vice-versa
-  toggleReservationPaid = () => {
+  toggleReservationPaid = row => {
     this.toggleLoadingModal();
-    const { _id, paid } = this.state.selectedRow;
+    const { _id, paid } = row._original;
     API.adminUpdateReservation(_id, { paid: !paid })
       .then(res => {
         this.toggleLoadingModal();
@@ -132,8 +93,6 @@ export class ReservationsTable extends Component {
             res.paid = !paid
           }
           this.setState({
-            selection: [],
-            selectedRow: {},
             runUnmount: true
           })
         })
@@ -142,10 +101,9 @@ export class ReservationsTable extends Component {
       .catch(err => console.log(err));
   }
 
-  recordRentalReturn = () => {
+  recordRentalReturn = row => {
     this.toggleLoadingModal();
-    const { _id } = this.state.selectedRow;
-    const row = this.state.selectedRow;
+    const { _id } = row._original;
     API.adminRecordRentalReturn(_id, row)
       .then(res => {
         console.log(res);
@@ -158,58 +116,62 @@ export class ReservationsTable extends Component {
           modal: {
             isOpen: true,
             header: "Success!",
-            body: <h4>Don't forget to take pictures and upload them to the database</h4>
+            body: <h4>Don't forget to take pictures and upload them to the database</h4>,
+            buttons: <button onClick={this.toggleModal}>OK</button>
           },
           reservations: newReservations,
-          selection: [],
-          selectedRow: {},
           runUnmount: true
         })
       })
       .catch(err => console.log(err));
   }
 
+  noteModal = row => {
+    const { _id, note } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <textarea name="note" onChange={this.handleInputChange} rows="10" cols="80" defaultValue={note}></textarea>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={() => this.submitNote(_id)}>Submit</button>
+          <button onClick={this.toggleModal}>Nevermind</button>
+        </Fragment>
+    })
+  }
+
+  submitNote = id => {
+    this.toggleModal();
+    this.toggleLoadingModal();
+    API.adminUpdateReservation(id, { note: this.state.note })
+      .then(response => {
+        console.log(response);
+        setTimeout(this.toggleLoadingModal, 500);
+        this.state.reservations.forEach(pr => {
+          if (pr._id === id) pr.note = this.state.note;
+          this.setState({ runUnmount: true })
+        });
+      })
+      .catch(err => console.log(err));
+  }
+
   render() {
-    //  destructure from 'this' because the props object doesn't like 'this.anything' unless it's in a key:value pair
-    const { toggleSelection, isSelected } = this;
-    // console.log(this.state.reservations);
 
     if (this.state.reservations.length > 0) {
       this.state.reservations.forEach(reservation => {
         if (reservation.paid) {
           reservation.hasPaid = "True";
-          reservation.amtDue = "$0.00"
         }
         else {
           reservation.hasPaid = "False";
-          //  86400 = # of seconds in a day
-          const bill = (((parseInt(reservation.date.to) - parseInt(reservation.date.from)) / 86400) + 1) * reservation.dailyRate.$numberDecimal;
-          reservation.amtDue = "$" + parseFloat(bill).toFixed(2);
         }
-        reservation.date.formattedTo = dateFns.format(reservation.date.to * 1000, "MMM Do YYYY");
-        reservation.date.formattedFrom = dateFns.format(reservation.date.from * 1000, "MMM Do YYYY");
       })
     }
 
-    const checkboxProps = {
-      isSelected,
-      toggleSelection,
-      selectType: "checkbox",
-      getTrProps: (s, r) => {
+    console.log(this.state.reservations)
 
-        // If there are any empty rows ('r'), r.orignal will throw an error ('r' is undefined), so check for r:
-        let selected;
-        if (r) {
-          selected = this.isSelected(r.original._id);
-        }
-        return {
-          style: {
-            backgroundColor: selected ? "yellow" : "inherit",
-            color: selected ? '#000' : 'inherit',
-          }
-        };
-      }
-    };
 
     return (
 
@@ -224,32 +186,65 @@ export class ReservationsTable extends Component {
 
         <h3>Rental Reservations for {this.props.forName}</h3>
 
-        {/* if no rows have been selected, button remains disabled;
-      otherwise, clicking the button without anything selected results in an error */}
-
-        <div className="table-btn-div">
-          <h4>Reservations Table Options</h4>
-          <button disabled={this.state.selection.length === 0} onClick={this.toggleReservationPaid}>Record Payment</button>
-          {/* <button disabled={this.state.selection.length === 0} onClick={this.recordRentalInUse}>Record Checkout</button> */}
-          <button disabled={this.state.selection.length === 0} onClick={this.recordRentalReturn}>Record Turn-in</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.cancelReservation}>Cancel Reservation</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
-        </div>
-        <CheckboxTable
-          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object
-          ref={r => (this.checkboxTable = r)}
+        <ReactTable
           data={this.state.reservations}
           columns={[
+            {
+              Header: 'Actions',
+              columns: [
+                {
+                  Header: 'Item',
+                  id: 'item',
+                  width: 140,
+                  Cell: row => {
+                    // return console.log(row);
+                    return (
+                      <div className="table-icon-div">
+                        <div className="fa-trash-alt-div table-icon-inner-div">
+                          <i onClick={() => this.cancelReservation(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
+                          <span className="fa-trash-alt-tooltip table-tooltip">cancel reservation</span>
+                        </div>
+                        <div className="fa-dollar-sign-div table-icon-inner-div">
+                          <i onClick={() => this.toggleReservationPaid(row.row)} className="table-icon fas fa-dollar-sign fa-lg"></i>
+                          <span className="fa-dollar-sign-tooltip table-tooltip">record payment</span>
+                        </div>
+                        {row.row.hasPaid === "True" ?
+                          (
+                            <div className="fa-check-circle-div table-icon-inner-div">
+                              <i onClick={() => this.recordRentalReturn(row.row)} className="table-icon far fa-check-circle fa-lg"></i>
+                              <span className="fa-check-circle-tooltip table-tooltip">record turnin</span>
+                            </div>
+                          ) : (
+                            <div className="fa-check-circle-div table-icon-inner-div">
+                              <i onClick={() => this.setModal({
+                                body: <h3>Payment must be recorded before the rental can be turned in</h3>,
+                                buttons: <button onClick={this.toggleModal}>OK</button>
+                              })} className="table-icon far fa-check-circle fa-lg"></i>
+                              <span className="fa-check-circle-tooltip table-tooltip">record turnin</span>
+                            </div>
+                          )}
+                        <div className="fa-sticky-note-div table-icon-inner-div">
+                          <i onClick={() => this.noteModal(row.row)} className="table-icon far fa-sticky-note fa-lg"></i>
+                          <span className="fa-sticky-note-tooltip table-tooltip">see/edit notes</span>
+                        </div>
+                      </div>
+                    )
+                  }
+                }
+              ]
+            },
             {
               Header: "Customer",
               columns: [
                 {
                   Header: "First Name",
-                  accessor: "firstName"
+                  accessor: "firstName",
+                  width: 100
                 },
                 {
                   Header: "Last Name",
-                  accessor: "lastName"
+                  accessor: "lastName",
+                  width: 100
                 }
               ]
             },
@@ -262,26 +257,38 @@ export class ReservationsTable extends Component {
                 },
                 {
                   Header: "Date From",
-                  accessor: "date.formattedFrom"
+                  accessor: "date.from",
+                  width: 110,
+                  Cell: row => {
+                    return dateFns.format(row.value * 1000, "MMM Do YYYY")
+                  }
                 },
                 {
                   Header: "Date To",
-                  accessor: "date.formattedTo"
+                  accessor: "date.to",
+                  width: 110,
+                  Cell: row => {
+                    return dateFns.format(row.value * 1000, "MMM Do YYYY")
+                  }
                 },
                 {
                   Header: "Paid",
-                  accessor: "hasPaid"
+                  accessor: "hasPaid",
+                  width: 60
                 },
                 {
-                  Header: "Amt Due",
-                  accessor: "amtDue"
+                  Header: "Total",
+                  accessor: "total.$numberDecimal",
+                  width: 80,
+                  Cell: row => {
+                    return `$${parseFloat(row.value).toFixed(2)}`
+                  }
                 }
               ]
             },
           ]}
           defaultPageSize={5}
           className="-striped -highlight sub-table"
-          {...checkboxProps}
         />
 
       </Fragment>

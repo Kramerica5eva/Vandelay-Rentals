@@ -1,19 +1,24 @@
 import React, { Component, Fragment } from "react";
 import ReactTable from "react-table";
+import Modal from '../../components/Elements/Modal';
 import LoadingModal from "../../components/Elements/LoadingModal";
 import API from "../../utils/API";
+import dateFns from "date-fns";
 import "react-table/react-table.css";
 import "./AdminTables.css";
-import checkboxHOC from "react-table/lib/hoc/selectTable";
-const CheckboxTable = checkboxHOC(ReactTable);
 
 export class RegistrationsTable extends Component {
   state = {
+    modal: {
+      isOpen: false,
+      body: '',
+      buttons: ''
+    },
     fromUsers: this.props.fromUsers,
     runUnmount: false,
     registrations: this.props.registrations,
-    selection: [],
-    selectedRow: {}
+    loadingModalOpen: false,
+    note: ''
   };
 
   componentWillUnmount = () => {
@@ -28,52 +33,33 @@ export class RegistrationsTable extends Component {
     }
   }
 
+  // MODAL TOGGLE FUNCTIONS
+  toggleModal = () => {
+    this.setState({
+      modal: { isOpen: !this.state.modal.isOpen }
+    });
+  };
+
+  setModal = modalInput => {
+    this.setState({
+      modal: {
+        isOpen: true,
+        body: modalInput.body,
+        buttons: modalInput.buttons
+      }
+    });
+  };
+  // END MODAL TOGGLE FUNCTIONS
+
   //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoing
   toggleLoadingModal = () => {
-    this.setState({
-      loadingModalOpen: !this.state.loadingModalOpen
-    });
+    this.setState({ loadingModalOpen: !this.state.loadingModalOpen });
   }
 
-  //  REACT-TABLE: SELECT TABLE HOC FUNCTIONS
-  //  This toggles the selected (highlighted) row on or off by pushing/slicing it to/from the this.state.selection array
-  toggleSelection = (key, shift, row) => {
-    let selection = [...this.state.selection];
-    const keyIndex = selection.indexOf(key);
-
-    if (keyIndex >= 0) {
-      // it does exist so we will remove it
-      selection = [
-        ...selection.slice(0, keyIndex),
-        ...selection.slice(keyIndex + 1)
-      ];
-    } else {
-      // it does not exist so add it
-      selection = [];
-      selection.push(key);
-    }
-
-    //  set state with the selected row key, but also set selectedRow with the entire row object, making it available for db updates
-    this.setState({ selection, selectedRow: row });
-  };
-
-  // Inside the render function, isSelected returns a true or false depending on if a row is selected
-  isSelected = key => {
-    return this.state.selection.includes(key);
-  };
-
-  //  logs the selected row and the selection array to the console
-  logSelection = () => {
-    console.log("Selection:", this.state.selection);
-    console.log("Row: ", this.state.selectedRow);
-  };
-  //  END REACT-TABLE: SELECT TABLE HOC FUNCTIONS
-
   //  Cancel function works - Deletes registration and removes the reference from User and Course
-  cancelRegistration = () => {
+  cancelRegistration = row => {
     this.toggleLoadingModal();
-    const { _id } = this.state.selectedRow;
-    const row = this.state.selectedRow;
+    const { _id } = row._original;
     console.log(row);
 
     API.removeCourseRegistration(_id, row)
@@ -85,8 +71,6 @@ export class RegistrationsTable extends Component {
         //  empty selection and selectedRow so the buttons revert to disabled
         this.setState({
           registrations: newRegistrations,
-          selection: [],
-          selectedRow: {},
           runUnmount: true
         })
       })
@@ -94,9 +78,9 @@ export class RegistrationsTable extends Component {
   }
 
   //  If registration is paid: false, flips it to true, and vice-versa
-  toggleRegistrationPaid = () => {
+  toggleRegistrationPaid = row => {
     this.toggleLoadingModal();
-    const { _id, paid } = this.state.selectedRow;
+    const { _id, paid } = row._original;
     API.adminUpdateRegistration(_id, { paid: !paid })
       .then(res => {
         this.toggleLoadingModal();
@@ -105,75 +89,101 @@ export class RegistrationsTable extends Component {
           if (reg._id === _id) {
             reg.paid = !paid
           }
-          this.setState({
-            selection: [],
-            selectedRow: {},
-            runUnmount: true
-          })
+          this.setState({ runUnmount: true })
         })
 
       })
       .catch(err => console.log(err));
   }
 
+  noteModal = row => {
+    const { _id, note } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <textarea name="note" onChange={this.handleInputChange} rows="10" cols="80" defaultValue={note}></textarea>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={() => this.submitNote(_id)}>Submit</button>
+          <button onClick={this.toggleModal}>Nevermind</button>
+        </Fragment>
+    })
+  }
+
+  submitNote = id => {
+    this.toggleModal();
+    this.toggleLoadingModal();
+    API.adminUpdateRegistration(id, { note: this.state.note })
+      .then(response => {
+        console.log(response);
+        setTimeout(this.toggleLoadingModal, 500);
+        this.state.registrations.forEach(pr => {
+          if (pr._id === id) pr.note = this.state.note;
+          this.setState({ runUnmount: true })
+        });
+      })
+      .catch(err => console.log(err));
+  }
+
   render() {
-    //  destructure from 'this' because the props object doesn't like 'this.anything' unless it's in a key:value pair
-    const { toggleSelection, isSelected } = this;
     console.log(this.state.registrations);
 
     if (this.state.registrations.length > 0) {
       this.state.registrations.forEach(registration => {
         if (registration.paid) {
           registration.hasPaid = "True";
-          registration.amtDue = "$0.00";
         } else {
           registration.hasPaid = "False";
-          registration.amtDue = "$" + parseFloat(registration.price.$numberDecimal).toFixed(2);
         }
       })
     }
 
-    const checkboxProps = {
-      isSelected,
-      toggleSelection,
-      selectType: "checkbox",
-      getTrProps: (s, r) => {
-
-        // If there are any empty rows ('r'), r.orignal will throw an error ('r' is undefined), so check for r:
-        let selected;
-        if (r) {
-          selected = this.isSelected(r.original._id);
-        }
-        return {
-          style: {
-            backgroundColor: selected ? "yellow" : "inherit",
-            color: selected ? '#000' : 'inherit',
-          }
-        };
-      }
-    };
-
     return (
 
       <Fragment>
+        <Modal
+          show={this.state.modal.isOpen}
+          toggleModal={this.toggleModal}
+          body={this.state.modal.body}
+          buttons={this.state.modal.buttons}
+        />
         <LoadingModal show={this.state.loadingModalOpen} />
 
         <h3>Class Registrations for {this.props.forName}</h3>
 
-        {/* if no rows have been selected, button remains disabled;
-      otherwise, clicking the button without anything selected results in an error */}
-
-        <div className="table-btn-div">
-          <h4>Registrations Table Options</h4>
-          <button disabled={this.state.selection.length === 0} onClick={this.logSelection}>Log Selection</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.toggleRegistrationPaid}>Log Payment</button>
-          <button disabled={this.state.selection.length === 0} onClick={this.cancelRegistration}>Cancel Registration</button>
-        </div>
-        <CheckboxTable
-          // this ref prop is the 'r' that gets passed in to 'getTrProps' in the checkboxprops object
-          ref={r => (this.checkboxTable = r)}
+        <ReactTable
           data={this.state.registrations}
           columns={[
+            {
+              Header: 'Actions',
+              columns: [
+                {
+                  Header: 'Item',
+                  id: 'item',
+                  width: 110,
+                  Cell: row => {
+                    return (
+                      <div className="table-icon-div">
+                        <div className="fa-trash-alt-div table-icon-inner-div">
+                          <i onClick={() => this.cancelRegistration(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
+                          <span className="fa-trash-alt-tooltip table-tooltip">cancel registration</span>
+                        </div>
+                        <div className="fa-dollar-sign-div table-icon-inner-div">
+                          <i onClick={() => this.toggleRegistrationPaid(row.row)} className="table-icon fas fa-dollar-sign fa-lg"></i>
+                          <span className="fa-dollar-sign-tooltip table-tooltip">record payment</span>
+                        </div>
+                        <div className="fa-sticky-note-div table-icon-inner-div">
+                          <i onClick={() => this.noteModal(row.row)} className="table-icon far fa-sticky-note fa-lg"></i>
+                          <span className="fa-sticky-note-tooltip table-tooltip">see/edit notes</span>
+                        </div>
+                      </div>
+                    )
+                  }
+                }
+              ]
+            },
             {
               Header: "Customer",
               columns: [
@@ -195,19 +205,28 @@ export class RegistrationsTable extends Component {
                   accessor: "courseName"
                 },
                 {
+                  Header: "Class Date",
+                  accessor: "date",
+                  Cell: row => {
+                    return dateFns.format(row.value * 1000, "MMM Do YYYY")
+                  }
+                },
+                {
                   Header: "Paid",
                   accessor: "hasPaid"
                 },
                 {
-                  Header: "Amt Due",
-                  accessor: "amtDue"
+                  Header: "Price",
+                  accessor: "price.$numberDecimal",
+                  Cell: row => {
+                    return `$${parseFloat(row.value).toFixed(2)}`
+                  }
                 }
               ]
             },
           ]}
           defaultPageSize={5}
           className="-striped -highlight sub-table"
-          {...checkboxProps}
         />
 
       </Fragment>

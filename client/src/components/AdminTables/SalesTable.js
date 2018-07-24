@@ -112,7 +112,8 @@ export class SalesTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          body: <h4>Database successfully updated</h4>
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllSaleItems();
@@ -140,7 +141,8 @@ export class SalesTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          body: <h3>Database successfully updated</h3>
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.toggleModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllSaleItems();
@@ -207,7 +209,8 @@ export class SalesTable extends Component {
           setTimeout(this.toggleLoadingModal, 500);
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
-            body: <h4>Database successfully updated</h4>
+            body: <h3>Database successfully updated</h3>,
+            buttons: <button onClick={this.toggleModal}>OK</button>
           });
           //  query the db and reload the table
           this.adminGetAllSaleItems();
