@@ -39,24 +39,24 @@ app.use(passport.initialize());
 app.use(passport.session()); // calls the deserializeUser
 
 // Stripe Example
-// app.post("/charge", async (req, res) => {
-// 	console.log("HERE IS THE CHARGE REQ")
-// 	console.log(req.body)
-// 	console.log(req.body.chrgAmt);
-// 	console.log(req.body.token);
-// 	try {
-// 		let { status } = await stripe.charges.create({
-// 			amount: req.body.chrgAmt,
-// 			currency: "usd",
-// 			description: "An example charge",
-// 			source: req.body.token
-// 		});
+app.post("/charge", async (req, res) => {
+	console.log("HERE IS THE CHARGE REQ")
+	console.log(req.body)
+	console.log(req.body.chrgAmt);
+	console.log(req.body.token);
+	try {
+		let { status } = await stripe.charges.create({
+			amount: req.body.chrgAmt,
+			currency: "usd",
+			description: "An example charge",
+			source: req.body.token
+		});
 
-// 		res.json({ status });
-// 	} catch (err) {
-// 		res.status(500).end();
-// 	}
-// });
+		res.json({ status });
+	} catch (err) {
+		res.status(500).end();
+	}
+});
 
 // Add routes
 app.use(routes);

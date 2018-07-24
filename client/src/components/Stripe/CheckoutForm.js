@@ -237,6 +237,7 @@ class CheckoutForm extends Component {
   async submit(ev) {
     let { token } = await this.props.stripe.createToken({ name: "Name" });
     let charge = { token: token.id, chrgAmt: this.props.total };
+    console.log(charge);
     // let charge = { test: "test" };
     API.charge(charge)
       .then(() => {
