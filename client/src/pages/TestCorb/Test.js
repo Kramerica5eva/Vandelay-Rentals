@@ -1,7 +1,6 @@
-import React, { Component } from "react";
-import { Link } from 'react-router-dom';
+import React, { Component, Fragment } from "react";
 import Header from "./../../components/Elements/Header";
-import DevLinks from "../../components/DevLinks";
+import NavBar from "../../components/Elements/NavBar";
 import RentalCard from "./../../components/Cards/RentalCard";
 import API from "../../utils/API";
 // import ParallaxHero from "./../../components/ParallaxHero";
@@ -42,37 +41,37 @@ class Test extends Component {
 
   render() {
     return (
-      <div className="main-container">
+      <Fragment>
+        <NavBar
+          loggedIn={this.props.loggedIn}
+          admin={this.props.admin}
+          logout={this.props.logout}
+          location={this.props.location}
+          dev={this.props.dev}
+        />
+        <div className="main-container">
 
-        <Header>
-          <h1>CORBINS'S TEST PAGE</h1>
-          <h2>A Page for Testing Components</h2>
-          <h2>(SIGNTYPE)</h2>
-
-          {/* Navigation */}
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
-        </Header>
-        <div className='body-container'>
-          <h2>Rentals Available:</h2>
-          <ul>
-            {this.state.rentals.map(rental => (
-              <RentalCard
-                key={rental._id}
-                name={rental.name}
-                category={rental.category}
-                maker={rental.maker}
-                rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
-              </RentalCard>
-            ))}
-          </ul>
+          <Header>
+            <h1>CORBINS'S TEST PAGE</h1>
+            <h2>A Page for Testing Components</h2>
+            <h2>(SIGNTYPE)</h2>
+          </Header>
+          <div className='body-container'>
+            <h2>Rentals Available:</h2>
+            <ul>
+              {this.state.rentals.map(rental => (
+                <RentalCard
+                  key={rental._id}
+                  name={rental.name}
+                  category={rental.category}
+                  maker={rental.maker}
+                  rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>
+                </RentalCard>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }

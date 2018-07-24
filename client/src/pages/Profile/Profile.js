@@ -8,7 +8,6 @@ import { UserUpdateForm } from "./../../components/AuthForms";
 import HelloSignForm from "./../../components//Elements/HelloSignForm";
 import Footer from "../../components/Elements/Footer";
 import dateFns from "date-fns";
-import DevLinks from "../../components/DevLinks";
 import "./Profile.css"
 
 class Profile extends Component {
@@ -282,13 +281,7 @@ class Profile extends Component {
         <div className="page-container">
           <div className="content-container">
             <h1>{this.state.userData.firstName}'s Info Page</h1>
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
+
             <div className="user-info-div">
               <h3>{firstName} {lastName}</h3>
               <h3>Username: {username}</h3>
@@ -297,6 +290,7 @@ class Profile extends Component {
               <h4>{email}</h4>
               <h4>{telephone}</h4>
             </div>
+
             {this.state.formsShow ? (
               <div className="user-info-btn-div">
                 <button onClick={this.toggleFormsShow}>Show Reservations</button>
@@ -314,6 +308,7 @@ class Profile extends Component {
             {this.state.formsShow ? null : (
               <div className="reservations-container">
                 <h2>My Reservations</h2>
+
                 {this.state.reservations.length > 0 ?
                   <Fragment>
                     {this.state.reservations.sort((a, b) => {
@@ -403,6 +398,7 @@ class Profile extends Component {
                 </div>
               </div>
               : null}
+
             {this.state.userDataForm ?
               <div className="user-forms-container">
                 <div className="user-forms-toggle-div">
@@ -417,6 +413,7 @@ class Profile extends Component {
                 </div>
               </div>
               : null}
+
             {this.state.userWaiverForm ?
               <div className="user-forms-container">
                 <div className="user-forms-toggle-div">
@@ -431,8 +428,6 @@ class Profile extends Component {
                 </div>
               </div>
               : null}
-
-
 
           </div>
           <Footer />

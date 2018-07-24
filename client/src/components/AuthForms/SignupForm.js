@@ -103,7 +103,6 @@ export class SignupForm extends Component {
             });
             // Once logged in, set call this.props.redirect to setState on the login page so the component will reload and trigger the if/else to redirect elsewhere
             this.props.setRedirect();
-
           })
         } else {
           console.log('username already taken');
