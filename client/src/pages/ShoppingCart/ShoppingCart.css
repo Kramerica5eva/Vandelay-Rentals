@@ -2,7 +2,7 @@
 
 /* general styling */
 
-#shopping-cart-page .body-container{
+#shopping-cart-page .body-container {
   background-image: url("https://images.unsplash.com/photo-1428954376791-d9ae785dfb2d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b1d1c3353d1a6b599d22960a10440ed8&auto=format&fit=crop&w=1350&q=80");
   background-size: cover;
   background-position: center;
@@ -25,9 +25,17 @@
 .cart-page-container {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  width: 100%;
+  flex-wrap: nowrap;
+  justify-content: left;
+  width: 49%;
+}
+
+.payment-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: right;
+  width: 49%;
 }
 
 .cart-page-container .side-image {
@@ -58,19 +66,20 @@ div .checkout-proceed {
 
 div .checkout-proceed button {
   font-family: var(--font-Raleway);
-    border: 1px solid #41ba41e2;
-    padding: 7px 14px;
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer;
-    -webkit-box-shadow: 0 0 20px 20px #41ba41e2 inset, 0 0 0 0 #41ba41e2;
-    box-shadow: 0 0 20px 20px #41ba41e2 inset, 0 0 0 0 #41ba41e2;
-    -webkit-transition: all 150ms ease-in-out;
-    -o-transition: all 150ms ease-in-out;
-    transition: all 150ms ease-in-out;
-    text-decoration: none;
-    margin: 0 auto 50px auto;
+  border: 1px solid #41ba41e2;
+  padding: 7px 14px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  -webkit-box-shadow: 0 0 20px 20px #41ba41e2 inset, 0 0 0 0 #41ba41e2;
+  box-shadow: 0 0 20px 20px #41ba41e2 inset, 0 0 0 0 #41ba41e2;
+  -webkit-transition: all 150ms ease-in-out;
+  -o-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
+  text-decoration: none;
+  margin: 0 auto 50px auto;
 }
+
 div .checkout-proceed button:hover {
   background-color: transparent;
   -webkit-box-shadow: 0 0 5px #41ba41e2 inset, 0 0 5px #41ba41e2;
@@ -94,7 +103,6 @@ div .checkout-proceed button:hover {
   border-bottom: 2px solid #494fc9;
 }
 
-
 .cart-res-container .remove-reservation, .cart-reg-container .remove-reservation {
   font-family: var(--font-Raleway);
   border: 1px solid #e34d3ae2;
@@ -109,6 +117,7 @@ div .checkout-proceed button:hover {
   transition: all 150ms ease-in-out;
   text-decoration: none;
 }
+
 .cart-res-container .remove-reservation:hover, .cart-reg-container .remove-reservation:hover {
   background-color: #fff;
   -webkit-box-shadow: 0 0 5px #e34d3ae2 inset, 0 0 5px #e34d3ae2;

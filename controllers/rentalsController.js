@@ -31,7 +31,7 @@ module.exports = {
     db.Rental
       .findById(req.params.id)
       .then(dbModel => {
-        console.log(dbModel);
+        // console.log(dbModel);
         const rentalObject = {
           _id: dbModel._id,
           name: dbModel.name,
@@ -144,18 +144,18 @@ module.exports = {
   // },
 
   finalCheck: function (req, res) {
-    console.log("Here's the rental req.body: finalCheck")
-    console.log(req.body);
+    // console.log("Here's the rental req.body: finalCheck")
+    // console.log(req.body);
     db.Rental.findById(req.body.itemId)
       .populate("reservations")
       .then(dbModel => {
-        console.log("start dbModel finalCheck");
-        console.log(dbModel);
-        console.log("end dbModel finalCheck");
+        // console.log("start dbModel finalCheck");
+        // console.log(dbModel);
+        // console.log("end dbModel finalCheck");
 
-        console.log("Here come the reservations:finalCheck")
-        console.log(dbModel.reservations);
-        console.log("Here end the reservations.finalCheck")
+        // console.log("Here come the reservations:finalCheck")
+        // console.log(dbModel.reservations);
+        // console.log("Here end the reservations.finalCheck")
         for (let i = 0; i < dbModel.reservations.length; i++) {
           if (dbModel.reservations[i].date.from === dbModel.reservations[i].date.to && req.body.date.from === req.body.date.to) {
             if (dbModel.reservations[i].date.from === req.body.date.from) {
@@ -184,14 +184,14 @@ module.exports = {
   },
 
   reserveRental: function (req, res) {
-    console.log("Here's the rental req.body:")
-    console.log(req.body);
+    // console.log("Here's the rental req.body:")
+    // console.log(req.body);
     db.Rental.findById(req.body.itemId)
       .populate("reservations")
       .then(dbModel => {
-        console.log("start dbModel");
-        console.log(dbModel);
-        console.log("end dbModel");
+        // console.log("start dbModel");
+        // console.log(dbModel);
+        // console.log("end dbModel");
 
         db.Reservation.create(req.body)
           .then(reservation => {

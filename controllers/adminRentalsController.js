@@ -33,8 +33,8 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   finishReservation: function (req, res) {
-    console.log("Here's the Reservation req.body:")
-    console.log(req.body);
+    // console.log("Here's the Reservation req.body:")
+    // console.log(req.body);
     db.PastRental
       .create(req.body)
       .then(dbModel => {
@@ -98,7 +98,7 @@ module.exports = {
 
           const cartQuery = db.ShoppingCart.update(
             { tempReservations: element._id },
-            { $pull: {tempReservations: element._id} },
+            { $pull: { tempReservations: element._id } },
             { multi: true }
           )
           const userQuery = db.User.update(

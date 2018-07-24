@@ -6,11 +6,13 @@ const session = require('express-session');
 const dbConnection = require('./connection/connection');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('./passport');
+const stripe = require("stripe")("sk_test_UqjD8ze31EPcfJMgmTPPLxmL");
 const PORT = process.env.PORT || 8080;
 
 // Define middleware here
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.text());
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === 'production') {
@@ -35,6 +37,26 @@ app.use(
 // Passport
 app.use(passport.initialize());
 app.use(passport.session()); // calls the deserializeUser
+
+// Stripe Example
+// app.post("/charge", async (req, res) => {
+// 	console.log("HERE IS THE CHARGE REQ")
+// 	console.log(req.body)
+// 	console.log(req.body.chrgAmt);
+// 	console.log(req.body.token);
+// 	try {
+// 		let { status } = await stripe.charges.create({
+// 			amount: req.body.chrgAmt,
+// 			currency: "usd",
+// 			description: "An example charge",
+// 			source: req.body.token
+// 		});
+
+// 		res.json({ status });
+// 	} catch (err) {
+// 		res.status(500).end();
+// 	}
+// });
 
 // Add routes
 app.use(routes);

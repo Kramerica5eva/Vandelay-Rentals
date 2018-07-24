@@ -242,6 +242,10 @@
   /* transform: scale(1.1); */
 }
 
+/* li {
+  border: none;
+} */
+
 /* line 6, ../src/scss/_dd-menu.scss */
 
 .dd-menu.dd-menu-center .dd-menu-items {

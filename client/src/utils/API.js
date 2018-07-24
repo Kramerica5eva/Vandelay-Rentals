@@ -37,7 +37,10 @@ export default {
     )
   },
 
-
+  // Charge route
+  charge: function (charge) {
+    return axios.post('/charge', charge);
+  },
 
   // USER AUTHENTICATION ROUTES
   // Get user info

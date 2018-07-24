@@ -43,9 +43,9 @@ module.exports = {
   },
 
   checkSpace: function (req, res) {
-    console.log("start of the req")
-    console.log(req)
-    console.log("end of the req")
+    // console.log("start of the req")
+    // console.log(req)
+    // console.log("end of the req")
     db.Course.findById(req.body.courseId)
       .populate("registrations")
       .then(dbModel => {
@@ -59,7 +59,7 @@ module.exports = {
   },
 
   reserveCourse: function (req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     db.Registration.create(req.body)
       .then(registration => {
         Promise.all([
@@ -90,8 +90,8 @@ module.exports = {
   },
 
   removeCourseRegistration: function (req, res) {
-    console.log("Here's the course req.body:")
-    console.log(req.body);
+    // console.log("Here's the course req.body:")
+    // console.log(req.body);
     db.Registration
       .deleteOne({ _id: req.params.id })
       .then(() => {

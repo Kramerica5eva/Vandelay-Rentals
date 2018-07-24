@@ -17,15 +17,15 @@ module.exports = {
   },
 
   addRegistrationToCart: function (req, res) {
-    console.log("Course req.body:")
-    console.log(req.body);
+    // console.log("Course req.body:")
+    // console.log(req.body);
 
     db.TempRegistration.find({
       courseId: req.params.id,
       customerId: req.user._id
     })
       .then(tempReg => {
-        console.log(tempReg);
+        // console.log(tempReg);
         if (tempReg.length > 0) {
           return res.send({ message: "duplicate" });
         } else {
@@ -78,8 +78,8 @@ module.exports = {
   },
 
   addReservationToCart: function (req, res) {
-    console.log("Rental req.body:")
-    console.log(req.body);
+    // console.log("Rental req.body:")
+    // console.log(req.body);
 
     const reservationObject = {
       itemId: req.body._id,
