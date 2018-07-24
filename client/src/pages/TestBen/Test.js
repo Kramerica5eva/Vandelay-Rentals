@@ -10,10 +10,10 @@ import "./../../App.css";
 import "./testBen.css";
 import RentalCard from "../../components/Cards/RentalCard";
 import DevMenu from "../../components/Elements/DevMenu/DevMenu";
-import dateFns from "date-fns";
-let moment = require("moment");
+import { Elements, StripeProvider } from 'react-stripe-elements';
+import CheckoutForm from '../../components/Stripe/CheckoutForm';
 
-let date = new Date();
+// let date = new Date();
 // let dateWrapper = moment(date);
 
 class Test extends Component {
@@ -150,6 +150,15 @@ class Test extends Component {
           returnValue={"range"}
           className={"calendar"}
         /> */}
+
+        <StripeProvider apiKey="pk_test_RwSP4QeJgsTpThoHAR7VRKmR">
+          <div className="example">
+            <h1>React Stripe Elements Example</h1>
+            <Elements>
+              <CheckoutForm />
+            </Elements>
+          </div>
+        </StripeProvider>
         <Calendar
           updateUnix={this.getDays}
           unavailable={this.state.unavailable}

@@ -60,7 +60,19 @@ export default {
     )
   },
 
-
+  // CHARGE ROUTES
+  // Send charge to Stripe
+  charge: function (charge) {
+    return axios.post('/api/charge', charge);
+  },
+  // Update reservation paid status
+  logResPayment: function (res) {
+    return axios.put('/api/charge/respaid', res);
+  },
+  // Update registration paid status
+  logRegPayment: function (reg) {
+    return axios.put('/api/charge/regpaid', reg);
+  },
 
   // USER AUTHENTICATION ROUTES
   // Get user info

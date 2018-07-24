@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const RegistrationSchema = new Schema({
+const registrationSchema = new Schema({
   courseId: {
     type: Schema.Types.ObjectId
   },
@@ -17,9 +17,10 @@ const RegistrationSchema = new Schema({
     type: Boolean,
     default: false
   },
-  note: String
+  note: String,
+  amtPaid: Schema.Types.Decimal128
 });
 
-const Registration = mongoose.model('Registration', RegistrationSchema);
+const Registration = mongoose.model('Registration', registrationSchema);
 
 module.exports = Registration;

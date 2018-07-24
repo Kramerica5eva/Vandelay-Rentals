@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 8080;
 // Define middleware here
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.text());
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === 'production') {

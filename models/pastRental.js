@@ -25,7 +25,10 @@ const pastRentalSchema = new Schema({
     type: Schema.Types.ObjectId
   }],
   total: Schema.Types.Decimal128,
-  note: String
+  note: String,
+
+  amtPaid: Schema.Types.Decimal128
+
 });
 
 const PastRental = mongoose.model('PastRental', pastRentalSchema);

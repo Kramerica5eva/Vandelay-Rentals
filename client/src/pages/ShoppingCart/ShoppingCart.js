@@ -7,6 +7,8 @@ import Footer from "../../components/Elements/Footer";
 import "./ShoppingCart.css";
 import dateFns from "date-fns"
 import { Link } from 'react-router-dom';
+import CheckoutForm from "../../components/Stripe/CheckoutForm";
+import { StripeProvider, Elements } from 'react-stripe-elements';
 
 class ShoppingCart extends Component {
   state = {
@@ -19,7 +21,9 @@ class ShoppingCart extends Component {
     tempRegistrations: [],
     tempReservations: [],
     courses: [],
-    rentals: []
+    rentals: [],
+    complete: false,
+    total: 0
   }
 
   componentWillMount() {
@@ -36,6 +40,7 @@ class ShoppingCart extends Component {
   }
 
   setModal = (modalInput) => {
+    // console.log(modalInput)
     this.setState({
       modal: {
         isOpen: true,
@@ -59,23 +64,33 @@ class ShoppingCart extends Component {
   };
 
   getUserShoppingCart = () => {
+    let total = 0;
     API.getUserShoppingCart()
       .then(cart => {
         this.setState({
           tempRegistrations: cart.data.tempRegistrations,
           tempReservations: cart.data.tempReservations
+        });
+        this.state.tempRegistrations.forEach(reg => {
+          total = parseFloat(total) + parseFloat(reg.price.$numberDecimal).toFixed(2);
+        });
+        this.state.tempReservations.forEach(res => {
+          total = parseFloat(total) + parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2));
+        });
+        this.setState({
+          total: parseFloat(total).toFixed(2)
         })
-      })
+      });
   }
 
   getAllCourses = () => {
     API.getAllCourses()
       .then(res => {
-        console.log(res);
+        // console.log(res);
         this.setState({
           courses: res.data
         });
-        console.log(this.state.courses);
+        // console.log(this.state.courses);
       })
       .catch(err => console.log(err));
   }
@@ -129,6 +144,7 @@ class ShoppingCart extends Component {
         this.toggleLoadingModal();
       });
   }
+
 
   checkout = () => {
     this.toggleLoadingModal();
@@ -265,6 +281,7 @@ class ShoppingCart extends Component {
       .catch(err => console.log(err));
   }
 
+
   render() {
     // if left in still - take out this console log before production
     // console.log(this.state.tempRegistrations);
@@ -336,6 +353,7 @@ class ShoppingCart extends Component {
               <button className={`${this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
                 "chkoutDisabled" : ""}`} onClick={() => this.checkout()}>Confirm Reservation <i className="fas fa-check-circle"></i></button>
             </div>
+            total = {this.state.total}
           </div>
           <Footer />
 

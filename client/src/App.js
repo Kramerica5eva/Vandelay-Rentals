@@ -77,6 +77,7 @@ class App extends Component {
     loggedIn: false,
     username: null,
     firstName: null,
+    lastName: null,
     admin: false,
     dev: false,
     categories: null
@@ -123,6 +124,7 @@ class App extends Component {
               loggedIn: true,
               username: res.data.username,
               firstName: res.data.firstName,
+              lastName: res.data.lastName,
               admin: res.data.admin,
               dev: res.data.dev,
               categories: categories.data
@@ -341,6 +343,7 @@ class App extends Component {
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
               firstName: this.state.firstName,
+              lastName: this.state.lastName,
               admin: this.state.admin,
               dev: this.state.dev,
               logout: this.logout

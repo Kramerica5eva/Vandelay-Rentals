@@ -1,7 +1,7 @@
 /*  NavBar.css FILE */
 
-
 /* General navbar styling */
+
 .navbar {
     align-items: center;
     /* background-color: rgba(129, 129, 129, 0.75); */
@@ -44,7 +44,6 @@
 .logo-fmt {
     height: 45px;
     max-width: 80px;
-
 }
 
 .navbar .links a, .brand-logo a {
@@ -54,7 +53,7 @@
 }
 
 .navbar .links a:hover {
-    padding-bottom:2px;
+    padding-bottom: 2px;
     border-bottom: solid white 1px;
     transform: scale(1.1);
 }
@@ -176,4 +175,3 @@
         max-width: 115px;
     }
 }
-
