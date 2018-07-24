@@ -114,40 +114,41 @@ export class CoursesTable extends Component {
 
   //  Course delete modal
   courseDeleteModal = row => {
-    this.setModal({
-      body:
-        <Fragment>
-          <h4>Are you sure you want to delete {row.name}?</h4>
-          <p>(this is permenent - you cannot undo it, and you will lose all data)</p>
-        </Fragment>,
-      buttons:
-        <Fragment>
-          <button onClick={this.toggleModal}>Nevermind</button>
-          <button onClick={() => this.deleteCourse(row)}>Delete it</button>
-        </Fragment>
-    })
-  }
-
-  // Course delete function
-  deleteCourse = row => {
-    console.log(row);
     if (row._original.registrations.length > 0) {
       this.setModal({
         body: <h3>You must remove all class registrations first.</h3>,
         buttons: <button onClick={this.toggleModal}>OK</button>
       });
     } else {
-      this.toggleLoadingModal();
-      const { _id } = row._original
-      API.adminDeleteCourse(_id)
-        .then(res => {
-          console.log(res)
-          this.adminGetAllCourses();
-          this.toggleLoadingModal();
-          this.toggleModal();
-        })
-        .catch(err => console.log(err));
+      this.setModal({
+        body:
+          <Fragment>
+            <h4>Are you sure you want to delete {row.name}?</h4>
+            <p>(this is permenent - you cannot undo it and you will lose all data)</p>
+          </Fragment>,
+        buttons:
+          <Fragment>
+            <button onClick={this.toggleModal}>Nevermind</button>
+            <button onClick={() => this.deleteCourse(row)}>Delete it</button>
+          </Fragment>
+      })
     }
+  }
+
+  // Course delete function
+  deleteCourse = row => {
+    console.log(row);
+    this.toggleModal();
+    this.toggleLoadingModal();
+    const { _id } = row._original
+    API.adminDeleteCourse(_id)
+      .then(res => {
+        console.log(res)
+        this.adminGetAllCourses();
+        this.toggleLoadingModal();
+        this.toggleModal();
+      })
+      .catch(err => console.log(err));
   }
 
   noteModal = row => {

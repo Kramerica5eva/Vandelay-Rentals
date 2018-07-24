@@ -118,22 +118,29 @@ export class RentalsTable extends Component {
   };
 
   rentalDeleteModal = row => {
-    this.setModal({
-      body:
-        <Fragment>
-          <h3>Warning!</h3><br />
-          <h4>Are you sure you want to delete {row.name}?</h4>
-          <p>(this is permenent - you cannot undo it and you will lose all data)</p><br />
-          <h4>Would you rather retire the item and keep the data?</h4>
-          <p>(make sure you contact customers and change any existing reservations)</p><br />
-        </Fragment>,
-      buttons:
-        <Fragment>
-          <button onClick={this.toggleModal}>Nevermind</button>
-          <button onClick={() => this.retireRental(row)}>Retire it</button>
-          <button onClick={() => this.deleteRental(row)}>Delete it</button>
-        </Fragment>
-    });
+    if (row._original.reservations.length > 0) {
+      this.setModal({
+        body: <h3>You must remove all reservations for this item first.</h3>,
+        buttons: <button onClick={this.toggleModal}>OK</button>
+      })
+    } else {
+      this.setModal({
+        body:
+          <Fragment>
+            <h3>Warning!</h3><br />
+            <h4>Are you sure you want to delete {row.name}?</h4>
+            <p>(this is permenent - you cannot undo it and you will lose all data)</p><br />
+            <h4>Would you rather retire the item and keep the data?</h4>
+            <p>(make sure you contact customers and change any existing reservations)</p><br />
+          </Fragment>,
+        buttons:
+          <Fragment>
+            <button onClick={this.toggleModal}>Nevermind</button>
+            <button onClick={() => this.retireRental(row)}>Retire it</button>
+            <button onClick={() => this.deleteRental(row)}>Delete it</button>
+          </Fragment>
+      });
+    }
   };
 
   deleteRental = row => {
@@ -147,7 +154,7 @@ export class RentalsTable extends Component {
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
-          body: <h3>Database successfully updated</h3>,
+          body: <h3>Item has been successfully deleted</h3>,
           buttons: <button onClick={this.toggleModal}>OK</button>
         });
         //  query the db and reload the table
