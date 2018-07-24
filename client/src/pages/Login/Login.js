@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from "react";
 import { Redirect } from "react-router-dom";
-import Header from "../../components/Elements/Header";
-import DevLinks from "../../components/DevLinks";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import { LoginForm, SignupForm } from "../../components/AuthForms";
@@ -67,15 +65,6 @@ class Login extends Component {
             toggleForm={this.toggleForm}
             loginShow={this.state.loginShow}
           />
-          <Header>
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
-          </Header>
           <div id="login-forms-container">
             {this.state.loginShow ? (
               <Fragment>

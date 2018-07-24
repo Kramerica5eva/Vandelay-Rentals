@@ -30,6 +30,11 @@ module.exports = {
   // },
 
   create: function (req, res) {
+    const { dailyRate } = req.body;
+    if (dailyRate === "$") return res.send({ message: "$ only" })
+    const formatRate = dailyRate.split("").filter(char => /^[0-9.]+$/.test(char)).join("");
+    req.body.dailyRate = formatRate;
+    console.log(req.body.dailyRate);
     db.Rental
       .create(req.body)
       .then(dbModel => res.json(dbModel))

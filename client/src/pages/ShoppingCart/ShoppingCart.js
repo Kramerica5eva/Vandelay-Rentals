@@ -4,7 +4,6 @@ import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
-import DevLinks from "../../components/DevLinks";
 import "./ShoppingCart.css";
 import dateFns from "date-fns"
 import { Link } from 'react-router-dom';
@@ -295,14 +294,6 @@ class ShoppingCart extends Component {
               <h2>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</h2>
               <h3>You're almost done!</h3>
             </div>
-
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
 
             <div className="cart-page-container">
               <div className="cart-items">

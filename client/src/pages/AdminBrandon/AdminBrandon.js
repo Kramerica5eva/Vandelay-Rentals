@@ -4,7 +4,6 @@ import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
-import DevLinks from "../../components/DevLinks";
 import { BrandonTestTable, RentalsTable, CoursesTable, SalesTable, UsersTable, TestTable } from "../../components/AdminTables";
 
 class Admin extends Component {
@@ -162,13 +161,6 @@ class Admin extends Component {
         />
         <Header>
           <h1>Vandelay Admin Page</h1>
-          <DevLinks
-            loggedIn={this.props.loggedIn}
-            admin={this.props.admin}
-            dev={this.props.dev}
-            logout={this.props.logout}
-            location={this.props.location}
-          />
         </Header>
         <div>
 

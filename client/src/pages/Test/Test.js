@@ -5,7 +5,6 @@ import LoadingModal from "../../components/Elements/LoadingModal";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import ParallaxHero from "../../components/ParallaxHero"
-import DevLinks from "../../components/DevLinks";
 import RentalCard from "../../components/Cards/RentalCard";
 import "./Test.css";
 import { CategoryCard } from "../../components/Cards/CategoryCard/CategoryCard";
@@ -188,13 +187,6 @@ class Test extends Component {
 
           <div className='body-container'>
             <h1>Keith's Admin Test Page</h1>
-            <DevLinks
-              loggedIn={this.props.loggedIn}
-              admin={this.props.admin}
-              dev={this.props.dev}
-              logout={this.props.logout}
-              location={this.props.location}
-            />
 
             <div className="category-btn-container">
               {this.state.categories ? this.state.categories.map(category => (

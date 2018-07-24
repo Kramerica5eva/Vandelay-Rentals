@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import Header from '../../components/Elements/Header';
 import Modal from '../../components/Elements/Modal';
 import ParallaxHero from '../../components/ParallaxHero';
 import LoadingModal from '../../components/Elements/LoadingModal';
@@ -7,12 +6,10 @@ import NavBar from '../../components/Elements/NavBar';
 import { Link } from 'react-router-dom';
 import Footer from '../../components/Elements/Footer';
 import RentalCard from './../../components/Cards/RentalCard';
-import DevLinks from '../../components/DevLinks';
 import API from '../../utils/API';
 import Calendar from '../../components/Calendar';
 import dateFns from 'date-fns';
 import './Rentals.css';
-// import "./../../App.css";
 
 class Rentals extends Component {
 
@@ -294,15 +291,6 @@ class Rentals extends Component {
 					</div>
 
 					<div className="body-container rentals">
-						<Header>
-							<DevLinks
-								loggedIn={this.props.loggedIn}
-								admin={this.props.admin}
-								dev={this.props.dev}
-								logout={this.props.logout}
-								location={this.props.location}
-							/>
-						</Header>
 
 						<h2>Rentals Available:</h2>
 						<div className="rental-card-container">

@@ -71,11 +71,11 @@ body {
     /* background: #00d2ff;  fallback for old browsers */
     /* background: -webkit-linear-gradient(to bottom, #3a7bd5, #00d2ff);  Chrome 10-25, Safari 5.1-6 */
     /* background: linear-gradient(to bottom, #3a7bd5, #00d2ff); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: #74ebd5;
+    /* background: #74ebd5; */
     /* fallback for old browsers */
-    background: -webkit-linear-gradient(to bottom, #ACB6E5, #74ebd5);
+    /* background: -webkit-linear-gradient(to bottom, #ACB6E5, #74ebd5); */
     /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to bottom, #ACB6E5, #74ebd5);
+    /* background: linear-gradient(to bottom, #ACB6E5, #74ebd5); */
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     font-family: var(--font-Montserrat);
     text-shadow: 1px 1px 3px rgba(150, 150, 150, 1);
@@ -87,10 +87,6 @@ body {
 body h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-Raleway);
     font-weight: 300;
-}
-
-body:not(ParallaxHero) {
-    background-color: var(--page-color-whitecap);
 }
 
 /* END GENERAL SITE CSS */
