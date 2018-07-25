@@ -360,13 +360,11 @@ class ShoppingCart extends Component {
               this.setModal({
                 body:
                   <Fragment>
-                    <h3>Oh no!!</h3>
-                    <br />
-                    <h4>Someone beat you to the punch and reserved the following {noGood.length === 1 ? "item" : "items"} before you did... </h4><h1>🤯</h1>
+                    <h4>It looks like someone beat you to the punch on the following: </h4><h1>🤯</h1>
                     {noGood.map(thing =>
                       <h3 key={thing.name}>{thing.name}</h3>
                     )}
-                    <h5>Would you like to remove {noGood.length === 1 ? "it" : "them"} and continue to checkout, or go back and select another date for your reservation?</h5>
+                    <h5>Would you like to remove {noGood.length === 1 ? "it" : "them"} and continue to checkout, or go back and select another selection?</h5>
                   </Fragment>,
                 buttons:
                   <Fragment>
@@ -376,14 +374,14 @@ class ShoppingCart extends Component {
                         to={{ pathname: '/rentals' }}
                         role="button"
                       >
-                        Select new date
+                        Rentals
               </Link> &&
                       <Link
                         className="modal-btn-link"
                         to={{ pathname: '/courses' }}
                         role="button"
                       >
-                        Select new course
+                        Courses
               </Link>
                       : types.includes("course")
                         ? <Link
@@ -391,7 +389,7 @@ class ShoppingCart extends Component {
                           to={{ pathname: '/courses' }}
                           role="button"
                         >
-                          Select new course
+                          Courses
               </Link>
                         : types.includes("rental")
                           ? <Link
@@ -399,7 +397,7 @@ class ShoppingCart extends Component {
                             to={{ pathname: '/rental' }}
                             role="button"
                           >
-                            Select new dates
+                            Rentals
               </Link>
                           : null
                     }

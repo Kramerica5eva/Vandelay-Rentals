@@ -1,24 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { CardNumberElement, CardExpiryElement, CardCVCElement, injectStripe } from 'react-stripe-elements';
+import { CardNumberElement, CardExpiryElement, CardCVCElement, PostalCodeElement, injectStripe } from 'react-stripe-elements';
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
-import LoadingModal from "../../components/Elements/LoadingModal";
 import { Link } from 'react-router-dom';
 import './CheckoutForm.css';
-
-// const {
-//   CardElement,
-//   CardNumberElement,
-//   CardExpiryElement,
-//   CardCVCElement,
-//   PostalCodeElement,
-//   PaymentRequestButtonElement,
-//   IbanElement,
-//   IdealBankElement,
-//   StripeProvider,
-//   Elements,
-//   injectStripe,
-// } = ReactStripeElements;
 
 class CheckoutForm extends Component {
   constructor(props) {
@@ -235,7 +220,7 @@ class CheckoutForm extends Component {
   // }
 
   async submit(ev) {
-    let { token } = await this.props.stripe.createToken({ name: "Name" });
+    let { token } = await this.props.stripe.createToken({ name: ev.target.name.value });
     let charge = { token: token.id, chrgAmt: this.props.total };
     console.log(charge);
     // let charge = { test: "test" };
@@ -280,33 +265,50 @@ class CheckoutForm extends Component {
       .catch(err => console.log(err));
   }
 
-  // this.state.tempRegistrations.forEach(reg => {
-  //   total = parseFloat(total) + parseFloat(reg.price.$numberDecimal).toFixed(2);
-  // });
-  // this.state.tempReservations.forEach(res => {
-  //   total = parseFloat(total) + parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2));
-  // });
-
   render() {
     if (this.state.complete) return <h1>Purchase Complete</h1>;
 
     return (
-      <div className="checkout">
+      <div>
         <Modal
           show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
-        <p>Would you like to complete the purchase?</p>
+        <div className="checkout">
+          <p>Would you like to complete the purchase?</p>
+          <form action="">
+            {/* <label> */}
+            <div>
+              <span className="test">Name</span>
+              <input name="name" className="test" type="text" placeholder="Jane Doe" />
+            </div>
+            {/* </label> */}
+            {/* <label> */}
+            Card Number
         <CardNumberElement
-          className="input numberInput"
-        />
+              className="input numberInput"
+            />
+            {/* </label> */}
+            {/* <label> */}
+            Expiration date
         <CardExpiryElement className="expInput input"
-        />
+            />
+            {/* </label> */}
+            {/* <label> */}
+            CVC
         <CardCVCElement className="cvcInput input"
-        />
-        <button className="chkbtn" onClick={this.checkout}>Send</button>
+            />
+            {/* </label> */}
+            {/* <label> */}
+            Zip code
+          <PostalCodeElement className="postalInput input"
+            />
+            {/* </label> */}
+            <button className="chkbtn" onClick={this.checkout}>Pay {this.props.total > 0 ? "$" + this.props.total : null}</button>
+          </form>
+        </div>
       </div>
     );
   }
