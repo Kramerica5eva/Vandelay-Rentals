@@ -109,6 +109,7 @@ export class CoursesTable extends Component {
             r.openSlots = r.slots;
           }
         });
+        console.log(res.data);
         this.setState({
           courses: res.data
         });
@@ -286,12 +287,24 @@ export class CoursesTable extends Component {
 
   //  Update selected Row - sends current field info to db and updates that item
   updateRow = row => {
-    this.toggleLoadingModal()
     const { name, pricePer, level, date, slots, _id } = row._original;
 
     let unixDate;
     if (typeof date === "string") unixDate = dateFns.format(date, "X");
     else unixDate = dateFns.format(date * 1000, "X");
+
+    if (date.length < 6 || unixDate === "Invalid Date") {
+      return this.setModal({
+        body:
+          <Fragment>
+            <h4>Please enter a valid date format</h4>
+            <p>(e.g. '01/25/2016' or 'Dec 14 2012')</p>
+          </Fragment>,
+        buttons: <button onClick={this.closeModal}>OK</button>
+      })
+    }
+    //  wait until here to trigger the loading modal - after the date has been validated - otherwise, the loadingmodal must be closed again inside the "if (dateAcquired.length...)" block, and the timing is such that the loading modal just ends up staying open.
+    this.toggleLoadingModal();
 
     // if pricePer exists (it should, but to avoid an error, checking first...) and it hasn't been changed, it will be a number type because the formatting occurs in the renderEditablePrice function (the actual value remains a number type until it is changed) and so the .split method doesn't exist (that's a string method)
     let newPrice;

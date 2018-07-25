@@ -1,163 +1,562 @@
 import React, { Component, Fragment } from "react";
-import ReactTable from "react-table";
-import LoadingModal from "../../components/Elements/LoadingModal";
+import { Input } from "../Elements/Form";
 import API from "../../utils/API";
+import Modal from "../../components/Elements/Modal";
+import LoadingModal from "../../components/Elements/LoadingModal";
+import ReactTable from "react-table";
+import { RegistrationsTable } from "./RegistrationsTable";
 import "react-table/react-table.css";
 import "./AdminTables.css";
+import dateFns from "date-fns";
 
 export class TestTable extends Component {
   state = {
-    fromUsers: this.props.fromUsers,
-    runUnmount: false,
-    registrations: this.props.registrations,
-    loadingModalOpen: false
+    modal: {
+      isOpen: false,
+      body: "",
+      buttons: ""
+    },
+    courses: [],
+    level: "",
+    note: '',
+    topics: '',
+    summary: '',
+    description: ''
   };
 
-  componentWillUnmount = () => {
-    // the cancelRegistration method deletes the registration from the database, and it also filters the deleted data from this.props.registrations and then sets state. But without querying the database, when the component reloads this.state.registrations would still contain the ones that were deleted. So, if there has been a change (props.registrations.length is > state.registrations.length), the adminGetAllUsers() method is called on the parent component.
-    if (this.state.runUnmount) {
-      console.log("Registrations Unmount Running!");
-      if (this.state.fromUsers) {
-        this.props.adminGetAllUsers();
-      } else {
-        this.props.adminGetAllCourses();
-      }
-    }
+  componentDidMount() {
+    this.adminGetAllCourses();
+  };
+
+  // Standard input change controller
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  // MODAL TOGGLE FUNCTIONS
+  closeModal = () => {
+    this.setState({
+      modal: { isOpen: false }
+    });
   }
 
-  //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoing
+  closeModal = () => {
+    this.setState({ modal: { isOpen: false } });
+  }
+
+  setModal = (modalInput) => {
+    this.setState({
+      modal: {
+        isOpen: true,
+        body: modalInput.body,
+        buttons: modalInput.buttons
+      }
+    });
+  }
+  // END MODAL TOGGLE FUNCTIONS
+
+  //  Toggles a non-dismissable loading modal to prevent clicks while database ops are ongoign
   toggleLoadingModal = () => {
     this.setState({
       loadingModalOpen: !this.state.loadingModalOpen
     });
   }
 
-  //  Cancel function works - Deletes registration and removes the reference from User and Course
-  cancelRegistration = row => {
-    this.toggleLoadingModal();
-    const { _id } = row._original;
+  noteModal = row => {
+    const { _id, note } = row._original;
     console.log(row);
-
-    API.removeCourseRegistration(_id, row)
-      .then(res => {
-        this.toggleLoadingModal();
-        console.log(res);
-        //  filter the row from the registrations array in state and then setState to the filtered data.
-        const newRegistrations = this.state.registrations.filter(reg => (reg._id !== _id));
-        //  empty selection and selectedRow so the buttons revert to disabled
-        this.setState({
-          registrations: newRegistrations,
-          runUnmount: true
-        })
-      })
-      .catch(err => console.log(err));
+    this.setModal({
+      body:
+        <Fragment>
+          <textarea name="note" onChange={this.handleInputChange} rows="10" cols="80" defaultValue={note}></textarea>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={() => this.submitNote(_id)}>Submit</button>
+          <button onClick={this.closeModal}>Nevermind</button>
+        </Fragment>
+    })
   }
 
-  //  If registration is paid: false, flips it to true, and vice-versa
-  toggleRegistrationPaid = row => {
+  submitNote = id => {
+    this.closeModal();
     this.toggleLoadingModal();
-    const { _id, paid } = row._original;
-    API.adminUpdateRegistration(_id, { paid: !paid })
-      .then(res => {
-        this.toggleLoadingModal();
-        console.log(res)
-        this.state.registrations.forEach(reg => {
-          if (reg._id === _id) {
-            reg.paid = !paid
-          }
-          this.setState({
-            runUnmount: true
-          })
-        })
-
+    API.adminUpdateCourse(id, { note: this.state.note })
+      .then(response => {
+        console.log(response);
+        setTimeout(this.toggleLoadingModal, 500);
+        this.state.courses.forEach(pr => {
+          if (pr._id === id) pr.note = this.state.note;
+          this.setState({ runUnmount: true })
+        });
       })
       .catch(err => console.log(err));
   }
 
-  render() {
-    console.log(this.state.registrations);
+  //  Get all courses from the database and set state so the table will display
+  adminGetAllCourses = () => {
+    API.adminGetAllCourses()
+      .then(res => {
+        res.data.forEach(r => {
+          r.pricePer = parseFloat(r.price.$numberDecimal);
+          // r.date = dateFns.format(r.date * 1000, "MMM Do YYYY");
+          if (r.registrations.length) {
+            r.openSlots = r.slots - r.registrations.length;
+          } else {
+            r.openSlots = r.slots;
+          }
+        });
+        this.setState({
+          courses: res.data
+        });
+      })
+      .catch(err => console.log(err));
+  };
 
-    if (this.state.registrations.length > 0) {
-      this.state.registrations.forEach(registration => {
-        if (registration.paid) {
-          registration.hasPaid = "True";
-        } else {
-          registration.hasPaid = "False";
-        }
-        registration.amtDue = "$" + parseFloat(registration.price.$numberDecimal).toFixed(2);
+  //  Course delete modal
+  courseDeleteModal = row => {
+    if (row._original.registrations.length > 0) {
+      this.setModal({
+        body: <h3>You must remove all class registrations first.</h3>,
+        buttons: <button onClick={this.closeModal}>OK</button>
+      });
+    } else {
+      this.setModal({
+        body:
+          <Fragment>
+            <h4>Are you sure you want to delete {row.name}?</h4>
+            <p>(this is permenent - you cannot undo it and you will lose all data)</p>
+          </Fragment>,
+        buttons:
+          <Fragment>
+            <button onClick={this.closeModal}>Nevermind</button>
+            <button onClick={() => this.deleteCourse(row)}>Delete it</button>
+          </Fragment>
       })
     }
+  }
+
+  // Course delete function
+  deleteCourse = row => {
+    console.log(row);
+    this.closeModal();
+    this.toggleLoadingModal();
+    const { _id } = row._original
+    API.adminDeleteCourse(_id)
+      .then(res => {
+        console.log(res)
+        this.adminGetAllCourses();
+        this.toggleLoadingModal();
+        this.closeModal();
+      })
+      .catch(err => console.log(err));
+  }
+
+  noteModal = row => {
+    const { _id, note } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Update Note</h3>
+          <textarea name="note" onChange={this.handleInputChange} rows="10" defaultValue={note}></textarea>
+        </Fragment>,
+      buttons: <button onClick={() => this.submitNote(_id)}>Submit</button>
+    })
+  }
+
+  submitNote = id => {
+    this.closeModal();
+    this.toggleLoadingModal();
+    API.adminUpdateCourse(id, { note: this.state.note })
+      .then(response => {
+        console.log(response);
+        //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+        setTimeout(this.toggleLoadingModal, 500);
+        // success modal after the loading modal is gone.
+        setTimeout(this.setModal, 500, {
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.closeModal}>OK</button>
+        });
+        //  query the db and reload the table
+        this.adminGetAllCourses();
+      })
+      .catch(err => console.log(err));
+  }
+
+  topicsModal = row => {
+    const { _id, topics } = row._original;
+    const topicsString = topics.join(", ");
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Course Topics</h3>
+          <textarea name="topics" onChange={this.handleInputChange} rows="4" defaultValue={topicsString}></textarea>
+        </Fragment>,
+      buttons: <button onClick={() => this.submitTopics(_id)}>Submit</button>
+    })
+  }
+
+  submitTopics = id => {
+    this.closeModal();
+    this.toggleLoadingModal();
+    const topicsArray = this.state.topics.split(", ");
+    API.adminUpdateCourse(id, { topics: topicsArray })
+      .then(response => {
+        console.log(response);
+        //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+        setTimeout(this.toggleLoadingModal, 500);
+        // success modal after the loading modal is gone.
+        setTimeout(this.setModal, 500, {
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.closeModal}>OK</button>
+        });
+        //  query the db and reload the table
+        this.adminGetAllCourses();
+      })
+      .catch(err => console.log(err));
+  }
+
+  summaryModal = row => {
+    const { _id, summary } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Course Summary</h3>
+          <textarea name="summary" onChange={this.handleInputChange} rows="2" defaultValue={summary}></textarea>
+        </Fragment>,
+      buttons: <button onClick={() => this.submitSummary(_id, this.state.summary)}>Submit</button>
+    });
+  }
+
+  submitSummary = id => {
+    this.closeModal();
+    this.toggleLoadingModal();
+    API.adminUpdateCourse(id, { summary: this.state.summary })
+      .then(response => {
+        console.log(response);
+        //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+        setTimeout(this.toggleLoadingModal, 500);
+        // success modal after the loading modal is gone.
+        setTimeout(this.setModal, 500, {
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.closeModal}>OK</button>
+        });
+        //  query the db and reload the table
+        this.adminGetAllCourses();
+      })
+      .catch(err => console.log(err));
+  }
+
+  descriptionModal = row => {
+    const { _id, description } = row._original;
+    console.log(row);
+    this.setModal({
+      body:
+        <Fragment>
+          <h3>Course Description</h3>
+          <textarea name="description" onChange={this.handleInputChange} rows="10" defaultValue={description}></textarea>
+        </Fragment>,
+      buttons: <button onClick={() => this.submitDescription(_id, this.state.description)}>Submit</button>
+    });
+  }
+
+  submitDescription = id => {
+    this.closeModal();
+    this.toggleLoadingModal();
+    API.adminUpdateCourse(id, { description: this.state.description })
+      .then(response => {
+        console.log(response);
+        //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+        setTimeout(this.toggleLoadingModal, 500);
+        // success modal after the loading modal is gone.
+        setTimeout(this.setModal, 500, {
+          body: <h3>Database successfully updated</h3>,
+          buttons: <button onClick={this.closeModal}>OK</button>
+        });
+        //  query the db and reload the table
+        this.adminGetAllCourses();
+      })
+      .catch(err => console.log(err));
+  }
+
+  //  Update selected Row - sends current field info to db and updates that item
+  updateRow = row => {
+    this.toggleLoadingModal()
+    const { name, pricePer, level, date, slots, _id } = row._original;
+
+    let unixDate;
+    if (typeof date === "string") unixDate = dateFns.format(date, "X");
+    else unixDate = dateFns.format(date * 1000, "X");
+
+    // if pricePer exists (it should, but to avoid an error, checking first...) and it hasn't been changed, it will be a number type because the formatting occurs in the renderEditablePrice function (the actual value remains a number type until it is changed) and so the .split method doesn't exist (that's a string method)
+    let newPrice;
+    if (pricePer) {
+      if (typeof pricePer === "string") newPrice = pricePer.split("").filter(x => x !== "$").join("");
+      else newPrice = pricePer;
+    }
+
+    let newLevel;
+    if (this.state.level) newLevel = this.state.level;
+    else newLevel = level;
+
+    const updateObject = {
+      name: name,
+      date: unixDate,
+      level: newLevel,
+      price: newPrice,
+      slots: slots
+    };
+
+    API.adminUpdateCourse(_id, updateObject)
+      .then(response => {
+        if (response.status === 200) {
+          //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
+          setTimeout(this.toggleLoadingModal, 500);
+          // success modal after the loading modal is gone.
+          setTimeout(this.setModal, 500, {
+            body: <h3>Database successfully updated</h3>,
+            buttons: <button onClick={this.closeModal}>OK</button>
+          });
+          //  query the db and reload the table
+          this.adminGetAllCourses();
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
+  // editable react table function
+  renderEditablePrice = cellInfo => {
+    return (
+      <div
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          const courses = [...this.state.courses];
+          courses[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ courses: courses });
+        }}
+        dangerouslySetInnerHTML={{
+          __html: (
+            //  When you enter a new price that includes anything other than digits (e.g. a dollar sign)
+            //  It renders as 'NaN', which shows in the cell for just a second before the change
+            //  So, if the cell includes 'NaN', just render what's already in the cell
+            //  Otherwise, display the formatted price.
+            `$${parseFloat(this.state.courses[cellInfo.index][cellInfo.column.id]).toFixed(2)}`.includes('NaN')
+              ?
+              this.state.courses[cellInfo.index][cellInfo.column.id]
+              :
+              `$${parseFloat(this.state.courses[cellInfo.index][cellInfo.column.id]).toFixed(2)}`
+          )
+        }}
+      />
+    );
+  };
+
+  // editable react table for the date - allows for date formatting within the cell
+  renderEditableDate = cellInfo => {
+    return (
+      <div
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          const courses = [...this.state.courses];
+          courses[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ courses: courses });
+        }}
+        dangerouslySetInnerHTML={{
+          //  When you enter a new date that's not in unix time, the below format renders it as "Invalid Date"
+          //  As a result, in the split second before the database updates, the field says "Invalid Date"
+          //  So, if invalid date, just display what's being typed in. Otherwise, display the formatted version.
+          __html: (
+            dateFns.format(this.state.courses[cellInfo.index][cellInfo.column.id] * 1000, 'MMM Do YYYY') === "Invalid Date"
+              ?
+              this.state.courses[cellInfo.index][cellInfo.column.id]
+              :
+              dateFns.format(this.state.courses[cellInfo.index][cellInfo.column.id] * 1000, 'MMM Do YYYY'))
+        }}
+      />
+    );
+  };
+
+  // editable react table function
+  renderEditable = cellInfo => {
+    return (
+      <div
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          const courses = [...this.state.courses];
+          courses[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ courses: courses });
+        }}
+        dangerouslySetInnerHTML={{
+          __html: this.state.courses[cellInfo.index][cellInfo.column.id]
+        }}
+      />
+    );
+  };
+
+  render() {
 
     return (
-
       <Fragment>
-        <LoadingModal show={this.state.loadingModalOpen} />
-
-        <h3>Class Registrations for {this.props.forName}</h3>
-        
-        <ReactTable
-          data={this.state.registrations}
-          columns={[
-            {
-              Header: 'Actions',
-              columns: [
-                {
-                  Header: 'Item',
-                  id: 'item',
-                  width: 80,
-                  Cell: row => {
-                    return (
-                      <div className="table-icon-div">
-                        <div className="fa-trash-alt-div table-icon-inner-div">
-                          <i onClick={() => this.cancelRegistration(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
-                          <span className="fa-trash-alt-tooltip table-tooltip">cancel registration</span>
-                        </div>
-                        <div className="fa-dollar-sign-div table-icon-inner-div">
-                          <i onClick={() => this.toggleRegistrationPaid(row.row)} className="table-icon fas fa-dollar-sign fa-lg"></i>
-                          <span className="fa-dollar-sign-tooltip table-tooltip">record payment</span>
-                        </div>
-                      </div>
-                    )
-                  }
-                }
-              ]
-            },
-            {
-              Header: "Customer",
-              columns: [
-                {
-                  Header: "First Name",
-                  accessor: "firstName"
-                },
-                {
-                  Header: "Last Name",
-                  accessor: "lastName"
-                }
-              ]
-            },
-            {
-              Header: "Registration Data",
-              columns: [
-                {
-                  Header: "Class Name",
-                  accessor: "courseName"
-                },
-                {
-                  Header: "Paid",
-                  accessor: "hasPaid"
-                },
-                {
-                  Header: "Amt Due",
-                  accessor: "amtDue"
-                }
-              ]
-            },
-          ]}
-          defaultPageSize={5}
-          className="-striped -highlight sub-table"
+        <Modal
+          show={this.state.modal.isOpen}
+          closeModal={this.closeModal}
+          body={this.state.modal.body}
+          buttons={this.state.modal.buttons}
         />
+        <LoadingModal show={this.state.loadingModalOpen} />
+        <div className="main-table-container courses-table">
 
+          <div className="table-title-div">
+            <h2>Test Courses Table <button onClick={this.props.toggleCourses}>Hide Table</button></h2>
+          </div>
+
+          <ReactTable
+            data={this.state.courses}
+            filterable
+            SubComponent={row => {
+              //  thisReservation grabs the reservations from this.state.courses that matches the row index - it grabs the registrations for this course.
+              const thisRow = this.state.courses[row.row._index];
+              return (
+                <div className="sub-table-container">
+                  {thisRow.registrations.length > 0 ? (
+                    <RegistrationsTable
+                      forName={thisRow.name}
+                      filterable
+                      fromUsers={false}
+                      registrations={thisRow.registrations}
+                      adminGetAllCourses={this.adminGetAllCourses}
+                    />
+                  ) : null}
+                </div>
+              )
+            }}
+            columns={[
+              {
+                Header: 'Actions',
+                columns: [
+                  {
+                    Header: 'Item',
+                    id: 'item',
+                    width: 110,
+                    Cell: row => {
+                      return (
+                        <div className="table-icon-div">
+                          <div className="fa-sync-div table-icon-inner-div">
+                            <i onClick={() => this.updateRow(row.row)} className="table-icon fas fa-sync fa-lg"></i>
+                            <span className="fa-sync-tooltip table-tooltip">upload changes</span>
+                          </div>
+                          <div className="fa-trash-alt-div table-icon-inner-div">
+                            <i onClick={() => this.courseDeleteModal(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
+                            <span className="fa-trash-alt-tooltip table-tooltip">delete course</span>
+                          </div>
+                          <div className="fa-sticky-note-div table-icon-inner-div">
+                            <i onClick={() => this.noteModal(row.row)} className="table-icon far fa-sticky-note fa-lg"></i>
+                            <span className="fa-sticky-note-tooltip table-tooltip">see/edit notes</span>
+                          </div>
+                        </div>
+                      )
+                    }
+                  }
+                ]
+              },
+              {
+                Header: 'Course Details',
+                columns: [
+                  {
+                    Header: "More Info",
+                    accessor: "",
+                    width: 140,
+                    Cell: row => {
+                      return (
+                        <div className="table-icon-div">
+                          <div className="fa-list-ul-div table-icon-inner-div">
+                            <i onClick={() => this.topicsModal(row.row)} className="table-icon fas fa-list-ul fa-lg"></i>
+                            <span className="fa-list-ul-tooltip table-tooltip">see/edit topics</span>
+                          </div>
+                          <div className="fa-comment-alt-div table-icon-inner-div">
+                            <i onClick={() => this.summaryModal(row.row)} className="table-icon far fa-comment-alt fa-lg"></i>
+                            <span className="fa-comment-alt-tooltip table-tooltip">see/edit summary</span>
+                          </div>
+                          <div className="fa-book-open-div table-icon-inner-div">
+                            <i onClick={() => this.descriptionModal(row.row)} className="table-icon fas fa-book-open fa-lg"></i>
+                            <span className="fa-book-open-tooltip table-tooltip">see/edit description</span>
+                          </div>
+                        </div>
+
+                      )
+                    }
+                  }
+                ]
+              },
+              {
+                Header: 'Course Info',
+                columns: [
+                  {
+                    Header: "Name",
+                    accessor: "name",
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Date",
+                    accessor: "date",
+                    Cell: this.renderEditableDate
+                  },
+                  {
+                    Header: "Difficulty",
+                    accessor: "level",
+                    Cell: row => {
+                      return (
+                        <Fragment>
+                          <form>
+                            <div className="table-select">
+                              <select
+                                name="level"
+                                onChange={this.handleInputChange}
+                              >
+                                <option>{row.row.level}</option>
+                                {row.row.level !== "Advanced" ? <option>Advanced</option> : null}
+                                {row.row.level !== "Intermediate" ? <option>Intermediate</option> : null}
+                                {row.row.level !== "Beginner" ? <option>Beginner</option> : null}
+                              </select>
+                            </div>
+                          </form>
+                        </Fragment>
+                      )
+                    }
+                  },
+                  {
+                    Header: "Price",
+                    accessor: "pricePer",
+                    width: 80,
+                    Cell: this.renderEditablePrice
+                  },
+                  {
+                    Header: "Slots",
+                    accessor: "slots",
+                    width: 70,
+                    Cell: this.renderEditable
+                  },
+                  {
+                    Header: "Open",
+                    accessor: "openSlots",
+                    width: 70
+                  }
+                ]
+              }
+            ]}
+            defaultPageSize={10}
+            className="-striped -highlight"
+          />
+        </div>
       </Fragment>
-    )
+    );
   }
 }

@@ -70,10 +70,7 @@ export class SalesTable extends Component {
         res.data.map(r => {
           if (r.cost) r.parsedCost = parseFloat(r.cost.$numberDecimal);
           if (r.price) r.parsedPrice = parseFloat(r.price.$numberDecimal);
-          if (r.finalSale && r.finalSale !== 'n/a') {
-            const sale = parseFloat(r.finalSale.$numberDecimal) || null;
-            r.parsedSale = sale;
-          }
+          if (r.finalSale ) r.parsedSale = parseFloat(r.finalSale.$numberDecimal);
           return r;
         });
         this.setState({
@@ -152,13 +149,26 @@ export class SalesTable extends Component {
 
   //  Update selected Row - sends current field info to db and updates that item
   updateRow = row => {
-    this.toggleLoadingModal();
+    console.log(row);
     //  extract variables from the row object
-    const { category, condition, dateAcquired, maker, name, parsedCost, parsedPrice, saleType, sku, status, _id } = row._original;
+    const { category, condition, dateAcquired, maker, name, parsedCost, parsedPrice, parsedSale, saleType, sku, status, _id } = row._original;
 
     let unixDate;
     if (typeof dateAcquired === "string") unixDate = dateFns.format(dateAcquired, "X");
     else unixDate = dateFns.format(dateAcquired * 1000, "X");
+
+    if (dateAcquired.length < 6 || unixDate === "Invalid Date") {
+      return this.setModal({
+        body:
+          <Fragment>
+            <h4>Please enter a valid date format</h4>
+            <p>(e.g. '01/25/2016' or 'Dec 14 2012')</p>
+          </Fragment>,
+        buttons: <button onClick={this.closeModal}>OK</button>
+      })
+    }
+    //  wait until here to trigger the loading modal - after the date has been validated - otherwise, the loadingmodal must be closed again inside the "if (dateAcquired.length...)" block, and the timing is such that the loading modal just ends up staying open.
+    this.toggleLoadingModal();
 
     // if parsedCost or parsedPrice exist (they should, but to avoid an error, checking first...) and they haven't been changed, they will be typed as numbers because the formatting occurs in the renderEditableRate function (the actual values remain number typed until they are changed) and so the .split method won't exist for them (that's a string method), causing an 'is not a function' error
     let newCost;
@@ -171,6 +181,12 @@ export class SalesTable extends Component {
     if (parsedPrice) {
       if (typeof parsedPrice === "string") newPrice = parseFloat(parsedPrice.split("").filter(x => x !== "$").join(""));
       else newPrice = parsedPrice;
+    }
+
+    let newSale;
+    if (parsedSale) {
+      if (typeof parsedSale === "string") newSale = parseFloat(parsedSale.split("").filter(x => x !== "$").join(""));
+      else newSale = parsedSale;
     }
 
     let newCategory;
@@ -194,6 +210,7 @@ export class SalesTable extends Component {
       condition: newCondition,
       cost: newCost,
       dateAcquired: unixDate,
+      finalSale: newSale,
       maker: maker,
       name: name,
       price: newPrice,

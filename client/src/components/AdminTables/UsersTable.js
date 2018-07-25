@@ -74,9 +74,6 @@ export class UsersTable extends Component {
   };
 
   changePwModal = row => {
-    this.setState({
-      row: row._original
-    })
     this.setModal({
       body:
         <Fragment>
@@ -88,11 +85,12 @@ export class UsersTable extends Component {
             label="Password:"
           />
         </Fragment>,
-      buttons: <button onClick={this.handlePasswordFormSubmit}>Submit</button>
+      buttons: <button onClick={() => this.handlePasswordFormSubmit(row)}>Submit</button>
     })
   }
 
   handlePasswordFormSubmit = row => {
+    this.closeModal();
     this.toggleLoadingModal();
     const { _id } = row._original;
     API.adminUpdateUser(_id, { password: this.state.password })
@@ -515,7 +513,7 @@ export class UsersTable extends Component {
                   {
                     Header: "Phone",
                     accessor: "phone",
-                    Cell: this.renderEditable
+                    Cell: this.renderEditablePhone
                   }
                 ]
               }

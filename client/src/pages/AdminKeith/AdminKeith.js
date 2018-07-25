@@ -200,6 +200,7 @@ class Admin extends Component {
           {this.state.test ? (
             <TestTable
               updateUser={this.props.updateUser}
+              registrations="narf"
               toggleTest={this.toggleTest}
               categories={this.props.categories}
             />
