@@ -303,12 +303,12 @@ class ShoppingCart extends Component {
     this.toggleLoadingModal();
     let checkArray = [];
     let promiseArray = [];
-    console.log("Start temp reservations")
-    console.log(this.state.tempReservations)
-    console.log("end temp reservatios")
-    console.log("Start temp registrations")
-    console.log(this.state.tempRegistrations)
-    console.log("end temp registrations")
+    // console.log("Start temp reservations")
+    // console.log(this.state.tempReservations)
+    // console.log("end temp reservatios")
+    // console.log("Start temp registrations")
+    // console.log(this.state.tempRegistrations)
+    // console.log("end temp registrations")
     this.state.tempReservations.forEach(res => {
       const checkQuery = API.finalCheck(res);
       // const resQuery = API.reserveRental(res);
@@ -352,15 +352,16 @@ class ShoppingCart extends Component {
           });
           Promise.all(noGood)
             .then(() => {
-              console.log("start state tempreservations")
-              console.log(this.state.tempRegistrations)
-              console.log(this.state.tempReservations)
-              console.log("end state tempreservations")
+              // console.log("start state tempreservations")
+              // console.log(this.state.tempRegistrations)
+              // console.log(this.state.tempReservations)
+              // console.log("end state tempreservations")
               this.toggleLoadingModal();
               this.setModal({
                 body:
                   <Fragment>
-                    <h4>It looks like someone beat you to the punch on the following: </h4><h1>🤯</h1>
+                    <h1>🤯</h1>
+                    <h4>It looks like someone beat you to the punch on the following: </h4>
                     {noGood.map(thing =>
                       <h3 key={thing.name}>{thing.name}</h3>
                     )}
@@ -426,6 +427,9 @@ class ShoppingCart extends Component {
             .then(() => {
               this.getUserShoppingCart();
               this.toggleLoadingModal();
+              // this.setState({
+              //   complete: true
+              // });
             });
         }
       })
@@ -461,27 +465,27 @@ class ShoppingCart extends Component {
               <h2>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</h2>
               <h3>You're almost done!</h3>
             </div>
-
-            <div className="payment-container">
-              <StripeProvider apiKey="pk_test_RwSP4QeJgsTpThoHAR7VRKmR">
-                <Elements>
-                  <CheckoutForm
-                    btn={() => this.checkout()}
-                    firstName={this.props.firstName}
-                    getUserShoppingCart={() => this.getUserShoppingCart()}
-                    lastName={this.props.lastName}
-                    removeRegistrationFromCart={() => this.removeRegistrationFromCart()}
-                    removeReservationFromCart={() => this.removeReservationFromCart()}
-                    setModal={() => this.setModal()}
-                    tempRegistrations={this.state.tempRegistrations}
-                    tempReservations={this.state.tempReservations}
-                    toggleLoadingModal={() => this.toggleLoadingModal()}
-                    total={this.state.total}
-                  />
-                </Elements>
-              </StripeProvider>
-            </div>
-
+            {this.state.complete === true || this.state.tempRegistrations.length > 0 || this.state.tempReservations.length > 0
+              ? <div className="payment-container">
+                <StripeProvider apiKey="pk_test_RwSP4QeJgsTpThoHAR7VRKmR">
+                  <Elements>
+                    <CheckoutForm
+                      btn={() => this.checkout()}
+                      firstName={this.props.firstName}
+                      getUserShoppingCart={() => this.getUserShoppingCart()}
+                      lastName={this.props.lastName}
+                      removeRegistrationFromCart={() => this.removeRegistrationFromCart()}
+                      removeReservationFromCart={() => this.removeReservationFromCart()}
+                      setModal={() => this.setModal()}
+                      tempRegistrations={this.state.tempRegistrations}
+                      tempReservations={this.state.tempReservations}
+                      toggleLoadingModal={() => this.toggleLoadingModal()}
+                      total={this.state.total}
+                    />
+                  </Elements>
+                </StripeProvider>
+              </div>
+              : null}
             <div className="cart-page-container">
               <div className="cart-items">
                 {this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
@@ -523,7 +527,6 @@ class ShoppingCart extends Component {
               <button className={`${this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
                 "chkoutDisabled" : ""}`} onClick={() => this.checkout()}>Confirm Reservation <i className="fas fa-check-circle"></i></button>
             </div>
-            total = {this.state.total}
           </div>
           <Footer />
 

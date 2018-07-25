@@ -15,9 +15,17 @@ class CheckoutForm extends Component {
         isOpen: false,
         body: "",
         buttons: ""
-      }
+      },
+      cardHolderName: ""
     };
   }
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
 
   setModal = (modalInput) => {
     console.log(modalInput)
@@ -220,17 +228,12 @@ class CheckoutForm extends Component {
   // }
 
   async submit(ev) {
-    let { token } = await this.props.stripe.createToken({ name: ev.target.name.value });
+    let { token } = await this.props.stripe.createToken({ name: this.state.cardHolderName });
     let charge = { token: token.id, chrgAmt: this.props.total };
-    console.log(charge);
     // let charge = { test: "test" };
     API.charge(charge)
       .then((res) => {
-        console.log("GETTING A RESPONSE")
-        console.log(res)
-        console.log(res.data[0].status);
         if (res.data[0].status === "succeeded") {
-          console.log("Purchase Complete!")
           let promiseArray = [];
           this.props.tempReservations.forEach(res => {
             //  Add total cost of the reservation to the reservation object:
@@ -279,37 +282,20 @@ class CheckoutForm extends Component {
           buttons={this.state.modal.buttons}
         />
         <div className="checkout">
-          <p>Would you like to complete the purchase?</p>
-          <form action="">
-            {/* <label> */}
-            <div>
-              <span className="test">Name</span>
-              <input name="name" className="test" type="text" placeholder="Jane Doe" />
-            </div>
-            {/* </label> */}
-            {/* <label> */}
-            Card Number
-        <CardNumberElement
-              className="input numberInput"
-            />
-            {/* </label> */}
-            {/* <label> */}
-            Expiration date
-        <CardExpiryElement className="expInput input"
-            />
-            {/* </label> */}
-            {/* <label> */}
-            CVC
-        <CardCVCElement className="cvcInput input"
-            />
-            {/* </label> */}
-            {/* <label> */}
-            Zip code
-          <PostalCodeElement className="postalInput input"
-            />
-            {/* </label> */}
-            <button className="chkbtn" onClick={this.checkout}>Pay {this.props.total > 0 ? "$" + this.props.total : null}</button>
-          </form>
+          <div>
+            <span className="test">Name</span>
+            <input name="cardHolderName" className="test" type="text" placeholder="Daenerys Targaryen" value={this.state.cardHolderName} onChange={(e) => this.handleInputChange(e)} />
+          </div>
+          Card Number
+        <CardNumberElement className="input numberInput" />
+          Expiration date
+        <CardExpiryElement className="expInput input" />
+          CVC
+        <CardCVCElement className="cvcInput input" />
+          Zip code
+          <PostalCodeElement className="postalInput input" />
+          <button className="chkbtn" onClick={this.checkout}>Pay {this.props.total > 0 ? "$" + this.props.total : null}</button>
+
         </div>
       </div>
     );
