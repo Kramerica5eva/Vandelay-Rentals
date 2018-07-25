@@ -40,9 +40,9 @@ class Profile extends Component {
     });
   };
 
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   };
 
@@ -118,40 +118,6 @@ class Profile extends Component {
     });
   }
 
-  cancelReservationModal = reservation => {
-    this.setModal({
-      body:
-        <Fragment>
-          <h4>Are you sure?</h4>
-        </Fragment>,
-      buttons:
-        <Fragment>
-          <button onClick={() => this.cancelReservation(reservation)}>Yes. Delete it.</button>
-          <button onClick={this.toggleModal}>No. Keep it.</button>
-        </Fragment>
-    })
-  }
-
-  cancelReservation = reservation => {
-    this.toggleModal();
-    this.toggleLoadingModal();
-    const { _id } = reservation;
-    console.log(_id);
-    API.removeRentalReservation(_id, reservation)
-      .then(res => {
-        console.log(res);
-        this.toggleLoadingModal();
-        //  filter the row from the reservations array in state and then setState to the filtered data.
-        const newReservations = this.state.reservations.filter(reservation => (reservation._id !== _id));
-
-        //  empty selection and selectedRow so the affected buttons revert to disabled
-        this.setState({
-          reservations: newReservations
-        })
-      })
-      .catch(err => console.log(err));
-  }
-
   getRentalDetails = reservation => {
     const { category, itemId } = reservation;
     // console.log(reservation);
@@ -174,7 +140,42 @@ class Profile extends Component {
       })
   }
 
+  cancelReservationModal = reservation => {
+    this.setModal({
+      body:
+        <Fragment>
+          <h4>Are you sure?</h4>
+        </Fragment>,
+      buttons:
+        <Fragment>
+          <button onClick={() => this.cancelReservation(reservation)}>Yes. Delete it.</button>
+          <button onClick={this.closeModal}>No. Keep it.</button>
+        </Fragment>
+    })
+  }
+
+  cancelReservation = reservation => {
+    this.closeModal();
+    this.toggleLoadingModal();
+    const { _id } = reservation;
+    console.log(_id);
+    API.removeRentalReservation(_id, reservation)
+      .then(res => {
+        console.log(res);
+        this.toggleLoadingModal();
+        //  filter the row from the reservations array in state and then setState to the filtered data.
+        const newReservations = this.state.reservations.filter(reservation => (reservation._id !== _id));
+
+        //  empty selection and selectedRow so the affected buttons revert to disabled
+        this.setState({
+          reservations: newReservations
+        })
+      })
+      .catch(err => console.log(err));
+  }
+
   cancelRegistrationModal = registration => {
+    console.log(registration);
     this.setModal({
       body:
         <Fragment>
@@ -183,13 +184,13 @@ class Profile extends Component {
       buttons:
         <Fragment>
           <button onClick={() => this.cancelRegistration(registration)}>Yes. Delete it.</button>
-          <button onClick={this.toggleModal}>No. Keep it.</button>
+          <button onClick={this.closeModal}>No. Keep it.</button>
         </Fragment>
     })
   }
 
   cancelRegistration = registration => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     const { _id } = registration;
     console.log(_id);
@@ -261,11 +262,24 @@ class Profile extends Component {
       })
     }
 
+    if (this.state.registrations.length > 0) {
+      this.state.registrations.forEach(registration => {
+        if (registration.paid) {
+          registration.hasPaid = "True";
+          registration.amtDue = "$0.00"
+        }
+        else {
+          registration.hasPaid = "False";
+          registration.amtDue = "$" + parseFloat(registration.price.$numberDecimal).toFixed(2);
+        }
+      })
+    }
+
     return (
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
@@ -328,7 +342,11 @@ class Profile extends Component {
                         <h4>{res.itemName}</h4>
                         <h3>{res.category}</h3>
                         <p>Amt due at pick up: {res.amtDue}</p>
-                        <i onClick={() => this.cancelReservationModal(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        {res.paid ?
+                          <i className="fas fa-trash-alt fa-lg profile-icon-disabled" aria-hidden="true"></i>
+                          :
+                          <i onClick={() => this.cancelReservationModal(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        }
                         <i onClick={() => this.getRentalDetails(res)} className="far fa-images fa-2x" aria-hidden="true"></i>
                       </div>
                     ))}
@@ -352,8 +370,12 @@ class Profile extends Component {
                       <div key={reg._id} className="course-card">
                         <h5>Date {dateFns.format(reg.date * 1000, "MMM Do YYYY")}</h5>
                         <h4>{reg.courseName}</h4>
-                        <p>Amount due: {parseFloat(reg.price.$numberDecimal).toFixed(2)}</p>
-                        <i onClick={() => this.cancelRegistrationModal(reg)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        <p>Amount due: {reg.amtDue}</p>
+                        {reg.paid ?
+                          <i className="fas fa-trash-alt fa-lg profile-icon-disabled" aria-hidden="true"></i>
+                          :
+                          <i onClick={() => this.cancelRegistrationModal(reg)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        }
                         <i onClick={() => this.getCourseDetails(reg)} className="far fa-images fa-2x" aria-hidden="true"></i>
                       </div>
                     ))}

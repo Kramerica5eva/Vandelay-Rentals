@@ -246,11 +246,11 @@ module.exports = {
       .then(() => {
         Promise.all([
           db.Rental.findByIdAndUpdate(
-            { _id: req.body._original.itemId },
+            { _id: req.body.itemId },
             { $pull: { reservations: req.params.id } },
             { new: true }
           ), db.User.findByIdAndUpdate(
-            { _id: req.body._original.customerId },
+            { _id: req.body.customerId },
             { $pull: { reservations: req.params.id } },
             { new: true }
           )

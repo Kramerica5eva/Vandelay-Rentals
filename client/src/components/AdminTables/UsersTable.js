@@ -30,9 +30,9 @@ export class UsersTable extends Component {
     this.adminGetAllUsers();
   }
 
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
@@ -101,7 +101,7 @@ export class UsersTable extends Component {
           setTimeout(this.toggleLoadingModal, 500);
           setTimeout(this.setModal, 500, {
             body: <h3>Password successfully changed</h3>,
-            buttons: <button onClick={this.toggleModal}>OK</button>
+            buttons: <button onClick={this.closeModal}>OK</button>
           });
         } else {
           setTimeout(this.toggleLoadingModal, 500);
@@ -118,9 +118,23 @@ export class UsersTable extends Component {
 
   userDeleteModal = row => {
     console.log(row);
-    const { registrations, reservations } = row._original;
-
-    if (registrations.length > 0 || reservations.length > 0) {
+    const { registrations, reservations, pastRentals } = row._original;
+    console.log(pastRentals.length);
+    if (pastRentals.length > 0) {
+      this.setModal({
+        body:
+        <Fragment>
+          <h4>Customers with Past Rental records cannot be deleted.</h4>
+          <p>Would you like to deactivate the account or ban the customer?</p>
+        </Fragment>,
+        buttons:
+        <Fragment>
+          <button onClick={this.closeModal}>Nevermind</button>
+          <button onClick={() => this.deactivateUser(row)}>Deactivate</button>
+          <button onClick={() => this.banUser(row)}>Ban User</button>
+        </Fragment>
+      })
+    } else if (registrations.length > 0 || reservations.length > 0) {
       this.setModal({
         body: <h3>You must remove all reservations and class registrations for this user before you can delete them.</h3>
       })
@@ -134,7 +148,7 @@ export class UsersTable extends Component {
           </Fragment>,
         buttons:
           <Fragment>
-            <button onClick={this.toggleModal}>Nevermind</button>
+            <button onClick={this.closeModal}>Nevermind</button>
             <button onClick={() => this.deactivateUser(row)}>Deactivate</button>
             <button onClick={() => this.banUser(row)}>Ban User</button>
             <button onClick={() => this.deleteUser(row)}>Delete</button>
@@ -153,7 +167,7 @@ export class UsersTable extends Component {
         this.adminGetAllUsers();
         this.setModal({
           body: <h3>Database sucessfully updated.</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
       });
   }
@@ -168,7 +182,7 @@ export class UsersTable extends Component {
         this.adminGetAllUsers();
         this.setModal({
           body: <h3>Database sucessfully updated.</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
       });
   }
@@ -183,7 +197,7 @@ export class UsersTable extends Component {
         this.adminGetAllUsers();
         this.setModal({
           body: <h3>Database sucessfully updated.</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
       })
 
@@ -200,13 +214,13 @@ export class UsersTable extends Component {
       buttons:
         <Fragment>
           <button onClick={() => this.submitNote(_id)}>Submit</button>
-          <button onClick={this.toggleModal}>Nevermind</button>
+          <button onClick={this.closeModal}>Nevermind</button>
         </Fragment>
     })
   }
 
   submitNote = id => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     API.adminUpdateUser(id, { note: this.state.note })
       .then(response => {
@@ -216,7 +230,7 @@ export class UsersTable extends Component {
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
           body: <h3>Database successfully updated</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllUsers();
@@ -271,7 +285,7 @@ export class UsersTable extends Component {
             // success modal after the loading modal is gone.
             setTimeout(this.setModal, 500, {
               body: <h4>Database successfully updated</h4>,
-              buttons: <button onClick={this.toggleModal}>OK</button>
+              buttons: <button onClick={this.closeModal}>OK</button>
             });
             this.adminGetAllUsers();
           }
@@ -279,14 +293,14 @@ export class UsersTable extends Component {
           setTimeout(this.toggleLoadingModal, 500);
           setTimeout(this.setModal, 500, {
             body: <h4>There was a problem with your request. Please try again.</h4>,
-            buttons: <button onClick={this.toggleModal}>OK</button>
+            buttons: <button onClick={this.closeModal}>OK</button>
           });
         }
       }).catch(err => {
         setTimeout(this.toggleLoadingModal, 500);
         setTimeout(this.setModal, 500, {
           body: <h4>There was a problem with your request. Please try again.</h4>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
       })
   }
@@ -314,7 +328,7 @@ export class UsersTable extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />

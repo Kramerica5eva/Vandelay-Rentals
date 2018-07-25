@@ -30,9 +30,9 @@ class ShoppingCart extends Component {
     this.getUserShoppingCart();
   }
 
-  toggleModal = (checkout) => {
+  closeModal = (checkout) => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
     if (checkout) {
       this.checkout();
@@ -253,7 +253,7 @@ class ShoppingCart extends Component {
   //                   }
   //                   <button
   //                     className="modal-btn-link"
-  //                     onClick={() => this.toggleModal(true)}
+  //                     onClick={() => this.closeModal(true)}
   //                   >
   //                     Remove
   //                     </button>
@@ -404,7 +404,7 @@ class ShoppingCart extends Component {
                     }
                     <button
                       className="modal-btn-link"
-                      onClick={() => this.toggleModal(true)}
+                      onClick={() => this.closeModal(true)}
                     >
                       Remove
                       </button>
@@ -427,6 +427,14 @@ class ShoppingCart extends Component {
             .then(() => {
               this.getUserShoppingCart();
               this.toggleLoadingModal();
+              this.setModal({
+                body: <h4>Your reservations are confirmed.</h4>,
+                buttons:
+                  <Fragment>
+                    <Link className="modal-btn-link" to={{ pathname: "/profile" }} role="button">My Info</Link>
+                    <button onClick={() => this.closeModal(false)}>Close</button>
+                  </Fragment>
+              })
               // this.setState({
               //   complete: true
               // });
@@ -443,7 +451,7 @@ class ShoppingCart extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
@@ -476,16 +484,18 @@ class ShoppingCart extends Component {
                       lastName={this.props.lastName}
                       removeRegistrationFromCart={() => this.removeRegistrationFromCart()}
                       removeReservationFromCart={() => this.removeReservationFromCart()}
-                      setModal={() => this.setModal()}
+                      setModal={this.setModal}
+                      closeModal={this.closeModal}
                       tempRegistrations={this.state.tempRegistrations}
                       tempReservations={this.state.tempReservations}
-                      toggleLoadingModal={() => this.toggleLoadingModal()}
+                      toggleLoadingModal={this.toggleLoadingModal}
                       total={this.state.total}
                     />
                   </Elements>
                 </StripeProvider>
               </div>
               : null}
+              
             <div className="cart-page-container">
               <div className="cart-items">
                 {this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?

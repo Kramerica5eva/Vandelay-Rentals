@@ -34,9 +34,9 @@ export class RegistrationsTable extends Component {
   }
 
   // MODAL TOGGLE FUNCTIONS
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   };
 
@@ -56,10 +56,30 @@ export class RegistrationsTable extends Component {
     this.setState({ loadingModalOpen: !this.state.loadingModalOpen });
   }
 
+  cancelRegistrationModal = row => {
+    console.log(row);
+    if (row.hasPaid === "True") {
+      this.setModal({
+        body: <h4>You must refund the customer's money before you can remove their class registration.</h4>,
+        buttons: <button onClick={this.closeModal}>OK</button>
+      })
+    } else {
+      this.setModal({
+        body: <h4>Are you sure you want to remove this customer's class registration?</h4>,
+        buttons:
+          <Fragment>
+            <button onClick={this.closeModal}>Nevermind</button>
+            <button onClick={() => this.cancelRegistration(row._original)}>Yes, Remove It</button>
+          </Fragment>
+      })
+    }
+  }
+
   //  Cancel function works - Deletes registration and removes the reference from User and Course
   cancelRegistration = row => {
+    this.closeModal();
     this.toggleLoadingModal();
-    const { _id } = row._original;
+    const { _id } = row;
     console.log(row);
 
     API.removeCourseRegistration(_id, row)
@@ -80,14 +100,24 @@ export class RegistrationsTable extends Component {
   //  If registration is paid: false, flips it to true, and vice-versa
   toggleRegistrationPaid = row => {
     this.toggleLoadingModal();
-    const { _id, paid } = row._original;
-    API.adminUpdateRegistration(_id, { paid: !paid })
+    const { _id, paid, price } = row._original;
+
+    let payment;
+    if (paid === true) payment = 0;
+    else payment = price.$numberDecimal;
+
+    API.adminUpdateRegistration(_id, {
+      paid: !paid,
+      amtPaid: payment
+    })
       .then(res => {
         this.toggleLoadingModal();
         console.log(res)
+        //  mutating registrations in state, while not strictly good practice according to React's design, allows for not reloading the table with each change (reloading the table results in the subtable closing - an annoying effect). Setting state runUnmount to true will repopulate the data when the table is closed so that reflects changes when it is reopened.        
         this.state.registrations.forEach(reg => {
           if (reg._id === _id) {
-            reg.paid = !paid
+            reg.paid = !paid;
+            reg.amtPaid.$numberDecimal = payment;
           }
           this.setState({ runUnmount: true })
         })
@@ -107,13 +137,13 @@ export class RegistrationsTable extends Component {
       buttons:
         <Fragment>
           <button onClick={() => this.submitNote(_id)}>Submit</button>
-          <button onClick={this.toggleModal}>Nevermind</button>
+          <button onClick={this.closeModal}>Nevermind</button>
         </Fragment>
     })
   }
 
   submitNote = id => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     API.adminUpdateRegistration(id, { note: this.state.note })
       .then(response => {
@@ -145,7 +175,7 @@ export class RegistrationsTable extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
@@ -167,7 +197,11 @@ export class RegistrationsTable extends Component {
                     return (
                       <div className="table-icon-div">
                         <div className="fa-trash-alt-div table-icon-inner-div">
-                          <i onClick={() => this.cancelRegistration(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
+                          <i onClick={() => this.cancelRegistrationModal(row.row)} className={row.row.hasPaid === "True" ?
+                            "table-icon fas fa-trash-alt fa-lg table-icon-disabled"
+                            :
+                            "table-icon fas fa-trash-alt fa-lg"
+                          }></i>
                           <span className="fa-trash-alt-tooltip table-tooltip">cancel registration</span>
                         </div>
                         <div className="fa-dollar-sign-div table-icon-inner-div">

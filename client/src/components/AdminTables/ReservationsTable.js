@@ -35,9 +35,9 @@ export class ReservationsTable extends Component {
   }
 
   // MODAL TOGGLE FUNCTIONS
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
@@ -64,15 +64,15 @@ export class ReservationsTable extends Component {
     if (row.hasPaid === "True") {
       this.setModal({
         body: <h4>You must refund the customer's money before you can cancel this reservation.</h4>,
-        buttons: <button onClick={this.toggleModal}>OK</button>
+        buttons: <button onClick={this.closeModal}>OK</button>
       })
     } else {
       this.setModal({
-        body: <h3>Are you sure you want to cancel the reservation?</h3>,
+        body: <h4>Are you sure you want to cancel the reservation?</h4>,
         buttons:
           <Fragment>
-            <button onClick={this.toggleModal}>Nevermind</button>
-            <button onClick={() => this.cancelReservation(row)}>Yes, Cancel It</button>
+            <button onClick={this.closeModal}>Nevermind</button>
+            <button onClick={() => this.cancelReservation(row._original)}>Yes, Cancel It</button>
           </Fragment>
       })
     }
@@ -80,9 +80,9 @@ export class ReservationsTable extends Component {
 
   //  Cancel function works - Deletes reservation and removes the reference from User and Rental
   cancelReservation = row => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
-    const { _id } = row._original;
+    const { _id } = row;
 
     API.removeRentalReservation(_id, row)
       .then(res => {
@@ -103,14 +103,24 @@ export class ReservationsTable extends Component {
   //  If reservation is paid: false, flips it to true, and vice-versa
   toggleReservationPaid = row => {
     this.toggleLoadingModal();
-    const { _id, paid } = row._original;
-    API.adminUpdateReservation(_id, { paid: !paid })
+    const { _id, paid, total } = row._original;
+    console.log(row);
+
+    let payment;
+    if (paid === true) payment = 0;
+    else payment = total.$numberDecimal;
+
+    API.adminUpdateReservation(_id, {
+      paid: !paid,
+      amtPaid: payment
+    })
       .then(res => {
         this.toggleLoadingModal();
         console.log(res)
         this.state.reservations.forEach(res => {
           if (res._id === _id) {
-            res.paid = !paid
+            res.paid = !paid;
+            res.amtPaid.$numberDecimal = payment;
           }
           this.setState({
             runUnmount: true
@@ -124,6 +134,7 @@ export class ReservationsTable extends Component {
   recordRentalReturn = row => {
     this.toggleLoadingModal();
     const { _id } = row._original;
+    console.log(row);
     API.adminRecordRentalReturn(_id, row)
       .then(res => {
         console.log(res);
@@ -137,7 +148,7 @@ export class ReservationsTable extends Component {
             isOpen: true,
             header: "Success!",
             body: <h4>Don't forget to take pictures and upload them to the database</h4>,
-            buttons: <button onClick={this.toggleModal}>OK</button>
+            buttons: <button onClick={this.closeModal}>OK</button>
           },
           reservations: newReservations,
           runUnmount: true
@@ -157,13 +168,13 @@ export class ReservationsTable extends Component {
       buttons:
         <Fragment>
           <button onClick={() => this.submitNote(_id)}>Submit</button>
-          <button onClick={this.toggleModal}>Nevermind</button>
+          <button onClick={this.closeModal}>Nevermind</button>
         </Fragment>
     })
   }
 
   submitNote = id => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     API.adminUpdateReservation(id, { note: this.state.note })
       .then(response => {
@@ -198,7 +209,7 @@ export class ReservationsTable extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
@@ -242,8 +253,8 @@ export class ReservationsTable extends Component {
                             <div className="fa-check-circle-div table-icon-inner-div">
                               <i onClick={() => this.setModal({
                                 body: <h3>Payment must be recorded before the rental can be turned in</h3>,
-                                buttons: <button onClick={this.toggleModal}>OK</button>
-                              })} className="table-icon far fa-check-circle fa-lg"></i>
+                                buttons: <button onClick={this.closeModal}>OK</button>
+                              })} className="table-icon far fa-check-circle fa-lg table-icon-disabled"></i>
                               <span className="fa-check-circle-tooltip table-tooltip">record turnin</span>
                             </div>
                           )}

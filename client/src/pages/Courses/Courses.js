@@ -24,9 +24,9 @@ class Courses extends Component {
 		this.getAllCourses();
 	}
 
-	toggleModal = () => {
+	closeModal = () => {
 		this.setState({
-			modal: { isOpen: !this.state.modal.isOpen }
+			modal: { isOpen: false }
 		});
 	}
 
@@ -96,7 +96,7 @@ class Courses extends Component {
 								>
 									Go to Checkout
 						</Link>
-								<button onClick={this.toggleModal}>Continue Shopping</button>
+								<button onClick={this.closeModal}>Continue Shopping</button>
 							</Fragment>
 					})
 				} else if (response.data.message === "registration duplicate") {
@@ -106,7 +106,7 @@ class Courses extends Component {
 						body:
 							<h4>You are already registered for that class.</h4>,
 						buttons:
-							<button onClick={this.toggleModal}>Continue Shopping</button>
+							<button onClick={this.closeModal}>Continue Shopping</button>
 
 					})
 				} else {
@@ -126,7 +126,7 @@ class Courses extends Component {
 								>
 									Go to Checkout
               </Link>
-								<button onClick={this.toggleModal}>Continue Shopping</button>
+								<button onClick={this.closeModal}>Continue Shopping</button>
 							</Fragment>
 
 
@@ -142,7 +142,7 @@ class Courses extends Component {
 			<Fragment>
 				<Modal
 					show={this.state.modal.isOpen}
-					toggleModal={this.toggleModal}
+					closeModal={this.closeModal}
 					body={this.state.modal.body}
 					buttons={this.state.modal.buttons}
 				/>

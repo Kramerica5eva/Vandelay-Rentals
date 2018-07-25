@@ -37,9 +37,9 @@ export class SalesTable extends Component {
   };
 
   // MODAL TOGGLE FUNCTIONS
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
@@ -94,7 +94,7 @@ export class SalesTable extends Component {
         </Fragment>,
       buttons:
         <Fragment>
-          <button onClick={this.toggleModal}>Nevermind</button>
+          <button onClick={this.closeModal}>Nevermind</button>
           <button onClick={() => this.deleteSaleItem(row)}>Delete it</button>
         </Fragment>
     })
@@ -102,7 +102,7 @@ export class SalesTable extends Component {
 
   //  Sale Item Delete function
   deleteSaleItem = row => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     const { _id } = row._original;
     API.adminDeleteSaleItem(_id)
@@ -113,7 +113,7 @@ export class SalesTable extends Component {
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
           body: <h3>Database successfully updated</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllSaleItems();
@@ -133,7 +133,7 @@ export class SalesTable extends Component {
   }
 
   submitNote = id => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     API.adminUpdateSaleItem(id, { note: this.state.note })
       .then(response => {
@@ -142,7 +142,7 @@ export class SalesTable extends Component {
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
           body: <h3>Database successfully updated</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllSaleItems();
@@ -210,7 +210,7 @@ export class SalesTable extends Component {
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
             body: <h3>Database successfully updated</h3>,
-            buttons: <button onClick={this.toggleModal}>OK</button>
+            buttons: <button onClick={this.closeModal}>OK</button>
           });
           //  query the db and reload the table
           this.adminGetAllSaleItems();
@@ -298,7 +298,7 @@ export class SalesTable extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />

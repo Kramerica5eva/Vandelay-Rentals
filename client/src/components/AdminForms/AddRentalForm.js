@@ -21,16 +21,16 @@ export class AddRentalForm extends Component {
     condition: ""
   }
 
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: false,
         body: modalInput.body,
         buttons: modalInput.buttons
       }
@@ -61,7 +61,7 @@ export class AddRentalForm extends Component {
             <h4>Please enter a valid date format</h4>
             <p>(e.g. '01/25/2016' or 'Dec 14 2012')</p>
           </Fragment>,
-        buttons: <button onClick={this.toggleModal}>OK</button>
+        buttons: <button onClick={this.closeModal}>OK</button>
       })
 
     } else {
@@ -87,12 +87,12 @@ export class AddRentalForm extends Component {
           if (res.data.message === "$ only") {
             this.setModal({
               body: <h4>You must enter a valid Daily Rate.</h4>,
-              buttons: <button onClick={this.toggleModal}>OK</button>
+              buttons: <button onClick={this.closeModal}>OK</button>
             })
           } else {
             this.setModal({
               body: <h4>Your Rental has been added to the database.</h4>,
-              buttons: <button onClick={this.toggleModal}>OK</button>
+              buttons: <button onClick={this.closeModal}>OK</button>
             });
             this.setState({
               name: "",
@@ -115,7 +115,7 @@ export class AddRentalForm extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />

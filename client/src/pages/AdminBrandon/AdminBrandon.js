@@ -27,16 +27,16 @@ class Admin extends Component {
     this.showRentals();
   }
 
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: false,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer,
@@ -145,7 +145,7 @@ class Admin extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}
