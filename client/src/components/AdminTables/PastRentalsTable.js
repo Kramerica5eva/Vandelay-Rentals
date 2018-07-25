@@ -355,8 +355,8 @@ export class PastRentalsTable extends Component {
                   }
                 },
                 {
-                  Header: 'Amount Paid',
-                  accessor: 'total.$numberDecimal',
+                  Header: 'Amt Paid',
+                  accessor: 'amtPaid.$numberDecimal',
                   Cell: row => {
                     return `$${parseFloat(row.value).toFixed(2)}`
                   }

@@ -18,7 +18,10 @@ const registrationSchema = new Schema({
     default: false
   },
   note: String,
-  amtPaid: Schema.Types.Decimal128
+  amtPaid: {
+    type: Schema.Types.Decimal128,
+    default: 0
+  }
 });
 
 const Registration = mongoose.model('Registration', registrationSchema);
