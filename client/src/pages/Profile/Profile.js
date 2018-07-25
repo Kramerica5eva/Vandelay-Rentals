@@ -118,6 +118,28 @@ class Profile extends Component {
     });
   }
 
+  getRentalDetails = reservation => {
+    const { category, itemId } = reservation;
+    // console.log(reservation);
+    API.getRentalById(category, itemId)
+      .then(res => {
+        console.log(res);
+        this.setModal({
+          body:
+            <div className="reservation-modal-div">
+              <div className="reservation-modal-data">
+                <h2>{res.data.name}</h2>
+                <h4>by {res.data.maker}</h4>
+                <h5>Daily Rate: {`$${parseFloat(res.data.dailyRate.$numberDecimal).toFixed(2)}`}</h5>
+              </div>
+              <div className="reservation-modal-image">
+                <img src={res.data.displayImageUrl} alt={`${res.data.category}`} />
+              </div>
+            </div>
+        })
+      })
+  }
+
   cancelReservationModal = reservation => {
     this.setModal({
       body:
@@ -152,29 +174,8 @@ class Profile extends Component {
       .catch(err => console.log(err));
   }
 
-  getRentalDetails = reservation => {
-    const { category, itemId } = reservation;
-    // console.log(reservation);
-    API.getRentalById(category, itemId)
-      .then(res => {
-        console.log(res);
-        this.setModal({
-          body:
-            <div className="reservation-modal-div">
-              <div className="reservation-modal-data">
-                <h2>{res.data.name}</h2>
-                <h4>by {res.data.maker}</h4>
-                <h5>Daily Rate: {`$${parseFloat(res.data.dailyRate.$numberDecimal).toFixed(2)}`}</h5>
-              </div>
-              <div className="reservation-modal-image">
-                <img src={res.data.displayImageUrl} alt={`${res.data.category}`} />
-              </div>
-            </div>
-        })
-      })
-  }
-
   cancelRegistrationModal = registration => {
+    console.log(registration);
     this.setModal({
       body:
         <Fragment>
@@ -258,6 +259,20 @@ class Profile extends Component {
           const bill = (((parseInt(reservation.date.to) - parseInt(reservation.date.from)) / 86400) + 1) * reservation.dailyRate.$numberDecimal;
           reservation.amtDue = "$" + parseFloat(bill).toFixed(2);
         }
+
+      })
+    }
+
+    if (this.state.registrations.length > 0) {
+      this.state.registrations.forEach(registration => {
+        if (registration.paid) {
+          registration.hasPaid = "True";
+          registration.amtDue = "$0.00"
+        }
+        else {
+          registration.hasPaid = "False";
+          registration.amtDue = "$" + parseFloat(registration.price.$numberDecimal).toFixed(2);
+        }
       })
     }
 
@@ -328,7 +343,11 @@ class Profile extends Component {
                         <h4>{res.itemName}</h4>
                         <h3>{res.category}</h3>
                         <p>Amt due at pick up: {res.amtDue}</p>
-                        <i onClick={() => this.cancelReservationModal(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        {res.paid ?
+                          <i className="fas fa-trash-alt fa-lg profile-icon-disabled" aria-hidden="true"></i>
+                          :
+                          <i onClick={() => this.cancelReservationModal(res)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        }
                         <i onClick={() => this.getRentalDetails(res)} className="far fa-images fa-2x" aria-hidden="true"></i>
                       </div>
                     ))}
@@ -352,8 +371,12 @@ class Profile extends Component {
                       <div key={reg._id} className="course-card">
                         <h5>Date {dateFns.format(reg.date * 1000, "MMM Do YYYY")}</h5>
                         <h4>{reg.courseName}</h4>
-                        <p>Amount due: {parseFloat(reg.price.$numberDecimal).toFixed(2)}</p>
-                        <i onClick={() => this.cancelRegistrationModal(reg)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        <p>Amount due: {reg.amtDue}</p>
+                        {reg.paid ?
+                          <i className="fas fa-trash-alt fa-lg profile-icon-disabled" aria-hidden="true"></i>
+                          :
+                          <i onClick={() => this.cancelRegistrationModal(reg)} className="fas fa-trash-alt fa-lg" aria-hidden="true"></i>
+                        }
                         <i onClick={() => this.getCourseDetails(reg)} className="far fa-images fa-2x" aria-hidden="true"></i>
                       </div>
                     ))}

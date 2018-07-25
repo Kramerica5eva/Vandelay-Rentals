@@ -68,7 +68,7 @@ export class ReservationsTable extends Component {
       })
     } else {
       this.setModal({
-        body: <h3>Are you sure you want to cancel the reservation?</h3>,
+        body: <h4>Are you sure you want to cancel the reservation?</h4>,
         buttons:
           <Fragment>
             <button onClick={this.toggleModal}>Nevermind</button>

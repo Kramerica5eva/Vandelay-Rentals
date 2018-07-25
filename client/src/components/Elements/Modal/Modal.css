@@ -145,7 +145,8 @@
 
 .modal-btn-div button,
 .modal-btn-link {
-	font-family: var(--font-Raleway);
+  font-family: var(--font-Raleway);
+  font-size: .9rem;
   border: 1px solid #4e50d8e2;
   padding: 7px 14px;
   border-radius: 5px;

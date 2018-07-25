@@ -426,8 +426,15 @@ class ShoppingCart extends Component {
           });
           Promise.all(promiseArray)
             .then(() => {
-              this.getUserShoppingCart();
               this.toggleLoadingModal();
+              this.setModal({
+                body: <h4>Your reservations are confirmed.</h4>,
+                buttons:
+                  <Fragment>
+                    <Link className="modal-btn-link" to={{ pathname: "/profile" }} role="button">My Info</Link>
+                    <button onClick={this.toggleModal}>Close</button>
+                  </Fragment>
+              })
             });
         }
       })

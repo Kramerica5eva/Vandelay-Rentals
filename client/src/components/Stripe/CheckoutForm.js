@@ -3,7 +3,7 @@ import { CardNumberElement, CardExpiryElement, CardCVCElement, injectStripe } fr
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import './CheckoutForm.css';
 
 // const {
@@ -272,14 +272,26 @@ class CheckoutForm extends Component {
               });
               Promise.all(paymentArray)
                 .then(() => {
-                  this.props.getUserShoppingCart();
+                  // this.props.getUserShoppingCart();
                   this.props.toggleLoadingModal();
                   this.setState({ complete: true });
+                  this.setModal({
+                    body: <h4>Your reservations are confirmed.</h4>,
+                    buttons:
+                      <Fragment>
+                        <Link className="modal-btn-link" to={{ pathname: "/profile" }} role="button">My Info</Link>
+                        <button onClick={this.toggleModal}>Close</button>
+                      </Fragment>
+                  })
                 });
             });
         }
       })
       .catch(err => console.log(err));
+  }
+
+  redirect = () => {
+    return <Redirect to={{ pathname: "/profile" }} />
   }
 
   // this.state.tempRegistrations.forEach(reg => {
@@ -290,25 +302,35 @@ class CheckoutForm extends Component {
   // });
 
   render() {
-    if (this.state.complete) return <h1>Purchase Complete</h1>;
+
+    // if (this.state.complete) return <h1>Purchase Complete</h1>;
 
     return (
+
       <div className="checkout">
+
         <Modal
           show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
-        <p>Would you like to complete the purchase?</p>
-        <CardNumberElement
-          className="input numberInput"
-        />
-        <CardExpiryElement className="expInput input"
-        />
-        <CardCVCElement className="cvcInput input"
-        />
-        <button className="chkbtn" onClick={this.checkout}>Send</button>
+
+        {this.state.complete ?
+          <h1>Purchase Complete</h1>
+          :
+          <Fragment>
+            <p>Would you like to complete the purchase?</p>
+            <CardNumberElement
+              className="input numberInput"
+            />
+            <CardExpiryElement className="expInput input"
+            />
+            <CardCVCElement className="cvcInput input"
+            />
+            <button className="chkbtn" onClick={this.checkout}>Send</button>
+          </Fragment>}
+
       </div>
     );
   }
