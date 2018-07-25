@@ -66,12 +66,12 @@ export default {
     return axios.post('/api/charge', charge);
   },
   // Update reservation paid status
-  logResPayment: function (res) {
-    return axios.put('/api/charge/respaid', res);
+  logResPayment: function (res, total) {
+    return axios.put('/api/charge/respaid', { reservation: res, resTotal: total });
   },
   // Update registration paid status
-  logRegPayment: function (reg) {
-    return axios.put('/api/charge/regpaid', reg);
+  logRegPayment: function (reg, total) {
+    return axios.put('/api/charge/regpaid', { registration: reg, regTotal: total });
   },
 
   // USER AUTHENTICATION ROUTES

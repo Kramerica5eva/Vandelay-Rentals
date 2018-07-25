@@ -22,15 +22,13 @@ module.exports = {
   },
 
   respaid: function (req, res) {
-    console.log("RES REQUEST")
-    console.log(req.body)
-    console.log(req.body._id)
     db.Reservation.findOneAndUpdate(
-      { _id: req.body._id },
-      { paid: true }
+      { _id: req.body.reservation._id },
+      {
+        paid: true,
+        amtPaid: req.body.resTotal
+      }
     ).then((resp) => {
-      console.log("RES RESPONSE")
-      console.log(resp)
       res.send("reservation paid");
     })
       .catch(err => console.log(err));
@@ -38,11 +36,12 @@ module.exports = {
 
   regpaid: function (req, res) {
     db.Registration.findOneAndUpdate(
-      { _id: req.body._id },
-      { paid: true }
+      { _id: req.body.registration._id },
+      {
+        paid: true,
+        amtPaid: req.body.regTotal
+      }
     ).then((resp) => {
-      console.log("REG PRESPONSE")
-      console.log(resp)
       res.send("registration paid");
     })
       .catch(err => console.log(err));
