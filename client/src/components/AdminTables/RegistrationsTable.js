@@ -221,6 +221,14 @@ export class RegistrationsTable extends Component {
                   Cell: row => {
                     return `$${parseFloat(row.value).toFixed(2)}`
                   }
+                },
+                {
+                  Header: "Amt Paid",
+                  accessor: "amtPaid.$numberDecimal",
+                  width: 80,
+                  Cell: row => {
+                    return `$${parseFloat(row.value).toFixed(2)}`
+                  }
                 }
               ]
             },
