@@ -322,6 +322,24 @@ export class UsersTable extends Component {
     );
   }
 
+  renderEditablePhone = cellInfo => {
+    const phone = this.state.users[cellInfo.index][cellInfo.column.id];
+    return (
+      <div
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          const users = [...this.state.users];
+          users[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ users });
+        }}
+        dangerouslySetInnerHTML={{
+          __html: `${phone.slice(0, 3)}-${phone.slice(3, 6)}-${phone.slice(6, 10)}`
+        }}
+      />
+    );
+  }
+
   render() {
 
     return (
