@@ -63,6 +63,7 @@ class Test extends Component {
                 <RentalCard
                   key={rental._id}
                   name={rental.name}
+                  unix="narf"
                   category={rental.category}
                   maker={rental.maker}
                   rate={parseFloat(rental.dailyRate.$numberDecimal).toFixed(2)}>

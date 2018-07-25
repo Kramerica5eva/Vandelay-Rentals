@@ -24,6 +24,11 @@ module.exports = {
   // },
   //  This function gets data from admin tables and updates the db
   update: function (req, res) {
+    console.log(req.body);
+    if (req.body.phone) {
+      const filteredPhone = req.body.phone.split("").filter(num => /^[0-9]+$/.test(num)).join("");
+      req.body.phone = filteredPhone;
+    }
     if (req.body.password) {
       const pw = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null);
       req.body.password = pw;

@@ -471,7 +471,8 @@ class ShoppingCart extends Component {
           <div className='body-container '>
             <div className="shopping-cart-header">
               <h2>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</h2>
-              <h3>You're almost done!</h3>
+              {this.state.tempRegistrations.length > 0 || this.state.tempReservations.length > 0 ? <h3>You're almost done!</h3> : null}
+              
             </div>
             {this.state.complete === true || this.state.tempRegistrations.length > 0 || this.state.tempReservations.length > 0
               ? <div className="payment-container">

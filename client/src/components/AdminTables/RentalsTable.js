@@ -122,15 +122,15 @@ export class RentalsTable extends Component {
     if (pastRentals.length > 0) {
       this.setModal({
         body:
-        <Fragment>
-          <h4>Items with Past Rental records cannot be deleted.</h4>
-          <p>Would you like to retire the item?</p>
-        </Fragment>,
+          <Fragment>
+            <h4>Items with Past Rental records cannot be deleted.</h4>
+            <p>Would you like to retire the item?</p>
+          </Fragment>,
         buttons:
-        <Fragment>
-          <button onClick={this.closeModal}>Nevermind</button>
-          <button onClick={() => this.retireRental(row)}>Retire it</button>
-        </Fragment>
+          <Fragment>
+            <button onClick={this.closeModal}>Nevermind</button>
+            <button onClick={() => this.retireRental(row)}>Retire it</button>
+          </Fragment>
       })
     } else if (reservations.length > 0) {
       this.setModal({
@@ -349,13 +349,25 @@ export class RentalsTable extends Component {
 
   //  Update Row - sends current field info to db and updates that item
   updateRow = row => {
-    this.toggleLoadingModal();
     //  extract variables from the row object
     const { category, condition, dateAcquired, maker, name, rate, sku, timesRented, _id } = row._original;
 
     let unixDate;
     if (typeof dateAcquired === "string") unixDate = dateFns.format(dateAcquired, "X");
     else unixDate = dateFns.format(dateAcquired * 1000, "X");
+
+    if (dateAcquired.length < 6 || unixDate === "Invalid Date") {
+      return this.setModal({
+        body:
+          <Fragment>
+            <h4>Please enter a valid date format</h4>
+            <p>(e.g. '01/25/2016' or 'Dec 14 2012')</p>
+          </Fragment>,
+        buttons: <button onClick={this.closeModal}>OK</button>
+      })
+    }
+    //  wait until here to trigger the loading modal - after the date has been validated - otherwise, the loadingmodal must be closed again inside the "if (dateAcquired.length...)" block, and the timing is such that the loading modal just ends up staying open.
+    this.toggleLoadingModal();
 
     let newCategory;
     if (this.state.category) newCategory = this.state.category;

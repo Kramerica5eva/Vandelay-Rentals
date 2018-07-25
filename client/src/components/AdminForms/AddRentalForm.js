@@ -16,6 +16,7 @@ export class AddRentalForm extends Component {
     category: "",
     maker: "",
     sku: "",
+    timesRented: "",
     dailyRate: "",
     dateAcquired: "",
     condition: ""
@@ -50,7 +51,7 @@ export class AddRentalForm extends Component {
 
     //  The form will accept any text for a date, but if dateFns rejects it as invalid, it will return a modal with acceptable format examples - so a validation regex pattern for all possible acceptable date formats is unnecessary and would be extremely difficult to create
     const unixDate = dateFns.format(dateAcquired, "X");
-    
+
     //  length of 6 seems to be the shortest valid date
     //  (e.g. 1/1/18, Feb 4 16, or 9-5-13)
     if (dateAcquired.length < 6 || unixDate === "Invalid Date") {
@@ -90,19 +91,20 @@ export class AddRentalForm extends Component {
               buttons: <button onClick={this.closeModal}>OK</button>
             })
           } else {
-            this.setModal({
-              body: <h4>Your Rental has been added to the database.</h4>,
-              buttons: <button onClick={this.closeModal}>OK</button>
-            });
             this.setState({
               name: "",
               category: "",
               maker: "",
               sku: "",
               dailyRate: "",
+              timesRented: "",
               dateAcquired: "",
               condition: ""
             })
+            // this.setModal({
+            //   body: <h4>Your Rental has been added to the database.</h4>,
+            //   buttons: <button onClick={this.closeModal}>OK</button>
+            // });
           }
         })
         .catch(err => console.log(err));
