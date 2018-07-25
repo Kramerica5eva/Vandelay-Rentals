@@ -249,24 +249,43 @@ class CheckoutForm extends Component {
           let promiseArray = [];
           this.props.tempReservations.forEach(res => {
             const resQuery = API.reserveRental(res);
-            const logResPayment = API.logResPayment(res);
-            promiseArray.push(resQuery, logResPayment);
+            promiseArray.push(resQuery);
           });
           this.props.tempRegistrations.forEach(reg => {
             const regQuery = API.reserveCourse(reg._id, reg);
-            const logRegPayment = API.logRegPayment(reg);
-            promiseArray.push(regQuery, logRegPayment);
+            promiseArray.push(regQuery);
           });
           Promise.all(promiseArray)
             .then(() => {
-              this.props.getUserShoppingCart();
-              this.props.toggleLoadingModal();
-              this.setState({ complete: true })
+              let paymentArray = [];
+              this.props.tempReservations.forEach(res => {
+                let resTotal = parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2));
+                const logResPayment = API.logResPayment(res, resTotal);
+                paymentArray.push(logResPayment);
+              });
+              this.props.tempRegistrations.forEach(reg => {
+                let regTotal = parseFloat(reg.price.$numberDecimal).toFixed(2);
+                const logRegPayment = API.logRegPayment(reg, regTotal);
+                paymentArray.push(logRegPayment);
+              });
+              Promise.all(paymentArray)
+                .then(() => {
+                  this.props.getUserShoppingCart();
+                  this.props.toggleLoadingModal();
+                  this.setState({ complete: true });
+                });
             });
         }
       })
       .catch(err => console.log(err));
   }
+
+  // this.state.tempRegistrations.forEach(reg => {
+  //   total = parseFloat(total) + parseFloat(reg.price.$numberDecimal).toFixed(2);
+  // });
+  // this.state.tempReservations.forEach(res => {
+  //   total = parseFloat(total) + parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2));
+  // });
 
   render() {
     if (this.state.complete) return <h1>Purchase Complete</h1>;
