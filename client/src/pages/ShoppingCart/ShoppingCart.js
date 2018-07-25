@@ -303,12 +303,12 @@ class ShoppingCart extends Component {
     this.toggleLoadingModal();
     let checkArray = [];
     let promiseArray = [];
-    console.log("Start temp reservations")
-    console.log(this.state.tempReservations)
-    console.log("end temp reservatios")
-    console.log("Start temp registrations")
-    console.log(this.state.tempRegistrations)
-    console.log("end temp registrations")
+    // console.log("Start temp reservations")
+    // console.log(this.state.tempReservations)
+    // console.log("end temp reservatios")
+    // console.log("Start temp registrations")
+    // console.log(this.state.tempRegistrations)
+    // console.log("end temp registrations")
     this.state.tempReservations.forEach(res => {
       const checkQuery = API.finalCheck(res);
       // const resQuery = API.reserveRental(res);
@@ -352,21 +352,20 @@ class ShoppingCart extends Component {
           });
           Promise.all(noGood)
             .then(() => {
-              console.log("start state tempreservations")
-              console.log(this.state.tempRegistrations)
-              console.log(this.state.tempReservations)
-              console.log("end state tempreservations")
+              // console.log("start state tempreservations")
+              // console.log(this.state.tempRegistrations)
+              // console.log(this.state.tempReservations)
+              // console.log("end state tempreservations")
               this.toggleLoadingModal();
               this.setModal({
                 body:
                   <Fragment>
-                    <h3>Oh no!!</h3>
-                    <br />
-                    <h4>Someone beat you to the punch and reserved the following {noGood.length === 1 ? "item" : "items"} before you did... </h4><h1>🤯</h1>
+                    <h1>🤯</h1>
+                    <h4>It looks like someone beat you to the punch on the following: </h4>
                     {noGood.map(thing =>
                       <h3 key={thing.name}>{thing.name}</h3>
                     )}
-                    <h5>Would you like to remove {noGood.length === 1 ? "it" : "them"} and continue to checkout, or go back and select another date for your reservation?</h5>
+                    <h5>Would you like to remove {noGood.length === 1 ? "it" : "them"} and continue to checkout, or go back and select another selection?</h5>
                   </Fragment>,
                 buttons:
                   <Fragment>
@@ -376,14 +375,14 @@ class ShoppingCart extends Component {
                         to={{ pathname: '/rentals' }}
                         role="button"
                       >
-                        Select new date
+                        Rentals
               </Link> &&
                       <Link
                         className="modal-btn-link"
                         to={{ pathname: '/courses' }}
                         role="button"
                       >
-                        Select new course
+                        Courses
               </Link>
                       : types.includes("course")
                         ? <Link
@@ -391,7 +390,7 @@ class ShoppingCart extends Component {
                           to={{ pathname: '/courses' }}
                           role="button"
                         >
-                          Select new course
+                          Courses
               </Link>
                         : types.includes("rental")
                           ? <Link
@@ -399,7 +398,7 @@ class ShoppingCart extends Component {
                             to={{ pathname: '/rental' }}
                             role="button"
                           >
-                            Select new dates
+                            Rentals
               </Link>
                           : null
                     }
@@ -427,14 +426,6 @@ class ShoppingCart extends Component {
           Promise.all(promiseArray)
             .then(() => {
               this.toggleLoadingModal();
-              this.setModal({
-                body: <h4>Your reservations are confirmed.</h4>,
-                buttons:
-                  <Fragment>
-                    <Link className="modal-btn-link" to={{ pathname: "/profile" }} role="button">My Info</Link>
-                    <button onClick={this.toggleModal}>Close</button>
-                  </Fragment>
-              })
             });
         }
       })
@@ -470,27 +461,27 @@ class ShoppingCart extends Component {
               <h2>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</h2>
               <h3>You're almost done!</h3>
             </div>
-
-            <div className="payment-container">
-              <StripeProvider apiKey="pk_test_RwSP4QeJgsTpThoHAR7VRKmR">
-                <Elements>
-                  <CheckoutForm
-                    btn={() => this.checkout()}
-                    firstName={this.props.firstName}
-                    getUserShoppingCart={() => this.getUserShoppingCart()}
-                    lastName={this.props.lastName}
-                    removeRegistrationFromCart={() => this.removeRegistrationFromCart()}
-                    removeReservationFromCart={() => this.removeReservationFromCart()}
-                    setModal={() => this.setModal()}
-                    tempRegistrations={this.state.tempRegistrations}
-                    tempReservations={this.state.tempReservations}
-                    toggleLoadingModal={() => this.toggleLoadingModal()}
-                    total={this.state.total}
-                  />
-                </Elements>
-              </StripeProvider>
-            </div>
-
+            {this.state.complete === true || this.state.tempRegistrations.length > 0 || this.state.tempReservations.length > 0
+              ? <div className="payment-container">
+                <StripeProvider apiKey="pk_test_RwSP4QeJgsTpThoHAR7VRKmR">
+                  <Elements>
+                    <CheckoutForm
+                      btn={() => this.checkout()}
+                      firstName={this.props.firstName}
+                      getUserShoppingCart={() => this.getUserShoppingCart()}
+                      lastName={this.props.lastName}
+                      removeRegistrationFromCart={() => this.removeRegistrationFromCart()}
+                      removeReservationFromCart={() => this.removeReservationFromCart()}
+                      setModal={() => this.setModal()}
+                      tempRegistrations={this.state.tempRegistrations}
+                      tempReservations={this.state.tempReservations}
+                      toggleLoadingModal={() => this.toggleLoadingModal()}
+                      total={this.state.total}
+                    />
+                  </Elements>
+                </StripeProvider>
+              </div>
+              : null}
             <div className="cart-page-container">
               <div className="cart-items">
                 {this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
@@ -532,7 +523,6 @@ class ShoppingCart extends Component {
               <button className={`${this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
                 "chkoutDisabled" : ""}`} onClick={() => this.checkout()}>Confirm Reservation <i className="fas fa-check-circle"></i></button>
             </div>
-            total = {this.state.total}
           </div>
           <Footer />
 
