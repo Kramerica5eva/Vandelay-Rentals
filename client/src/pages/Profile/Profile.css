@@ -134,6 +134,12 @@
   cursor: pointer;
 }
 
+.course-card .profile-icon-disabled,
+.reservation-card .profile-icon-disabled {
+  opacity: .7;
+  cursor: not-allowed;
+}
+
 .reservation-modal-div {
   text-align: center;
 }

@@ -260,9 +260,17 @@ class CheckoutForm extends Component {
               });
               Promise.all(paymentArray)
                 .then(() => {
-                  this.props.getUserShoppingCart();
+                  // this.props.getUserShoppingCart();
                   this.props.toggleLoadingModal();
                   this.setState({ complete: true });
+                  this.setModal({
+                    body: <h4>Your reservations are confirmed.</h4>,
+                    buttons:
+                      <Fragment>
+                        <Link className="modal-btn-link" to={{ pathname: "/profile" }} role="button">My Info</Link>
+                        <button onClick={this.toggleModal}>Close</button>
+                      </Fragment>
+                  })
                 });
             });
         }
@@ -271,9 +279,11 @@ class CheckoutForm extends Component {
   }
 
   render() {
-    if (this.state.complete) return <h1>Purchase Complete</h1>;
+
+    // if (this.state.complete) return <h1>Purchase Complete</h1>;
 
     return (
+      <div className="checkout">
       <div>
         <Modal
           show={this.state.modal.isOpen}
@@ -281,6 +291,22 @@ class CheckoutForm extends Component {
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
+      
+        {this.state.complete ?
+          <h1>Purchase Complete</h1>
+          :
+          <Fragment>
+            <p>Would you like to complete the purchase?</p>
+            <CardNumberElement
+              className="input numberInput"
+            />
+            <CardExpiryElement className="expInput input"
+            />
+            <CardCVCElement className="cvcInput input"
+            />
+            <button className="chkbtn" onClick={this.checkout}>Send</button>
+          </Fragment>}
+      
         <div className="checkout">
           <div>
             <span className="test">Name</span>
@@ -297,6 +323,7 @@ class CheckoutForm extends Component {
           <button className="chkbtn" onClick={this.checkout}>Pay {this.props.total > 0 ? "$" + this.props.total : null}</button>
 
         </div>
+
       </div>
     );
   }

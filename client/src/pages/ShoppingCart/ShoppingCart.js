@@ -425,11 +425,7 @@ class ShoppingCart extends Component {
           });
           Promise.all(promiseArray)
             .then(() => {
-              this.getUserShoppingCart();
               this.toggleLoadingModal();
-              // this.setState({
-              //   complete: true
-              // });
             });
         }
       })
