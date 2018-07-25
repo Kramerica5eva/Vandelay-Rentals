@@ -1,24 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { CardNumberElement, CardExpiryElement, CardCVCElement, injectStripe } from 'react-stripe-elements';
+import { CardNumberElement, CardExpiryElement, CardCVCElement, PostalCodeElement, injectStripe } from 'react-stripe-elements';
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
-import LoadingModal from "../../components/Elements/LoadingModal";
 import { Link } from 'react-router-dom';
 import './CheckoutForm.css';
-
-// const {
-//   CardElement,
-//   CardNumberElement,
-//   CardExpiryElement,
-//   CardCVCElement,
-//   PostalCodeElement,
-//   PaymentRequestButtonElement,
-//   IbanElement,
-//   IdealBankElement,
-//   StripeProvider,
-//   Elements,
-//   injectStripe,
-// } = ReactStripeElements;
 
 class CheckoutForm extends Component {
   constructor(props) {
@@ -30,9 +15,17 @@ class CheckoutForm extends Component {
         isOpen: false,
         body: "",
         buttons: ""
-      }
+      },
+      cardHolderName: ""
     };
   }
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
 
   setModal = (modalInput) => {
     console.log(modalInput)
@@ -235,17 +228,12 @@ class CheckoutForm extends Component {
   // }
 
   async submit(ev) {
-    let { token } = await this.props.stripe.createToken({ name: "Name" });
+    let { token } = await this.props.stripe.createToken({ name: this.state.cardHolderName });
     let charge = { token: token.id, chrgAmt: this.props.total };
-    console.log(charge);
     // let charge = { test: "test" };
     API.charge(charge)
       .then((res) => {
-        console.log("GETTING A RESPONSE")
-        console.log(res)
-        console.log(res.data[0].status);
         if (res.data[0].status === "succeeded") {
-          console.log("Purchase Complete!")
           let promiseArray = [];
           this.props.tempReservations.forEach(res => {
             //  Add total cost of the reservation to the reservation object:
@@ -282,33 +270,33 @@ class CheckoutForm extends Component {
       .catch(err => console.log(err));
   }
 
-  // this.state.tempRegistrations.forEach(reg => {
-  //   total = parseFloat(total) + parseFloat(reg.price.$numberDecimal).toFixed(2);
-  // });
-  // this.state.tempReservations.forEach(res => {
-  //   total = parseFloat(total) + parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2));
-  // });
-
   render() {
     if (this.state.complete) return <h1>Purchase Complete</h1>;
 
     return (
-      <div className="checkout">
+      <div>
         <Modal
           show={this.state.modal.isOpen}
           toggleModal={this.toggleModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
-        <p>Would you like to complete the purchase?</p>
-        <CardNumberElement
-          className="input numberInput"
-        />
-        <CardExpiryElement className="expInput input"
-        />
-        <CardCVCElement className="cvcInput input"
-        />
-        <button className="chkbtn" onClick={this.checkout}>Send</button>
+        <div className="checkout">
+          <div>
+            <span className="test">Name</span>
+            <input name="cardHolderName" className="test" type="text" placeholder="Daenerys Targaryen" value={this.state.cardHolderName} onChange={(e) => this.handleInputChange(e)} />
+          </div>
+          Card Number
+        <CardNumberElement className="input numberInput" />
+          Expiration date
+        <CardExpiryElement className="expInput input" />
+          CVC
+        <CardCVCElement className="cvcInput input" />
+          Zip code
+          <PostalCodeElement className="postalInput input" />
+          <button className="chkbtn" onClick={this.checkout}>Pay {this.props.total > 0 ? "$" + this.props.total : null}</button>
+
+        </div>
       </div>
     );
   }
