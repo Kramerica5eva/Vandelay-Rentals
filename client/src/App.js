@@ -88,16 +88,16 @@ class App extends Component {
     new ClipboardJS('.clipboard-btn');
   }
 
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: false,
         body: modalInput.body,
         buttons: modalInput.buttons
       }
@@ -202,7 +202,7 @@ class App extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
@@ -317,7 +317,7 @@ class App extends Component {
               )}
             />
             <PrivateRoute path="/waiver" component={AddPropsToRoute(Waiver, {
-              toggleModal: this.toggleModal,
+              closeModal: this.closeModal,
               setModal: this.setModal,
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,
@@ -328,7 +328,7 @@ class App extends Component {
             })}
             />
             <PrivateRoute path="/profile" component={AddPropsToRoute(Profile, {
-              toggleModal: this.toggleModal,
+              closeModal: this.closeModal,
               setModal: this.setModal,
               updateUser: this.updateUser,
               loggedIn: this.state.loggedIn,

@@ -24,16 +24,16 @@ export class AddUserForm extends Component {
     admin: false
   }
 
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: false,
         body: modalInput.body,
         buttons: modalInput.buttons
       }
@@ -92,7 +92,7 @@ export class AddUserForm extends Component {
           console.log(res);
           this.setModal({
             body: <h4>New User has been added to the  database.</h4>,
-            buttons: <button onClick={this.toggleModal}>OK</button>
+            buttons: <button onClick={this.closeModal}>OK</button>
           })
           this.setState({
             username: "",
@@ -120,7 +120,7 @@ export class AddUserForm extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />

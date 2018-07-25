@@ -14,9 +14,9 @@ export class AddCategoryForm extends Component {
     description: ""
   }
 
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
@@ -59,7 +59,7 @@ export class AddCategoryForm extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />

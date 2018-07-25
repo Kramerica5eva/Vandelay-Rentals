@@ -29,16 +29,16 @@ export class BrandonTestTable extends Component {
     this.adminGetAllRentals();
   }
 
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: false,
         header: modalInput.header,
         body: modalInput.body,
         footer: modalInput.footer,
@@ -148,7 +148,7 @@ export class BrandonTestTable extends Component {
     API.adminUpdateRental(_id, { category: this.state.category })
       .then(res => {
         this.adminGetAllRentals();
-        this.toggleModal();
+        this.closeModal();
       });
   }
 
@@ -220,7 +220,7 @@ export class BrandonTestTable extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           header={this.state.modal.header}
           body={this.state.modal.body}
           footer={this.state.modal.footer}

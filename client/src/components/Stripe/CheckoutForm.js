@@ -28,7 +28,6 @@ class CheckoutForm extends Component {
   };
 
   setModal = (modalInput) => {
-    console.log(modalInput)
     this.setState({
       modal: {
         isOpen: true,
@@ -38,9 +37,9 @@ class CheckoutForm extends Component {
     });
   }
 
-  toggleModal = (checkout) => {
+  closeModal = (checkout) => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
     if (checkout) {
       this.checkout();
@@ -184,7 +183,7 @@ class CheckoutForm extends Component {
                     }
                     <button
                       className="modal-btn-link"
-                      onClick={() => this.toggleModal(true)}
+                      onClick={() => this.closeModal(true)}
                     >
                       Remove
                       </button>
@@ -263,6 +262,14 @@ class CheckoutForm extends Component {
                   this.props.getUserShoppingCart();
                   this.props.toggleLoadingModal();
                   this.setState({ complete: true });
+                  this.props.setModal({
+                    body: <h4>Your reservations are confirmed.</h4>,
+                    buttons:
+                      <Fragment>
+                        <Link className="modal-btn-link" to={{ pathname: "/profile" }} role="button">My Info</Link>
+                        <button onClick={() => this.props.closeModal(false)}>Close</button>
+                      </Fragment>
+                  })
                 });
             });
         }
@@ -274,26 +281,28 @@ class CheckoutForm extends Component {
     if (this.state.complete) return <h1>Purchase Complete</h1>;
 
     return (
+
       <div>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
         <div className="checkout">
+
           <div>
             <span className="test">Name</span>
             <input name="cardHolderName" className="test" type="text" placeholder="Daenerys Targaryen" value={this.state.cardHolderName} onChange={(e) => this.handleInputChange(e)} />
           </div>
           Card Number
-        <CardNumberElement className="input numberInput" />
+          <CardNumberElement className="input numberInput" />
           Expiration date
-        <CardExpiryElement className="expInput input" />
+          <CardExpiryElement className="expInput input" />
           CVC
-        <CardCVCElement className="cvcInput input" />
+          <CardCVCElement className="cvcInput input" />
           Zip code
-          <PostalCodeElement className="postalInput input" />
+            <PostalCodeElement className="postalInput input" />
           <button className="chkbtn" onClick={this.checkout}>Pay {this.props.total > 0 ? "$" + this.props.total : null}</button>
 
         </div>

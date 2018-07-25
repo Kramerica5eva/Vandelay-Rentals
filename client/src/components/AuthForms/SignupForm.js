@@ -23,16 +23,16 @@ export class SignupForm extends Component {
     phone: ""
   }
 
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: false,
         body: modalInput.body,
         buttons: modalInput.buttons
       }
@@ -118,7 +118,7 @@ export class SignupForm extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />

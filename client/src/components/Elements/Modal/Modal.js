@@ -13,9 +13,7 @@ class Modal extends Component {
         <ModalContent
           body={this.props.body}
           buttons={this.props.buttons}
-          toggleModal={this.props.toggleModal}
-          style={this.props.style}
-          buttonStyle={this.props.buttonStyle}
+          closeModal={this.props.closeModal}
         />
       </div>
     )

@@ -30,9 +30,9 @@ class Rentals extends Component {
 		this.getAllRentals();
 	}
 
-	toggleModal = () => {
+	closeModal = () => {
 		this.setState({
-			modal: { isOpen: !this.state.modal.isOpen }
+			modal: { isOpen: false }
 		});
 	};
 
@@ -188,7 +188,7 @@ class Rentals extends Component {
 											)}
 									</Fragment>,
 								buttons:
-									<button onClick={this.toggleModal}>Continue Shopping</button>
+									<button onClick={this.closeModal}>Continue Shopping</button>
 							});
 						} else {
 							//  Add existing reservation dates to the rental object so they can be passed to the changeReservationInCart function if the user chooses to change dates:
@@ -214,7 +214,7 @@ class Rentals extends Component {
 									</Fragment>,
 								buttons:
 									<Fragment>
-										<button onClick={this.toggleModal}>Keep</button>
+										<button onClick={this.closeModal}>Keep</button>
 										<button onClick={() => this.changeReservationInCart(from, to, rental)}>Change</button>
 									</Fragment>
 							});
@@ -241,7 +241,7 @@ class Rentals extends Component {
 								>
 									Go to Checkout
               </Link>
-								<button onClick={this.toggleModal}>Continue Shopping</button>
+								<button onClick={this.closeModal}>Continue Shopping</button>
 							</Fragment>
 					});
 				}
@@ -249,7 +249,7 @@ class Rentals extends Component {
 	};
 
 	changeReservationInCart = (from, to, rental) => {
-		this.toggleModal();
+		this.closeModal();
 		this.toggleLoadingModal();
 		API.changeReservationInCart(from, to, rental).then(response => {
 			setTimeout(this.toggleLoadingModal, 500);
@@ -261,7 +261,7 @@ class Rentals extends Component {
 			<Fragment>
 				<Modal
 					show={this.state.modal.isOpen}
-					toggleModal={this.toggleModal}
+					closeModal={this.closeModal}
 					body={this.state.modal.body}
 					buttons={this.state.modal.buttons}
 				/>

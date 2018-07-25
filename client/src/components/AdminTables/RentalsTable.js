@@ -46,9 +46,9 @@ export class RentalsTable extends Component {
   };
 
   // MODAL TOGGLE FUNCTIONS
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   };
 
@@ -107,7 +107,7 @@ export class RentalsTable extends Component {
 
   //  Changes rental condition to retire - offered as an alternative to deleting
   retireRental = row => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     const { _id } = row._original;
     API.adminUpdateRental(_id, { condition: 'Retired' })
@@ -118,10 +118,24 @@ export class RentalsTable extends Component {
   };
 
   rentalDeleteModal = row => {
-    if (row._original.reservations.length > 0) {
+    const { reservations, pastRentals } = row._original;
+    if (pastRentals.length > 0) {
+      this.setModal({
+        body:
+        <Fragment>
+          <h4>Items with Past Rental records cannot be deleted.</h4>
+          <p>Would you like to retire the item?</p>
+        </Fragment>,
+        buttons:
+        <Fragment>
+          <button onClick={this.closeModal}>Nevermind</button>
+          <button onClick={() => this.retireRental(row)}>Retire it</button>
+        </Fragment>
+      })
+    } else if (reservations.length > 0) {
       this.setModal({
         body: <h3>You must remove all reservations for this item first.</h3>,
-        buttons: <button onClick={this.toggleModal}>OK</button>
+        buttons: <button onClick={this.closeModal}>OK</button>
       })
     } else {
       this.setModal({
@@ -135,7 +149,7 @@ export class RentalsTable extends Component {
           </Fragment>,
         buttons:
           <Fragment>
-            <button onClick={this.toggleModal}>Nevermind</button>
+            <button onClick={this.closeModal}>Nevermind</button>
             <button onClick={() => this.retireRental(row)}>Retire it</button>
             <button onClick={() => this.deleteRental(row)}>Delete it</button>
           </Fragment>
@@ -144,7 +158,7 @@ export class RentalsTable extends Component {
   };
 
   deleteRental = row => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     const { _id } = row._original;
     API.adminDeleteRentalItem(_id)
@@ -155,7 +169,7 @@ export class RentalsTable extends Component {
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
           body: <h3>Item has been successfully deleted</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllRentals();
@@ -175,13 +189,13 @@ export class RentalsTable extends Component {
       buttons:
         <Fragment>
           <button onClick={() => this.submitNote(_id, this.state.note)}>Submit</button>
-          <button onClick={this.toggleModal}>Nevermind</button>
+          <button onClick={this.closeModal}>Nevermind</button>
         </Fragment>
     })
   }
 
   submitNote = (id, note) => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     API.adminUpdateRental(id, { note: note })
       .then(response => {
@@ -191,7 +205,7 @@ export class RentalsTable extends Component {
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
           body: <h3>Database successfully updated</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllRentals();
@@ -218,7 +232,7 @@ export class RentalsTable extends Component {
       buttons:
         <Fragment>
           <button onClick={() => this.handleImageUpload(row)}>Submit</button>
-          <button onClick={this.toggleModal}>I'm done</button>
+          <button onClick={this.closeModal}>I'm done</button>
         </Fragment>
 
     });
@@ -256,7 +270,7 @@ export class RentalsTable extends Component {
         this.setState({
           selectedFile: null
         })
-        this.toggleModal();
+        this.closeModal();
         this.getImageUploadModal(row);
       });
     } else {
@@ -286,10 +300,10 @@ export class RentalsTable extends Component {
       if (res.data.length === 0) {
         setTimeout(this.setModal, 500, {
           body: <h3>No images to display</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
       } else {
-        this.toggleModal();
+        this.closeModal();
         this.getImageModal(res.data, row);
       }
     });
@@ -377,7 +391,7 @@ export class RentalsTable extends Component {
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
             body: <h3>Database successfully updated</h3>,
-            buttons: <button onClick={this.toggleModal}>OK</button>
+            buttons: <button onClick={this.closeModal}>OK</button>
           });
           //  query the db and reload the table
           this.adminGetAllRentals();
@@ -464,7 +478,7 @@ export class RentalsTable extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />

@@ -5,18 +5,18 @@ import onClickOutside from "react-onclickoutside";
 class ModalContent extends Component {
 
   handleClickOutside = () => {
-    this.props.toggleModal();
+    this.props.closeModal();
   }
 
   render() {
     return (
       <div className="my-modal-content">
         <div className="my-modal-header">
-          <span className="my-modal-close" onClick={this.props.toggleModal}>&times;</span>
+          <span className="my-modal-close" onClick={this.props.closeModal}>&times;</span>
         </div>
-        <div className="my-modal-body" style={this.props.style}>
+        <div className="my-modal-body">
           {this.props.body}
-          <div className="modal-btn-div" style={this.props.buttonStyle}>
+          <div className="modal-btn-div">
             {this.props.buttons}
           </div>
         </div>

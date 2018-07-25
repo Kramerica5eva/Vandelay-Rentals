@@ -48,9 +48,9 @@ export class PastRentalsTable extends Component {
   };
 
   // MODAL TOGGLE FUNCTIONS
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   };
 
@@ -100,13 +100,13 @@ export class PastRentalsTable extends Component {
       buttons:
         <Fragment>
           <button onClick={() => this.submitNote(_id)}>Submit</button>
-          <button onClick={this.toggleModal}>Nevermind</button>
+          <button onClick={this.closeModal}>Nevermind</button>
         </Fragment>
     })
   }
 
   submitNote = id => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     API.adminUpdatePastRental(id, { note: this.state.note })
       .then(response => {
@@ -139,7 +139,7 @@ export class PastRentalsTable extends Component {
       buttons:
         <Fragment>
           <button onClick={() => this.handleImageUpload(row)}>Submit</button>
-          <button onClick={this.toggleModal}>I'm done</button>
+          <button onClick={this.closeModal}>I'm done</button>
         </Fragment>
 
     });
@@ -177,7 +177,7 @@ export class PastRentalsTable extends Component {
         this.setState({
           selectedFile: null
         })
-        this.toggleModal();
+        this.closeModal();
         this.getImageUploadModal(row);
       });
     } else {
@@ -207,10 +207,10 @@ export class PastRentalsTable extends Component {
       if (res.data.length === 0) {
         setTimeout(this.setModal, 500, {
           body: <h3>No images to display</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
       } else {
-        this.toggleModal();
+        this.closeModal();
         this.getImageModal(res.data, row);
       }
     });
@@ -261,7 +261,7 @@ export class PastRentalsTable extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />

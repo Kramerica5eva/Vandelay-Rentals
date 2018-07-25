@@ -16,16 +16,16 @@ export class ChangePwForm extends Component {
     changeAttempts: 0
   }
 
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: false,
         body: modalInput.body,
         buttons: modalInput.buttons
       }
@@ -51,7 +51,7 @@ export class ChangePwForm extends Component {
         if (res.data.message === "incorrect") {
           this.setModal({
             body: <h5>Current password does not match our records.</h5>,
-            buttons: <button onClick={this.toggleModal}>Try Again</button>
+            buttons: <button onClick={this.closeModal}>Try Again</button>
           });
         }
         else if (res.data.message === "too many attempts") {
@@ -59,7 +59,7 @@ export class ChangePwForm extends Component {
         } else {
           this.setModal({
             body: <h5>Your password has been changed.</h5>,
-            buttons: <button onClick={this.toggleModal}>Continue</button>
+            buttons: <button onClick={this.closeModal}>Continue</button>
           })
         }
       })
@@ -70,7 +70,7 @@ export class ChangePwForm extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />

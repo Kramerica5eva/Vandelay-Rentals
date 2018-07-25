@@ -21,16 +21,16 @@ export class AddCourseForm extends Component {
     slots: ''
   }
 
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
   }
 
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: !this.state.modal.isOpen,
+        isOpen: false,
         body: modalInput.body,
         buttons: modalInput.buttons
       }
@@ -63,7 +63,7 @@ export class AddCourseForm extends Component {
             <h4>Please enter a valid date format</h4>
             <p>(e.g. '01/25/2016' or 'Dec 14 2012')</p>
           </Fragment>,
-        buttons: <button onClick={this.toggleModal}>OK</button>
+        buttons: <button onClick={this.closeModal}>OK</button>
       })
 
       //  The form also validates price loosely, allowing for a dollar sign because users may enter one by habit or preference. It also validates for a single decimal and only two decimal places.
@@ -89,12 +89,12 @@ export class AddCourseForm extends Component {
           if (res.data.message === "$ only") {
             this.setModal({
               body: <h4>You must enter a valid price.</h4>,
-              buttons: <button onClick={this.toggleModal}>OK</button>
+              buttons: <button onClick={this.closeModal}>OK</button>
             })
           } else {
             this.setModal({
               body: <h4>Your Course has been added to the database.</h4>,
-              buttons: <button onClick={this.toggleModal}>OK</button>
+              buttons: <button onClick={this.closeModal}>OK</button>
             });
             this.setState({
               name: '',
@@ -117,7 +117,7 @@ export class AddCourseForm extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />

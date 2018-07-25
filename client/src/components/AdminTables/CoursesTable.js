@@ -37,10 +37,14 @@ export class CoursesTable extends Component {
   };
 
   // MODAL TOGGLE FUNCTIONS
-  toggleModal = () => {
+  closeModal = () => {
     this.setState({
-      modal: { isOpen: !this.state.modal.isOpen }
+      modal: { isOpen: false }
     });
+  }
+
+  closeModal = () => {
+    this.setState({ modal: { isOpen: false } });
   }
 
   setModal = (modalInput) => {
@@ -72,13 +76,13 @@ export class CoursesTable extends Component {
       buttons:
         <Fragment>
           <button onClick={() => this.submitNote(_id)}>Submit</button>
-          <button onClick={this.toggleModal}>Nevermind</button>
+          <button onClick={this.closeModal}>Nevermind</button>
         </Fragment>
     })
   }
 
   submitNote = id => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     API.adminUpdateCourse(id, { note: this.state.note })
       .then(response => {
@@ -117,7 +121,7 @@ export class CoursesTable extends Component {
     if (row._original.registrations.length > 0) {
       this.setModal({
         body: <h3>You must remove all class registrations first.</h3>,
-        buttons: <button onClick={this.toggleModal}>OK</button>
+        buttons: <button onClick={this.closeModal}>OK</button>
       });
     } else {
       this.setModal({
@@ -128,7 +132,7 @@ export class CoursesTable extends Component {
           </Fragment>,
         buttons:
           <Fragment>
-            <button onClick={this.toggleModal}>Nevermind</button>
+            <button onClick={this.closeModal}>Nevermind</button>
             <button onClick={() => this.deleteCourse(row)}>Delete it</button>
           </Fragment>
       })
@@ -138,7 +142,7 @@ export class CoursesTable extends Component {
   // Course delete function
   deleteCourse = row => {
     console.log(row);
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     const { _id } = row._original
     API.adminDeleteCourse(_id)
@@ -146,7 +150,7 @@ export class CoursesTable extends Component {
         console.log(res)
         this.adminGetAllCourses();
         this.toggleLoadingModal();
-        this.toggleModal();
+        this.closeModal();
       })
       .catch(err => console.log(err));
   }
@@ -165,7 +169,7 @@ export class CoursesTable extends Component {
   }
 
   submitNote = id => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     API.adminUpdateCourse(id, { note: this.state.note })
       .then(response => {
@@ -175,7 +179,7 @@ export class CoursesTable extends Component {
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
           body: <h3>Database successfully updated</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllCourses();
@@ -197,7 +201,7 @@ export class CoursesTable extends Component {
   }
 
   submitTopics = id => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     const topicsArray = this.state.topics.split(", ");
     API.adminUpdateCourse(id, { topics: topicsArray })
@@ -208,7 +212,7 @@ export class CoursesTable extends Component {
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
           body: <h3>Database successfully updated</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllCourses();
@@ -230,7 +234,7 @@ export class CoursesTable extends Component {
   }
 
   submitSummary = id => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     API.adminUpdateCourse(id, { summary: this.state.summary })
       .then(response => {
@@ -240,7 +244,7 @@ export class CoursesTable extends Component {
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
           body: <h3>Database successfully updated</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllCourses();
@@ -262,7 +266,7 @@ export class CoursesTable extends Component {
   }
 
   submitDescription = id => {
-    this.toggleModal();
+    this.closeModal();
     this.toggleLoadingModal();
     API.adminUpdateCourse(id, { description: this.state.description })
       .then(response => {
@@ -272,7 +276,7 @@ export class CoursesTable extends Component {
         // success modal after the loading modal is gone.
         setTimeout(this.setModal, 500, {
           body: <h3>Database successfully updated</h3>,
-          buttons: <button onClick={this.toggleModal}>OK</button>
+          buttons: <button onClick={this.closeModal}>OK</button>
         });
         //  query the db and reload the table
         this.adminGetAllCourses();
@@ -316,7 +320,7 @@ export class CoursesTable extends Component {
           // success modal after the loading modal is gone.
           setTimeout(this.setModal, 500, {
             body: <h3>Database successfully updated</h3>,
-            buttons: <button onClick={this.toggleModal}>OK</button>
+            buttons: <button onClick={this.closeModal}>OK</button>
           });
           //  query the db and reload the table
           this.adminGetAllCourses();
@@ -403,7 +407,7 @@ export class CoursesTable extends Component {
       <Fragment>
         <Modal
           show={this.state.modal.isOpen}
-          toggleModal={this.toggleModal}
+          closeModal={this.closeModal}
           body={this.state.modal.body}
           buttons={this.state.modal.buttons}
         />
