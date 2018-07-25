@@ -145,6 +145,11 @@
   color: #555;
 }
 
+.table-icon-disabled {
+  opacity: .7;
+  cursor: auto;
+}
+
 .table-tooltip {
   position: absolute;
   top: 10px;

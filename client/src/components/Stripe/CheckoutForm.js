@@ -248,6 +248,8 @@ class CheckoutForm extends Component {
           console.log("Purchase Complete!")
           let promiseArray = [];
           this.props.tempReservations.forEach(res => {
+            //  Add total cost of the reservation to the reservation object:
+            res.total = (((parseInt(res.date.to) - parseInt(res.date.from)) / 86400) + 1) * res.dailyRate.$numberDecimal;
             const resQuery = API.reserveRental(res);
             promiseArray.push(resQuery);
           });

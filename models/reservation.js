@@ -21,7 +21,10 @@ const reservationSchema = new Schema({
     type: Boolean,
     default: false
   },
-  amtPaid: Schema.Types.Decimal128,
+  amtPaid: {
+    type: Schema.Types.Decimal128,
+    default: 0
+  },
   total: Schema.Types.Decimal128,
   note: String
 

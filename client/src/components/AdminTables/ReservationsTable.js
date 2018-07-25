@@ -59,8 +59,28 @@ export class ReservationsTable extends Component {
     });
   }
 
+  cancelReservationModal = row => {
+    console.log(row);
+    if (row.hasPaid === "True") {
+      this.setModal({
+        body: <h4>You must refund the customer's money before you can cancel this reservation.</h4>,
+        buttons: <button onClick={this.toggleModal}>OK</button>
+      })
+    } else {
+      this.setModal({
+        body: <h3>Are you sure you want to cancel the reservation?</h3>,
+        buttons:
+          <Fragment>
+            <button onClick={this.toggleModal}>Nevermind</button>
+            <button onClick={() => this.cancelReservation(row)}>Yes, Cancel It</button>
+          </Fragment>
+      })
+    }
+  }
+
   //  Cancel function works - Deletes reservation and removes the reference from User and Rental
   cancelReservation = row => {
+    this.toggleModal();
     this.toggleLoadingModal();
     const { _id } = row._original;
 
@@ -201,7 +221,11 @@ export class ReservationsTable extends Component {
                     return (
                       <div className="table-icon-div">
                         <div className="fa-trash-alt-div table-icon-inner-div">
-                          <i onClick={() => this.cancelReservation(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
+                          <i onClick={() => this.cancelReservationModal(row.row)} className={row.row.hasPaid === "True" ?
+                            "table-icon fas fa-trash-alt fa-lg table-icon-disabled"
+                            :
+                            "table-icon fas fa-trash-alt fa-lg"
+                          }></i>
                           <span className="fa-trash-alt-tooltip table-tooltip">cancel reservation</span>
                         </div>
                         <div className="fa-dollar-sign-div table-icon-inner-div">
@@ -279,6 +303,14 @@ export class ReservationsTable extends Component {
                 {
                   Header: "Total",
                   accessor: "total.$numberDecimal",
+                  width: 80,
+                  Cell: row => {
+                    return `$${parseFloat(row.value).toFixed(2)}`
+                  }
+                },
+                {
+                  Header: "Amt Paid",
+                  accessor: "amtPaid.$numberDecimal",
                   width: 80,
                   Cell: row => {
                     return `$${parseFloat(row.value).toFixed(2)}`
