@@ -56,25 +56,6 @@ export class RegistrationsTable extends Component {
     this.setState({ loadingModalOpen: !this.state.loadingModalOpen });
   }
 
-  cancelRegistrationModal = row => {
-    console.log(row);
-    if (row.hasPaid === "True") {
-      this.setModal({
-        body: <h4>You must refund the customer's money before you can remove their class registration.</h4>,
-        buttons: <button onClick={this.toggleModal}>OK</button>
-      })
-    } else {
-      this.setModal({
-        body: <h4>Are you sure you want to remove this customer's class registration?</h4>,
-        buttons:
-          <Fragment>
-            <button onClick={this.toggleModal}>Nevermind</button>
-            <button onClick={() => this.cancelRegistration(row)}>Yes, Remove It</button>
-          </Fragment>
-      })
-    }
-  }
-
   //  Cancel function works - Deletes registration and removes the reference from User and Course
   cancelRegistration = row => {
     this.toggleLoadingModal();
@@ -99,24 +80,14 @@ export class RegistrationsTable extends Component {
   //  If registration is paid: false, flips it to true, and vice-versa
   toggleRegistrationPaid = row => {
     this.toggleLoadingModal();
-    const { _id, paid, price, amtPaid } = row._original;
-
-    let payment;
-    if (paid === true) payment = 0;
-    else payment = price.$numberDecimal;
-
-    API.adminUpdateRegistration(_id, {
-      paid: !paid,
-      amtPaid: payment
-    })
+    const { _id, paid } = row._original;
+    API.adminUpdateRegistration(_id, { paid: !paid })
       .then(res => {
         this.toggleLoadingModal();
         console.log(res)
-        //  mutating registrations in state, while not strictly good practice according to React's design, allows for not reloading the table with each change (reloading the table results in the subtable closing - an annoying effect). Setting state runUnmount to true will repopulate the data when the table is closed so that reflects changes when it is reopened.
         this.state.registrations.forEach(reg => {
           if (reg._id === _id) {
-            reg.paid = !paid,
-              reg.amtPaid.$numberDecimal = payment
+            reg.paid = !paid
           }
           this.setState({ runUnmount: true })
         })
@@ -196,11 +167,7 @@ export class RegistrationsTable extends Component {
                     return (
                       <div className="table-icon-div">
                         <div className="fa-trash-alt-div table-icon-inner-div">
-                          <i onClick={() => this.cancelRegistrationModal(row.row)} className={row.row.hasPaid === "True" ?
-                            "table-icon fas fa-trash-alt fa-lg table-icon-disabled"
-                            :
-                            "table-icon fas fa-trash-alt fa-lg"
-                          }></i>
+                          <i onClick={() => this.cancelRegistration(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
                           <span className="fa-trash-alt-tooltip table-tooltip">cancel registration</span>
                         </div>
                         <div className="fa-dollar-sign-div table-icon-inner-div">

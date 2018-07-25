@@ -90,19 +90,19 @@ module.exports = {
   },
 
   removeCourseRegistration: function (req, res) {
-    console.log("Here's the course req.body:")
-    console.log(req.body);
+    // console.log("Here's the course req.body:")
+    // console.log(req.body);
     db.Registration
       .deleteOne({ _id: req.params.id })
       .then(() => {
         Promise.all([
           db.Course.findByIdAndUpdate(
-            { _id: req.body._original.courseId },
+            { _id: req.body.courseId },
             { $pull: { registrations: req.params.id } },
             { new: true }
           ),
           db.User.findByIdAndUpdate(
-            { _id: req.body._original.customerId },
+            { _id: req.body.customerId },
             { $pull: { registrations: req.params.id } },
             { new: true }
           )
