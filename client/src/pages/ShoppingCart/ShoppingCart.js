@@ -64,22 +64,20 @@ class ShoppingCart extends Component {
   };
 
   getUserShoppingCart = () => {
-    let total = 0;
+    let total = 0.00;
     API.getUserShoppingCart()
       .then(cart => {
+        cart.data.tempRegistrations.forEach(reg => {
+          total = (parseFloat(total) + parseFloat(reg.price.$numberDecimal)).toFixed(2);
+        });
+        cart.data.tempReservations.forEach(res => {
+          total = (parseFloat(total) + parseFloat((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal))).toFixed(2);
+        });
         this.setState({
           tempRegistrations: cart.data.tempRegistrations,
-          tempReservations: cart.data.tempReservations
-        });
-        this.state.tempRegistrations.forEach(reg => {
-          total = parseFloat(total) + parseFloat(reg.price.$numberDecimal).toFixed(2);
-        });
-        this.state.tempReservations.forEach(res => {
-          total = parseFloat(total) + parseFloat(((((res.date.to - res.date.from) / 86400) + 1) * parseFloat(res.dailyRate.$numberDecimal)).toFixed(2));
-        });
-        this.setState({
+          tempReservations: cart.data.tempReservations,
           total: parseFloat(total).toFixed(2)
-        })
+        });
       });
   }
 
