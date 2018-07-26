@@ -2,66 +2,85 @@
 
 /* general styling */
 
-#shopping-cart-page .body-container {
+#shopping-cart-page {
   background-image: url("https://images.unsplash.com/photo-1428954376791-d9ae785dfb2d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b1d1c3353d1a6b599d22960a10440ed8&auto=format&fit=crop&w=1350&q=80");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+#shopping-cart-page .body-container {
+  background: transparent;
   min-height: calc(100vh - 50px);
-  /* height: 100%; */
+  padding-left: unset;
+  padding-right: unset;
 }
 
 .body-container .shopping-cart-header {
+  width: 100%;
   text-align: center;
-  margin: 5% auto 0 auto;
-  /* color: white; */
-}
-
-.chkoutDisabled {
-  /* pointer-events: none; */
-  cursor: not-allowed;
-}
-
-.cart-page-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: left;
-  width: 49%;
+  margin: 100px 0 50px 0;
 }
 
 .payment-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: right;
-  width: 49%;
-}
-
-.cart-page-container .side-image {
-  /* width: 100%; */
-  /* max-width: 300px; */
-}
-
-.cart-items {
-  max-width: 550px;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  margin: auto;
+  padding: 10px;
 }
 
-.empty-cart {
-  margin: 3%;
-  color: white;
-  position: relative;
-  top: 5em;
+.payment-container .checkout > div {
+  margin: 10px 0 20px 0;
+}
+
+.payment-container input {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.cart-page-container {
+  padding: 10px;
+  width: 100%;
+  margin: auto;
+}
+
+.cart-page-container .cart-items {
+  width: 100%;
+}
+
+.cart-page-container .cart-items > div {
+  background-color: #ffffff8a;
+  margin: 15px 0;
+  padding: 10px;
+  width: 100%;
+}
+
+.cart-page-container .cart-items > div:last-child {
+  background: transparent;
+  margin-bottom: 50px;
+  margin-top: -10px;
+}
+
+.cart-page-container .cart-items > div > * {
+  margin-bottom: 5px;
+}
+
+.cart-page-container .cart-items > div > h2 {
+  border-bottom: 2px solid #494fc9;
 }
 
 div .checkout-proceed {
-  display: flex;
-  justify-content: flex-end;
+  width: 100%;
+}
+
+.chkoutDisabled {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.empty-cart {
+  text-align: center;
+  color: white;
+  margin-top: 50px;
 }
 
 div .checkout-proceed button {
@@ -78,6 +97,7 @@ div .checkout-proceed button {
   transition: all 150ms ease-in-out;
   text-decoration: none;
   margin: 0 auto 50px auto;
+  float: right;
 }
 
 div .checkout-proceed button:hover {
@@ -87,23 +107,7 @@ div .checkout-proceed button:hover {
   color: #41ba41e2;
 }
 
-.cart-res-container, .cart-reg-container {
-  background-color: rgba(255, 255, 255, 0.863);
-  margin: 3% 1%;
-  padding: 10px;
-  max-width: 500px;
-  width: 100%;
-}
-
-.cart-res-container>*, .cart-reg-container>* {
-  margin-bottom: 5px;
-}
-
-.cart-res-container>h2, .cart-reg-container>h2 {
-  border-bottom: 2px solid #494fc9;
-}
-
-.cart-res-container .remove-reservation, .cart-reg-container .remove-reservation {
+.cart-page-container .cart-items > div .remove-reservation {
   font-family: var(--font-Raleway);
   border: 1px solid #e34d3ae2;
   padding: 7px 14px;
@@ -118,7 +122,7 @@ div .checkout-proceed button:hover {
   text-decoration: none;
 }
 
-.cart-res-container .remove-reservation:hover, .cart-reg-container .remove-reservation:hover {
+.cart-page-container .cart-items > div .remove-reservation:hover {
   background-color: #fff;
   -webkit-box-shadow: 0 0 5px #e34d3ae2 inset, 0 0 5px #e34d3ae2;
   box-shadow: 0 0 5px #e34d3ae2 inset, 0 0 5px #e34d3ae2;
@@ -129,8 +133,40 @@ div .checkout-proceed button:hover {
   display: none;
 }
 
-@media (min-width: 600px) {
-  div .checkout-proceed button {
-    margin: 0 25px 50px 25px;
+@media (min-width: 450px) {
+  .payment-container {
+    width: 400px;
+    margin: auto;
+  }
+  .cart-page-container {
+    width: 400px;
+    margin: auto;
+  }
+}
+
+@media (min-width: 675px) {
+  #shopping-cart-page .body-container {
+    width: 660px;
+    margin: auto;
+  }
+  .payment-container {
+    width: 320px;
+    float: left;
+  }
+  .cart-page-container {
+    width: 320px;
+    float: right;
+  }
+  .cart-page-container .cart-items > div:first-child {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 880px) {
+  #shopping-cart-page .body-container {
+    width: 840px;
+  }
+  .cart-page-container {
+    width: 500px;
   }
 }
