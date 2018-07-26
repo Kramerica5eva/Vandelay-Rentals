@@ -25,7 +25,6 @@ export class ReservationsTable extends Component {
     //  Why call get Users or get Rentals on Unmount?
     //  Clicking cancelReservation runs all the necessary database functions to delete the reservation, but in this component it only filters it from the this.state.reservations array, meaning if you close the table and reopen it, the one you just deleted will still show. So by running the get user function when the component unmounts ensures this won't happen while also avoiding an extra database query with every deletion.
     if (this.state.runUnmount) {
-      console.log("Reservations Unmount Running!");
       if (this.state.fromUsers) {
         this.props.adminGetAllUsers();
       } else {
@@ -33,6 +32,14 @@ export class ReservationsTable extends Component {
       }
     }
   }
+
+  // Standard input change controller
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
 
   // MODAL TOGGLE FUNCTIONS
   closeModal = () => {
@@ -60,7 +67,6 @@ export class ReservationsTable extends Component {
   }
 
   cancelReservationModal = row => {
-    console.log(row);
     if (row.hasPaid === "True") {
       this.setModal({
         body: <h4>You must refund the customer's money before you can cancel this reservation.</h4>,
@@ -86,7 +92,6 @@ export class ReservationsTable extends Component {
 
     API.removeRentalReservation(_id, row)
       .then(res => {
-        console.log(res);
         this.toggleLoadingModal();
         //  filter the row from the reservations array in state and then setState to the filtered data.
         const newReservations = this.state.reservations.filter(reg => (reg._id !== _id));
@@ -104,7 +109,6 @@ export class ReservationsTable extends Component {
   toggleReservationPaid = row => {
     this.toggleLoadingModal();
     const { _id, paid, total } = row._original;
-    console.log(row);
 
     let payment;
     if (paid === true) payment = 0;
@@ -116,7 +120,6 @@ export class ReservationsTable extends Component {
     })
       .then(res => {
         this.toggleLoadingModal();
-        console.log(res)
         this.state.reservations.forEach(res => {
           if (res._id === _id) {
             res.paid = !paid;
@@ -134,10 +137,8 @@ export class ReservationsTable extends Component {
   recordRentalReturn = row => {
     this.toggleLoadingModal();
     const { _id } = row._original;
-    console.log(row);
     API.adminRecordRentalReturn(_id, row)
       .then(res => {
-        console.log(res);
         this.toggleLoadingModal();
         //  filter the row from the reservations array in state and then setState to the filtered data.
         const newReservations = this.state.reservations.filter(reg => (reg._id !== _id));
@@ -159,7 +160,6 @@ export class ReservationsTable extends Component {
 
   noteModal = row => {
     const { _id, note } = row._original;
-    console.log(row);
     this.setModal({
       body:
         <Fragment>
@@ -178,7 +178,6 @@ export class ReservationsTable extends Component {
     this.toggleLoadingModal();
     API.adminUpdateReservation(id, { note: this.state.note })
       .then(response => {
-        console.log(response);
         setTimeout(this.toggleLoadingModal, 500);
         this.state.reservations.forEach(pr => {
           if (pr._id === id) pr.note = this.state.note;
@@ -200,9 +199,6 @@ export class ReservationsTable extends Component {
         }
       })
     }
-
-    console.log(this.state.reservations)
-
 
     return (
 

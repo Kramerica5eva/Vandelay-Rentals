@@ -60,7 +60,6 @@ export class CoursesTable extends Component {
 
   noteModal = row => {
     const { _id, note } = row._original;
-    console.log(row);
     this.setModal({
       body:
         <Fragment>
@@ -79,7 +78,6 @@ export class CoursesTable extends Component {
     this.toggleLoadingModal();
     API.adminUpdateCourse(id, { note: this.state.note })
       .then(response => {
-        console.log(response);
         setTimeout(this.toggleLoadingModal, 500);
         this.state.courses.forEach(pr => {
           if (pr._id === id) pr.note = this.state.note;
@@ -102,7 +100,6 @@ export class CoursesTable extends Component {
             r.openSlots = r.slots;
           }
         });
-        console.log(res.data);
         this.setState({
           courses: res.data
         });
@@ -135,13 +132,11 @@ export class CoursesTable extends Component {
 
   // Course delete function
   deleteCourse = row => {
-    console.log(row);
     this.closeModal();
     this.toggleLoadingModal();
     const { _id } = row._original
     API.adminDeleteCourse(_id)
       .then(res => {
-        console.log(res)
         this.adminGetAllCourses();
         this.toggleLoadingModal();
         this.closeModal();
@@ -151,7 +146,6 @@ export class CoursesTable extends Component {
 
   noteModal = row => {
     const { _id, note } = row._original;
-    console.log(row);
     this.setModal({
       body:
         <Fragment>
@@ -167,7 +161,6 @@ export class CoursesTable extends Component {
     this.toggleLoadingModal();
     API.adminUpdateCourse(id, { note: this.state.note })
       .then(response => {
-        console.log(response);
         //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
@@ -200,7 +193,6 @@ export class CoursesTable extends Component {
     const topicsArray = this.state.topics.split(", ");
     API.adminUpdateCourse(id, { topics: topicsArray })
       .then(response => {
-        console.log(response);
         //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
@@ -216,7 +208,6 @@ export class CoursesTable extends Component {
 
   summaryModal = row => {
     const { _id, summary } = row._original;
-    console.log(row);
     this.setModal({
       body:
         <Fragment>
@@ -232,7 +223,6 @@ export class CoursesTable extends Component {
     this.toggleLoadingModal();
     API.adminUpdateCourse(id, { summary: this.state.summary })
       .then(response => {
-        console.log(response);
         //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
@@ -248,7 +238,6 @@ export class CoursesTable extends Component {
 
   descriptionModal = row => {
     const { _id, description } = row._original;
-    console.log(row);
     this.setModal({
       body:
         <Fragment>
@@ -264,7 +253,6 @@ export class CoursesTable extends Component {
     this.toggleLoadingModal();
     API.adminUpdateCourse(id, { description: this.state.description })
       .then(response => {
-        console.log(response);
         //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.

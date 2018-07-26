@@ -24,7 +24,6 @@ export class RegistrationsTable extends Component {
   componentWillUnmount = () => {
     // the cancelRegistration method deletes the registration from the database, and it also filters the deleted data from this.props.registrations and then sets state. But without querying the database, when the component reloads this.state.registrations would still contain the ones that were deleted. So, if there has been a change (props.registrations.length is > state.registrations.length), the adminGetAllUsers() method is called on the parent component.
     if (this.state.runUnmount) {
-      console.log("Registrations Unmount Running!");
       if (this.state.fromUsers) {
         this.props.adminGetAllUsers();
       } else {
@@ -32,6 +31,14 @@ export class RegistrationsTable extends Component {
       }
     }
   }
+
+  // Standard input change controller
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
 
   // MODAL TOGGLE FUNCTIONS
   closeModal = () => {
@@ -57,7 +64,6 @@ export class RegistrationsTable extends Component {
   }
 
   cancelRegistrationModal = row => {
-    console.log(row);
     if (row.hasPaid === "True") {
       this.setModal({
         body: <h4>You must refund the customer's money before you can remove their class registration.</h4>,
@@ -80,12 +86,10 @@ export class RegistrationsTable extends Component {
     this.closeModal();
     this.toggleLoadingModal();
     const { _id } = row;
-    console.log(row);
 
     API.removeCourseRegistration(_id, row)
       .then(res => {
         this.toggleLoadingModal();
-        console.log(res);
         //  filter the row from the registrations array in state and then setState to the filtered data.
         const newRegistrations = this.state.registrations.filter(reg => (reg._id !== _id));
         //  empty selection and selectedRow so the buttons revert to disabled
@@ -112,7 +116,6 @@ export class RegistrationsTable extends Component {
     })
       .then(res => {
         this.toggleLoadingModal();
-        console.log(res)
         //  mutating registrations in state, while not strictly good practice according to React's design, allows for not reloading the table with each change (reloading the table results in the subtable closing - an annoying effect). Setting state runUnmount to true will repopulate the data when the table is closed so that reflects changes when it is reopened.        
         this.state.registrations.forEach(reg => {
           if (reg._id === _id) {
@@ -128,7 +131,6 @@ export class RegistrationsTable extends Component {
 
   noteModal = row => {
     const { _id, note } = row._original;
-    console.log(row);
     this.setModal({
       body:
         <Fragment>
@@ -147,7 +149,6 @@ export class RegistrationsTable extends Component {
     this.toggleLoadingModal();
     API.adminUpdateRegistration(id, { note: this.state.note })
       .then(response => {
-        console.log(response);
         setTimeout(this.toggleLoadingModal, 500);
         this.state.registrations.forEach(pr => {
           if (pr._id === id) pr.note = this.state.note;
@@ -158,7 +159,6 @@ export class RegistrationsTable extends Component {
   }
 
   render() {
-    console.log(this.state.registrations);
 
     if (this.state.registrations.length > 0) {
       this.state.registrations.forEach(registration => {

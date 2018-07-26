@@ -163,7 +163,6 @@ export class RentalsTable extends Component {
     const { _id } = row._original;
     API.adminDeleteRentalItem(_id)
       .then(res => {
-        console.log(res);
         //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
@@ -180,7 +179,6 @@ export class RentalsTable extends Component {
 
   noteModal = row => {
     const { _id, note } = row._original;
-    console.log(row);
     this.setModal({
       body:
         <Fragment>
@@ -199,7 +197,6 @@ export class RentalsTable extends Component {
     this.toggleLoadingModal();
     API.adminUpdateRental(id, { note: note })
       .then(response => {
-        console.log(response);
         //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
@@ -241,7 +238,6 @@ export class RentalsTable extends Component {
   // the image chosen in the modal form is pushed into state (similar to handleInputChange function)
   fileSelectedHandler = event => {
     const newFile = event.target.files[0];
-    console.log(newFile);
     this.setState({
       selectedFile: newFile
     });
@@ -266,7 +262,6 @@ export class RentalsTable extends Component {
     if (this.state.selectedFile) {
       fd.append('file', this.state.selectedFile, this.state.selectedFile.name);
       API.uploadImage(_id, fd).then(res => {
-        console.log(res);
         this.setState({
           selectedFile: null
         })
@@ -296,7 +291,6 @@ export class RentalsTable extends Component {
     });
     const { _id } = row._original;
     API.getImageNames(_id).then(res => {
-      console.log(res);
       if (res.data.length === 0) {
         setTimeout(this.setModal, 500, {
           body: <h3>No images to display</h3>,
@@ -311,7 +305,6 @@ export class RentalsTable extends Component {
 
   // Once image names have been retrieved, they are placed into img tags for display inside a modal
   getImageModal = (images, row) => {
-    console.log(images)
     this.setImageModal({
       body:
         <Fragment>

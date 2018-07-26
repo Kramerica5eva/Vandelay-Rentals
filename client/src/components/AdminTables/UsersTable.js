@@ -114,9 +114,7 @@ export class UsersTable extends Component {
   }
 
   userDeleteModal = row => {
-    console.log(row);
     const { registrations, reservations, pastRentals } = row._original;
-    console.log(pastRentals.length);
     if (pastRentals.length > 0) {
       this.setModal({
         body:
@@ -159,7 +157,6 @@ export class UsersTable extends Component {
     const { _id } = row._original;
     API.adminUpdateUser(_id, { standing: "Inactive" })
       .then(res => {
-        console.log(res);
         this.toggleLoadingModal();
         this.adminGetAllUsers();
         this.setModal({
@@ -174,7 +171,6 @@ export class UsersTable extends Component {
     const { _id } = row._original;
     API.adminUpdateUser(_id, { standing: "Banned" })
       .then(res => {
-        console.log(res);
         this.toggleLoadingModal();
         this.adminGetAllUsers();
         this.setModal({
@@ -189,7 +185,6 @@ export class UsersTable extends Component {
     const { _id } = row._original;
     API.deleteUser(_id)
       .then(res => {
-        console.log(res);
         this.toggleLoadingModal();
         this.adminGetAllUsers();
         this.setModal({
@@ -202,7 +197,6 @@ export class UsersTable extends Component {
 
   noteModal = row => {
     const { _id, note } = row._original;
-    console.log(row);
     this.setModal({
       body:
         <Fragment>
@@ -221,7 +215,6 @@ export class UsersTable extends Component {
     this.toggleLoadingModal();
     API.adminUpdateUser(id, { note: this.state.note })
       .then(response => {
-        console.log(response);
         //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
@@ -261,7 +254,7 @@ export class UsersTable extends Component {
       username: username,
       zipcode: zipcode
     }
-    console.log(updateObject);
+    
     API.adminUpdateUser(_id, updateObject)
       .then(response => {
         if (response.status === 200) {

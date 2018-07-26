@@ -133,7 +133,7 @@ export class SalesTable extends Component {
     this.closeModal();
     this.toggleLoadingModal();
     API.adminUpdateSaleItem(id, { note: this.state.note })
-      .then(response => {
+      .then(() => {
         //  keep the loading modal up for at least .5 seconds, otherwise it's just a screen flash and looks like a glitch.
         setTimeout(this.toggleLoadingModal, 500);
         // success modal after the loading modal is gone.
@@ -149,7 +149,6 @@ export class SalesTable extends Component {
 
   //  Update selected Row - sends current field info to db and updates that item
   updateRow = row => {
-    console.log(row);
     //  extract variables from the row object
     const { category, condition, dateAcquired, maker, name, parsedCost, parsedPrice, parsedSale, saleType, sku, status, _id } = row._original;
 
@@ -506,5 +505,3 @@ export class SalesTable extends Component {
     );
   }
 }
-
-// export RentalTable;

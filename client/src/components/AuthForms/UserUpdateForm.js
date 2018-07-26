@@ -48,7 +48,6 @@ export class UserUpdateForm extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     console.log(this.props.userData);
-    const { city, email, firstName, lastName, phone, state, street, username, zipcode } = this.props.userData;
 
     const updateObject = {};
 

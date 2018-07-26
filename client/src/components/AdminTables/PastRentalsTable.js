@@ -91,7 +91,6 @@ export class PastRentalsTable extends Component {
 
   noteModal = row => {
     const { _id, note } = row._original;
-    console.log(row);
     this.setModal({
       body:
         <Fragment>
@@ -110,7 +109,6 @@ export class PastRentalsTable extends Component {
     this.toggleLoadingModal();
     API.adminUpdatePastRental(id, { note: this.state.note })
       .then(response => {
-        console.log(response);
         setTimeout(this.toggleLoadingModal, 500);
         this.state.pastRentals.forEach(pr => {
           if (pr._id === id) pr.note = this.state.note;
@@ -148,7 +146,6 @@ export class PastRentalsTable extends Component {
   // the image chosen in the modal form is pushed into state (similar to handleInputChange function)
   fileSelectedHandler = event => {
     const newFile = event.target.files[0];
-    console.log(newFile);
     this.setState({
       selectedFile: newFile
     });
@@ -172,14 +169,14 @@ export class PastRentalsTable extends Component {
     const fd = new FormData();
     if (this.state.selectedFile) {
       fd.append('file', this.state.selectedFile, this.state.selectedFile.name);
-      API.uploadPastRentalImage(_id, fd).then(res => {
-        console.log(res);
-        this.setState({
-          selectedFile: null
-        })
-        this.closeModal();
-        this.getImageUploadModal(row);
-      });
+      API.uploadPastRentalImage(_id, fd)
+        .then(() => {
+          this.setState({
+            selectedFile: null
+          })
+          this.closeModal();
+          this.getImageUploadModal(row);
+        });
     } else {
       this.setModal({
         body: <h3>You have not selected a file to upload</h3>,
@@ -202,23 +199,22 @@ export class PastRentalsTable extends Component {
         </Fragment>
     });
     const { _id } = row._original;
-    API.getPastRentalImageNames(_id).then(res => {
-      console.log(res);
-      if (res.data.length === 0) {
-        setTimeout(this.setModal, 500, {
-          body: <h3>No images to display</h3>,
-          buttons: <button onClick={this.closeModal}>OK</button>
-        });
-      } else {
-        this.closeModal();
-        this.getImageModal(res.data, row);
-      }
-    });
+    API.getPastRentalImageNames(_id)
+      .then(res => {
+        if (res.data.length === 0) {
+          setTimeout(this.setModal, 500, {
+            body: <h3>No images to display</h3>,
+            buttons: <button onClick={this.closeModal}>OK</button>
+          });
+        } else {
+          this.closeModal();
+          this.getImageModal(res.data, row);
+        }
+      });
   };
 
   // Once image names have been retrieved, they are placed into img tags for display inside a modal
   getImageModal = (images, row) => {
-    console.log(images)
     this.setImageModal({
       body:
         <Fragment>

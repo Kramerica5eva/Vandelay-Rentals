@@ -24,7 +24,7 @@ module.exports = {
     req.body.phone = filteredPhone;
 
     let zipTest = /^\d{5}(-\d{4})?$/.test(zipcode);
-    let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email); 
+    let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);
     let phoneTest = /^\d{10}/.test(filteredPhone);
     let userTest = /^[a-zA-Z0-9]+$/.test(username);
     let firstTest = /^[a-zA-Z]+$/.test(firstName);
@@ -78,28 +78,28 @@ module.exports = {
   updateUserInfo: function (req, res) {
     const { username, firstName, lastName, email, state, zipcode, phone } = req.body;
 
-    let zipTest = /^\d{5}(-\d{4})?$/.test(zipcode);
-    let emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email);
-    let phoneTest = /^\d{3}[\-]\d{3}[\-]\d{4}/.test(phone) || /^\d{10}/.test(phone);
-    let userTest = /^[a-zA-Z0-9]+$/.test(username);
-    let firstTest = /^[a-zA-Z]+$/.test(firstName);
-    let lastTest = /^[a-zA-Z]+$/.test(lastName);
-    let stateTest = /^(?:A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])*$/.test(state);
+    let zipTest;
+    zipcode !== undefined ? zipTest = /^\d{5}(-\d{4})?$/.test(zipcode) : zipTest = true;
 
-    console.log(zipTest);
-    console.log(emailTest);
-    console.log(phoneTest);
-    console.log(userTest);
-    console.log(firstTest);
-    console.log(lastTest);
+    let emailTest;
+    email !== undefined ? emailTest = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email) : emailTest = true;
+
+    let phoneTest;
+    phone !== undefined ? phoneTest = /^\d{3}[\-]\d{3}[\-]\d{4}/.test(phone) || /^\d{10}/.test(phone) : phoneTest = true;
+
+    let userTest;
+    username !== undefined ? userTest = /^[a-zA-Z0-9]+$/.test(username) : userTest = true;
+
+    let firstTest;
+    firstName !== undefined ? firstTest = /^[a-zA-Z]+$/.test(firstName) : firstTest = true;
+
+    let lastTest;
+    lastName !== undefined ? lastTest = /^[a-zA-Z]+$/.test(lastName) : lastTest = true;
+
+    let stateTest;
+    state !== undefined ? stateTest = /^(?:A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])*$/.test(state) : stateTest = true;
 
     if (!zipTest || !emailTest || !phoneTest || !userTest || !firstTest || !lastTest || !stateTest) {
-      console.log(zipTest);
-      console.log(emailTest);
-      console.log(phoneTest);
-      console.log(userTest);
-      console.log(firstTest);
-      console.log(lastTest);
       return res.json({ error: 'did not validate' });
     }
 
