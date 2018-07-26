@@ -428,7 +428,7 @@ export class CoursesTable extends Component {
         <div className="main-table-container courses-table">
 
           <div className="table-title-div">
-            <h2>Courses Table <button onClick={this.props.toggleCourses}>Hide Table</button></h2>
+            <h2>Classes Table <button onClick={this.props.toggleCourses}>Hide Table</button></h2>
           </div>
 
           <ReactTable
@@ -468,7 +468,7 @@ export class CoursesTable extends Component {
                           </div>
                           <div className="fa-trash-alt-div table-icon-inner-div">
                             <i onClick={() => this.courseDeleteModal(row.row)} className="table-icon fas fa-trash-alt fa-lg"></i>
-                            <span className="fa-trash-alt-tooltip table-tooltip">delete course</span>
+                            <span className="fa-trash-alt-tooltip table-tooltip">delete class</span>
                           </div>
                           <div className="fa-sticky-note-div table-icon-inner-div">
                             <i onClick={() => this.noteModal(row.row)} className="table-icon far fa-sticky-note fa-lg"></i>
@@ -481,7 +481,7 @@ export class CoursesTable extends Component {
                 ]
               },
               {
-                Header: 'Course Details',
+                Header: 'Class Details',
                 columns: [
                   {
                     Header: "More Info",
@@ -510,7 +510,7 @@ export class CoursesTable extends Component {
                 ]
               },
               {
-                Header: 'Course Info',
+                Header: 'Class Info',
                 columns: [
                   {
                     Header: "Name",
