@@ -229,13 +229,13 @@ class CheckoutForm extends Component {
 
   async submit(ev) {
     let { token } = await this.props.stripe.createToken({ name: this.state.cardHolderName });
-    if (!token) {
+    if (!token || !this.state.cardHolderName) {
       this.props.toggleLoadingModal();
       return this.setModal({
-        body: "Complete the form, bitch.",
+        body: "Complete all payment fields before clicking submit. ",
         buttons:
           <Fragment>
-            <button onClick={() => this.closeModal(false)}>Yes, sir</button>
+            <button onClick={() => this.closeModal(false)}>Continue</button>
           </Fragment>
       });
     }
