@@ -72,6 +72,12 @@ class Courses extends Component {
 
 	// Creates document in tempRegistrations and adds the tempRegistration to the user's shopping cart
 	addCourseToCart = course => {
+		if (!this.props.loggedIn) {
+			return this.setModal({
+				body: <h4>You must be logged in to register for a class.</h4>,
+				buttons: <button onClick={this.closeModal}>OK</button>
+			})
+		}
 		this.toggleLoadingModal();
 		const { _id } = course;
 		API.addRegistrationToCart(_id, course)
