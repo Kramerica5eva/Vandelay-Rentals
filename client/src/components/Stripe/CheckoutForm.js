@@ -16,7 +16,8 @@ class CheckoutForm extends Component {
         body: "",
         buttons: ""
       },
-      cardHolderName: ""
+      cardHolderName: "",
+      cardNumber: ""
     };
   }
 
@@ -228,7 +229,18 @@ class CheckoutForm extends Component {
 
   async submit(ev) {
     let { token } = await this.props.stripe.createToken({ name: this.state.cardHolderName });
+    if (!token) {
+      this.props.toggleLoadingModal();
+      return this.setModal({
+        body: "Complete the form, bitch.",
+        buttons:
+          <Fragment>
+            <button onClick={() => this.closeModal(false)}>Yes, sir</button>
+          </Fragment>
+      });
+    }
     let charge = { token: token.id, chrgAmt: this.props.total };
+
     // let charge = { test: "test" };
     API.charge(charge)
       .then((res) => {
@@ -292,7 +304,7 @@ class CheckoutForm extends Component {
         <div className="checkout">
 
           <div>
-            <span className="test">Name</span>
+            <span className="test">Carholder's Name</span>
             <input name="cardHolderName" className="test" type="text" placeholder="Daenerys Targaryen" value={this.state.cardHolderName} onChange={(e) => this.handleInputChange(e)} />
           </div>
           Card Number
