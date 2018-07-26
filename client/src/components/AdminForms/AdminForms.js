@@ -27,7 +27,7 @@ export class AdminForms extends Component {
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: false,
+        isOpen: true,
         body: modalInput.body,
         buttons: modalInput.buttons
       }

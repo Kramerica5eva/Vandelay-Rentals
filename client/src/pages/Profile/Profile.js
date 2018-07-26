@@ -431,6 +431,7 @@ class Profile extends Component {
                 <div className="user-form-div">
                   <UserUpdateForm
                     getUserProfileData={this.getUserProfileData}
+                    userData={this.state.userData}
                   />
                 </div>
               </div>

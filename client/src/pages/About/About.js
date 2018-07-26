@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from "react";
-import Header from "../../components/Elements/Header";
 import ParallaxHero from "../../components/ParallaxHero";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
-import API from "../../utils/API";
 import "./About.css";
 
 class About extends Component {

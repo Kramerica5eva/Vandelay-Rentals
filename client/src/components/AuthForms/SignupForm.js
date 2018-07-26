@@ -32,7 +32,7 @@ export class SignupForm extends Component {
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: false,
+        isOpen: true,
         body: modalInput.body,
         buttons: modalInput.buttons
       }
@@ -227,7 +227,7 @@ export class SignupForm extends Component {
                 !/^[a-zA-Z]+$/.test(this.state.lastName)
               ) || (
                 !this.state.email ||
-                !/^[a-zA-Z0-9.!#$%&amp;'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(this.state.email)
+                !/^[a-zA-Z0-9.!#$%&amp;'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(this.state.email)
               ) || (
                 !this.state.street
               ) || (
@@ -240,7 +240,7 @@ export class SignupForm extends Component {
                 !/^\d{5}(-\d{4})?$/.test(this.state.zipcode)
               ) || (
                 !this.state.phone ||
-                !/^\d{3}[\-]\d{3}[\-]\d{4}/.test(this.state.phone)
+                !/^\d{3}[-]\d{3}[-]\d{4}/.test(this.state.phone)
               )
             ) || (this.state.password !== this.state.confirmPassword)}
             onClick={this.handleFormSubmit}

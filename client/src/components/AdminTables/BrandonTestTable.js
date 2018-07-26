@@ -38,10 +38,8 @@ export class BrandonTestTable extends Component {
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: false,
-        header: modalInput.header,
+        isOpen: true,
         body: modalInput.body,
-        footer: modalInput.footer,
         buttons: modalInput.buttons
       }
     });
@@ -52,7 +50,7 @@ export class BrandonTestTable extends Component {
       .then(res => {
 
         //  loop through the response array and add a new key/value pair with the formatted rate
-        res.data.map(r => {
+        res.data.forEach(r => {
           const rate = "$" + parseFloat(r.dailyRate.$numberDecimal).toFixed(2);
           r.rate = rate;
         });

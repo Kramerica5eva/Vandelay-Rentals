@@ -10,9 +10,7 @@ class Admin extends Component {
   state = {
     modal: {
       isOpen: false,
-      header: "",
       body: "",
-      footer: "",
       buttons: ""
     },
     courses: false,
@@ -36,10 +34,8 @@ class Admin extends Component {
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: false,
-        header: modalInput.header,
+        isOpen: true,
         body: modalInput.body,
-        footer: modalInput.footer,
         buttons: modalInput.buttons
       }
     });

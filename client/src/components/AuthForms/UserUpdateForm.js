@@ -47,19 +47,25 @@ export class UserUpdateForm extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
+    console.log(this.props.userData);
+    const { city, email, firstName, lastName, phone, state, street, username, zipcode } = this.props.userData;
+
+    const updateObject = {};
+
+    if (this.state.username) updateObject.username = this.state.username;
+    if (this.state.firstName) updateObject.firstName = this.state.firstName;
+    if (this.state.lastName) updateObject.lastName = this.state.lastName;
+    if (this.state.email) updateObject.email = this.state.email;
+    if (this.state.street) updateObject.street = this.state.street;
+    if (this.state.city) updateObject.city = this.state.city;
+    if (this.state.state) updateObject.state = this.state.state;
+    if (this.state.zipcode) updateObject.zipcode = this.state.zipcode;
+    if (this.state.phone) updateObject.phone = this.state.phone;
+
+    console.log(updateObject);
 
     //request to server to change user info
-    API.updateUserInfo({
-      username: this.state.username,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      email: this.state.email,
-      street: this.state.street,
-      city: this.state.city,
-      state: this.state.state,
-      zipcode: this.state.zipcode,
-      phone: this.state.phone
-    })
+    API.updateUserInfo(updateObject)
       .then(res => {
         console.log(res);
         if (res.data.error) {
@@ -178,14 +184,14 @@ export class UserUpdateForm extends Component {
           />
           <FormBtn
             disabled={(
-              !this.state.username ||
-              !this.state.firstName ||
-              !this.state.lastName ||
-              !this.state.email ||
-              !this.state.street ||
-              !this.state.city ||
-              !this.state.state ||
-              !this.state.zipcode ||
+              !this.state.username &&
+              !this.state.firstName &&
+              !this.state.lastName &&
+              !this.state.email &&
+              !this.state.street &&
+              !this.state.city &&
+              !this.state.state &&
+              !this.state.zipcode &&
               !this.state.phone
             )}
             onClick={this.handleFormSubmit}

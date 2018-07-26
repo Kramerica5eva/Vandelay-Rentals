@@ -4,7 +4,7 @@ import API from "../../utils/API";
 import NavBar from "../../components/Elements/NavBar";
 import Footer from "../../components/Elements/Footer";
 import ParallaxHero from "../../components/ParallaxHero"
-import { Input, Label, FormBtn } from "../../components/Elements/Form";
+import { Input } from "../../components/Elements/Form";
 import "./Waiver.css";
 
 class Waiver extends Component {

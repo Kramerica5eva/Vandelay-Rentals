@@ -358,7 +358,7 @@ class ShoppingCart extends Component {
               this.setModal({
                 body:
                   <Fragment>
-                    <h1>🤯</h1>
+                    <h1><span role="img" aria-label="explodey face">🤯</span></h1>
                     <h4>It looks like someone beat you to the punch on the following: </h4>
                     {noGood.map(thing =>
                       <h3 key={thing.name}>{thing.name}</h3>
@@ -462,10 +462,6 @@ class ShoppingCart extends Component {
           dev={this.props.dev}
         />
         <div className="main-container" id="shopping-cart-page">
-          {/* <ParallaxHero
-            image={{ backgroundImage: 'url(./static/assets/images/long_pier.jpeg)' }}
-            title="Shopping Cart"
-          /> */}
           <div className='body-container '>
             <div className="shopping-cart-header">
               <h2>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</h2>

@@ -25,7 +25,7 @@ export class ChangePwForm extends Component {
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: false,
+        isOpen: true,
         body: modalInput.body,
         buttons: modalInput.buttons
       }
@@ -50,7 +50,7 @@ export class ChangePwForm extends Component {
         console.log(res);
         if (res.data.message === "incorrect") {
           this.setModal({
-            body: <h5>Current password does not match our records.</h5>,
+            body: <h4>Current password does not match our records.</h4>,
             buttons: <button onClick={this.closeModal}>Try Again</button>
           });
         }
@@ -58,7 +58,7 @@ export class ChangePwForm extends Component {
           this.props.badLogout();
         } else {
           this.setModal({
-            body: <h5>Your password has been changed.</h5>,
+            body: <h4>Your password has been changed.</h4>,
             buttons: <button onClick={this.closeModal}>Continue</button>
           })
         }
@@ -80,7 +80,7 @@ export class ChangePwForm extends Component {
             value={this.state.currentPassword}
             onChange={this.handleInputChange}
             name="currentPassword"
-            type="text"
+            type="password"
             label="Current Password:"
           />
           <Input
@@ -88,7 +88,7 @@ export class ChangePwForm extends Component {
             onChange={this.handleInputChange}
             name="newPassword"
             pattern="^[\S]{4,}$"
-            type="text"
+            type="password"
             label="New Password:"
           />
           <Input
@@ -96,7 +96,7 @@ export class ChangePwForm extends Component {
             onChange={this.handleInputChange}
             name="confirmPassword"
             pattern={this.state.newPassword}
-            type="text"
+            type="password"
             label="Confirm New Password:"
           />
           <FormBtn

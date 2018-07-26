@@ -31,7 +31,7 @@ export class AddRentalForm extends Component {
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: false,
+        isOpen: true,
         body: modalInput.body,
         buttons: modalInput.buttons
       }
@@ -101,10 +101,10 @@ export class AddRentalForm extends Component {
               dateAcquired: "",
               condition: ""
             })
-            // this.setModal({
-            //   body: <h4>Your Rental has been added to the database.</h4>,
-            //   buttons: <button onClick={this.closeModal}>OK</button>
-            // });
+            this.setModal({
+              body: <h4>Your Rental has been added to the database.</h4>,
+              buttons: <button onClick={this.closeModal}>OK</button>
+            });
           }
         })
         .catch(err => console.log(err));

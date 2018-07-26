@@ -78,7 +78,7 @@ class CheckoutForm extends Component {
     // console.log("running checkout")
     this.props.toggleLoadingModal();
     let checkArray = [];
-    let promiseArray = [];
+    // let promiseArray = [];
     // console.log("Start temp reservations")
     // console.log(this.props.tempReservations)
     // console.log("end temp reservatios")
@@ -137,7 +137,7 @@ class CheckoutForm extends Component {
               this.setModal({
                 body:
                   <Fragment>
-                    <h1>🤯</h1>
+                    <h1><span role="img" aria-label="explodey face">🤯</span></h1>
                     <br />
                     <h3>Oh no!!</h3>
                     <br />

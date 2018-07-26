@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { Input } from "../Elements/Form";
 import API from "../../utils/API";
 import Modal from "../../components/Elements/Modal";
 import LoadingModal from "../../components/Elements/LoadingModal";
@@ -37,12 +36,6 @@ export class CoursesTable extends Component {
   };
 
   // MODAL TOGGLE FUNCTIONS
-  closeModal = () => {
-    this.setState({
-      modal: { isOpen: false }
-    });
-  }
-
   closeModal = () => {
     this.setState({ modal: { isOpen: false } });
   }

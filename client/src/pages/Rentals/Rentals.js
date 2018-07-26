@@ -124,10 +124,10 @@ class Rentals extends Component {
 		this.setState({ unavailable: [], name: '' });
 	};
 
-	setView = name => {
-		this.state.name == name ? true : false;
-		console.log(this.state.name == name, this.state.name, name);
-	};
+	// setView = name => {
+	// 	this.state.name === name ? true : false;
+	// 	console.log(this.state.name === name, this.state.name, name);
+	// };
 
 	clearUnix = () => {
 		this.setState({

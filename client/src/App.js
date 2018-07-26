@@ -97,7 +97,7 @@ class App extends Component {
   setModal = (modalInput) => {
     this.setState({
       modal: {
-        isOpen: false,
+        isOpen: true,
         body: modalInput.body,
         buttons: modalInput.buttons
       }
@@ -171,7 +171,7 @@ class App extends Component {
       .catch(err => console.log(err));
     this.setModal({
       body: <h5>Your account has been locked. Please call Brandon Morin and complain.</h5>,
-      buttons: <button>(801) 824-3638</button>
+      buttons: <button onClick={this.closeModal}>(801) 824-3638</button>
     })
   }
 
