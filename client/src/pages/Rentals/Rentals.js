@@ -136,6 +136,12 @@ class Rentals extends Component {
 	}
 
 	addReservationToCart = rental => {
+		if (!this.props.loggedIn) {
+			return this.setModal({
+				body: <h4>You must be logged in to make a reservation</h4>,
+				buttons: <button onClick={this.closeModal}>OK</button>
+			})
+		}
 		// Trigger the loading modal:
 		this.toggleLoadingModal();
 		//  Initialize date variables:
