@@ -141,7 +141,7 @@ class Admin extends Component {
 
           <div className="admin-btn-array">
             <h2>Admin Options</h2>
-            <button onClick={this.toggleCourses}>See Courses</button>
+            <button onClick={this.toggleCourses}>See Classes</button>
             <button onClick={this.toggleRentals}>See Rentals</button>
             <button onClick={this.toggleSaleItems}>See Sale Items</button>
             <button onClick={this.toggleUsers}>See Users</button>

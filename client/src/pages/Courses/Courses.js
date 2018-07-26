@@ -160,7 +160,7 @@ class Courses extends Component {
 					/>
 
 					<div className='body-container courses'>
-						<h2>Courses Available:</h2>
+						<h2>Classes Available:</h2>
 						<ul>
 							{this.state.courses.map(course => (
 								<CourseCard
