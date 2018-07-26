@@ -471,8 +471,13 @@ class ShoppingCart extends Component {
           <div className='body-container '>
             <div className="shopping-cart-header">
               <h2>Welcome{this.props.firstName ? `, ${this.props.firstName}` : ""}</h2>
-              {this.state.tempRegistrations.length > 0 || this.state.tempReservations.length > 0 ? <h3>You're almost done!</h3> : null}
-              
+              {
+                this.state.tempRegistrations.length > 0 || this.state.tempReservations.length > 0 ?
+                  <h3>You're almost done!</h3>
+                  :
+                  <h3 className="empty-cart">Your Shopping Cart is Empty</h3>
+              }
+
             </div>
             {this.state.complete === true || this.state.tempRegistrations.length > 0 || this.state.tempReservations.length > 0
               ? <div className="payment-container">
@@ -496,11 +501,9 @@ class ShoppingCart extends Component {
                 </StripeProvider>
               </div>
               : null}
-              
+
             <div className="cart-page-container">
               <div className="cart-items">
-                {this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
-                  <h3 className="empty-cart">Your Shopping Cart is Empty</h3> : null}
                 {this.state.tempReservations ? (
                   this.state.tempReservations.map(res => (
                     <div key={res._id} className="cart-res-container">
@@ -531,12 +534,12 @@ class ShoppingCart extends Component {
                     </div>
                   ))
                 ) : null}
+                <div className={this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
+                  "no-confirm" : "checkout-proceed"}>
+                  <button className={`${this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
+                    "chkoutDisabled" : ""}`} onClick={() => this.checkout()}>Confirm Reservation <i className="fas fa-check-circle"></i></button>
+                </div>
               </div>
-            </div>
-            <div className={this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
-              "no-confirm" : "checkout-proceed"}>
-              <button className={`${this.state.tempRegistrations.length === 0 && this.state.tempReservations.length === 0 ?
-                "chkoutDisabled" : ""}`} onClick={() => this.checkout()}>Confirm Reservation <i className="fas fa-check-circle"></i></button>
             </div>
           </div>
           <Footer />
